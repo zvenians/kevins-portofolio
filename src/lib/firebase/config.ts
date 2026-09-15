@@ -13,8 +13,14 @@ const firebaseConfig = {
 };
 
 const app = getApps().length > 0 ? getApp() : initializeApp(firebaseConfig);
-const db = getFirestore(app);
-const storage = getStorage(app);
-const auth = getAuth(app);
+
+let db, storage, auth: any;
+try {
+  db = getFirestore(app);
+  storage = getStorage(app);
+  auth = getAuth(app);
+} catch (e) {
+  console.warn("Firebase initialization skipped (missing config during build)");
+}
 
 export { app, db, storage, auth };

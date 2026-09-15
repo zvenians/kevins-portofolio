@@ -1,3 +1,4 @@
+// eslint-disable-next-line @typescript-eslint/no-require-imports
 const admin = require("firebase-admin");
 
 // Initialize with Application Default Credentials or GOOGLE_APPLICATION_CREDENTIALS

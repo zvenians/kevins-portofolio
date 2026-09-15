@@ -22,18 +22,38 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [isAdmin, setIsAdmin] = useState(false);
 
   useEffect(() => {
+    if (!auth) {
+      setLoading(false);
+      return;
+    }
+
     const unsubscribe = onAuthStateChanged(auth, async (currentUser) => {
       setUser(currentUser);
       if (currentUser) {
+        const token = await currentUser.getIdToken();
         const tokenResult = await currentUser.getIdTokenResult();
         setIsAdmin(!!tokenResult.claims.admin);
+        // Set cookie for server-side auth guard
+        document.cookie = `firebase-token=${token}; path=/; max-age=3600; SameSite=Strict; Secure`;
       } else {
         setIsAdmin(false);
+        document.cookie = `firebase-token=; path=/; max-age=0; SameSite=Strict; Secure`;
       }
       setLoading(false);
     });
 
-    return () => unsubscribe();
+    // Refresh token periodically to keep cookie valid
+    const interval = setInterval(async () => {
+      if (auth && auth.currentUser) {
+        const token = await auth.currentUser.getIdToken(true);
+        document.cookie = `firebase-token=${token}; path=/; max-age=3600; SameSite=Strict; Secure`;
+      }
+    }, 10 * 60 * 1000); // 10 minutes
+
+    return () => {
+      unsubscribe();
+      clearInterval(interval);
+    };
   }, []);
 
   return (

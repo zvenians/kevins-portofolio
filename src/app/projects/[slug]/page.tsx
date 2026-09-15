@@ -10,29 +10,43 @@ type Props = {
 };
 
 export async function generateStaticParams() {
-  const projects = await getPublishedProjects();
-  return projects.map((project) => ({
-    slug: project.slug,
-  }));
+  try {
+    const projects = await getPublishedProjects();
+    return projects.map((project) => ({
+      slug: project.slug,
+    }));
+  } catch (error) {
+    console.error("Failed to generate static params (Firebase may not be configured):", error);
+    return [];
+  }
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const resolvedParams = await params;
-  const project = await getProjectBySlug(resolvedParams.slug);
-  
-  if (!project) {
-    return { title: "Not Found" };
-  }
+  try {
+    const project = await getProjectBySlug(resolvedParams.slug);
+    
+    if (!project) {
+      return { title: "Not Found" };
+    }
 
-  return {
-    title: project.title,
-    description: project.description,
-  };
+    return {
+      title: project.title,
+      description: project.description,
+    };
+  } catch (error) {
+    return { title: "Project" };
+  }
 }
 
 export default async function ProjectDetailPage({ params }: Props) {
   const resolvedParams = await params;
-  const project = await getProjectBySlug(resolvedParams.slug);
+  let project;
+  try {
+    project = await getProjectBySlug(resolvedParams.slug);
+  } catch (error) {
+    console.error(error);
+  }
 
   if (!project) {
     notFound();
