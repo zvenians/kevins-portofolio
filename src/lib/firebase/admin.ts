@@ -1,30 +1,33 @@
-import * as admin from "firebase-admin";
+import { initializeApp, getApps, cert, applicationDefault } from "firebase-admin/app";
+import { getFirestore } from "firebase-admin/firestore";
+import { getStorage } from "firebase-admin/storage";
+import { getAuth } from "firebase-admin/auth";
 
-if (!admin.apps.length) {
+if (!getApps().length) {
   let credential;
   
   if (process.env.FIREBASE_SERVICE_ACCOUNT_KEY) {
     try {
       const serviceAccount = JSON.parse(process.env.FIREBASE_SERVICE_ACCOUNT_KEY);
-      credential = admin.credential.cert(serviceAccount);
+      credential = cert(serviceAccount);
     } catch (error) {
       console.error("Error parsing FIREBASE_SERVICE_ACCOUNT_KEY", error);
-      credential = admin.credential.applicationDefault();
+      credential = applicationDefault();
     }
   } else {
     // Falls back to Application Default Credentials
-    credential = admin.credential.applicationDefault();
+    credential = applicationDefault();
   }
 
-  admin.initializeApp({
+  initializeApp({
     credential,
     projectId: process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID || "simatupangkevin",
     storageBucket: process.env.NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET,
   });
 }
 
-const adminDb = admin.firestore();
-const adminStorage = admin.storage();
-const adminAuth = admin.auth();
+const adminDb = getFirestore();
+const adminStorage = getStorage();
+const adminAuth = getAuth();
 
-export { adminDb, adminStorage, adminAuth, admin };
+export { adminDb, adminStorage, adminAuth };

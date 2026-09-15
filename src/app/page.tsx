@@ -1,11 +1,12 @@
 import { Navigation } from "@/components/navigation/Navigation";
 import { getFeaturedProjects } from "@/lib/firestore/projects";
+import { type Project } from "@/types/schema";
 
 export const revalidate = 3600; // Cache for 1 hour, or revalidate via API
 
 export default async function Home() {
   // Gracefully handle missing env vars or empty DB during initial setup
-  let featuredProjects = [];
+  let featuredProjects: Project[] = [];
   try {
     featuredProjects = await getFeaturedProjects();
   } catch (error) {

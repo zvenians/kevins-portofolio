@@ -1,5 +1,6 @@
 import { Navigation } from "@/components/navigation/Navigation";
 import { getPublishedProjects } from "@/lib/firestore/projects";
+import { type Project } from "@/types/schema";
 import Link from "next/link";
 import { Metadata } from "next";
 
@@ -11,7 +12,7 @@ export const metadata: Metadata = {
 export const revalidate = 3600;
 
 export default async function ProjectsIndexPage() {
-  let projects = [];
+  let projects: Project[] = [];
   try {
     projects = await getPublishedProjects();
   } catch (error) {

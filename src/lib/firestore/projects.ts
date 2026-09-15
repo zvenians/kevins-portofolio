@@ -7,7 +7,7 @@ const COLLECTION_NAME = "projects";
  * Validates raw Firestore data against the Zod schema.
  * Automatically falls back or throws depending on strictness.
  */
-function validateProject(data: any): Project | null {
+function validateProject(data: unknown): Project | null {
   const result = ProjectSchema.safeParse(data);
   if (!result.success) {
     console.error("Project validation failed:", result.error);
@@ -28,7 +28,8 @@ export async function getPublishedProjects(): Promise<Project[]> {
     .get();
 
   const projects: Project[] = [];
-  snapshot.forEach((doc) => {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  snapshot.forEach((doc: any) => {
     // Firestore Timestamp conversion
     const raw = doc.data();
     if (raw.createdAt?.toDate) raw.createdAt = raw.createdAt.toDate();
@@ -89,7 +90,8 @@ export async function getFeaturedProjects(): Promise<Project[]> {
     .get();
 
   const projects: Project[] = [];
-  snapshot.forEach((doc) => {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  snapshot.forEach((doc: any) => {
     const raw = doc.data();
     if (raw.createdAt?.toDate) raw.createdAt = raw.createdAt.toDate();
     if (raw.updatedAt?.toDate) raw.updatedAt = raw.updatedAt.toDate();
