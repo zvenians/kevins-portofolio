@@ -93,11 +93,115 @@ export const VideoBlockSchema = z.object({
   caption: z.string().optional(),
 });
 
+export const GalleryBlockSchema = z.object({
+  id: z.string(),
+  type: z.literal("gallery"),
+  items: z.array(MediaAssetSchema),
+  layout: z.enum(["grid", "carousel", "masonry", "list"]).optional(),
+  caption: z.string().optional(),
+});
+
+export const QuoteBlockSchema = z.object({
+  id: z.string(),
+  type: z.literal("quote"),
+  quote: z.string(),
+  author: z.string().optional(),
+  role: z.string().optional(),
+});
+
+export const MetricItemSchema = z.object({
+  label: z.string(),
+  value: z.string(),
+  description: z.string().optional(),
+});
+
+export const MetricsBlockSchema = z.object({
+  id: z.string(),
+  type: z.literal("metrics"),
+  items: z.array(MetricItemSchema),
+});
+
+export const ProcessStepSchema = z.object({
+  number: z.number().optional(),
+  title: z.string(),
+  description: z.string(),
+  media: MediaAssetSchema.optional(),
+});
+
+export const ProcessBlockSchema = z.object({
+  id: z.string(),
+  type: z.literal("process"),
+  title: z.string().optional(),
+  steps: z.array(ProcessStepSchema),
+});
+
+export const TimelineItemSchema = z.object({
+  date: z.string(),
+  title: z.string(),
+  description: z.string(),
+  media: MediaAssetSchema.optional(),
+});
+
+export const TimelineBlockSchema = z.object({
+  id: z.string(),
+  type: z.literal("timeline"),
+  title: z.string().optional(),
+  items: z.array(TimelineItemSchema),
+});
+
+export const CodeBlockSchema = z.object({
+  id: z.string(),
+  type: z.literal("code"),
+  language: z.string(),
+  code: z.string(),
+  filename: z.string().optional(),
+  description: z.string().optional(),
+});
+
+export const EmbedProviderSchema = z.enum(["youtube", "vimeo", "figma", "github", "custom"]);
+
+export const EmbedBlockSchema = z.object({
+  id: z.string(),
+  type: z.literal("embed"),
+  provider: EmbedProviderSchema,
+  url: z.string().url(),
+  title: z.string().optional(),
+});
+
+export const ComparisonBlockSchema = z.object({
+  id: z.string(),
+  type: z.literal("comparison"),
+  before: z.object({
+    label: z.string().optional(),
+    description: z.string().optional(),
+    media: MediaAssetSchema,
+  }),
+  after: z.object({
+    label: z.string().optional(),
+    description: z.string().optional(),
+    media: MediaAssetSchema,
+  }),
+});
+
+export const SpacerBlockSchema = z.object({
+  id: z.string(),
+  type: z.literal("spacer"),
+  size: z.enum(["small", "medium", "large"]),
+});
+
 export const ContentBlockSchema = z.discriminatedUnion("type", [
   TextBlockSchema,
   ImageBlockSchema,
   VideoBlockSchema,
-  // Other blocks can be added here
+  GalleryBlockSchema,
+  QuoteBlockSchema,
+  MetricsBlockSchema,
+  ProcessBlockSchema,
+  TimelineBlockSchema,
+  CodeBlockSchema,
+  EmbedBlockSchema,
+  ComparisonBlockSchema,
+  SpacerBlockSchema,
 ]);
 export type ContentBlock = z.infer<typeof ContentBlockSchema>;
 

@@ -44,8 +44,8 @@ export default async function ProjectDetailPage({ params }: Props) {
   let project;
   try {
     project = await getProjectBySlug(resolvedParams.slug);
-  } catch (error) {
-    console.error(error);
+  } catch {
+    // console.error(error);
   }
 
   if (!project) {

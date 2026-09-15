@@ -14,12 +14,14 @@ const firebaseConfig = {
 
 const app = getApps().length > 0 ? getApp() : initializeApp(firebaseConfig);
 
-let db, storage, auth: any;
+let db: ReturnType<typeof getFirestore>;
+let storage: ReturnType<typeof getStorage>;
+let auth: ReturnType<typeof getAuth>;
 try {
   db = getFirestore(app);
   storage = getStorage(app);
   auth = getAuth(app);
-} catch (e) {
+} catch {
   console.warn("Firebase initialization skipped (missing config during build)");
 }
 

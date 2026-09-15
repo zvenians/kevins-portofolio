@@ -1,15 +1,18 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
 import { type Project } from "@/types/schema";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { saveProject } from "@/app/admin/actions";
+import { BlockEditor } from "./blocks/BlockEditor";
 
 export function ProjectForm({ initialData }: { initialData?: Project }) {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState<Partial<Project>>(
     initialData || {
+      id: crypto.randomUUID(),
       title: "",
       slug: "",
       description: "",
@@ -118,7 +121,16 @@ export function ProjectForm({ initialData }: { initialData?: Project }) {
         </label>
       </div>
 
-      <div className="flex gap-4">
+      <div className="space-y-4 bg-surface-elevated p-6 rounded-lg border border-border">
+        <h2 className="text-xl font-bold mb-4">Content Blocks</h2>
+        <BlockEditor 
+          projectId={formData.id!} 
+          blocks={formData.content || []} 
+          onChange={(blocks) => setFormData({ ...formData, content: blocks as any })}
+        />
+      </div>
+
+      <div className="flex gap-4 sticky bottom-6 bg-background p-4 rounded-lg border border-border shadow-lg z-50">
         <button
           type="submit"
           disabled={loading}
