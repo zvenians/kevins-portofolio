@@ -1,0 +1,95 @@
+# dependencies
+node_modules/
+.pnp
+.pnp.*
+.yarn/*
+!.yarn/patches
+!.yarn/releases
+!.yarn/plugins
+!.yarn/versions
+
+# next.js
+.next/
+out/
+build/
+dist/
+next-env.d.ts
+
+# production / deployment
+.vercel
+.firebase/
+firebase-debug.log
+firebase-debug.*.log
+firestore-debug.log
+database-debug.log
+pubsub-debug.log
+ui-debug.log
+dataconnect-debug.log
+
+# firebase emulator state
+.emulator/
+emulator-data/
+firebase-export-*/
+
+# environment - never commit
+.env
+.env.*
+!.env.example
+
+# credentials and secrets - never commit
+*.pem
+*.key
+*.p12
+*.pfx
+*.jks
+*.keystore
+serviceAccount*.json
+service-account*.json
+*-firebase-adminsdk-*.json
+gha-creds-*.json
+secrets/
+credentials/
+
+# testing
+coverage/
+.nyc_output/
+
+# typescript / build caches
+*.tsbuildinfo
+.eslintcache
+.cache/
+.turbo/
+
+# logs
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+# os
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+desktop.ini
+
+# editor
+.idea/
+*.swp
+*.swo
+*~
+.vscode/*
+!.vscode/extensions.json
+!.vscode/settings.json
+
+# misc
+*.tmp
+*.temp
+tmp/
+temp/
