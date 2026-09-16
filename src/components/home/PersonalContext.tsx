@@ -1,23 +1,51 @@
-import { type SiteSettings } from "@/types/settings";
 import { Reveal } from "@/components/ui/Reveal";
 
-export default function PersonalContext({ settings }: { settings: SiteSettings | null }) {
-  if (!settings || (!settings.shortBio && !settings.bio)) return null;
+interface SiteSettings {
+  shortBio?: string;
+  bio?: string;
+}
+
+interface PersonalContextProps {
+  settings: SiteSettings | null;
+}
+
+export function PersonalContext({ settings }: PersonalContextProps) {
+  if (!settings?.bio) return null;
 
   return (
-    <section id="about" className="py-24 md:py-40 px-6 md:px-12 max-w-4xl mx-auto">
-      <Reveal>
-        <h2 className="text-sm font-mono tracking-widest uppercase text-text-muted mb-12 text-center">About</h2>
-      </Reveal>
-      <Reveal delay={100}>
-        <div className="space-y-8 text-center">
-          {settings.bio && (
-            <div className="text-xl md:text-3xl text-text-primary font-light leading-relaxed whitespace-pre-wrap">
-              {settings.bio}
-            </div>
-          )}
+    <section className="py-24 md:py-48">
+      <div className="container mx-auto px-6">
+        <div className="grid grid-cols-1 md:grid-cols-12 gap-8 md:gap-12">
+          {/* Offset column for dramatic asymmetry */}
+          <div className="md:col-span-2 lg:col-span-3">
+            <Reveal>
+              <div className="flex flex-col gap-4">
+                <h2 className="text-sm font-mono text-text-muted uppercase tracking-wider">
+                  [05] Context
+                </h2>
+                {settings.shortBio && (
+                  <p className="text-sm text-text-muted max-w-[200px] leading-relaxed">
+                    {settings.shortBio}
+                  </p>
+                )}
+              </div>
+            </Reveal>
+          </div>
+
+          <div className="md:col-span-10 lg:col-span-8">
+            <Reveal delay={0.2}>
+              <div className="relative">
+                <span className="absolute -left-8 md:-left-16 -top-8 text-8xl md:text-9xl text-surface-elevated font-serif leading-none">
+                  &quot;
+                </span>
+                <p className="text-2xl md:text-4xl lg:text-5xl font-light text-text-primary leading-[1.3] md:leading-[1.4] tracking-tight relative z-10 whitespace-pre-wrap">
+                  {settings.bio}
+                </p>
+              </div>
+            </Reveal>
+          </div>
         </div>
-      </Reveal>
+      </div>
     </section>
   );
 }

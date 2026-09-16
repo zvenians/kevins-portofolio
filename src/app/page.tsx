@@ -4,13 +4,13 @@ import { getSiteSettings } from "@/lib/firestore/settings";
 import { getFeaturedExperiments, getExperiences, getTechnologies } from "@/lib/firestore/home";
 
 import Hero from "@/components/home/Hero";
-import SelectedWork from "@/components/home/SelectedWork";
-import Capabilities from "@/components/home/Capabilities";
-import Experiments from "@/components/home/Experiments";
-import ExperienceSection from "@/components/home/Experience";
-import PersonalContext from "@/components/home/PersonalContext";
-import ResumeCTA from "@/components/home/ResumeCTA";
-import Contact from "@/components/home/Contact";
+import { SelectedWork } from "@/components/home/SelectedWork";
+import { Capabilities } from "@/components/home/Capabilities";
+import { Experiments } from "@/components/home/Experiments";
+import { Experience } from "@/components/home/Experience";
+import { PersonalContext } from "@/components/home/PersonalContext";
+import { ResumeCTA } from "@/components/home/ResumeCTA";
+import { Contact } from "@/components/home/Contact";
 import { Footer } from "@/components/home/Footer";
 
 import { Metadata } from "next";
@@ -73,7 +73,7 @@ export default async function Home() {
         <SelectedWork projects={featuredProjects} />
         <Capabilities technologies={technologies} />
         <Experiments experiments={featuredExperiments} />
-        <ExperienceSection experiences={experiences} />
+        <Experience experiences={experiences} />
         <PersonalContext settings={settings} />
         <ResumeCTA resumeUrl={settings?.resume?.file?.url} />
         <Contact settings={settings} />

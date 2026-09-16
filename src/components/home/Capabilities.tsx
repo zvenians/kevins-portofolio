@@ -1,41 +1,62 @@
-import { type Technology } from "@/types/schema";
 import { Reveal } from "@/components/ui/Reveal";
+import { type Technology } from "@/types/schema";
 
-export default function Capabilities({ technologies }: { technologies: Technology[] }) {
+interface CapabilitiesProps {
+  technologies: Technology[];
+}
+
+export function Capabilities({ technologies }: CapabilitiesProps) {
   if (!technologies || technologies.length === 0) return null;
 
   // Group by category
   const grouped = technologies.reduce((acc, tech) => {
-    const catName = tech.category || "Other";
-    if (!acc[catName]) acc[catName] = [];
-    acc[catName].push(tech);
+    const cat = tech.category || "Other";
+    if (!acc[cat]) acc[cat] = [];
+    acc[cat].push(tech);
     return acc;
   }, {} as Record<string, Technology[]>);
 
+  const categories = Object.keys(grouped).sort();
+
   return (
-    <section className="py-24 md:py-32 px-6 md:px-12 max-w-7xl mx-auto border-t border-border/50">
-      <Reveal>
-        <div className="flex items-center gap-6 mb-16 md:mb-24">
-          <h2 className="text-sm font-mono tracking-widest uppercase text-text-muted">Capabilities & Toolkit</h2>
+    <section className="py-24 md:py-40 bg-surface">
+      <div className="container mx-auto px-6">
+        <Reveal>
+          <h2 className="text-sm font-mono text-text-muted mb-24 uppercase tracking-wider">
+            [02] Capabilities & Taxonomy
+          </h2>
+        </Reveal>
+
+        <div className="flex flex-col gap-24">
+          {categories.map((category, index) => (
+            <Reveal key={category} delay={index * 0.1}>
+              <div className="grid grid-cols-1 md:grid-cols-12 gap-8 md:gap-12 border-t border-border pt-12">
+                <div className="md:col-span-4 lg:col-span-3">
+                  <h3 className="text-2xl md:text-3xl font-light text-text-primary tracking-tight capitalize">
+                    {category}
+                  </h3>
+                </div>
+                
+                <div className="md:col-span-8 lg:col-span-9">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-12 gap-y-12">
+                    {grouped[category].map((tech) => (
+                      <div key={tech.id} className="flex flex-col gap-2">
+                        <span className="text-lg md:text-xl text-text-primary font-medium">
+                          {tech.name}
+                        </span>
+                        {tech.description && (
+                          <span className="text-sm text-text-muted font-light leading-relaxed">
+                            {tech.description}
+                          </span>
+                        )}
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            </Reveal>
+          ))}
         </div>
-      </Reveal>
-      
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-16 md:gap-24">
-        {Object.entries(grouped).map(([category, techs], index) => (
-          <Reveal key={category} delay={index * 100}>
-            <div>
-              <h3 className="text-xl md:text-2xl font-medium tracking-tight text-text-primary mb-8 border-b border-border/50 pb-4">{category}</h3>
-              <ul className="space-y-6">
-                {techs.map((tech) => (
-                  <li key={tech.id} className="flex flex-col">
-                    <span className="text-lg text-text-primary font-medium tracking-tight">{tech.name}</span>
-                    {tech.description && <span className="text-base text-text-secondary mt-1 font-light">{tech.description}</span>}
-                  </li>
-                ))}
-              </ul>
-            </div>
-          </Reveal>
-        ))}
       </div>
     </section>
   );

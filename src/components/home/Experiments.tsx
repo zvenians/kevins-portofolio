@@ -1,61 +1,102 @@
-import { type Experiment } from "@/types/schema";
 import { Reveal } from "@/components/ui/Reveal";
 
-export default function Experiments({ experiments }: { experiments: Experiment[] }) {
+interface Experiment {
+  id: string;
+  title: string;
+  description?: string;
+  cover?: { url: string; alt?: string };
+  date?: string;
+  link?: string;
+}
+
+interface ExperimentsProps {
+  experiments: Experiment[];
+}
+
+export function Experiments({ experiments }: ExperimentsProps) {
   if (!experiments || experiments.length === 0) return null;
 
   return (
-    <section id="experiments" className="py-24 px-6 md:px-12 max-w-7xl mx-auto">
-      <Reveal>
-        <div className="flex items-center gap-6 mb-16 md:mb-20">
-          <h2 className="text-sm font-mono tracking-widest uppercase text-text-muted">Explorations & Experiments</h2>
-          <div className="flex-grow h-px bg-border/50"></div>
+    <section className="py-24 md:py-40">
+      <div className="container mx-auto px-6 overflow-hidden">
+        <Reveal>
+          <div className="flex justify-between items-end mb-16 md:mb-24 border-b border-border pb-8">
+            <h2 className="text-sm font-mono text-text-muted uppercase tracking-wider">
+              [03] Lab & Experiments
+            </h2>
+            <span className="text-xs font-mono text-text-muted">RAW / UNFILTERED</span>
+          </div>
+        </Reveal>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 md:gap-16">
+          {experiments.map((experiment, index) => {
+            const delay = (index % 3) * 0.1;
+            // Staggered top margin for middle items on desktop
+            const isMiddle = index % 3 === 1;
+            
+            return (
+              <Reveal key={experiment.id} delay={delay}>
+                <a
+                  href={experiment.link || "#"}
+                  target={experiment.link ? "_blank" : undefined}
+                  rel={experiment.link ? "noopener noreferrer" : undefined}
+                  className={`group block w-full ${isMiddle ? "lg:mt-24" : ""}`}
+                >
+                  <div className="flex flex-col gap-6">
+                    {/* Metadata Header */}
+                    <div className="flex justify-between items-center font-mono text-xs text-text-muted">
+                      <span>EXP_{String(index + 1).padStart(3, "0")}</span>
+                      {experiment.date && (
+                        <span>
+                          {new Date(experiment.date).toLocaleDateString("en-US", {
+                            year: "numeric",
+                            month: "2-digit",
+                          })}
+                        </span>
+                      )}
+                    </div>
+
+                    {/* Image block (Technical aspect ratio) */}
+                    <div className="relative aspect-[3/4] w-full overflow-hidden bg-surface-elevated border border-border">
+                      {experiment.cover ? (
+                        <>
+                          {/* eslint-disable-next-line @next/next/no-img-element */}
+                          <img
+                            src={experiment.cover.url}
+                            alt={experiment.cover.alt || experiment.title}
+                            className="w-full h-full object-cover filter grayscale group-hover:grayscale-0 transition-all duration-700 opacity-80 group-hover:opacity-100 group-hover:scale-105"
+                          />
+                        </>
+                      ) : (
+                        <div className="absolute inset-0 flex items-center justify-center">
+                          <span className="font-mono text-text-muted opacity-20">NO_DATA</span>
+                        </div>
+                      )}
+                      
+                      {/* Technical overlay corners */}
+                      <div className="absolute top-0 left-0 w-2 h-2 border-t border-l border-text-muted m-2 opacity-50" />
+                      <div className="absolute top-0 right-0 w-2 h-2 border-t border-r border-text-muted m-2 opacity-50" />
+                      <div className="absolute bottom-0 left-0 w-2 h-2 border-b border-l border-text-muted m-2 opacity-50" />
+                      <div className="absolute bottom-0 right-0 w-2 h-2 border-b border-r border-text-muted m-2 opacity-50" />
+                    </div>
+
+                    {/* Content */}
+                    <div className="flex flex-col gap-2">
+                      <h3 className="text-xl font-medium text-text-primary group-hover:text-accent transition-colors">
+                        {experiment.title}
+                      </h3>
+                      {experiment.description && (
+                        <p className="text-sm text-text-secondary leading-relaxed font-light">
+                          {experiment.description}
+                        </p>
+                      )}
+                    </div>
+                  </div>
+                </a>
+              </Reveal>
+            );
+          })}
         </div>
-      </Reveal>
-      
-      <div className="flex flex-col">
-        {experiments.map((exp, index) => (
-          <Reveal key={exp.id} delay={index * 50}>
-            <a 
-              href={exp.link || '#'} 
-              target="_blank" 
-              rel="noopener noreferrer" 
-              className="group block border-b border-border py-8 md:py-12 transition-colors hover:bg-surface/50"
-            >
-              <article className="flex flex-col md:flex-row md:items-center gap-6 md:gap-12 px-4 md:px-8">
-                <div className="w-16 h-16 md:w-24 md:h-24 shrink-0 bg-surface-elevated rounded-md overflow-hidden relative border border-border/50">
-                  {exp.cover && (
-                    /* eslint-disable-next-line @next/next/no-img-element */
-                    <img 
-                      src={exp.cover.url} 
-                      alt={exp.cover.alt || exp.title} 
-                      className="w-full h-full object-cover transition-transform duration-[1s] group-hover:scale-110"
-                      loading="lazy"
-                    />
-                  )}
-                </div>
-                <div className="flex-grow">
-                  <h3 className="text-xl md:text-2xl font-medium text-text-primary mb-2 group-hover:text-accent transition-colors">
-                    {exp.title}
-                  </h3>
-                  <p className="text-text-secondary md:text-lg max-w-2xl font-light">
-                    {exp.description}
-                  </p>
-                </div>
-                <div className="md:text-right shrink-0">
-                  {exp.date && (
-                    <span className="text-xs font-mono tracking-wider text-text-muted block md:mb-2">
-                      {new Date(exp.date).getFullYear()}
-                    </span>
-                  )}
-                  <span className="text-sm font-medium text-accent opacity-0 -translate-x-4 transition-all group-hover:opacity-100 group-hover:translate-x-0 hidden md:inline-block">
-                    View Project ↗
-                  </span>
-                </div>
-              </article>
-            </a>
-          </Reveal>
-        ))}
       </div>
     </section>
   );

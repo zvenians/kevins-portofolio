@@ -1,43 +1,81 @@
-import { type Experience as ExperienceType } from "@/types/schema";
 import { Reveal } from "@/components/ui/Reveal";
+import { type Experience as ExperienceType } from "@/types/schema";
 
-export default function Experience({ experiences }: { experiences: ExperienceType[] }) {
+interface ExperienceProps {
+  experiences: ExperienceType[];
+}
+
+export function Experience({ experiences }: ExperienceProps) {
   if (!experiences || experiences.length === 0) return null;
 
   return (
-    <section className="py-24 md:py-32 px-6 md:px-12 max-w-4xl mx-auto">
-      <Reveal>
-        <div className="flex items-center gap-6 mb-16 md:mb-24">
-          <h2 className="text-sm font-mono tracking-widest uppercase text-text-muted">Experience</h2>
-          <div className="flex-grow h-px bg-border/50"></div>
-        </div>
-      </Reveal>
-      
-      <div className="flex flex-col gap-16 md:gap-20">
-        {experiences.map((exp, index) => {
-          const startYear = exp.startDate ? new Date(exp.startDate).getFullYear() : '';
-          const endYear = exp.current ? 'Present' : (exp.endDate ? new Date(exp.endDate).getFullYear() : '');
-          const dateRange = startYear ? `${startYear} — ${endYear}` : '';
+    <section className="py-24 md:py-40 bg-surface">
+      <div className="container mx-auto px-6">
+        <Reveal>
+          <h2 className="text-sm font-mono text-text-muted mb-24 uppercase tracking-wider">
+            [04] Chronology
+          </h2>
+        </Reveal>
 
-          return (
-            <Reveal key={exp.id} delay={index * 100}>
-              <article className="grid grid-cols-1 md:grid-cols-[1fr_3fr] gap-4 md:gap-12 group">
-                <div className="text-xs font-mono tracking-widest text-text-muted uppercase pt-2">
-                  {dateRange}
-                </div>
-                <div>
-                  <h3 className="text-2xl font-medium tracking-tight text-text-primary mb-1">{exp.title}</h3>
-                  <h4 className="text-lg text-text-secondary font-light mb-6">{exp.company}</h4>
-                  {exp.description && (
-                    <div className="text-text-secondary font-light leading-relaxed whitespace-pre-wrap">
-                      {exp.description}
+        <div className="relative">
+          {/* Vertical Timeline Line (Desktop only) */}
+          <div className="hidden md:block absolute left-[30%] top-0 bottom-0 w-px bg-border/50" />
+
+          <div className="flex flex-col gap-20">
+            {experiences.map((exp, index) => {
+              const startYear = new Date(exp.startDate).getFullYear();
+              const endYear = exp.current
+                ? "Present"
+                : exp.endDate
+                ? new Date(exp.endDate).getFullYear()
+                : "";
+
+              return (
+                <Reveal key={exp.id || index} delay={index * 0.1}>
+                  <div className="relative grid grid-cols-1 md:grid-cols-12 gap-8 md:gap-0 group">
+                    {/* Timeframe column */}
+                    <div className="md:col-span-4 md:pr-16 flex md:justify-end items-start pt-2">
+                      <div className="flex flex-col md:items-end text-left md:text-right">
+                        <span className="text-5xl md:text-6xl font-light text-text-primary tracking-tighter tabular-nums leading-none">
+                          {endYear}
+                        </span>
+                        {startYear !== endYear && startYear && (
+                          <span className="text-xl md:text-2xl font-light text-text-muted mt-2">
+                            {startYear}
+                          </span>
+                        )}
+                        {exp.current && (
+                          <span className="mt-4 inline-flex items-center gap-2 text-xs font-mono text-accent uppercase tracking-widest">
+                            <span className="w-1.5 h-1.5 rounded-full bg-accent animate-pulse" />
+                            Active
+                          </span>
+                        )}
+                      </div>
                     </div>
-                  )}
-                </div>
-              </article>
-            </Reveal>
-          );
-        })}
+
+                    {/* Timeline dot */}
+                    <div className="hidden md:flex absolute left-[30%] -translate-x-1/2 top-4 w-3 h-3 rounded-full border border-border bg-surface transition-colors duration-300 group-hover:border-accent group-hover:bg-accent/20 z-10" />
+
+                    {/* Content column */}
+                    <div className="md:col-span-8 md:pl-16">
+                      <h3 className="text-3xl md:text-4xl font-medium text-text-primary tracking-tight mb-2">
+                        {exp.title}
+                      </h3>
+                      <p className="text-xl font-light text-text-secondary mb-6">
+                        {exp.company}
+                      </p>
+                      {exp.description && (
+                        <div className="text-base text-text-muted leading-relaxed font-light max-w-2xl whitespace-pre-wrap">
+                          {exp.description}
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                </Reveal>
+              );
+            })}
+          </div>
+        </div>
       </div>
     </section>
   );

@@ -1,57 +1,80 @@
-import { type SiteSettings } from "@/types/settings";
 import { Reveal } from "@/components/ui/Reveal";
 import { ContactForm } from "./ContactForm";
+import { type SiteSettings } from "@/types/settings";
 
-export default function Contact({ settings }: { settings: SiteSettings | null }) {
-  if (!settings) return null;
+interface ContactProps {
+  settings: SiteSettings | null;
+}
 
+export function Contact({ settings }: ContactProps) {
   return (
-    <section id="contact" className="py-32 md:py-48 px-6 md:px-12 border-t border-border mt-24">
-      <div className="max-w-4xl mx-auto flex flex-col items-center text-center">
-        <Reveal>
-          <h2 className="text-sm font-mono tracking-widest uppercase text-text-muted mb-6">Contact</h2>
-          <h3 className="text-5xl md:text-7xl font-semibold tracking-tighter text-text-primary mb-12">Let&apos;s build something.</h3>
-        </Reveal>
-        
-        {settings.email && (
-          <Reveal delay={0.1}>
-            <p className="text-lg text-text-secondary mb-4">
-              Feel free to reach out directly at
-            </p>
-            <a 
-              href={`mailto:${settings.email}`}
-              className="text-xl md:text-2xl text-text-primary hover:text-text-secondary transition-colors border-b border-transparent hover:border-text-primary pb-1 inline-block"
-            >
-              {settings.email}
-            </a>
-          </Reveal>
-        )}
+    <section className="pt-24 pb-12 md:pt-40 md:pb-24 border-t border-border bg-surface">
+      <div className="container mx-auto px-6">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-16 lg:gap-8">
+          
+          {/* Cinematic End Statement */}
+          <div className="lg:col-span-7 flex flex-col justify-between">
+            <div>
+              <Reveal>
+                <h2 className="text-5xl md:text-7xl lg:text-8xl font-light text-text-primary tracking-tighter leading-none mb-12">
+                  Initiate<br />
+                  <span className="text-text-muted">Dialogue</span>
+                </h2>
+              </Reveal>
+              
+              <Reveal delay={0.1}>
+                {settings?.email && (
+                  <div className="mb-16">
+                    <p className="text-sm font-mono text-text-muted mb-4 uppercase tracking-wider">
+                      Direct Output
+                    </p>
+                    <a 
+                      href={`mailto:${settings.email}`}
+                      className="text-2xl md:text-3xl font-light hover:text-accent transition-colors inline-block pb-1 border-b border-transparent hover:border-accent"
+                    >
+                      {settings.email}
+                    </a>
+                  </div>
+                )}
+              </Reveal>
+            </div>
 
-        <Reveal delay={0.2} className="w-full">
-          <ContactForm />
-        </Reveal>
+            <Reveal delay={0.2}>
+              {settings?.socialLinks && settings.socialLinks.length > 0 && (
+                <div className="flex flex-wrap gap-8 mt-12 lg:mt-0">
+                  {settings.socialLinks.map((socialString, index) => {
+                    let label = socialString.replace(/^https?:\/\/(www\.)?/, '');
+                    if (label.endsWith('/')) label = label.slice(0, -1);
+                    return (
+                      <a
+                        key={index}
+                        href={socialString}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-xs font-mono text-text-muted hover:text-text-primary transition-colors uppercase tracking-widest"
+                      >
+                        {label}
+                      </a>
+                    );
+                  })}
+                </div>
+              )}
+            </Reveal>
+          </div>
 
-        {settings.socialLinks && settings.socialLinks.length > 0 && (
-          <Reveal delay={0.2}>
-            <ul className="flex flex-wrap justify-center gap-8">
-              {settings.socialLinks.map((social, index) => {
-                let name = social.replace(/^https?:\/\/(www\.)?/, '');
-                if (name.endsWith('/')) name = name.slice(0, -1);
-                return (
-                <li key={index}>
-                  <a 
-                    href={social} 
-                    target="_blank" 
-                    rel="noopener noreferrer"
-                    className="text-lg text-text-muted hover:text-text-primary transition-colors"
-                  >
-                    {name}
-                  </a>
-                </li>
-              )})}
-            </ul>
-          </Reveal>
-        )}
+          {/* Form Area */}
+          <div className="lg:col-span-4 lg:col-start-9">
+            <Reveal delay={0.3}>
+              <div className="bg-background p-8 md:p-12 border border-border">
+                <p className="text-sm font-mono text-text-muted mb-8 uppercase tracking-wider">
+                  System Input
+                </p>
+                <ContactForm />
+              </div>
+            </Reveal>
+          </div>
+
+        </div>
       </div>
     </section>
   );
