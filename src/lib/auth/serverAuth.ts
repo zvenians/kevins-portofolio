@@ -12,6 +12,13 @@ export async function verifyAdminSession() {
 
   try {
     const decodedToken = await adminAuth.verifyIdToken(token);
+    
+    // Auto-bootstrap the primary admin if they login with Google for the first time
+    if (decodedToken.email === "simatupangkevin9@gmail.com" && !decodedToken.admin) {
+      await adminAuth.setCustomUserClaims(decodedToken.uid, { admin: true });
+      decodedToken.admin = true;
+    }
+
     if (!decodedToken.admin) {
       redirect("/admin/login");
     }
