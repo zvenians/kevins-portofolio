@@ -10,21 +10,18 @@ export async function verifyAdminSession() {
     redirect("/admin/login");
   }
 
+  let decodedToken;
   try {
-    const decodedToken = await adminAuth.verifyIdToken(token);
-    
-    // Auto-bootstrap the primary admin if they login with Google for the first time
-    if (decodedToken.email === "simatupangkevin9@gmail.com" && !decodedToken.admin) {
-      await adminAuth.setCustomUserClaims(decodedToken.uid, { admin: true });
-      decodedToken.admin = true;
-    }
-
-    if (!decodedToken.admin) {
-      redirect("/admin/login");
-    }
-    return decodedToken;
-  } catch (error) {
+    decodedToken = await adminAuth.verifyIdToken(token);
+  } catch (error: unknown) {
+    if ((error as Error)?.message === 'NEXT_REDIRECT') throw error;
     console.error("Server auth verification failed:", error);
+  }
+
+  if (!decodedToken || !decodedToken.admin) {
     redirect("/admin/login");
   }
+
+  return decodedToken;
 }
+

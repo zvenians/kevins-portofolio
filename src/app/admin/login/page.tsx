@@ -4,6 +4,7 @@ import { useState } from "react";
 import { signInWithPopup, GoogleAuthProvider, signOut } from "firebase/auth";
 import { auth } from "@/lib/firebase/config";
 import { useRouter } from "next/navigation";
+import { bootstrapAdmin } from "./actions";
 
 export default function LoginPage() {
   const [error, setError] = useState<string | null>(null);
@@ -27,9 +28,18 @@ export default function LoginPage() {
         return;
       }
 
+      // Bootstrap admin claim if needed
+      const token = await cred.user.getIdToken();
+      const bootstrapResult = await bootstrapAdmin(token);
+      
+      if (bootstrapResult.bootstrapped) {
+        // Force refresh the token so the client picks up the new 'admin: true' claim
+        await cred.user.getIdToken(true);
+      }
+
       setTimeout(() => {
         router.push("/admin");
-      }, 1000);
+      }, 500);
 
     } catch (err: unknown) {
       console.error(err);
@@ -75,4 +85,3 @@ export default function LoginPage() {
     </main>
   );
 }
-

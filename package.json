@@ -12,6 +12,8 @@
   "dependencies": {
     "firebase": "^12.19.0",
     "firebase-admin": "^14.4.0",
+    "jose": "4.15.5",
+    "jwks-rsa": "3.1.0",
     "next": "16.3.5",
     "nookies": "^2.5.2",
     "react": "19.2.8",
@@ -32,5 +34,9 @@
     "typescript": "^5",
     "vite": "^8.3.0",
     "vitest": "^5.0.1"
+  },
+  "overrides": {
+    "jwks-rsa": "3.1.0",
+    "jose": "4.15.5"
   }
 }
