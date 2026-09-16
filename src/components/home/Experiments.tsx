@@ -30,7 +30,7 @@ export function Experiments({ experiments }: ExperimentsProps) {
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 md:gap-16">
           {experiments.map((experiment, index) => {
-            const delay = (index % 3) * 0.1;
+            const delay = (index % 3) * 100;
             // Staggered top margin for middle items on desktop
             const isMiddle = index % 3 === 1;
             

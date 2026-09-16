@@ -33,7 +33,7 @@ export function PersonalContext({ settings }: PersonalContextProps) {
           </div>
 
           <div className="md:col-span-10 lg:col-span-8">
-            <Reveal delay={0.2}>
+            <Reveal delay={200}>
               <div className="relative">
                 <span className="absolute -left-8 md:-left-16 -top-8 text-8xl md:text-9xl text-surface-elevated font-serif leading-none">
                   &quot;

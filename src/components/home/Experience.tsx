@@ -31,7 +31,7 @@ export function Experience({ experiences }: ExperienceProps) {
                 : "";
 
               return (
-                <Reveal key={exp.id || index} delay={index * 0.1}>
+                <Reveal key={exp.id || index} delay={index * 100}>
                   <div className="relative grid grid-cols-1 md:grid-cols-12 gap-8 md:gap-0 group">
                     {/* Timeframe column */}
                     <div className="md:col-span-4 md:pr-16 flex md:justify-end items-start pt-2">

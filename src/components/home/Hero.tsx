@@ -66,15 +66,6 @@ export default function Hero({ settings }: { settings: SiteSettings | null }) {
           </div>
         </div>
       </Reveal>
-      
-      {/* Scroll Animation Style */}
-      <style dangerouslySetInnerHTML={{__html: `
-        @keyframes scrollDown {
-          0% { transform: translateY(-100%); opacity: 0; }
-          50% { opacity: 1; }
-          100% { transform: translateY(300%); opacity: 0; }
-        }
-      `}} />
     </section>
   );
 }

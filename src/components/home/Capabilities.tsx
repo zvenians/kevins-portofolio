@@ -29,7 +29,7 @@ export function Capabilities({ technologies }: CapabilitiesProps) {
 
         <div className="flex flex-col gap-24">
           {categories.map((category, index) => (
-            <Reveal key={category} delay={index * 0.1}>
+            <Reveal key={category} delay={index * 100}>
               <div className="grid grid-cols-1 md:grid-cols-12 gap-8 md:gap-12 border-t border-border pt-12">
                 <div className="md:col-span-4 lg:col-span-3">
                   <h3 className="text-2xl md:text-3xl font-light text-text-primary tracking-tight capitalize">

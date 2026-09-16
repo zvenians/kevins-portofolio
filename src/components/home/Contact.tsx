@@ -22,7 +22,7 @@ export function Contact({ settings }: ContactProps) {
                 </h2>
               </Reveal>
               
-              <Reveal delay={0.1}>
+              <Reveal delay={100}>
                 {settings?.email && (
                   <div className="mb-16">
                     <p className="text-sm font-mono text-text-muted mb-4 uppercase tracking-wider">
@@ -39,7 +39,7 @@ export function Contact({ settings }: ContactProps) {
               </Reveal>
             </div>
 
-            <Reveal delay={0.2}>
+            <Reveal delay={200}>
               {settings?.socialLinks && settings.socialLinks.length > 0 && (
                 <div className="flex flex-wrap gap-8 mt-12 lg:mt-0">
                   {settings.socialLinks.map((socialString, index) => {
@@ -64,7 +64,7 @@ export function Contact({ settings }: ContactProps) {
 
           {/* Form Area */}
           <div className="lg:col-span-4 lg:col-start-9">
-            <Reveal delay={0.3}>
+            <Reveal delay={300}>
               <div className="bg-background p-8 md:p-12 border border-border">
                 <p className="text-sm font-mono text-text-muted mb-8 uppercase tracking-wider">
                   System Input

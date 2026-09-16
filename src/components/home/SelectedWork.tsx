@@ -24,7 +24,7 @@ export function SelectedWork({ projects }: SelectedWorkProps) {
             const number = String(index + 1).padStart(2, "0");
             
             return (
-              <Reveal key={project.id} delay={0.1}>
+              <Reveal key={project.id} delay={index * 100}>
                 <Link
                   href={`/projects/${project.slug}`}
                   className="group block w-full"

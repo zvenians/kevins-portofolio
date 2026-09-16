@@ -17,6 +17,7 @@ export function Navigation() {
   const pathname = usePathname();
 
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setIsOpen(false);
   }, [pathname]);
 
@@ -54,17 +55,20 @@ export function Navigation() {
         </Link>
 
         {/* Desktop Nav */}
-        <nav className="hidden md:flex items-center gap-10 text-xs font-mono uppercase tracking-[0.15em] text-text-secondary">
-          {NAV_ITEMS.map((item) => (
-            <Link
-              key={item.href}
-              href={item.href}
-              className="hover:text-text-primary transition-colors duration-500 relative group"
-            >
-              {item.label}
-              <span className="absolute -bottom-2 left-0 w-0 h-[1px] bg-accent transition-all duration-500 ease-out group-hover:w-full"></span>
-            </Link>
-          ))}
+        <nav className="hidden md:flex items-center gap-10 text-xs font-mono uppercase tracking-[0.15em]">
+          {NAV_ITEMS.map((item) => {
+            const isActive = pathname === item.href || (item.href !== "/" && !item.href.includes("#") && pathname.startsWith(item.href));
+            return (
+              <Link
+                key={item.href}
+                href={item.href}
+                className={`${isActive ? "text-text-primary font-medium" : "text-text-secondary"} hover:text-text-primary transition-colors duration-500 relative group py-1`}
+              >
+                {item.label}
+                <span className={`absolute -bottom-1 left-0 h-[1px] bg-accent transition-all duration-500 ease-out ${isActive ? "w-full opacity-80" : "w-0 opacity-0 group-hover:w-full group-hover:opacity-100"}`} />
+              </Link>
+            );
+          })}
         </nav>
 
         {/* Mobile Menu Toggle Button */}

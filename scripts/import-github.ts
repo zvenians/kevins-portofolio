@@ -13,7 +13,7 @@ async function run() {
   let totalSkipped = 0;
   let totalAlreadyExisting = 0;
 
-  const results: any[] = [];
+  const results: Record<string, unknown>[] = [];
 
   for (const repo of repos) {
     console.log(`\nEvaluating ${repo.name}...`);
@@ -46,7 +46,7 @@ async function run() {
       if (readmeJson.content) {
         readme = Buffer.from(readmeJson.content, "base64").toString("utf8");
       }
-    } catch (e) {
+    } catch {
       console.log(`No README found for ${repo.name}`);
     }
 
@@ -63,7 +63,7 @@ async function run() {
 
     const title = repo.name.split("-").map((w: string) => w.charAt(0).toUpperCase() + w.slice(1)).join(" ");
     
-    let content: ContentBlock[] = [];
+    const content: ContentBlock[] = [];
     
     let linkText = `**Repository:** [${repo.url}](${repo.url})\n`;
     if (repo.homepageUrl) {
@@ -84,9 +84,9 @@ async function run() {
     }
     
     // Technologies
-    let tech = [];
+    let tech: { technologyId: string; role: string }[] = [];
     if (repo.languages && repo.languages.length > 0) {
-      tech = repo.languages.map((l: any) => ({ technologyId: l.node.name, role: "Used" }));
+      tech = repo.languages.map((l: { node: { name: string } }) => ({ technologyId: l.node.name, role: "Used" }));
     } else if (repo.primaryLanguage) {
       tech.push({ technologyId: repo.primaryLanguage.name, role: "Primary" });
     }
@@ -119,7 +119,7 @@ async function run() {
         status: "IMPORTED", 
         title, 
         slug, 
-        tech: tech.map((t:any)=>t.technologyId).join(", "),
+        tech: tech.map((t) => t.technologyId).join(", "),
         liveUrl: repo.homepageUrl,
         repoUrl: repo.url
       });
