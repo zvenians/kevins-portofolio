@@ -33,11 +33,11 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         const token = await currentUser.getIdToken();
         const tokenResult = await currentUser.getIdTokenResult();
         setIsAdmin(!!tokenResult.claims.admin);
-        // Set cookie for server-side auth guard
-        document.cookie = `firebase-token=${token}; path=/; max-age=3600; SameSite=Strict; Secure`;
+        // SameSite=Lax so the cookie is readable on server-side navigation
+        document.cookie = `firebase-token=${token}; path=/; max-age=3600; SameSite=Lax`;
       } else {
         setIsAdmin(false);
-        document.cookie = `firebase-token=; path=/; max-age=0; SameSite=Strict; Secure`;
+        document.cookie = `firebase-token=; path=/; max-age=0; SameSite=Lax`;
       }
       setLoading(false);
     });
@@ -46,7 +46,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     const interval = setInterval(async () => {
       if (auth && auth.currentUser) {
         const token = await auth.currentUser.getIdToken(true);
-        document.cookie = `firebase-token=${token}; path=/; max-age=3600; SameSite=Strict; Secure`;
+        document.cookie = `firebase-token=${token}; path=/; max-age=3600; SameSite=Lax`;
       }
     }, 10 * 60 * 1000); // 10 minutes
 

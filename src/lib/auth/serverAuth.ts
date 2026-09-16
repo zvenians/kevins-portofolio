@@ -14,14 +14,17 @@ export async function verifyAdminSession() {
   try {
     decodedToken = await adminAuth.verifyIdToken(token);
   } catch (error: unknown) {
-    if ((error as Error)?.message === 'NEXT_REDIRECT') throw error;
+    // Next.js redirect() throws a special error that must be re-thrown
+    if (error instanceof Error && error.message === "NEXT_REDIRECT") {
+      throw error;
+    }
     console.error("Server auth verification failed:", error);
+    redirect("/admin/login");
   }
 
-  if (!decodedToken || !decodedToken.admin) {
+  if (!decodedToken.admin) {
     redirect("/admin/login");
   }
 
   return decodedToken;
 }
-

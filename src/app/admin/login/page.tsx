@@ -21,6 +21,7 @@ export default function LoginPage() {
       
       const cred = await signInWithPopup(auth, provider);
       
+      // Client-side email gate (UX only; server enforces the real check)
       if (cred.user.email !== "simatupangkevin9@gmail.com") {
         await signOut(auth);
         setError("This Google account is not authorized.");
@@ -28,25 +29,39 @@ export default function LoginPage() {
         return;
       }
 
-      // Bootstrap admin claim if needed
-      const token = await cred.user.getIdToken();
+      // Get current token and bootstrap admin claim on server if needed
+      let token = await cred.user.getIdToken();
       const bootstrapResult = await bootstrapAdmin(token);
       
-      if (bootstrapResult.bootstrapped) {
-        // Force refresh the token so the client picks up the new 'admin: true' claim
-        await cred.user.getIdToken(true);
+      if (!bootstrapResult.success) {
+        await signOut(auth);
+        setError("Server verification failed. Please try again.");
+        setLoading(false);
+        return;
       }
 
-      setTimeout(() => {
-        router.push("/admin");
-      }, 500);
+      if (bootstrapResult.bootstrapped) {
+        // Custom claim was just set on the server.
+        // Force-refresh the client token so it includes admin: true
+        token = await cred.user.getIdToken(true);
+      }
+
+      // CRITICAL FIX: Explicitly set the cookie with the fresh token
+      // that now contains the admin claim. The AuthContext's
+      // onAuthStateChanged does NOT re-fire after getIdToken(true),
+      // so the cookie would be stale without this explicit set.
+      document.cookie = `firebase-token=${token}; path=/; max-age=3600; SameSite=Lax`;
+
+      // Small delay for cookie to propagate, then navigate
+      await new Promise(resolve => setTimeout(resolve, 200));
+      router.push("/admin");
 
     } catch (err: unknown) {
       console.error(err);
-      if ((err as {code?: string}).code !== "auth/popup-closed-by-user") {
+      const code = (err as { code?: string }).code;
+      if (code !== "auth/popup-closed-by-user" && code !== "auth/cancelled-popup-request") {
         setError("Failed to sign in with Google.");
       }
-    } finally {
       setLoading(false);
     }
   };
