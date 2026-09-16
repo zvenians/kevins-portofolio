@@ -1,7 +1,4 @@
 import { initializeApp, getApps, cert, applicationDefault } from "firebase-admin/app";
-import { getFirestore } from "firebase-admin/firestore";
-import { getStorage } from "firebase-admin/storage";
-import { getAuth } from "firebase-admin/auth";
 
 if (!getApps().length) {
   let credential;
@@ -26,8 +23,4 @@ if (!getApps().length) {
   });
 }
 
-const adminDb = getFirestore();
-const adminStorage = getStorage();
-const adminAuth = getAuth();
-
-export { adminDb, adminStorage, adminAuth };
+export const getAdminApp = () => getApps()[0];

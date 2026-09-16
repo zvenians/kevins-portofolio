@@ -2,7 +2,7 @@
 /* eslint-disable @next/next/no-img-element */
 "use client";
 import { type ContentBlock } from "@/types/schema";
-import { MediaUploader } from "../../MediaUploader";
+import { MediaPicker } from "../../MediaPicker";
 
 export function TimelineBlockEditor({ projectId, block, onChange }: { projectId: string, block: Extract<ContentBlock, { type: "timeline" }>, onChange: (b: any) => void }) {
   return (
@@ -39,9 +39,7 @@ export function TimelineBlockEditor({ projectId, block, onChange }: { projectId:
                   </div>
                 ) : (
                   <div className="h-full min-h-[150px] border border-dashed rounded flex items-center justify-center">
-                    <MediaUploader projectId={projectId} accept="image/*,video/*" onUploadComplete={asset => {
-                      const newItems = [...block.items]; newItems[idx].media = asset; onChange({ ...block, items: newItems });
-                    }} />
+                    <MediaPicker folder={`projects/${projectId}`} accept="image/*,video/*" onSelect={(asset) => { if (asset) { const newItems = [...block.items]; newItems[idx].media = asset; onChange({ ...block, items: newItems }); } }} label="Select Media" />
                   </div>
                 )}
               </div>

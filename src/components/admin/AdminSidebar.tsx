@@ -18,11 +18,26 @@ export function AdminSidebar() {
       <h2 className="text-xl font-bold mb-8 tracking-tight">Admin</h2>
       
       <nav className="flex-1 space-y-2 text-sm">
-        <Link href="/admin" className="block px-3 py-2 bg-surface rounded text-text-primary">
+        <Link href="/admin" className="block px-3 py-2 hover:bg-surface rounded text-text-secondary hover:text-text-primary transition-colors">
           Dashboard
+        </Link>
+        <Link href="/admin/messages" className="block px-3 py-2 hover:bg-surface rounded text-text-secondary hover:text-text-primary transition-colors flex justify-between items-center">
+          <span>Inbox</span>
         </Link>
         <Link href="/admin/projects" className="block px-3 py-2 hover:bg-surface rounded text-text-secondary hover:text-text-primary transition-colors">
           Projects
+        </Link>
+        <Link href="/admin/experiences" className="block px-3 py-2 hover:bg-surface rounded text-text-secondary hover:text-text-primary transition-colors">
+          Experiences
+        </Link>
+        <Link href="/admin/experiments" className="block px-3 py-2 hover:bg-surface rounded text-text-secondary hover:text-text-primary transition-colors">
+          Experiments
+        </Link>
+        <Link href="/admin/technologies" className="block px-3 py-2 hover:bg-surface rounded text-text-secondary hover:text-text-primary transition-colors">
+          Technologies
+        </Link>
+        <Link href="/admin/settings" className="block px-3 py-2 hover:bg-surface rounded text-text-secondary hover:text-text-primary transition-colors">
+          Settings
         </Link>
       </nav>
       

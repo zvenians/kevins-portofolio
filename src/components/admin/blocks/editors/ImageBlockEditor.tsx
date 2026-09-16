@@ -2,7 +2,7 @@
 /* eslint-disable @next/next/no-img-element */
 "use client";
 import { type ContentBlock } from "@/types/schema";
-import { MediaUploader } from "../../MediaUploader";
+import { MediaPicker } from "../../MediaPicker";
 
 interface Props {
   projectId: string;
@@ -59,11 +59,7 @@ export function ImageBlockEditor({ projectId, block, onChange }: Props) {
         </div>
       ) : (
         <div className="border border-dashed border-border p-8 rounded text-center">
-          <MediaUploader 
-            projectId={projectId} 
-            accept="image/*"
-            onUploadComplete={(asset) => onChange({ ...block, media: asset })} 
-          />
+          <MediaPicker folder={`projects/${projectId}`} accept="image/*" onSelect={(asset) => { if (asset) onChange({ ...block, media: asset }) }} label="Select Image" />
         </div>
       )}
     </div>

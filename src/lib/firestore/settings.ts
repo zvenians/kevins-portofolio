@@ -1,4 +1,4 @@
-import { adminDb } from "../firebase/admin";
+import { adminDb } from "../firebase/adminDb";
 import { SiteSettingsSchema, type SiteSettings } from "../../types/settings";
 
 const COLLECTION_NAME = "siteSettings";

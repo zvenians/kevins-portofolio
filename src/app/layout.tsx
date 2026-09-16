@@ -14,12 +14,27 @@ const robotoMono = Roboto_Mono({
   display: "swap",
 });
 
+import { SITE_URL } from "@/lib/constants";
+
 export const metadata: Metadata = {
+  metadataBase: new URL(SITE_URL),
   title: {
     template: "%s | Kevin Simatupang",
     default: "Kevin Simatupang | Digital Experience",
   },
   description: "Personal digital experience and professional portfolio of Kevin Simatupang.",
+  openGraph: {
+    type: "website",
+    locale: "en_US",
+    url: SITE_URL,
+    siteName: "Kevin Simatupang",
+  },
+  twitter: {
+    card: "summary_large_image",
+  },
+  alternates: {
+    canonical: "/",
+  },
 };
 
 export default function RootLayout({

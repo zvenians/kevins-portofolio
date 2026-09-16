@@ -130,26 +130,27 @@ option C diterima.
 
 ---
 
-## decision
+## decision (UPDATED 2026-09-16)
 
-menggunakan option C.
+awalnya menggunakan Option C (Firebase Hosting rewrite ke Cloud Run).
+Namun, pada Phase 10B, keputusan ini dimodifikasi untuk menggunakan **Vercel** sebagai layer hosting/runtime production.
 
 ```text
-Firebase Hosting
-→ rewrite
-→ Cloud Run
-→ Next.js
+visitor
+→
+Vercel (kevins-portofolio.vercel.app)
+→
+Next.js server (App Router, Server Components)
+→
+Firebase backend (Firestore, Storage, Auth)
 ```
 
-Firebase Hosting tetap menjadi public edge dan pemilik domain
-`simatupangkevin.web.app`.
+Firebase Hosting dan Cloud Run tidak lagi digunakan untuk production.
+Vercel menggantikan layer hosting dan mengeksekusi Next.js secara native.
 
-Cloud Run menjalankan Next.js server sehingga Server Components,
-dynamic metadata, dynamic sitemap, dan revalidation dapat berjalan.
-
-Firebase tetap menjadi primary infrastructure.
-
-tidak ada backend selain Firebase yang diperkenalkan.
+Alasan perubahan:
+- Simplifikasi deployment: Vercel natively mendukung Next.js ISR, revalidation, dan Server Components tanpa setup Docker/Cloud Run manual.
+- Keterbatasan Environment (Blocker Phase 10B): Kebutuhan Billing aktif untuk mengaktifkan Cloud Build API dan Cloud Run API di GCP menyebabkan blocker administratif yang dapat dihindari dengan menggunakan Vercel.
 
 ---
 
@@ -157,50 +158,24 @@ tidak ada backend selain Firebase yang diperkenalkan.
 
 ### positive
 
-- domain production tidak berubah
-- Server Components menjadi default sesuai `rules.md` section 25
-- `generateMetadata()` dapat membaca Firestore per request
-- sitemap dapat dihasilkan dari published content
-- publish content tidak memerlukan rebuild
-- `next/image` optimizer tersedia
-- Firebase Admin SDK dapat menggunakan Application Default Credentials
-  pada Cloud Run sehingga private key tidak perlu disimpan sebagai
-  environment secret
+- domain production diperbarui menjadi `kevins-portofolio.vercel.app`.
+- Server Components, ISR, dan on-demand revalidation berjalan native tanpa workaround.
+- Deployment jauh lebih cepat dan terintegrasi langsung dengan Git.
+- Dockerfile dan konfigurasi container dapat dihapus.
 
 ### negative
 
-- deployment memiliki dua target: Hosting configuration dan Cloud Run service
-- cold start perlu diperhatikan sebagai bagian dari performance budget
-  (`design.md` section 63)
-- Cloud Run memiliki biaya yang bergantung pada traffic
-
-### neutral
-
-- static export tetap mungkin digunakan di masa depan untuk subset
-  route apabila diperlukan, namun bukan strategi utama
+- Vercel memerlukan management secret terpisah (tidak bisa lagi mengandalkan GCP Application Default Credentials).
+- Rate limit in-memory (seperti untuk submit contact form) akan berjalan per instance serverless Vercel, sehingga state tidak terbagi (shared) antar instance. 
 
 ---
 
 ## implications for later phases
 
-1. `firebase.json` harus berisi hosting rewrite ke Cloud Run service.
-
-2. Firebase Admin SDK diinisialisasi menggunakan Application Default
-   Credentials pada Cloud Run.
-   service account private key tidak boleh masuk ke repository
-   (`rules.md` section 61).
-
-3. caching menggunakan Next.js cache dengan explicit cache tags.
-   revalidation dilakukan melalui protected endpoint yang dipanggil
-   admin setelah publish.
-   detail pada `architecture.md` section 21.
-
-4. image strategy menggunakan `next/image` dengan `remotePatterns`
-   yang mengizinkan Firebase Storage host.
-
-5. preview draft dijalankan server side dengan Admin SDK sehingga
-   Firestore Security Rules tetap menolak akses publik terhadap draft.
-   detail pada `architecture.md` section 27.
+1. `next.config.ts` tidak lagi memerlukan `output: "standalone"`.
+2. `firebase.json` dapat dihapus bagian `hosting` (rewrites), dan hanya menyimpan `firestore` dan `storage` rules.
+3. Firebase Admin SDK harus dikonfigurasi melalui environment variables di Vercel (`FIREBASE_PROJECT_ID`, `FIREBASE_CLIENT_EMAIL`, `FIREBASE_PRIVATE_KEY`). Private key harus tetap aman dan tidak di-commit.
+4. `simatupangkevin.web.app` tidak lagi digunakan. Semua `SITE_URL` diubah menjadi `https://kevins-portofolio.vercel.app`.
 
 ---
 
@@ -209,8 +184,7 @@ tidak ada backend selain Firebase yang diperkenalkan.
 decision ini dianggap terpenuhi apabila:
 
 ```text
-simatupangkevin.web.app merespon melalui Firebase Hosting
-request dirender oleh Cloud Run
+kevins-portofolio.vercel.app merespon melalui Vercel
 project detail menghasilkan metadata dari Firestore
 publish project baru muncul tanpa rebuild
 sitemap memuat project baru tanpa perubahan source code

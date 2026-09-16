@@ -1,4 +1,4 @@
-import { adminDb } from "../firebase/admin";
+import { adminDb } from "../firebase/adminDb";
 import { ProjectSchema, type Project } from "../../types/schema";
 
 const COLLECTION_NAME = "projects";

@@ -1,5 +1,6 @@
 import { type Project } from "@/types/schema";
 import { ContentBlockRenderer } from "./blocks/ContentBlockRenderer";
+import { Reveal } from "@/components/ui/Reveal";
 
 interface Props {
   project: Project;
@@ -11,50 +12,61 @@ interface Props {
  */
 export function ProjectRenderer({ project }: Props) {
   return (
-    <article>
+    <article className="overflow-x-hidden">
       {/* Project Hero */}
-      <header className="px-6 md:px-12 max-w-7xl mx-auto w-full pt-24 pb-12 md:pt-32 md:pb-16">
+      <header className="px-6 md:px-12 max-w-7xl mx-auto w-full pt-32 pb-16 md:pt-40 md:pb-24">
         <div className="max-w-4xl">
-          {project.category && (
-            <span className="text-accent text-xs md:text-sm font-mono uppercase tracking-wider mb-4 md:mb-6 block">
-              {project.category}
-            </span>
-          )}
-          <h1 className="text-4xl sm:text-5xl md:text-7xl font-bold tracking-tight mb-4 md:mb-8 leading-[1.05]">
-            {project.title}
-          </h1>
-          {(project.subtitle || project.description) && (
-            <p className="text-lg sm:text-xl md:text-2xl text-text-secondary leading-relaxed max-w-3xl">
-              {project.subtitle || project.description}
-            </p>
-          )}
+          <Reveal>
+            {project.category && (
+              <span className="text-accent text-sm font-mono uppercase tracking-widest mb-6 block">
+                {project.category}
+              </span>
+            )}
+          </Reveal>
+          <Reveal delay={100}>
+            <h1 className="text-5xl sm:text-6xl md:text-8xl font-semibold tracking-tighter mb-8 leading-[1.05] text-text-primary">
+              {project.title}
+            </h1>
+          </Reveal>
+          <Reveal delay={200}>
+            {(project.subtitle || project.description) && (
+              <p className="text-xl md:text-3xl text-text-secondary leading-relaxed max-w-3xl font-light">
+                {project.subtitle || project.description}
+              </p>
+            )}
+          </Reveal>
         </div>
 
         {/* Project Metadata Bar */}
-        <ProjectMeta project={project} />
+        <Reveal delay={300}>
+          <ProjectMeta project={project} />
+        </Reveal>
       </header>
 
       {/* Cover Media */}
-      {project.cover?.url && (
-        <figure className="w-full bg-surface-elevated overflow-hidden border-y border-border">
-          <div className="relative w-full" style={project.cover.width && project.cover.height ? { aspectRatio: `${project.cover.width}/${project.cover.height}` } : { minHeight: '50vh' }}>
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img
-              src={project.cover.url}
-              alt={project.cover.alt || project.title}
-              width={project.cover.width}
-              height={project.cover.height}
-              className="w-full h-full object-cover"
-              loading="eager"
-            />
-          </div>
-          {project.cover.caption && (
-            <figcaption className="px-6 md:px-12 py-3 text-sm text-text-muted text-center">
-              {project.cover.caption}
-            </figcaption>
-          )}
-        </figure>
-      )}
+      <Reveal delay={400} direction="none" className="w-full">
+        {project.cover?.url && (
+          <figure className="w-full bg-surface-elevated overflow-hidden border-y border-border/50">
+            <div className="relative w-full" style={project.cover.width && project.cover.height ? { aspectRatio: `${project.cover.width}/${project.cover.height}` } : { minHeight: '50vh' }}>
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src={project.cover.url}
+                alt={project.cover.alt || project.title}
+                width={project.cover.width}
+                height={project.cover.height}
+                className="w-full h-full object-cover"
+                loading="eager"
+                fetchPriority="high"
+              />
+            </div>
+            {project.cover.caption && (
+              <figcaption className="px-6 md:px-12 py-4 text-sm font-mono tracking-wider text-text-muted text-center border-b border-border/30">
+                {project.cover.caption}
+              </figcaption>
+            )}
+          </figure>
+        )}
+      </Reveal>
 
       {/* Content Blocks */}
       {project.content && project.content.length > 0 && (

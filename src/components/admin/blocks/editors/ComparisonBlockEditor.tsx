@@ -2,7 +2,7 @@
 /* eslint-disable @next/next/no-img-element */
 "use client";
 import { type ContentBlock, type MediaAsset } from "@/types/schema";
-import { MediaUploader } from "../../MediaUploader";
+import { MediaPicker } from "../../MediaPicker";
 
 export function ComparisonBlockEditor({ projectId, block, onChange }: { projectId: string, block: Extract<ContentBlock, { type: "comparison" }>, onChange: (b: any) => void }) {
   
@@ -18,7 +18,7 @@ export function ComparisonBlockEditor({ projectId, block, onChange }: { projectI
         </div>
       ) : (
         <div className="h-full min-h-[150px] border border-dashed rounded flex items-center justify-center">
-          <MediaUploader projectId={projectId} accept="image/*" onUploadComplete={asset => onChange({ ...block, [side]: { ...data, media: asset } })} />
+          <MediaPicker folder={`projects/${projectId}`} accept="image/*" onSelect={(asset) => { if (asset) onChange({ ...block, [side]: { ...data, media: asset } }) }} label="Select Image" />
         </div>
       )}
     </div>

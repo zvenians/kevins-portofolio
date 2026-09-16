@@ -1,6 +1,6 @@
 export const dynamic = 'force-dynamic';
 import { ProjectForm } from "@/components/admin/ProjectForm";
-import { adminDb } from "@/lib/firebase/admin";
+import { adminDb } from "@/lib/firebase/adminDb";
 import { ProjectSchema, type Project } from "@/types/schema";
 import { notFound } from "next/navigation";
 import Link from "next/link";

@@ -1,5 +1,5 @@
 export const dynamic = 'force-dynamic';
-import { adminDb } from "@/lib/firebase/admin";
+import { adminDb } from "@/lib/firebase/adminDb";
 import Link from "next/link";
 import { ProjectSchema, type Project } from "@/types/schema";
 

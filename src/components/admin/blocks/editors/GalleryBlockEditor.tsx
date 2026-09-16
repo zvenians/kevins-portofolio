@@ -2,7 +2,7 @@
 /* eslint-disable @next/next/no-img-element */
 "use client";
 import { type ContentBlock } from "@/types/schema";
-import { MediaUploader } from "../../MediaUploader";
+import { MediaPicker } from "../../MediaPicker";
 
 export function GalleryBlockEditor({ projectId, block, onChange }: { projectId: string, block: Extract<ContentBlock, { type: "gallery" }>, onChange: (b: any) => void }) {
   return (
@@ -21,7 +21,7 @@ export function GalleryBlockEditor({ projectId, block, onChange }: { projectId: 
           </div>
         ))}
       </div>
-      <MediaUploader projectId={projectId} accept="image/*" onUploadComplete={(asset) => onChange({ ...block, items: [...block.items, asset] })} />
+      <MediaPicker folder={`projects/${projectId}`} accept="image/*" onSelect={(asset) => { if (asset) onChange({ ...block, items: [...block.items, asset] }) }} label="Add to Gallery" />
     </div>
   );
 }

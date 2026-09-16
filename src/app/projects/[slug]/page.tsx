@@ -1,26 +1,19 @@
 import { Navigation } from "@/components/navigation/Navigation";
 import { ProjectRenderer } from "@/components/project/ProjectRenderer";
 import { ProjectNavigation } from "@/components/project/ProjectNavigation";
-import { getProjectBySlug, getPublishedProjects } from "@/lib/firestore/projects";
+import { getProjectBySlug } from "@/lib/firestore/projects";
 import { notFound } from "next/navigation";
 import { type Metadata } from "next";
+import { SITE_URL } from "@/lib/constants";
 
+// ISR: serve from cache, revalidate in background every hour.
+// On Cloud Run, every slug renders on-demand (no generateStaticParams needed).
+// revalidatePath('/projects/[slug]') from admin actions forces immediate refresh.
 export const revalidate = 3600;
 
 type Props = {
   params: Promise<{ slug: string }>;
 };
-
-export async function generateStaticParams() {
-  try {
-    const projects = await getPublishedProjects();
-    return projects.map((project) => ({
-      slug: project.slug,
-    }));
-  } catch {
-    return [];
-  }
-}
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const resolvedParams = await params;
@@ -33,6 +26,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
     const title = project.title;
     const description = project.description;
+    const url = `/projects/${project.slug}`;
 
     return {
       title,
@@ -41,7 +35,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
         title,
         description,
         type: "article",
-        url: `/projects/${project.slug}`,
+        url,
         ...(project.cover?.url && {
           images: [
             {
@@ -60,7 +54,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
         ...(project.cover?.url && { images: [project.cover.url] }),
       },
       alternates: {
-        canonical: `/projects/${project.slug}`,
+        canonical: url, // Relative canonical that relies on metadataBase
       },
     };
   } catch {
@@ -80,9 +74,25 @@ export default async function ProjectDetailPage({ params }: Props) {
   if (!project) {
     notFound();
   }
+  
+  // Minimal JSON-LD based strictly on existing project data
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    headline: project.title,
+    description: project.description,
+    url: `${SITE_URL}/projects/${project.slug}`,
+    ...(project.cover?.url && { image: project.cover.url }),
+    ...(project.publishedAt && { datePublished: project.publishedAt.toISOString() }),
+    ...(project.updatedAt && { dateModified: project.updatedAt.toISOString() }),
+  };
 
   return (
     <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
       <Navigation />
 
       <main className="flex flex-col min-h-screen">

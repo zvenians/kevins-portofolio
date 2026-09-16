@@ -1,5 +1,5 @@
 import { cookies } from "next/headers";
-import { adminAuth } from "@/lib/firebase/admin";
+import { adminAuth } from "@/lib/firebase/adminAuth";
 import { redirect } from "next/navigation";
 
 export async function verifyAdminSession() {

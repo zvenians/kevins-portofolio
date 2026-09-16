@@ -222,3 +222,44 @@ export const ProjectSchema = BaseEntitySchema.merge(PublishableSchema).merge(Ord
   content: z.array(ContentBlockSchema).default([]),
 });
 export type Project = z.infer<typeof ProjectSchema>;
+
+export const ExperienceSchema = BaseEntitySchema.merge(OrderableSchema).extend({
+  title: z.string(),
+  company: z.string(),
+  companyUrl: z.string().url().optional(),
+  location: z.string().optional(),
+  startDate: z.string(),
+  endDate: z.string().optional(),
+  current: z.boolean().default(false),
+  description: z.string().optional(),
+  technologies: z.array(z.string()).optional(),
+  featured: z.boolean().default(false),
+  archived: z.boolean().default(false),
+});
+export type Experience = z.infer<typeof ExperienceSchema>;
+
+export const ExperimentSchema = BaseEntitySchema.merge(PublishableSchema).merge(OrderableSchema).extend({
+  slug: z.string(),
+  title: z.string(),
+  description: z.string(),
+  cover: MediaAssetSchema.optional(),
+  link: z.string().url().optional(),
+  repoUrl: z.string().url().optional(),
+  date: z.string().optional(),
+  featured: z.boolean().default(false),
+});
+export type Experiment = z.infer<typeof ExperimentSchema>;
+
+
+export const MessageStatusSchema = z.enum(['unread', 'read', 'archived']);
+
+export const MessageSchema = z.object({
+  id: z.string(),
+  name: z.string().min(1, 'Name is required').max(100, 'Name is too long'),
+  email: z.string().email('Invalid email address').max(150, 'Email is too long'),
+  subject: z.string().max(200, 'Subject is too long').optional(),
+  message: z.string().min(5, 'Message is too short').max(5000, 'Message is too long'),
+  status: MessageStatusSchema.default('unread'),
+  createdAt: z.coerce.date(),
+});
+export type Message = z.infer<typeof MessageSchema>;

@@ -3,7 +3,7 @@ import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
 import { type MediaAsset } from "@/types/schema";
 
 export interface UploadOptions {
-  projectId: string;
+  folder: string; // e.g., 'projects/123', 'profile', 'resume'
   file: File;
   onProgress?: (progress: number) => void;
 }
@@ -43,12 +43,14 @@ function getVideoDimensions(file: File): Promise<{ width: number; height: number
 const MAX_IMAGE_SIZE = 10 * 1024 * 1024; // 10MB
 const MAX_VIDEO_SIZE = 100 * 1024 * 1024; // 100MB
 
-export async function uploadMediaAsset({ projectId, file, onProgress }: UploadOptions): Promise<MediaAsset> {
+export async function uploadMediaAsset({ folder, file, onProgress }: UploadOptions): Promise<MediaAsset> {
   const isImage = file.type.startsWith("image/");
   const isVideo = file.type.startsWith("video/");
+  // allow document for resumes
+  const isDocument = file.type === "application/pdf" || file.type.startsWith("application/vnd.");
   
-  if (!isImage && !isVideo) {
-    throw new Error("Unsupported file type. Only images and videos are supported currently.");
+  if (!isImage && !isVideo && !isDocument) {
+    throw new Error("Unsupported file type. Only images, videos, and standard documents are supported.");
   }
 
   if (isImage && file.size > MAX_IMAGE_SIZE) {
@@ -74,7 +76,10 @@ export async function uploadMediaAsset({ projectId, file, onProgress }: UploadOp
 
   const assetId = crypto.randomUUID();
   const ext = file.name.split(".").pop();
-  const storagePath = `projects/${projectId}/${assetId}.${ext}`;
+  
+  // ensure folder doesn't have trailing slash
+  const cleanFolder = folder.endsWith('/') ? folder.slice(0, -1) : folder;
+  const storagePath = `${cleanFolder}/${assetId}.${ext}`;
   const storageRef = ref(storage, storagePath);
 
   return new Promise((resolve, reject) => {
@@ -94,7 +99,7 @@ export async function uploadMediaAsset({ projectId, file, onProgress }: UploadOp
         
         const mediaAsset: MediaAsset = {
           id: assetId,
-          type: isImage ? "image" : "video",
+          type: isImage ? "image" : isVideo ? "video" : "document",
           url: downloadUrl,
           storagePath,
           contentType: file.type,

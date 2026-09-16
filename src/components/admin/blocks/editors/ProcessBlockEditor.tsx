@@ -2,7 +2,7 @@
 /* eslint-disable @next/next/no-img-element */
 "use client";
 import { type ContentBlock } from "@/types/schema";
-import { MediaUploader } from "../../MediaUploader";
+import { MediaPicker } from "../../MediaPicker";
 
 export function ProcessBlockEditor({ projectId, block, onChange }: { projectId: string, block: Extract<ContentBlock, { type: "process" }>, onChange: (b: any) => void }) {
   return (
@@ -39,9 +39,7 @@ export function ProcessBlockEditor({ projectId, block, onChange }: { projectId: 
                   </div>
                 ) : (
                   <div className="h-full min-h-[150px] border border-dashed rounded flex items-center justify-center">
-                    <MediaUploader projectId={projectId} accept="image/*,video/*" onUploadComplete={asset => {
-                      const newSteps = [...block.steps]; newSteps[idx].media = asset; onChange({ ...block, steps: newSteps });
-                    }} />
+                    <MediaPicker folder={`projects/${projectId}`} accept="image/*,video/*" onSelect={(asset) => { if (asset) { const newSteps = [...block.steps]; newSteps[idx].media = asset; onChange({ ...block, steps: newSteps }); } }} label="Select Media" />
                   </div>
                 )}
               </div>
