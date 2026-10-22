@@ -1,0 +1,230 @@
+[
+  {
+    "slug": "galilea-web-portal",
+    "title": "A place to gather.",
+    "name": "GMAHK Galilea",
+    "summary": "Worship resources, community information, and presentation tools in one considered place.",
+    "category": "Web Engineering",
+    "disciplines": [
+      "Digital Products",
+      "UI/UX",
+      "Cloud & APIs"
+    ],
+    "technologies": [
+      "JavaScript",
+      "CSS",
+      "Google Apps Script",
+      "Google Sheets",
+      "Vercel",
+      "Service Worker"
+    ],
+    "status": "Real Project",
+    "visual": "portal",
+    "liveUrl": "https://gmahk-galilea.vercel.app",
+    "challenge": "A community website needs to serve someone finding a service time and someone presenting a hymn on a large screen. Those are very different reading conditions.",
+    "approach": "Keep the public interface lightweight. Separate the reader, schedule, appearance controls, and presentation behaviors into focused modules.",
+    "implementation": "A Vercel API layer connects the browser to Google Apps Script. Sheets provide editable content. Service-worker caching, reader preferences, and fullscreen controls support the worship experience.",
+    "outcome": "The repository contains a public portal, Bible and hymnal readers, Sabbath presentations, theme controls, and operational verification scripts. Performance gains are not quantified here.",
+    "tradeoff": "Cached public content needs explicit invalidation. Apps Script changes have their own release cycle, separate from a frontend deployment.",
+    "evidence": [
+      "viewer.js",
+      "sw.js",
+      "api/gas.js",
+      "sabbath-presentation.js",
+      "appearance.css"
+    ],
+    "id": "galilea-web-portal",
+    "featured": true,
+    "order": 0,
+    "visibility": "public",
+    "updatedAt": "2026-10-22",
+    "repositoryUrl": "https://github.com/zvenians/gmahk-galilea",
+    "revision": "21a5dd238279f61a48eebcaad59729ccb2da66c8"
+  },
+  {
+    "slug": "galilea-digital-archive",
+    "title": "Files, with a place.",
+    "name": "Galilea Digital Archive",
+    "summary": "A cloud-connected archive that makes recurring records easier to find and manage.",
+    "category": "Digital Products",
+    "disciplines": [
+      "Web Engineering",
+      "Cloud & APIs"
+    ],
+    "technologies": [
+      "Next.js",
+      "React",
+      "TypeScript",
+      "Tailwind CSS",
+      "Firebase",
+      "Google Drive API"
+    ],
+    "status": "Real Project",
+    "visual": "archive",
+    "liveUrl": "https://drive-galilea.vercel.app",
+    "challenge": "Recurring documents and media need predictable organization without giving every visitor administrative access to cloud storage.",
+    "approach": "Organize records by category and time, then put authentication and folder boundaries between the interface and Google Drive.",
+    "implementation": "Next.js route handlers coordinate Drive API operations. Firebase verifies identity and stores records. Resumable upload helpers, a queue, cache utilities, and download routes separate the main responsibilities.",
+    "outcome": "Source inspection confirms archive browsing, upload handling, media endpoints, and administrative routes. The exhibit below is a local simulation using fictional records.",
+    "tradeoff": "OAuth credentials and Drive quotas remain external dependencies. A successful interface render alone does not prove every production upload path works.",
+    "evidence": [
+      "src/lib/drive.ts",
+      "src/lib/auth-server.ts",
+      "src/lib/resumable-upload.ts",
+      "src/app/api/upload/route.ts"
+    ],
+    "id": "galilea-digital-archive",
+    "featured": true,
+    "order": 1,
+    "visibility": "public",
+    "updatedAt": "2026-10-22",
+    "repositoryUrl": "https://github.com/zvenians/gmahk-galilea-digital-archive",
+    "revision": "9a4b68ee28fa13775ad958048b3b412af3d918c9"
+  },
+  {
+    "slug": "majelis-galilea",
+    "title": "Less fragmentation.",
+    "name": "Majelis Galilea",
+    "summary": "Meetings, decisions, budgets, and documents connected through a shared administrative system.",
+    "category": "Business Systems",
+    "disciplines": [
+      "Cloud & APIs",
+      "Data & Automation"
+    ],
+    "technologies": [
+      "JavaScript",
+      "Google Apps Script",
+      "Google Sheets",
+      "Vercel",
+      "Google Drive"
+    ],
+    "status": "Real Project",
+    "visual": "governance",
+    "liveUrl": "https://majelis-galilea.vercel.app",
+    "challenge": "Administrative work crosses many boundaries: a meeting produces a decision, a decision produces an assignment, and an assignment may affect a budget or document.",
+    "approach": "Connect the workflow around shared records and explicit permissions, with a clearer interface for each responsibility.",
+    "implementation": "A browser administration shell calls a Vercel proxy and Apps Script business logic. Sheets hold related records; the backend contains role checks and document-generation workflows.",
+    "outcome": "The source includes meeting and governance workflows, finance, membership, assets, and official correspondence. No confidential administrative records are reproduced.",
+    "tradeoff": "Sheets is familiar to operators, but relational integrity, concurrent edits, and authorization require deliberate application logic.",
+    "evidence": [
+      "admin/js/core.js",
+      "admin/js/features.js",
+      "api/gas.js",
+      "apps-script/Code.gs",
+      "scripts/test-access-boundaries.js"
+    ],
+    "id": "majelis-galilea",
+    "featured": true,
+    "order": 2,
+    "visibility": "public",
+    "updatedAt": "2026-10-22",
+    "repositoryUrl": "https://github.com/zvenians/majelis-galilea",
+    "revision": "748021b9211b0ac2edc45c7fa15d13b5a4235f70"
+  },
+  {
+    "slug": "naomi-rouli",
+    "title": "The pace of a story.",
+    "name": "Naomi Rouli",
+    "summary": "An editorial study in typography, quiet movement, and the space between chapters.",
+    "category": "Creative Experiments",
+    "disciplines": [
+      "UI/UX",
+      "Visual Communication"
+    ],
+    "technologies": [
+      "HTML",
+      "CSS",
+      "JavaScript",
+      "Firebase Hosting"
+    ],
+    "status": "Real Project",
+    "visual": "editorial",
+    "liveUrl": "https://naomirouli.web.app",
+    "challenge": "A personal story needs pacing and emotional clarity without turning every screen into another effect.",
+    "approach": "Structure the experience into nine scenes. Let typography, composition, and chapter changes carry the narrative.",
+    "implementation": "Vanilla JavaScript uses IntersectionObserver for chapter navigation and pointer capture for a horizontal photo rail. CSS custom properties maintain the editorial system.",
+    "outcome": "The public repository supports the interaction techniques described here. This exhibit uses an original typographic illustration; private photographs and personal letters are not reused.",
+    "tradeoff": "The interface is intentionally bespoke. Reusing its technical patterns is more appropriate than republishing its personal content.",
+    "evidence": [
+      "script.js",
+      "style.css",
+      "index.html",
+      "firebase.json"
+    ],
+    "id": "naomi-rouli",
+    "featured": true,
+    "order": 3,
+    "visibility": "public",
+    "updatedAt": "2026-10-22",
+    "repositoryUrl": "https://github.com/zvenians/naomirouli",
+    "revision": "486fea3ead595309b8fc1a97d573aa3ec334ec97"
+  },
+  {
+    "slug": "zvenians-exploration",
+    "title": "Learning restraint.",
+    "name": "Zvenians Web Exploration",
+    "summary": "An independent study of product composition, responsive rhythm, and disciplined typography.",
+    "category": "Creative Experiments",
+    "disciplines": [
+      "Web Engineering",
+      "UI/UX"
+    ],
+    "technologies": [
+      "HTML",
+      "CSS",
+      "JavaScript",
+      "GitHub Pages"
+    ],
+    "status": "Concept",
+    "visual": "exploration",
+    "liveUrl": "https://zvenians.github.io",
+    "challenge": "Understand how a consistent visual system can support different product stories across a static website.",
+    "approach": "Work with type scale, whitespace, full-width compositions, and responsive layouts before adding interaction.",
+    "implementation": "Semantic HTML, CSS layout primitives, and lightweight JavaScript. GitHub Pages hosts the static output.",
+    "outcome": "An independent educational design exploration, not a commercial engagement or an official Apple website.",
+    "tradeoff": "Promotional imagery in the original project is not republished here. This case study focuses on layout techniques.",
+    "evidence": [
+      "README.md",
+      "index.html",
+      "mac.html",
+      "store.html"
+    ],
+    "id": "zvenians-exploration",
+    "featured": false,
+    "order": 4,
+    "visibility": "public",
+    "updatedAt": "2026-10-22",
+    "repositoryUrl": "https://github.com/zvenians/zvenians.github.io",
+    "revision": "726ef582d4ec955929c58701bcf2cf318a29ce9e"
+  },
+  {
+    "slug": "galilea-origins",
+    "title": "Every system starts somewhere.",
+    "name": "Galilea Origins",
+    "summary": "A historical marker connecting an early idea to the later, dedicated platforms.",
+    "category": "Creative Experiments",
+    "disciplines": [
+      "Web Engineering"
+    ],
+    "technologies": [
+      "Documentation"
+    ],
+    "status": "Historical Prototype",
+    "visual": "history",
+    "challenge": "The early namespace represents the beginning of a broader church web initiative.",
+    "approach": "Keep the historical context visible without counting it as another completed application.",
+    "implementation": "At the audited revision, this repository contains a README only. The active implementations live in the three dedicated Galilea repositories.",
+    "outcome": "Useful as a timeline marker, not evidence of a functioning prototype.",
+    "tradeoff": "No executable application was found in this repository.",
+    "evidence": [
+      "README.md"
+    ],
+    "id": "galilea-origins",
+    "featured": false,
+    "order": 5,
+    "visibility": "public",
+    "updatedAt": "2026-10-22",
+    "repositoryUrl": "https://github.com/zvenians/galilea",
+    "revision": "b3b1f0a586aefc29fe7b4c2718dd27f0d67ee188"
+  }
+]
