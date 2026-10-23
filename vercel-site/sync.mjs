@@ -15,7 +15,9 @@ client = client.replaceAll('href="#project/${esc(p.slug)}"', 'href="${projectHre
 client = client.replaceAll("'#project/'+p.slug", 'projectHref(p.slug)');
 client = client.replace("const url=data.appUrl+'?project='+encodeURIComponent(p.slug)", "const url=window.INDEX_HOSTED?location.origin+projectHref(p.slug):data.appUrl+'?project='+encodeURIComponent(p.slug)");
 
-const template = assets.html.replace('/*STYLES*/', assets.css).replace('/*CLIENT*/', client);
+// Replacement strings interpret $$ and $&; use callbacks to preserve the
+// bundled JavaScript byte-for-byte (the client declares both $ and $$).
+const template = assets.html.replace('/*STYLES*/', () => assets.css).replace('/*CLIENT*/', () => client);
 const generated = path.join(site, 'generated');
 await mkdir(generated, { recursive: true });
 await writeFile(path.join(generated, 'template.ts'), 'export const template = ' + JSON.stringify(template) + ';\n');
