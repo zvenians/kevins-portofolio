@@ -262,5 +262,44 @@
     "order": 6,
     "visibility": "public",
     "updatedAt": "2026-10-23"
+  },
+  {
+    "slug": "sera-goods-commerce-demo",
+    "title": "A small shop with serious order logic.",
+    "name": "SERA Goods — Commerce Demo",
+    "summary": "A detailed storefront demonstration with product discovery, variants, stock-aware cart logic, vouchers, shipping choices, and a clear checkout review.",
+    "category": "Digital Products",
+    "disciplines": [
+      "Web Engineering",
+      "Business Systems",
+      "UI/UX"
+    ],
+    "technologies": [
+      "Google Apps Script",
+      "Google Sheets",
+      "JavaScript",
+      "Cart State",
+      "Voucher Rules",
+      "Shipping Logic"
+    ],
+    "status": "Interactive Demo",
+    "visual": "commerce",
+    "challenge": "A small online shop needs more than attractive product cards. Prices, variants, stock, vouchers, shipping, and order details have to stay consistent from the first browse to the final confirmation.",
+    "approach": "Build one short buying flow around the decisions that matter: find a product, choose the right variant, understand the total, and review the order before anything is submitted. Administrative complexity stays behind the storefront.",
+    "implementation": "The public exhibit runs as a safe local simulation with a searchable catalogue, category filters, variant-aware stock, quantity controls, voucher validation, configurable shipping, and checkout validation. The production blueprint maps Products, Variants, Vouchers, Shipping, Orders, and Order Items to Google Sheets, with Apps Script rechecking prices and stock before writing an order.",
+    "outcome": "Visitors can complete the full storefront journey and inspect the business rules behind it. All products, prices, stock, addresses, vouchers, and order numbers are fictional demonstration data.",
+    "tradeoff": "The exhibit does not process payments, contact a courier API, upload real products, or save customer details. A production version would require authenticated administration, Drive media storage, server-side order locking, rate limits, and verified payment or shipping integrations.",
+    "evidence": [
+      "Searchable and filterable product catalogue",
+      "Variant and stock-aware cart calculations",
+      "Voucher eligibility and discount limits",
+      "Shipping selection and final checkout review",
+      "Google Sheets and Apps Script production data model"
+    ],
+    "id": "sera-goods-commerce-demo",
+    "featured": true,
+    "order": 7,
+    "visibility": "public",
+    "updatedAt": "2026-10-23"
   }
 ]
