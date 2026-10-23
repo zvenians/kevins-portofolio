@@ -380,6 +380,228 @@
       "order": 9,
       "visibility": "public",
       "updatedAt": "2026-10-23"
+    },
+    {
+      "slug": "asset-field-companion",
+      "title": "The network can wait. The observation should not.",
+      "name": "Asset Field Companion",
+      "summary": "An offline-first field workflow for finding an asset, recording its condition, attaching evidence, and synchronizing a reviewable observation later.",
+      "category": "Business Systems",
+      "disciplines": [
+        "Operational Systems",
+        "Web Engineering",
+        "Data & Automation"
+      ],
+      "technologies": [
+        "Progressive Web App",
+        "Local Queue",
+        "Google Apps Script",
+        "Google Sheets",
+        "Responsive Forms"
+      ],
+      "status": "Interactive Demo",
+      "visual": "fieldcompanion",
+      "challenge": "Field verification does not always happen beside a reliable connection. A useful tool has to preserve the inventory context, make evidence easy to record on a phone, and show clearly what is local, queued, or synchronized.",
+      "approach": "Treat every observation as a small controlled handover. The interface keeps the expected record beside the actual condition, saves work locally first, and lets the operator decide when the queue is ready to synchronize.",
+      "implementation": "The demonstration supports asset selection, field condition, observed location, notes, optional photo selection, an offline switch, a persistent local queue, and simulated synchronization. A production version would use a service worker and authenticated Apps Script writes into controlled Sheets and Drive folders.",
+      "outcome": "Visitors can complete a realistic mobile field flow and see the difference between a saved observation and a synchronized record. All asset numbers, locations, and departments are fictional.",
+      "tradeoff": "The public demo does not upload photos, request precise location, scan a real QR code, or write to production storage. Those capabilities require clear consent, authentication, retention rules, and conflict handling.",
+      "evidence": [
+        "Persistent browser-local observation queue",
+        "Offline and restored-network states",
+        "Condition, location, note, and evidence workflow",
+        "Explicit sync status and production boundary"
+      ],
+      "id": "asset-field-companion",
+      "featured": true,
+      "order": 10,
+      "visibility": "public",
+      "updatedAt": "2026-10-23"
+    },
+    {
+      "slug": "research-data-preparation-studio",
+      "title": "Good analysis begins before the Analyze menu.",
+      "name": "Research Data Preparation Studio",
+      "summary": "A hands-on preparation desk for missing codes, duplicate respondents, reverse scoring, implausible values, codebooks, and SPSS-ready working files.",
+      "category": "Data & Automation",
+      "disciplines": [
+        "Research Support",
+        "Data & Automation",
+        "Technical Documentation"
+      ],
+      "technologies": [
+        "SPSS Syntax",
+        "CSV Export",
+        "Codebook Design",
+        "Data Validation",
+        "JavaScript"
+      ],
+      "status": "Interactive Demo",
+      "visual": "dataprep",
+      "challenge": "Statistical output can look precise even when the input still contains duplicate IDs, hidden missing-value codes, incorrectly scored items, or impossible values. Those decisions need to be recorded before testing begins.",
+      "approach": "Keep the raw import unchanged and create a separate working copy. Every correction is visible in a preparation log, while the codebook explains what each variable means and how it should be treated.",
+      "implementation": "The browser tool identifies a duplicate respondent, converts a chosen missing code, optionally reverse-scores Q2R, calculates a scale mean, flags an implausible age, and exports both a prepared CSV and starter SPSS syntax.",
+      "outcome": "Visitors can move a small fictional survey from raw rows to a documented analysis-ready copy without uploading anything. The generated files remain editable and clearly labeled as demonstrations.",
+      "tradeoff": "The tool does not determine whether a response should be deleted, validate an instrument, replace subject-matter judgment, or open proprietary SPSS files. A real engagement begins with the actual codebook and research protocol.",
+      "evidence": [
+        "Raw and prepared views remain separate",
+        "Missing-code and duplicate handling",
+        "Reverse scoring and computed scale mean",
+        "CSV, codebook, and SPSS syntax outputs"
+      ],
+      "id": "research-data-preparation-studio",
+      "featured": true,
+      "order": 11,
+      "visibility": "public",
+      "updatedAt": "2026-10-23"
+    },
+    {
+      "slug": "document-automation-studio",
+      "title": "A document is easier to trust when its source is clear.",
+      "name": "Document Automation Studio",
+      "summary": "A controlled Sheets-to-document workflow for references, structured fields, draft status, PDF generation, and an archive-ready activity record.",
+      "category": "Business Systems",
+      "disciplines": [
+        "Document Systems",
+        "Data & Automation",
+        "Workflow Design"
+      ],
+      "technologies": [
+        "Google Apps Script",
+        "Google Sheets",
+        "Google Docs",
+        "Google Drive",
+        "PDF Generation"
+      ],
+      "status": "Interactive Demo",
+      "visual": "documents",
+      "challenge": "Recurring reports and letters are often copied from an old file until their reference, wording, or approval state becomes uncertain. The document needs a dependable source and a visible lifecycle.",
+      "approach": "Separate structured data from presentation. A small form supplies the controlled fields, the document preview makes the result inspectable, and the archive log records what would be generated and where it belongs.",
+      "implementation": "The demonstration builds four document types from editable inputs, refreshes an A4-style draft, generates a real sample PDF, and exports a compact archive log. The production blueprint maps the same flow to Sheets, Docs templates, Apps Script, and Drive.",
+      "outcome": "Visitors can produce a usable fictional report while seeing its reference, draft state, owner, generation date, and archive destination. No confidential company document is reproduced.",
+      "tradeoff": "A generated draft is not an approval. Production use still requires authorized templates, access controls, version retention, naming policy, and a clear sign-off process.",
+      "evidence": [
+        "Structured document input",
+        "Controlled A4-style preview",
+        "Real client-side PDF output",
+        "Archive log with reference and status"
+      ],
+      "id": "document-automation-studio",
+      "featured": true,
+      "order": 12,
+      "visibility": "public",
+      "updatedAt": "2026-10-23"
+    },
+    {
+      "slug": "sera-commerce-operations-console",
+      "title": "Checkout is only the beginning of the order.",
+      "name": "SERA Commerce Operations Console",
+      "summary": "The back-office half of the SERA storefront: fulfilment stages, stock movements, reorder signals, return review, margin context, and a daily close.",
+      "category": "Digital Products",
+      "disciplines": [
+        "Business Systems",
+        "Web Engineering",
+        "Data & Automation"
+      ],
+      "technologies": [
+        "Inventory Ledger",
+        "Order Fulfilment",
+        "Google Sheets",
+        "Google Apps Script",
+        "CSV Export"
+      ],
+      "status": "Interactive Demo",
+      "visual": "commerceops",
+      "challenge": "A polished storefront does not explain what happens after payment. Stock changes, picking, packing, shipping, returns, and end-of-day review need consistent rules behind the public interface.",
+      "approach": "Use a compact operations desk instead of another marketing dashboard. Orders move through explicit stages, every stock adjustment has a reason, and low-stock items remain visible during the daily close.",
+      "implementation": "The local demonstration advances fictional orders, resolves a return-review exception, posts stock movements with validation, calculates visible gross margin, identifies reorder items, and exports a daily operational record.",
+      "outcome": "The original storefront and this console now show both sides of a commerce system: the customer journey and the work required to fulfil it. No order, payment, or customer record leaves the browser.",
+      "tradeoff": "The demo has no payment reconciliation, courier webhook, accounting integration, or multi-user stock lock. Those features require verified external services and server-side transactional controls.",
+      "evidence": [
+        "Order-stage workflow",
+        "Validated stock movement ledger",
+        "Reorder and gross-margin context",
+        "Exportable daily close"
+      ],
+      "id": "sera-commerce-operations-console",
+      "featured": true,
+      "order": 13,
+      "visibility": "public",
+      "updatedAt": "2026-10-23"
+    },
+    {
+      "slug": "quality-evidence-room",
+      "title": "Quality is a record, not an adjective.",
+      "name": "Performance & Accessibility Evidence Room",
+      "summary": "A transparent release-review surface for responsive behavior, keyboard safeguards, reduced motion, semantic structure, and clearly bounded evidence.",
+      "category": "Creative Experiments",
+      "disciplines": [
+        "Web Engineering",
+        "UI/UX",
+        "Technical Documentation"
+      ],
+      "technologies": [
+        "Accessibility",
+        "Responsive Design",
+        "Release Checks",
+        "Reduced Motion",
+        "Progressive Enhancement"
+      ],
+      "status": "Interactive Demo",
+      "visual": "qualityroom",
+      "challenge": "Claims such as fast, responsive, and accessible are easy to write and easy to exaggerate. A credible portfolio should separate what the current page can inspect from what still requires external measurement.",
+      "approach": "Present release evidence as a small review room. The visitor can resize a real composition, run document-level checks, copy the result, and read the boundary around performance claims.",
+      "implementation": "The tool inspects the live document for a skip link, main landmark, dialog labels, reduced-motion path, keyboard-scrollable tables, stable project URLs, and demonstration disclosure. It deliberately does not invent Lighthouse or Core Web Vitals scores.",
+      "outcome": "Visitors see how quality work is documented instead of receiving an unsupported score. The responsive sample also makes layout behavior observable rather than replacing it with screenshots.",
+      "tradeoff": "DOM checks cannot replace assistive-technology testing, real-user metrics, slow-network trials, or cross-browser QA. Those results should only be published after the corresponding test has actually run.",
+      "evidence": [
+        "Live semantic document checks",
+        "Responsive width instrument",
+        "Copyable release report",
+        "Explicit measurement limitations"
+      ],
+      "id": "quality-evidence-room",
+      "featured": false,
+      "order": 14,
+      "visibility": "public",
+      "updatedAt": "2026-10-23"
+    },
+    {
+      "slug": "project-brief-scope-builder",
+      "title": "A useful brief before a confident estimate.",
+      "name": "Project Brief & Scope Builder",
+      "summary": "A practical intake tool for websites, data work, research support, and automation—without guessing a price or promising an unreviewed deadline.",
+      "category": "Business Systems",
+      "disciplines": [
+        "Workflow Design",
+        "Client Communication",
+        "Information Architecture"
+      ],
+      "technologies": [
+        "Form Validation",
+        "Structured Briefs",
+        "WhatsApp Handoff",
+        "Email Handoff",
+        "Local Processing"
+      ],
+      "status": "Interactive Demo",
+      "visual": "scopebuilder",
+      "challenge": "A first message often contains either too little information or a long list of disconnected features. Both make it difficult to understand the actual problem, handover, and boundary.",
+      "approach": "Ask only for the choices that improve the first conversation: work area, current stage, working environment, useful deliverables, the immediate problem, and what should stay outside the first scope.",
+      "implementation": "The builder changes its handover options by service area, validates the brief, creates a readable summary, copies it to the clipboard, and prepares a WhatsApp or email handoff using the published contact settings. Nothing is stored by the page.",
+      "outcome": "A prospective client can arrive with an unclear need and leave with a concise message that Kevin can review. Cost and timing remain discussion points instead of fabricated instant calculations.",
+      "tradeoff": "The generated brief is not a contract, proposal, quotation, or technical discovery. Sensitive files should only be shared through an agreed channel after the initial review.",
+      "evidence": [
+        "Service-specific handover choices",
+        "Clear scope-boundary prompt",
+        "Copyable structured brief",
+        "Contact handoff without public data storage"
+      ],
+      "id": "project-brief-scope-builder",
+      "featured": false,
+      "order": 15,
+      "visibility": "public",
+      "updatedAt": "2026-10-23"
     }
   ],
   "settings": {},
