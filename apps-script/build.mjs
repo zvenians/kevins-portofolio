@@ -7,7 +7,8 @@ const engine=await build({entryPoints:['apps-script/source/data-engine.ts'],bund
 // Keep the URL equivalent while avoiding literal // in the emitted inline script.
 const client=(engine.outputFiles[0].text+'\n'+(await Promise.all(['Client.js','Lab.js','Admin.js'].map(n=>readFile(new URL(n,source),'utf8')))).join('\n'))
   .replaceAll('https://','https:\\x2f\\x2f');
-const assets={html:await readFile(new URL('Index.html',source),'utf8'),css:await readFile(new URL('Styles.css',source),'utf8'),client};
+const css=(await Promise.all(['Styles.css','Enhancements.css'].map(name=>readFile(new URL(name,source),'utf8')))).join('\n');
+const assets={html:await readFile(new URL('Index.html',source),'utf8'),css,client};
 const server=await readFile(new URL('Server.gs',source),'utf8');
 await writeFile(new URL('./Code.gs',import.meta.url),server+'\nconst SEED_PROJECTS = '+JSON.stringify(projects)+';\nconst ASSETS = '+JSON.stringify(assets)+';\n');
 await mkdir('apps-script/preview',{recursive:true});

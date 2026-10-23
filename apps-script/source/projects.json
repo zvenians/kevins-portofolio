@@ -226,5 +226,41 @@
     "updatedAt": "2026-10-22",
     "repositoryUrl": "https://github.com/zvenians/galilea",
     "revision": "b3b1f0a586aefc29fe7b4c2718dd27f0d67ee188"
+  },
+  {
+    "slug": "ruang-temu-booking-demo",
+    "title": "Booking, without the back-and-forth.",
+    "name": "Ruang Temu — Booking Demo",
+    "summary": "A local-service booking demo that helps customers choose a service, pick a time, and send one clear booking summary.",
+    "category": "Digital Products",
+    "disciplines": [
+      "Web Engineering",
+      "UI/UX"
+    ],
+    "technologies": [
+      "JavaScript",
+      "Responsive UI",
+      "Form Validation",
+      "Local State",
+      "WhatsApp Flow"
+    ],
+    "status": "Interactive Demo",
+    "visual": "booking",
+    "challenge": "Small businesses often handle bookings through open-ended chat. Customers ask for details one by one, while the owner has to copy schedules and service details by hand.",
+    "approach": "Turn the conversation into a simple flow: choose a service, date, and time, then review everything in one place. WhatsApp stays familiar, but the message arrives complete and easier to process.",
+    "implementation": "The demo runs locally in the browser with form validation, changing time slots, a booking summary, and clear feedback. Every name, schedule, and transaction is fictional and disconnected from a real business.",
+    "outcome": "Visitors can try the booking flow from the first choice to the final summary. It proves the interface logic and responsive behavior; it is not presented as a client production system.",
+    "tradeoff": "Payments, customer accounts, a production database, and an owner calendar are intentionally outside this demo. Those features need real operating rules before they should be built.",
+    "evidence": [
+      "Working service and time-slot selection",
+      "Name, date, and contact validation",
+      "A booking summary ready to share",
+      "Responsive behavior without real business data"
+    ],
+    "id": "ruang-temu-booking-demo",
+    "featured": true,
+    "order": 6,
+    "visibility": "public",
+    "updatedAt": "2026-10-23"
   }
 ]
