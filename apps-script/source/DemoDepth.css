@@ -1,0 +1,51 @@
+/* Functional depth for interactive exhibits: input, process and evidence occupy distinct planes. */
+.spatial-demo{--depth-rx:.55deg;--depth-ry:-.65deg;--depth-x:50%;--depth-y:50%;position:relative;isolation:isolate;perspective:1500px;transform-style:preserve-3d;animation:workbench-arrive .85s var(--ease) both}
+.spatial-demo:before{content:"";position:absolute;z-index:0;inset:0;pointer-events:none;background:radial-gradient(500px circle at var(--depth-x) var(--depth-y),rgba(255,102,59,.09),transparent 58%),repeating-linear-gradient(90deg,transparent 0,transparent calc(12.5% - 1px),rgba(23,26,28,.055) 12.5%),repeating-linear-gradient(0deg,transparent 0,transparent calc(12.5% - 1px),rgba(23,26,28,.045) 12.5%);opacity:.8;mask-image:linear-gradient(to bottom,transparent 0,#000 12%,#000 92%,transparent)}
+.spatial-demo:after{content:"Z / " var(--stage-index);position:absolute;z-index:8;right:12px;bottom:12px;pointer-events:none;font:8px var(--mono);letter-spacing:.14em;color:currentColor;opacity:.48;writing-mode:vertical-rl}
+.spatial-coordinate{position:absolute;z-index:12;top:10px;right:12px;display:flex;gap:12px;pointer-events:none;font:7px var(--mono);letter-spacing:.12em;color:currentColor;opacity:.48}
+.spatial-coordinate b{font-weight:400;font-variant-numeric:tabular-nums}
+.working-demo>.spatial-coordinate{top:14px;color:#171a1c}.working-demo>.spatial-coordinate span{display:none}
+.workbench-body,.commerce-demo,.toolkit-shell,.data-lab .workspace>*:not(.spatial-coordinate){position:relative;z-index:1;transform-style:preserve-3d}
+.workbench-body{transform:rotateX(var(--depth-rx)) rotateY(var(--depth-ry));transform-origin:center 40%;transition:transform .16s linear}
+.depth-plane{position:relative;transform-style:preserve-3d;will-change:transform;transition:transform .28s var(--ease),filter .35s var(--ease),box-shadow .35s var(--ease)}
+.depth-plane--label{transform:translateZ(8px)}
+.depth-plane--input{transform:translateZ(24px)}
+.depth-plane--output{transform:translateZ(46px);filter:drop-shadow(0 16px 18px rgba(12,14,13,.09))}
+.spatial-demo:hover .depth-plane--input,.spatial-demo.has-depth-focus .depth-plane--input{transform:translate3d(-2px,-2px,32px)}
+.spatial-demo:hover .depth-plane--output,.spatial-demo.has-depth-focus .depth-plane--output{transform:translate3d(3px,-4px,60px);filter:drop-shadow(0 24px 26px rgba(12,14,13,.15))}
+.depth-plane.is-depth-active{transform:translateZ(72px)!important;filter:drop-shadow(0 28px 30px rgba(12,14,13,.2))}
+.depth-readout{position:absolute;z-index:15;left:16px;top:98px;display:grid;gap:6px;pointer-events:none;color:#171a1c;font:7px var(--mono);letter-spacing:.11em}
+.depth-readout i{display:block;position:relative;width:1px;height:17px;margin-left:3px;background:currentColor;opacity:.28}.depth-readout i:after{content:"";position:absolute;left:-2px;top:0;width:5px;height:5px;background:#a7472f;animation:depth-signal 2.4s ease-in-out infinite}
+.working-demo-head{position:relative;z-index:3;transform:translateZ(10px)}
+.working-demo>footer{position:relative;z-index:4}
+.field-device,.prep-layout,.document-desk,.scope-desk,.quality-console,.ops-console{position:relative;transform-style:preserve-3d}
+.field-device>aside,.prep-layout>aside{box-shadow:10px 0 24px rgba(8,10,9,.1)}
+.paper-preview{transform-origin:center top}
+.document-desk:hover .paper-preview{transform:translate3d(4px,-4px,68px) rotateY(-.5deg)}
+.scope-desk #scope-output{box-shadow:16px 18px 0 rgba(23,26,28,.12)}
+.ops-console>#ops-view{min-height:480px;background:rgba(241,239,232,.72);backdrop-filter:blur(10px)}
+.quality-frame{box-shadow:18px 22px 0 rgba(19,23,21,.15)}
+
+/* Existing demonstrations receive the same spatial grammar without changing their logic. */
+#booking-demo,#archive-demo,#commerce-demo,.research-toolkit,.data-lab .workspace{transform-style:preserve-3d}
+#booking-demo .booking-form,#archive-demo .archive-controls{background:var(--paper);box-shadow:10px 12px 0 rgba(255,102,59,.12)}
+#booking-demo .booking-summary,#archive-demo .archive-list{filter:drop-shadow(0 18px 24px rgba(0,0,0,.12))}
+#commerce-demo .commerce-demo{transform:rotateX(var(--depth-rx)) rotateY(var(--depth-ry));transition:transform .18s linear;overflow:visible}
+#commerce-demo .commerce-layout{position:relative;transform-style:preserve-3d}
+#commerce-demo .commerce-catalog{transform:translateZ(14px)}
+#commerce-demo .commerce-cart{transform:translate3d(0,-3px,48px);box-shadow:-18px 22px 38px rgba(16,20,18,.12)}
+#commerce-demo .commerce-product{transition:transform .35s var(--ease),box-shadow .35s var(--ease)}
+#commerce-demo .commerce-product:hover{transform:translate3d(0,-7px,38px);box-shadow:0 22px 35px rgba(16,20,18,.16)}
+.research-toolkit .toolkit-shell{transform:rotateX(var(--depth-rx)) rotateY(var(--depth-ry));transition:transform .18s linear}
+.research-toolkit .toolkit-tabs{transform:translateZ(32px);box-shadow:12px 0 28px rgba(17,21,18,.1)}
+.research-toolkit .toolkit-workspace{transform:translateZ(16px)}
+.data-lab .workspace{transform:rotateX(var(--depth-rx)) rotateY(var(--depth-ry));transition:transform .18s linear;overflow:visible}
+.data-lab .workspace .lab-controls{box-shadow:8px 10px 0 rgba(255,102,59,.09)}
+.data-lab .workspace .table-scroll{background:var(--paper);box-shadow:0 22px 38px rgba(0,0,0,.12)}
+
+@keyframes workbench-arrive{from{opacity:0;transform:translateY(34px) rotateX(2deg);clip-path:inset(0 0 12% 0)}to{opacity:1;transform:none;clip-path:inset(0)}}
+@keyframes depth-signal{0%,100%{translate:0 0;opacity:.45}50%{translate:0 13px;opacity:1}}
+
+@media(pointer:coarse),(max-width:900px){.spatial-demo{perspective:none}.workbench-body,#commerce-demo .commerce-demo,.research-toolkit .toolkit-shell,.data-lab .workspace{transform:none!important}.depth-plane,.spatial-demo:hover .depth-plane--input,.spatial-demo:hover .depth-plane--output{transform:none;filter:none}.depth-readout,.spatial-coordinate{display:none}.document-desk:hover .paper-preview{transform:none}.spatial-demo:before{opacity:.4}.spatial-demo:after{display:none}#commerce-demo .commerce-cart{transform:none;box-shadow:none}.research-toolkit .toolkit-tabs,.research-toolkit .toolkit-workspace{transform:none}}
+.reduced .spatial-demo,.reduced .depth-readout i:after{animation:none}.reduced .workbench-body,.reduced #commerce-demo .commerce-demo,.reduced .research-toolkit .toolkit-shell,.reduced .data-lab .workspace,.reduced .depth-plane{transform:none!important;transition:none!important;filter:none!important}
+@media(prefers-reduced-motion:reduce){.spatial-demo,.depth-readout i:after{animation:none}.workbench-body,#commerce-demo .commerce-demo,.research-toolkit .toolkit-shell,.data-lab .workspace,.depth-plane{transform:none!important;transition:none!important;filter:none!important}}

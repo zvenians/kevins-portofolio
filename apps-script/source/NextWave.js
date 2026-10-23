@@ -9,7 +9,7 @@ function demoDownload(name,text,type='text/plain;charset=utf-8'){
 }
 
 function demoShell(kicker,title,note,body){
-  return `<div class="working-demo"><header class="working-demo-head"><div><span>${kicker}</span><h3>${title}</h3></div><p>${note}</p></header>${body}<footer>Demonstration Data / Runs locally / Nothing is submitted</footer></div>`;
+  return `<div class="working-demo" data-demo-stage><div class="depth-readout" aria-hidden="true"><span>INPUT</span><i></i><span>PROCESS</span><i></i><span>OUTPUT</span></div><header class="working-demo-head"><div><span>${kicker}</span><h3>${title}</h3></div><p>${note}</p></header><div class="workbench-body">${body}</div><footer>Demonstration Data / Runs locally / Nothing is submitted</footer></div>`;
 }
 
 function fieldCompanionDemo(){
