@@ -301,5 +301,83 @@
     "order": 7,
     "visibility": "public",
     "updatedAt": "2026-10-23"
+  },
+  {
+    "slug": "operations-decision-workbench",
+    "title": "A decision should leave a trail.",
+    "name": "Operations Decision Workbench",
+    "summary": "A procurement and operations demonstration that compares vendor offers with editable weights, transparent formulas, and an exportable decision workbook.",
+    "category": "Data & Automation",
+    "disciplines": [
+      "Data & Automation",
+      "Business Systems",
+      "Operational Systems"
+    ],
+    "technologies": [
+      "Excel",
+      "Google Sheets",
+      "Google Apps Script",
+      "Weighted Scoring",
+      "Formula Auditing",
+      "XLSX Export"
+    ],
+    "status": "Interactive Demo",
+    "visual": "operations",
+    "challenge": "Choosing a supplier from several quotations is rarely a lowest-price decision. Lead time, warranty, documentation, technical compliance, and approval notes need to stay visible without turning the process into an untraceable spreadsheet.",
+    "approach": "Keep the decision model small enough to inspect. Each criterion has an explicit weight, every vendor score uses the same normalization rule, and the current recommendation changes as the priorities change.",
+    "implementation": "The browser demonstration recalculates four fictional vendor offers in real time. The downloadable Excel workbook separates source quotations, settings, and formula-based scoring so a reviewer can trace the result instead of trusting a fixed dashboard number. The wider Data Lab also includes field validation, maintenance records, reconciliation, scheduling, budgets, and cleanup workflows.",
+    "outcome": "Visitors can change the decision weights, compare commercial and technical trade-offs, and download a functioning workbook with editable inputs and formulas. No real vendor, quote, or company record is used.",
+    "tradeoff": "Weighted scoring helps structure a review but cannot approve a purchase. A production workflow still needs procurement policy, authorized reviewers, document verification, conflict checks, and controlled access to actual quotations.",
+    "evidence": [
+      "Editable price, lead-time, warranty, and compliance weights",
+      "Normalized multi-criteria vendor scoring",
+      "Formula-based XLSX decision workbook",
+      "Clear distinction between recommendation and approval"
+    ],
+    "id": "operations-decision-workbench",
+    "featured": true,
+    "order": 8,
+    "visibility": "public",
+    "updatedAt": "2026-10-23"
+  },
+  {
+    "slug": "research-practice-toolkit",
+    "title": "Research support that shows its reasoning.",
+    "name": "Research Practice Toolkit",
+    "summary": "Eight local research tools for method selection, sample planning, assumption review, result tables, questionnaire structure, citations, defense practice, and revision tracking.",
+    "category": "Data & Automation",
+    "disciplines": [
+      "Data & Automation",
+      "Research Support",
+      "Technical Documentation"
+    ],
+    "technologies": [
+      "SPSS Planning",
+      "Statistical Reasoning",
+      "JavaScript",
+      "CSV Export",
+      "Local State",
+      "Research Writing"
+    ],
+    "status": "Interactive Demo",
+    "visual": "researchtools",
+    "challenge": "Research support can become vague or irresponsible when it only promises a finished answer. Students need to see how a method connects to a question, what assumptions need attention, and where their own academic judgment is still required.",
+    "approach": "Turn the support process into inspectable tools. Each module explains its rule, exposes the inputs, gives a cautious output, and names what it cannot decide. The interface supports learning and revision instead of replacing the student.",
+    "implementation": "Eight browser-based modules cover method advising, survey sample estimates, assumption diagnostics, formatted result tables, questionnaire blueprints, author-year consistency checks, defense-question practice, and a locally saved revision plan. Sample exports are generated without uploading research data.",
+    "outcome": "Visitors can test a research decision from planning through defense preparation and download selected working files. All examples are fictional, and all generated writing is labeled as a draft for student and supervisor review.",
+    "tradeoff": "The toolkit does not run SPSS, verify source authenticity, approve a methodology, write a thesis, fabricate data, or guarantee an academic result. Discipline-specific decisions still require qualified supervision and the student’s own work.",
+    "evidence": [
+      "Research-method decision helper",
+      "Finite-population sample-size calculation",
+      "Assumption and influence diagnostics",
+      "Questionnaire and result-table CSV exports",
+      "Citation consistency review",
+      "Defense practice and local revision tracker"
+    ],
+    "id": "research-practice-toolkit",
+    "featured": true,
+    "order": 9,
+    "visibility": "public",
+    "updatedAt": "2026-10-23"
   }
 ]
