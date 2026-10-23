@@ -21,5 +21,14 @@ const template = assets.html.replace('/*STYLES*/', () => assets.css).replace('/*
 const generated = path.join(site, 'generated');
 await mkdir(generated, { recursive: true });
 await writeFile(path.join(generated, 'template.ts'), 'export const template = ' + JSON.stringify(template) + ';\n');
-await writeFile(path.join(generated, 'fallback.json'), JSON.stringify({ projects: projects.filter(p => p.visibility === 'public'), resume: null, settings: {}, version: 'snapshot' }, null, 2) + '\n');
+await writeFile(path.join(generated, 'fallback.json'), JSON.stringify({
+  projects: projects.filter(p => p.visibility === 'public'),
+  resume: null,
+  settings: {
+    email: 'simatupangkevin9@gmail.com',
+    linkedin: 'https://www.linkedin.com/in/kevinoloann',
+    whatsapp: '6287810933977'
+  },
+  version: 'snapshot'
+}, null, 2) + '\n');
 console.log('Synced the Vercel presentation and public fallback snapshot.');
