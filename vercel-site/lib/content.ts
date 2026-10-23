@@ -7,7 +7,18 @@ export type Content = { projects: Project[]; resume: null | { name: string; uplo
 // Interactive exhibits that ship with the frontend must remain available even
 // while an older Apps Script content sheet is still catching up. Remote
 // records win once the same slug is published from the owner workspace.
-const bundledProjectSlugs = new Set(['ruang-temu-booking-demo','sera-goods-commerce-demo','operations-decision-workbench','research-practice-toolkit']);
+const bundledProjectSlugs = new Set([
+  'ruang-temu-booking-demo',
+  'sera-goods-commerce-demo',
+  'operations-decision-workbench',
+  'research-practice-toolkit',
+  'asset-field-companion',
+  'research-data-preparation-studio',
+  'document-automation-studio',
+  'sera-commerce-operations-console',
+  'quality-evidence-room',
+  'project-brief-scope-builder'
+]);
 
 function withBundledProjects(content: Content): Content {
   const remoteProjects = content.projects.filter(p => p.visibility === 'public');
