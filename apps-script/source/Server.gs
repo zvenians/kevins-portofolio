@@ -46,6 +46,11 @@ function doGet(e){
   const params=e&&e.parameter||{};
   try {
     if(params.format==='json')return ContentService.createTextOutput(JSON.stringify(getPublicContent())).setMimeType(ContentService.MimeType.JSON);
+    if(params.format==='file'){
+      const file=params.type==='resume'?getResumeFile():params.type==='media'?getMediaFile(String(params.id||'')):null;
+      if(!file)throw new Error('Unsupported public file request.');
+      return ContentService.createTextOutput(JSON.stringify(file)).setMimeType(ContentService.MimeType.JSON);
+    }
     const isAdmin=params.page==='admin';
     if(isAdmin)owner_();
     const bootstrap=isAdmin?getAdminContent():getPublicContent();
