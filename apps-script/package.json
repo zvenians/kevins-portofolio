@@ -1,0 +1,8 @@
+{
+  "name": "living-index-apps-script",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {"build": "cd .. && node apps-script/build.mjs", "test": "cd .. && node --test apps-script/tests/core.test.mjs"},
+  "devDependencies": {"esbuild": "0.28.2"}
+}
