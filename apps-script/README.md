@@ -4,7 +4,7 @@ This edition runs its website, owner tools, and backend in Google Apps Script. G
 
 ## Installation
 
-1. Build with `node apps-script/build.mjs` and test with `node --test apps-script/tests/core.test.mjs`.
+1. Install dependencies with `npm ci --prefix apps-script`, build with `node apps-script/build.mjs`, and test with `node --test apps-script/tests/core.test.mjs` from the repository root.
 2. Paste generated `apps-script/Code.gs` into an Apps Script project using the V8 runtime.
 3. Run `setupLivingIndex` from the editor as the owner. Review Google's Drive, Sheets, and identity permissions. Setup creates its own spreadsheet and private media folder; IDs are stored in Script Properties.
 4. Deploy a web app, execute as the owner, public access. Test owner access separately with the installing Google account. If Google withholds the active identity, administration fails closed. Use an owner-only deployment for admin if necessary.
@@ -41,7 +41,9 @@ Excel/PDF export libraries are loaded only on demand from pinned jsDelivr URLs. 
 
 ## Release status and remaining gates
 
-Local calculation, authorization guard, public/private response, PDF validation, and generated-script checks pass. Public rendering was inspected in Chrome. Before calling the release production-ready, verify the deployed owner/public sessions, PDF replacement and unpublished-file boundaries, all download flows, mobile layout, and browser history. Firefox/Safari and real-device performance have not been measured.
+The public Google Apps Script web app is deployed at https://script.google.com/macros/s/AKfycbzEszzwReW4V9uZCKTPvh6XEEAZzy1T-0L_JxliPaFDtliuIzO99PUx0qP-ufcXCO442w/exec (version 2, 23 October 2026). The owner page is the same URL with `?page=admin`. Its content spreadsheet is https://docs.google.com/spreadsheets/d/12yhy8RB1o5hSq09jHPX3Ln7w11vrFWrhCDOEWXOEgKM/edit. Keep that spreadsheet private.
+
+Eight local checks pass. In the deployed Chrome session, the public homepage, project case study, archive simulation, budget recalculation, workbook generation feedback, and owner project/resume management page rendered. Apps Script's HTML sanitizer truncated literal `https://` URLs inside inline JavaScript; the build now escapes their slashes and the same deployment was updated to version 2. Do not hand-edit the generated `Code.gs` or remove this escaping. Before calling the release production-ready, verify an anonymous visitor's access and owner denial, PDF replacement and unpublished-file boundaries, the actual downloaded workbook, mobile layout, and browser history. Firefox/Safari and real-device performance have not been measured.
 
 Apps Script serves HTML in Google's iframe wrapper. It does not offer the same SEO, canonical URL, sitemap, social metadata, custom domain, HTTP caching, or routing controls as a dedicated frontend host. These original brief requirements remain a documented platform limitation. No Core Web Vitals results or successful production deployment are claimed until measured/verified.
 
