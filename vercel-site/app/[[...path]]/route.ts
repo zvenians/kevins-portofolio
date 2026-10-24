@@ -6,18 +6,23 @@ export const runtime = 'nodejs';
 
 export async function GET(request: NextRequest, context: { params: Promise<{ path?: string[] }> }) {
   const { path = [] } = await context.params;
-  if (path.length && (path.length !== 2 || path[0] !== 'projects')) return new Response('Not found', { status: 404 });
+  if (path.length === 2 && path[0] === 'projects') return new Response(null, { status: 308, headers: { location: `/work/${encodeURIComponent(path[1])}` } });
+  if (path.length && (path.length !== 2 || path[0] !== 'work')) return new Response('Not found', { status: 404 });
   const content = await publicContent();
   const project = path.length ? content.projects.find(p => p.slug === path[1]) : null;
   if (path.length && !project) return new Response('Exhibit not found', { status: 404 });
   const title = project ? `${project.name} — Kevin Simatupang` : 'Kevin Simatupang — The Living Index';
-  const description = project?.summary || 'An evolving collection of web systems, data tools, and considered digital experiences.';
+  const description = project?.summary || 'Kevin Simatupang is a full-stack developer in Balikpapan working across web systems, operational data, workflow automation, and interface design.';
   const canonical = new URL(request.nextUrl.pathname, 'https://portfolio-kevins.vercel.app').toString();
+  const socialImage = new URL('/og', 'https://portfolio-kevins.vercel.app');
+  socialImage.searchParams.set('title', project?.name || 'Kevin Simatupang');
+  socialImage.searchParams.set('label', project ? `${project.status} / ${project.category}` : 'WEB SYSTEMS / OPERATIONAL DATA / INTERFACE DESIGN');
   const bootstrap = JSON.stringify({ ...content, appUrl: GAS_URL, admin: false, projectSlug: project?.slug || '' })
     .replace(/</g, '\\u003c').replace(/\u2028/g, '\\u2028').replace(/\u2029/g, '\\u2029');
   const preview = project ? `<article><h1>${escapeHtml(project.name)}</h1><p>${escapeHtml(description)}</p><p>${escapeHtml(project.challenge)}</p><p>${escapeHtml(project.approach)}</p><p>${escapeHtml(project.implementation)}</p><p>${escapeHtml(project.outcome)}</p></article>`
-    : `<section><h1>Kevin Simatupang</h1><p>Developer, systems, design, and data — Balikpapan, Indonesia.</p><h2>Selected work</h2>${content.projects.map(p => `<article><h3><a href="/projects/${encodeURIComponent(p.slug)}">${escapeHtml(p.name)}</a></h3><p>${escapeHtml(p.summary)}</p></article>`).join('')}</section>`;
-  const metadata = `<meta name="description" content="${escapeHtml(description)}"><meta property="og:title" content="${escapeHtml(title)}"><meta property="og:description" content="${escapeHtml(description)}"><meta property="og:url" content="${escapeHtml(canonical)}"><meta property="og:type" content="${project ? 'article' : 'website'}"><link rel="canonical" href="${escapeHtml(canonical)}">`;
+    : `<section><h1>Kevin Simatupang</h1><p>Full-stack developer working across web systems, operational data, automation, and interface design in Balikpapan, Indonesia.</p><h2>Selected real work</h2>${content.projects.filter(p => p.status === 'Real Project').map(p => `<article><h3><a href="/work/${encodeURIComponent(p.slug)}">${escapeHtml(p.name)}</a></h3><p>${escapeHtml(p.summary)}</p></article>`).join('')}</section>`;
+  const structuredData = project ? { '@context': 'https://schema.org', '@type': 'CreativeWork', name: project.name, headline: project.title, description, url: canonical, creator: { '@type': 'Person', name: 'Kevin Simatupang', url: 'https://portfolio-kevins.vercel.app/' }, keywords: [...(project.disciplines || []), ...(project.technologies || [])].join(', '), sameAs: [project.repositoryUrl, project.liveUrl].filter(Boolean) } : { '@context': 'https://schema.org', '@type': 'Person', name: 'Kevin Simatupang', jobTitle: 'Full-stack developer', address: { '@type': 'PostalAddress', addressLocality: 'Balikpapan', addressRegion: 'East Kalimantan', addressCountry: 'ID' }, url: canonical, sameAs: ['https://github.com/zvenians'] };
+  const metadata = `<meta name="description" content="${escapeHtml(description)}"><meta property="og:title" content="${escapeHtml(title)}"><meta property="og:description" content="${escapeHtml(description)}"><meta property="og:url" content="${escapeHtml(canonical)}"><meta property="og:type" content="${project ? 'article' : 'profile'}"><meta property="og:image" content="${escapeHtml(socialImage.toString())}"><meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="${escapeHtml(title)}"><meta name="twitter:description" content="${escapeHtml(description)}"><meta name="twitter:image" content="${escapeHtml(socialImage.toString())}"><link rel="canonical" href="${escapeHtml(canonical)}"><script type="application/ld+json">${JSON.stringify(structuredData).replace(/</g, '\\u003c')}</script>`;
   const html = template.replace('<title>Kevin Simatupang — The Living Index</title>', `<title>${escapeHtml(title)}</title>${metadata}`)
     .replace('<main id="main"></main>', `<main id="main">${preview}</main>`)
     .replace('/*BOOTSTRAP*/', `window.INDEX_HOSTED=true;window.INDEX_BOOTSTRAP=${bootstrap};`);

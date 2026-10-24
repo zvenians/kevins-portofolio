@@ -20,6 +20,7 @@
     ],
     "status": "Real Project",
     "visual": "portal",
+    "coverUrl": "https://raw.githubusercontent.com/zvenians/gmahk-galilea/21a5dd238279f61a48eebcaad59729ccb2da66c8/docs/visitor-ui-proof.jpg",
     "liveUrl": "https://gmahk-galilea.vercel.app",
     "challenge": "A community website needs to serve someone finding a service time and someone presenting a hymn on a large screen. Those are very different reading conditions.",
     "approach": "Keep the public interface lightweight. Separate the reader, schedule, appearance controls, and presentation behaviors into focused modules.",
