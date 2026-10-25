@@ -4,21 +4,8 @@ export const GAS_URL = 'https://script.google.com/macros/s/AKfycbzEszzwReW4V9uZC
 export type Project = { slug: string; name: string; title: string; summary: string; category: string; status: string; visibility: string; technologies: string[]; disciplines: string[]; evidence: string[]; visual: string; challenge: string; approach: string; implementation: string; outcome: string; tradeoff: string; featured?: boolean; order?: number; repositoryUrl?: string; liveUrl?: string; coverUrl?: string; mediaId?: string; revision?: string };
 export type Content = { projects: Project[]; resume: null | { name: string; uploadedAt: string }; settings: Record<string, string>; version?: string };
 
-// Interactive exhibits that ship with the frontend must remain available even
-// while an older Apps Script content sheet is still catching up. Remote
-// records win once the same slug is published from the owner workspace.
-const bundledProjectSlugs = new Set([
-  'ruang-temu-booking-demo',
-  'sera-goods-commerce-demo',
-  'operations-decision-workbench',
-  'research-practice-toolkit',
-  'asset-field-companion',
-  'research-data-preparation-studio',
-  'document-automation-studio',
-  'sera-commerce-operations-console',
-  'quality-evidence-room',
-  'project-brief-scope-builder'
-]);
+// Browser-local exhibits ship with the frontend even if the owner Sheet has
+// not been synchronized yet. A published owner record of the same slug wins.
 
 function withBundledProjects(content: Content): Content {
   const fallbackProjects = (fallback as Content).projects;
@@ -26,7 +13,7 @@ function withBundledProjects(content: Content): Content {
   const remoteProjects = content.projects.filter(p => p.visibility === 'public').map(project => ({ ...fallbackBySlug.get(project.slug), ...project } as Project));
   const remoteSlugs = new Set(remoteProjects.map(p => p.slug));
   const bundledProjects = fallbackProjects.filter(
-    p => p.visibility === 'public' && bundledProjectSlugs.has(p.slug) && !remoteSlugs.has(p.slug)
+    p => p.visibility === 'public' && p.status === 'Interactive Demo' && !remoteSlugs.has(p.slug)
   );
   return { ...content, projects: [...remoteProjects, ...bundledProjects].sort((a, b) => (Number(a.order) || 0) - (Number(b.order) || 0)) };
 }
