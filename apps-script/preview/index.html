@@ -1762,6 +1762,18 @@ main{transform-style:preserve-3d}
 @media(prefers-reduced-motion:reduce){.future-atmosphere i,.arrival-orbit i{animation:none!important}.world-stage>.section-heading,.arrival .name-display,.instrument,.exhibit,.exhibit:nth-child(even),.data-lab .workspace,.playground,.research-layout,.research-toolkit,.experiments-list,.profile-grid,.connect>h2,.case-page>h1,.resume-page>h1,.case-visual .visual{transform:none!important;transition:none!important}}
 
 /* Two self-contained art-directed workbenches. Their geometry is content, not ambience. */
+.arrival.world-stage{background:#dcd9cf;color:#171a1c;--ink:#171a1c;--muted:#495053;--line:#9ca19d;--bg:#dcd9cf;border-bottom:12px solid #e26341;min-height:calc(100svh - 86px)}
+.arrival.world-stage:before{background:radial-gradient(75vw circle at 78% 32%,rgba(226,99,65,.16),transparent 63%)}
+.arrival.world-stage:after{-webkit-text-stroke:1px rgba(30,35,34,.12)}
+.arrival .section-label,.arrival .hero-foot{border-color:#8d938f;color:#4a5351}.arrival .section-label{border-top:1px solid #8d938f;padding-top:16px}
+.arrival .name-display{position:relative;color:#171a1c;text-shadow:2px 3px 0 #f2eee7,8px 12px 0 rgba(34,39,38,.10)}
+.arrival .name-display b{color:#dc5d3e}.arrival .name-display span:first-child{letter-spacing:-.105em}.arrival .name-display span:last-child{letter-spacing:-.088em}
+.arrival .instrument{background:#192122;color:#eeeae0;border:1px solid #192122;box-shadow:18px 20px 0 #a8aba2;transform:perspective(1100px) rotateY(-7deg) rotateX(3deg) translateZ(58px)}
+.arrival .instrument-tabs button{color:#d4d9d4}.arrival .instrument-tabs button[aria-pressed=true]{color:#f17b53}.arrival .instrument-surface p{color:#d2d6d0}
+.arrival .visitor-paths{border-color:#999f99}.arrival .visitor-paths a{border-color:#999f99}.arrival .visitor-paths span{color:#4b5350}
+.arrival .arrival-orbit{opacity:.72;mix-blend-mode:multiply}.arrival .world-axis{color:#38403e}.arrival .world-axis i{background:#5c6764}
+@media(max-width:650px){.arrival.world-stage{min-height:0;border-bottom-width:8px}.arrival .instrument{transform:none;box-shadow:8px 10px 0 #a8aba2;margin:8px 8px 14px 0}.arrival .name-display{text-shadow:2px 3px 0 #f2eee7,4px 7px 0 rgba(34,39,38,.1)}}
+@media(prefers-reduced-motion:reduce){.arrival .instrument{transform:none}}.reduced .arrival .instrument{transform:none}
 .visual-morphslides{background:#171a1c;color:#f1ece4}.visual-logostudio{background:#e9e4d8;color:#192624}
 .morph-thumb{position:absolute;inset:16% 7% 8%;border-top:1px solid #ba5340;display:flex;flex-direction:column;justify-content:space-between;transform:perspective(900px) rotateY(-8deg);padding:18px 12px}
 .morph-thumb>span,.morph-thumb small,.logo-thumb small{font:10px var(--mono);letter-spacing:.16em}.morph-thumb strong{font:700 clamp(32px,4vw,65px)/.95 var(--display);max-width:70%;letter-spacing:-.07em;position:relative;z-index:2}.morph-thumb i{position:absolute;right:3%;top:6%;width:43%;aspect-ratio:1;border:28px solid #e26341;border-radius:50%;box-shadow:18px 22px 0 #803b31;transform:rotateX(25deg)}
