@@ -675,6 +675,42 @@
         "Three design directions",
         "SVG download"
       ]
+    },
+    {
+      "id": "wedding-invitation-demo",
+      "slug": "wedding-invitation-demo",
+      "title": "An invitation worth opening.",
+      "name": "Wedding Invitation Experience",
+      "summary": "A responsive digital wedding invitation with a live design editor, event details, a fictional story, and RSVP simulation.",
+      "category": "Visual Communication",
+      "disciplines": [
+        "Website Design",
+        "Invitation Design",
+        "Responsive UX"
+      ],
+      "technologies": [
+        "HTML",
+        "CSS",
+        "JavaScript",
+        "Accessible Forms"
+      ],
+      "status": "Interactive Demo",
+      "visual": "wedding",
+      "featured": false,
+      "order": 18,
+      "visibility": "public",
+      "updatedAt": "2026-10-25",
+      "challenge": "An invitation should feel personal without making guests search for the date, location, or RSVP.",
+      "approach": "Lead with the couple, then give the event facts a clear reading order. Keep the guest journey calm on a phone and make every important action available without animation.",
+      "implementation": "The demo updates fictional names, date, and visual direction in real time. It shows ceremony and reception details, an illustrative story, and a local RSVP confirmation with input validation. It does not send, store, or publish guest data.",
+      "outcome": "Visitors can inspect a responsive invitation flow and try the RSVP safely. This is a fictional demonstration, not a commissioned couple or production guest list.",
+      "tradeoff": "A real invitation requires approved photographs, precise event details, delivery and RSVP storage, privacy choices, and an agreed domain or hosting plan.",
+      "evidence": [
+        "Responsive invitation preview",
+        "Live content controls",
+        "Accessible RSVP validation",
+        "No public guest data storage"
+      ]
     }
   ],
   "settings": {},
