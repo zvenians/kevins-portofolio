@@ -99,6 +99,7 @@ function bindResearchToolkit(){
 
 function toolkitFrame(number,title,intro,form,output='<div id="tool-result" class="tool-result" aria-live="polite"></div>'){return `<div class="tool-title"><span class="eyebrow">${number} / WORKING TOOL</span><h4>${title}</h4><p>${intro}</p></div><div class="tool-body">${form}${output}</div>`;}
 function renderResearchTool(){
+  $('#research-toolkit').dataset.toolWorld=String(researchToolIndex+1).padStart(2,'0');
   $$('[data-research-tool]').forEach(button=>button.setAttribute('aria-selected',Number(button.dataset.researchTool)===researchToolIndex?'true':'false'));
   [methodAdvisor,samplePlanner,diagnosticsTool,resultsBuilder,questionnaireBuilder,citationChecker,defensePractice,revisionTracker][researchToolIndex]?.();
 }
