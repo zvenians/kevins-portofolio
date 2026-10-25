@@ -14,6 +14,7 @@ function initImmersion(){
   [...sections,...revealTargets].forEach(el=>window.__livingObserver.observe(el));
   initDemoDepth();
   initCreativeLinks();
+  initSpatialGallery();
   if(document.body.dataset.immersionBound)return;
   document.body.dataset.immersionBound='true';
   document.addEventListener('visibilitychange',()=>document.body.classList.toggle('tab-idle',document.hidden));
