@@ -11,7 +11,7 @@ function initCreativeLinks(){
   if(services&&!services.querySelector('.wedding-service'))services.insertAdjacentHTML('beforeend',`<article class="wedding-service"><span class="eyebrow">05 / SERVICE</span><h3>Wedding invitation websites</h3><p>A personal, mobile-first place for the story and the practical details guests need.</p><ul><li>Custom visual direction and couple story</li><li>Ceremony, reception, maps, and schedule</li><li>Guest-friendly RSVP flow</li><li>Photo and music choices by approval</li></ul><small>Demo names and event details are fictional. Live RSVP storage and domain setup are scoped separately.</small><a class="text-link" href="${projectHref('wedding-invitation-demo')}">Try an invitation <span>↗</span></a></article>`);
 }
 function studioDownload(name,content){const blob=new Blob([content],{type:'image/svg+xml;charset=utf-8'});const url=URL.createObjectURL(blob);const a=document.createElement('a');a.href=url;a.download=name;a.click();setTimeout(()=>URL.revokeObjectURL(url),1000);}
-function creativeStudio(kind){if(kind==='morphslides')morphStudio();else if(kind==='wedding')weddingStudio();else logoStudio();}
+function creativeStudio(kind){worldStudio(kind);}
 function morphStudio(){
   const root=document.querySelector('#creative-demo');if(!root)return;
   let scene=0,timer=null;const scenes=['The question','The evidence','The direction'];
