@@ -5,47 +5,6 @@
 :where(#next-wave-demo,#booking-demo,#archive-demo,#commerce-demo,.research-toolkit,.data-lab .workspace){font-synthesis:none;text-rendering:optimizeLegibility}
 
 /* Commerce — graphic-object catalogue, closer to an independent design store than a dashboard. */
-#commerce-demo{--world-display:"Syne",sans-serif;--world-body:"Bricolage Grotesque",sans-serif;--world-mono:"Space Mono",monospace}
-#commerce-demo .commerce-demo{--commerce-paper:#f4efdf;--commerce-ink:#11110f;--commerce-muted:#666358;--commerce-line:#11110f;--commerce-accent:#ee4b2b;background:#f4efdf;color:#11110f;font-family:var(--world-body);border:2px solid #11110f;box-shadow:18px 20px 0 #11110f}
-#commerce-demo .commerce-notice{padding:10px 18px;background:#ee4b2b;color:#fff8e9;border-bottom:2px solid #11110f;font:700 9px var(--world-mono);text-transform:uppercase}
-#commerce-demo .commerce-store-head{position:relative;min-height:430px;padding:42px;background:#f7d531;color:#11110f;border-bottom:2px solid #11110f;overflow:hidden;isolation:isolate}
-#commerce-demo .commerce-store-head:after{content:"S";position:absolute;z-index:-1;right:-.08em;bottom:-.37em;font:800 clamp(340px,48vw,680px)/1 var(--world-display);color:#ee4b2b;transform:rotate(-8deg)}
-#commerce-demo .commerce-store-head .eyebrow{font:700 10px var(--world-mono);letter-spacing:.11em}
-#commerce-demo .commerce-store-head h3{max-width:760px;font:800 clamp(68px,9vw,132px)/.78 var(--world-display)!important;letter-spacing:-.085em;text-transform:uppercase}
-#commerce-demo .commerce-store-head h3 i{font-family:inherit;font-style:normal;-webkit-text-stroke:2px #11110f;color:transparent}
-#commerce-demo .commerce-store-head button{align-self:flex-start;border:2px solid #11110f;background:#11110f;color:#f7d531;font:700 11px var(--world-mono);box-shadow:7px 7px 0 #fff8e9}
-#commerce-demo .commerce-layout{background:#f4efdf}
-#commerce-demo .commerce-catalog{padding:34px;border-right:2px solid #11110f}
-#commerce-demo .commerce-toolbar{padding-bottom:20px;border-bottom:2px solid #11110f}
-#commerce-demo :is(.commerce-toolbar,.commerce-product-copy,.commerce-shipping,.commerce-voucher,.commerce-checkout) label{font-family:var(--world-mono)}
-#commerce-demo .commerce-categories{gap:0}
-#commerce-demo .commerce-categories button{border:0;border-right:1px solid #11110f;border-bottom:1px solid #11110f;font:700 10px var(--world-mono);text-transform:uppercase}
-#commerce-demo .commerce-categories button[aria-pressed=true]{background:#ee4b2b;color:#fff8e9}
-#commerce-demo .commerce-grid{gap:18px}
-#commerce-demo .commerce-product{border:2px solid #11110f;background:#fff8e9;box-shadow:7px 8px 0 #11110f}
-#commerce-demo .commerce-product:nth-child(even){transform:translateY(28px)}
-#commerce-demo .commerce-product:hover{transform:translate3d(-3px,-8px,38px) rotate(-.4deg);box-shadow:13px 16px 0 #11110f}
-#commerce-demo .commerce-product:nth-child(even):hover{transform:translate3d(3px,18px,38px) rotate(.4deg)}
-#commerce-demo .commerce-product-art{min-height:285px;border-bottom:2px solid #11110f}
-#commerce-demo .commerce-product-art:after{border:2px solid currentColor}
-#commerce-demo .commerce-product-art b{font:800 clamp(42px,5vw,74px)/.8 var(--world-display);letter-spacing:-.08em;text-transform:uppercase;font-style:normal}
-#commerce-demo .commerce-product-copy h4{font:700 24px/.95 var(--world-display);letter-spacing:-.05em}
-#commerce-demo .commerce-product-copy>strong{font:700 14px var(--world-mono)}
-#commerce-demo .commerce-product-copy button{background:#11110f;color:#fff8e9;border:2px solid #11110f;font-weight:700;text-transform:uppercase}
-#commerce-demo .commerce-cart{position:relative;background:#11110f;color:#fff8e9;border:0;padding:30px;font-family:var(--world-body)}
-#commerce-demo .commerce-cart:before{content:"BAG";display:block;margin-bottom:32px;font:800 72px/.8 var(--world-display);letter-spacing:-.08em;color:#ee4b2b}
-#commerce-demo .commerce-cart :is(input,select,button){color:#fff8e9;border-color:#7f7b70}
-#commerce-demo .commerce-grand-total dd{color:#f7d531;font-family:var(--world-display)}
-#commerce-demo .commerce-checkout{padding:56px 42px;background:#2438e8;color:#fff8e9;border-top:2px solid #11110f}
-#commerce-demo .commerce-checkout h3{font:700 clamp(54px,7vw,98px)/.82 var(--world-display)!important;text-transform:uppercase}
-#commerce-demo .commerce-checkout h3 i{font-family:inherit;font-style:normal;color:#f7d531}
-#commerce-demo .commerce-checkout p{color:#d9ddff}
-#commerce-demo .commerce-checkout :is(input,select,textarea){color:#fff8e9;border-color:#b7c0ff}
-#commerce-demo .commerce-blueprint{padding:50px 42px;background:#f7d531;color:#11110f;border-top:2px solid #11110f}
-#commerce-demo .commerce-blueprint h3{font:800 clamp(48px,6vw,86px)/.82 var(--world-display)!important;text-transform:uppercase}
-#commerce-demo .commerce-sheet-map{border:2px solid #11110f;background:#11110f}
-#commerce-demo .commerce-sheet-map article{background:#fff8e9}
-#commerce-demo .commerce-flow{background:#ee4b2b;color:#fff8e9;border:2px solid #11110f;font-family:var(--world-mono)}
 
 /* Archive — a contemporary reading room and index-card system. */
 #archive-demo{position:relative;--demo-accent:#153f34;padding:clamp(28px,5vw,64px);background:#d8d1bd;color:#153f34;font-family:"Bricolage Grotesque",sans-serif;overflow:hidden}
@@ -175,8 +134,6 @@
 #next-wave-demo[data-demo="scopebuilder"] .scope-desk{border:2px solid #3c235f;box-shadow:13px 15px 0 #ffcc3e}
 
 @media(max-width:900px){
-  #commerce-demo .commerce-demo,#next-wave-demo .working-demo,.data-lab .workspace{box-shadow:9px 10px 0 currentColor}
-  #commerce-demo .commerce-product:nth-child(even){transform:none}
   #archive-demo .archive-list{grid-template-columns:1fr 1fr}
   #booking-demo .booking-form{grid-template-columns:1fr}
   #next-wave-demo .working-demo-head{grid-template-columns:1fr;min-height:420px}
@@ -185,18 +142,6 @@
 
 @media(max-width:600px){
   .demo-case-copy>h2{font-size:38px;margin-left:0}
-  #commerce-demo .commerce-demo{border-width:2px 0;box-shadow:none}
-  #commerce-demo .commerce-store-head{min-height:390px;padding:28px 20px;align-items:flex-start}
-  #commerce-demo .commerce-store-head:after{font-size:330px;bottom:-.32em}
-  #commerce-demo .commerce-store-head h3{font-size:60px!important;line-height:.8}
-  #commerce-demo .commerce-store-head h3 i{-webkit-text-stroke:1px #11110f}
-  #commerce-demo .commerce-catalog{padding:28px 20px;border-right:0}
-  #commerce-demo .commerce-product{box-shadow:6px 7px 0 #11110f}
-  #commerce-demo .commerce-product-art{min-height:280px}
-  #commerce-demo .commerce-product-art b{font-size:54px}
-  #commerce-demo .commerce-cart:before{font-size:58px}
-  #commerce-demo .commerce-checkout,#commerce-demo .commerce-blueprint{padding:38px 20px}
-  #commerce-demo .commerce-checkout h3,#commerce-demo .commerce-blueprint h3{font-size:51px!important}
 
   #archive-demo{padding:34px 20px}
   #archive-demo:before{display:none}

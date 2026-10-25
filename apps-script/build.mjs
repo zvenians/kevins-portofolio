@@ -1,13 +1,14 @@
 import {readFile,writeFile,mkdir} from 'node:fs/promises';
 import {build} from 'esbuild';
+import {buildStudioPreviews} from './studio-previews.mjs';
 const source=new URL('./source/',import.meta.url);
 const projects=JSON.parse(await readFile(new URL('projects.json',source),'utf8'));
 const engine=await build({entryPoints:['apps-script/source/data-engine.ts'],bundle:true,write:false,format:'iife',globalName:'Engine',target:'es2020'});
 // Apps Script's HTML sanitizer treats // in template literals as line comments.
 // Keep the URL equivalent while avoiding literal // in the emitted inline script.
-const client=(engine.outputFiles[0].text+'\n'+(await Promise.all(['Client.js','Lab.js','Commerce.js','OperationsResearch.js','NextWave.js','CreativeStudios.js','CreativeWorlds.js','Gallery.js','Immersion.js','DemoDepth.js','Admin.js'].map(n=>readFile(new URL(n,source),'utf8')))).join('\n'))
+const client=('const demoSnapshots='+JSON.stringify(await buildStudioPreviews(engine.outputFiles[0].text))+';\n'+engine.outputFiles[0].text+'\n'+(await Promise.all(['Client.js','Lab.js','Commerce.js','OperationsResearch.js','NextWave.js','CreativeStudios.js','CreativeWorlds.js','StudioSystems.js','Gallery.js','Immersion.js','DemoDepth.js','Admin.js'].map(n=>readFile(new URL(n,source),'utf8')))).join('\n'))
   .replaceAll('https://','https:\\x2f\\x2f');
-const css=(await Promise.all(['Styles.css','Enhancements.css','Commerce.css','OperationsResearch.css','NextWave.css','FieldOps.css','Immersion.css','DemoDepth.css','DemoTaste.css','DemoWorlds.css','FutureSpace.css','CreativeStudios.css','NewDirection.css'].map(name=>readFile(new URL(name,source),'utf8')))).join('\n');
+const css=(await Promise.all(['Styles.css','Enhancements.css','Commerce.css','OperationsResearch.css','NextWave.css','FieldOps.css','Immersion.css','DemoDepth.css','DemoTaste.css','DemoWorlds.css','FutureSpace.css','CreativeStudios.css','NewDirection.css','StudioSystems.css'].map(name=>readFile(new URL(name,source),'utf8')))).join('\n');
 const assets={html:await readFile(new URL('Index.html',source),'utf8'),css:css+'\n'+await readFile(new URL('Gallery.css',source),'utf8')+'\n'+await readFile(new URL('CreativeWorlds.css',source),'utf8'),client};
 const server=await readFile(new URL('Server.gs',source),'utf8');
 await writeFile(new URL('./Code.gs',import.meta.url),server+'\nconst SEED_PROJECTS = '+JSON.stringify(projects)+';\nconst ASSETS = '+JSON.stringify(assets)+';\n');

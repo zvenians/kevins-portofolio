@@ -40,6 +40,7 @@ for (const kind of ['wedding', 'morphslides', 'logostudio']) {
   if(kind==='logostudio'){
    const field=w.document.querySelector<HTMLInputElement>('#brand-name')!;field.value='TEST';field.dispatchEvent(new w.Event('input'));
    expect(w.document.querySelector('.identity-application strong')?.textContent).toBe('TEST');
+   expect(w.document.querySelector('.identity-art svg')?.textContent).toContain('TE');
    const grid=w.document.querySelector<HTMLInputElement>('#construction-grid')!;grid.checked=true;grid.dispatchEvent(new w.Event('change'));
    expect(w.document.querySelector('.identity-art')?.classList.contains('show-grid')).toBe(true);
   }
@@ -48,6 +49,9 @@ for (const kind of ['wedding', 'morphslides', 'logostudio']) {
    expect(w.document.querySelector('.morph-stage')?.getAttribute('data-scene')).toBe('1');
    (w.document.querySelector('[data-player="prev"]') as HTMLButtonElement).click();
    expect(w.document.querySelector('.morph-stage')?.getAttribute('data-scene')).toBe('0');
+   const copy=w.document.querySelector<HTMLInputElement>('[data-slide-copy="0"]')!;copy.value='A clear idea';copy.dispatchEvent(new w.Event('input'));
+   expect(w.document.querySelector('.slide-word')?.textContent).toBe('A clear idea');
+   w.document.querySelector<HTMLButtonElement>('#slide-reset')!.click();expect(w.document.querySelector('.slide-word')?.textContent).toBe('Observe');
   }
   dom.window.close();
  });
