@@ -63,6 +63,7 @@
       ],
       "status": "Real Project",
       "visual": "archive",
+      "coverUrl": "https://raw.githubusercontent.com/zvenians/gmahk-galilea-digital-archive/9a4b68ee28fa13775ad958048b3b412af3d918c9/public/jesus-hero.jpg",
       "liveUrl": "https://drive-galilea.vercel.app",
       "challenge": "Recurring documents and media need predictable organization without giving every visitor administrative access to cloud storage.",
       "approach": "Organize records by category and time, then put authentication and folder boundaries between the interface and Google Drive.",
@@ -603,6 +604,77 @@
       "order": 15,
       "visibility": "public",
       "updatedAt": "2026-10-23"
+    },
+    {
+      "id": "morph-presentation-studio",
+      "slug": "morph-presentation-studio",
+      "title": "Give the idea room to move.",
+      "name": "Morph Presentation Studio",
+      "summary": "An editable slide sequence where the same objects move between layouts—an interactive study of presentation pacing.",
+      "category": "Visual Communication",
+      "disciplines": [
+        "Presentation Design",
+        "Motion",
+        "Typography"
+      ],
+      "technologies": [
+        "HTML",
+        "CSS Transitions",
+        "JavaScript",
+        "SVG Export"
+      ],
+      "status": "Interactive Demo",
+      "visual": "morphslides",
+      "featured": false,
+      "order": 16,
+      "visibility": "public",
+      "updatedAt": "2026-10-25",
+      "challenge": "Dense slides make an audience read instead of listen. Movement can clarify the relationship between ideas when it follows the same visual objects.",
+      "approach": "Keep three slides connected by one numbered marker, headline, and geometric object. Let visitors change the wording and choose a visual direction before playing the sequence.",
+      "implementation": "A browser-local stage changes the layout of persistent DOM elements across three scenes. CSS interpolates their position, scale, shape, and color; reduced-motion removes the tween. Export creates an SVG of the selected frame, not a PowerPoint file.",
+      "outcome": "Visitors can edit copy, switch themes, step between slides, autoplay, and download an SVG still. This demonstrates slide direction and Morph-like behavior, not a completed PowerPoint commission.",
+      "tradeoff": "Actual PowerPoint Morph animations require an authored .pptx and are not produced by this browser preview. The export is a static SVG frame.",
+      "evidence": [
+        "Editable copy",
+        "Three connected scenes",
+        "Reduced-motion support",
+        "SVG still export"
+      ]
+    },
+    {
+      "id": "identity-mark-studio",
+      "slug": "identity-mark-studio",
+      "title": "A mark with a point of view.",
+      "name": "Identity Mark Studio",
+      "summary": "A small, functioning logo workbench: explore structure, weight, contrast, and export a vector concept.",
+      "category": "Visual Communication",
+      "disciplines": [
+        "Logo Design",
+        "Visual Identity",
+        "Typography"
+      ],
+      "technologies": [
+        "SVG",
+        "JavaScript",
+        "Design Systems"
+      ],
+      "status": "Interactive Demo",
+      "visual": "logostudio",
+      "featured": false,
+      "order": 17,
+      "visibility": "public",
+      "updatedAt": "2026-10-25",
+      "challenge": "A useful logo must work as a system, not only as a large image on a moodboard.",
+      "approach": "Offer a compact set of structural directions and test each at large and small sizes with deliberate color choices.",
+      "implementation": "The browser renders a live SVG from sanitized initials, geometric construction, color, and wordmark. Visitors can switch three directions and download the selected vector as SVG.",
+      "outcome": "A usable exploration of logo decisions and scalable output. All names and marks are fictional concepts, not client work or a claim of registered identity.",
+      "tradeoff": "This is a concept generator, not a trademark search, final identity strategy, or a substitute for a custom design engagement.",
+      "evidence": [
+        "Live vector construction",
+        "Small-size preview",
+        "Three design directions",
+        "SVG download"
+      ]
     }
   ],
   "settings": {},

@@ -13,6 +13,7 @@ function initImmersion(){
   window.__livingObserver=new IntersectionObserver(entries=>entries.forEach(entry=>{if(entry.isIntersecting){entry.target.classList.add('is-visible');if(entry.target.matches('section[id]'))setCurrentSpace(entry.target,sections);}}),{rootMargin:'-12% 0px -18%',threshold:.08});
   [...sections,...revealTargets].forEach(el=>window.__livingObserver.observe(el));
   initDemoDepth();
+  initCreativeLinks();
   if(document.body.dataset.immersionBound)return;
   document.body.dataset.immersionBound='true';
   document.addEventListener('visibilitychange',()=>document.body.classList.toggle('tab-idle',document.hidden));
