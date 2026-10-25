@@ -2,6 +2,18 @@ import { test, expect } from 'vitest';
 import { JSDOM } from 'jsdom';
 import { readFileSync } from 'node:fs';
 
+test('navigation opens, closes on selection, and returns focus on Escape',()=>{
+ const dom=new JSDOM('<header class="header"><nav><a href="#studio">Demo Studio</a></nav></header>',{runScripts:'outside-only'});
+ dom.window.eval(readFileSync('apps-script/source/Gallery.js','utf8'));
+ dom.window.eval('initGalleryNavigation();initGalleryNavigation();');
+ const button=dom.window.document.querySelector<HTMLButtonElement>('#gallery-menu')!;
+ expect(dom.window.document.querySelectorAll('#gallery-menu').length).toBe(1);
+ button.click();expect(button.getAttribute('aria-expanded')).toBe('true');
+ dom.window.document.querySelector<HTMLAnchorElement>('nav a')!.click();expect(button.getAttribute('aria-expanded')).toBe('false');
+ button.click();button.dispatchEvent(new dom.window.KeyboardEvent('keydown',{key:'Escape',bubbles:true}));
+ expect(button.getAttribute('aria-expanded')).toBe('false');expect(dom.window.document.activeElement).toBe(button);dom.window.close();
+});
+
 for (const kind of ['wedding', 'morphslides', 'logostudio']) {
  test(`gallery ${kind} initializes and switches every direction`, () => {
   const dom = new JSDOM(`<div id="creative-demo" data-demo="${kind}"></div>`, {url:'https://example.com/work/demo', runScripts:'outside-only'});
