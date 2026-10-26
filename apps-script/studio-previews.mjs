@@ -3,7 +3,7 @@ import {readFile} from 'node:fs/promises';
 
 // Render the real, initial demo DOM at build time. No invented UI or live nested apps.
 export async function buildStudioPreviews(engine){
- const sources=await Promise.all(['Lab.js','Commerce.js','StudioSystems.js'].map(name=>readFile(new URL('./source/'+name,import.meta.url),'utf8')));
+ const sources=await Promise.all(['Lab.js','Commerce.js','StudioSystems.js','Cinematic.js'].map(name=>readFile(new URL('./source/'+name,import.meta.url),'utf8')));
  const definitions=[['web-commerce','commerce-demo','commerceDemo()'],['web-archive','archive-demo','archiveExperience()'],['web-booking','booking-demo','bookingExperience()'],...['reconcile','validate','budget','maintenance'].map((id,n)=>[id,'workspace',`state.lab=${n};renderLab()`])];
  const snapshots={};
  for(const [id,root,call] of definitions){

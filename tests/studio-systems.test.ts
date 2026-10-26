@@ -8,7 +8,7 @@ function setup(root:string){
  const dom=new JSDOM(`<div id="${root}"></div><dialog id="preview-dialog"><h3 id="preview-title"></h3><div id="preview-body"></div></dialog>`,{url:'https://example.com',runScripts:'outside-only'});
  dom.window.HTMLElement.prototype.scrollIntoView=()=>{};
  dom.window.HTMLDialogElement.prototype.showModal=function(){this.open=true;};
- dom.window.eval(engine.replace('"use strict";', '')+`\nvar $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)];var reduced=true;var state={lab:0,source:'reconciled',threshold:1000000,highlight:true};var esc=s=>String(s??'').replaceAll('&','&amp;').replaceAll('<','&lt;').replaceAll('>','&gt;').replaceAll('"','&quot;');var toast=()=>{};var action=()=>{};var procurement=()=>{};`+'\n'+['Lab.js','Commerce.js','StudioSystems.js'].map(file=>readFileSync('apps-script/source/'+file,'utf8')).join('\n'));
+ dom.window.eval(engine.replace('"use strict";', '')+`\nvar $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)];var reduced=true;var state={lab:0,source:'reconciled',threshold:1000000,highlight:true};var esc=s=>String(s??'').replaceAll('&','&amp;').replaceAll('<','&lt;').replaceAll('>','&gt;').replaceAll('"','&quot;');var toast=()=>{};var action=()=>{};var procurement=()=>{};`+'\n'+['Lab.js','Commerce.js','StudioSystems.js','Cinematic.js'].map(file=>readFileSync('apps-script/source/'+file,'utf8')).join('\n'));
  return dom;
 }
 test('archive filters folders and titles, previews sample records and queues locally',async()=>{
