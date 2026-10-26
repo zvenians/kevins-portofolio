@@ -713,6 +713,11 @@
       ]
     }
   ],
-  "settings": {},
-  "resume": null
+  "resume": null,
+  "settings": {
+    "email": "simatupangkevin9@gmail.com",
+    "linkedin": "https://www.linkedin.com/in/kevinoloann",
+    "whatsapp": "6287810933977"
+  },
+  "version": "snapshot"
 }

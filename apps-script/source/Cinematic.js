@@ -1,0 +1,14 @@
+// Product-led arrival, driven by the same project registry as the work index.
+galleryArrival=function(arrival){
+ arrival.classList.add('cinematic-arrival');
+ const projects=data.projects.filter(p=>p.status==='Real Project');
+ arrival.innerHTML=`<div class="cinema-intro"><span class="eyebrow">KEVIN SIMATUPANG · INDEPENDENT DEVELOPER</span><h1>Complex things.<br><span>Beautifully simple.</span></h1><p>Web experiences. Clearer data. Thoughtful design.<br>Made to work together.</p><div class="cinema-actions"><a href="${homeHref('field')}">Explore my work <span>↗</span></a><a href="${homeHref('studio')}">Enter the studio <span>→</span></a></div></div><div class="cinema-gallery"><div class="cinema-caption"><span>SELECTED WORK / ${String(projects.length).padStart(2,'0')}</span><span>Choose a project to explore</span></div><div class="cinema-panels">${projects.map((p,i)=>`<button class="cinema-panel" data-cinema="${i}" aria-pressed="${i===0}" aria-label="${esc(p.name)}"><div class="cinema-art">${visual(p)}</div><span class="cinema-number">${String(i+1).padStart(2,'0')}</span><span class="cinema-name">${esc(p.name)}</span></button>`).join('')}</div><div class="cinema-detail" aria-live="polite"></div></div><div class="cinema-end"><span>BASED IN BALIKPAPAN, INDONESIA</span><a href="${homeHref('field')}">Scroll to discover ↓</a><span>WEB · DATA · DESIGN</span></div>`;
+ const choose=index=>{const p=projects[index];if(!p)return;arrival.querySelectorAll('[data-cinema]').forEach(b=>b.setAttribute('aria-pressed',String(Number(b.dataset.cinema)===index)));arrival.querySelector('.cinema-detail').innerHTML=`<div><span class="eyebrow">${esc(p.category)}</span><h2>${esc(p.name)}</h2></div><p>${esc(p.summary)}</p><a href="${projectHref(p.slug)}">Explore project ↗</a>`;};
+ arrival.querySelectorAll('[data-cinema]').forEach((button,i)=>{button.onclick=()=>choose(i);button.onkeydown=e=>{if(!['ArrowLeft','ArrowRight','Home','End'].includes(e.key))return;e.preventDefault();const next=e.key==='Home'?0:e.key==='End'?projects.length-1:(i+(e.key==='ArrowRight'?1:-1)+projects.length)%projects.length;choose(next);arrival.querySelector(`[data-cinema="${next}"]`).focus();};});choose(0);hydrateMedia();
+};
+const originalImmersion=initImmersion;
+let cinematicFrame=0;
+function updateCinematic(){cinematicFrame=0;const gallery=document.querySelector('.cinema-gallery');if(!gallery)return;const rect=gallery.getBoundingClientRect();const progress=Math.max(0,Math.min(1,(innerHeight-rect.top)/innerHeight));gallery.style.setProperty('--cinema-progress',reduced?1:progress);}
+initImmersion=function(){originalImmersion();document.body.classList.add('cinematic');updateCinematic();};
+window.addEventListener('scroll',()=>{if(!cinematicFrame)cinematicFrame=requestAnimationFrame(updateCinematic);},{passive:true});
+window.addEventListener('resize',()=>{if(!cinematicFrame)cinematicFrame=requestAnimationFrame(updateCinematic);},{passive:true});
