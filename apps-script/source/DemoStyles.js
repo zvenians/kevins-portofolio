@@ -1,0 +1,13 @@
+// Styles change presentation in place: forms, page positions, carts and records survive.
+const demoStyleNames={manga:['Clean','Anime Club','Midnight Reader'],attendance:['Clean','Team Board','Night Shift'],commerce:['Clean','Editorial Shop','Design Market'],booking:['Clean','Wellness Studio','Concierge'],archive:['Clean','Library Index','Archive Desk'],operations:['Clean','Analyst Board','Focus Desk'],researchtools:['Clean','Research Journal','Focus Desk'],fieldcompanion:['Clean','Field Notebook','Control Room'],dataprep:['Clean','Analyst Board','Focus Desk'],documents:['Clean','Paper Studio','Document Desk'],commerceops:['Clean','Retail Board','Control Room'],qualityroom:['Clean','Review Board','Control Room'],scopebuilder:['Clean','Creative Brief','Consulting Desk'],lab:['Clean','Analyst Board','Focus Desk']};
+function initDemoStyles(){
+ const hosts=[['#manga-demo','manga'],['#attendance-demo','attendance'],['#commerce-demo','commerce'],['#booking-demo','booking'],['#archive-demo','archive'],['#workspace','lab'],['#research-toolkit','researchtools'],['#next-wave-demo',null]];
+ hosts.forEach(([selector,kind])=>{const host=document.querySelector(selector);if(!host||host.closest('.demo-presentation'))return;kind=kind||host.dataset.demo;const names=demoStyleNames[kind];if(!names)return;
+ const shell=document.createElement('div');shell.className='demo-presentation';shell.dataset.demoFamily=kind;host.before(shell);shell.append(host);
+ const params=new URLSearchParams(location.search),style=params.get('style'),initial=['clean','expressive','focus'].includes(style)?style:'clean';
+ const bar=document.createElement('div');bar.className='demo-style-bar';bar.innerHTML=`<div><span class="eyebrow">01 / CHOOSE YOUR STYLE</span><p>Same demo. Three perspectives.</p></div><div class="demo-style-options" role="group" aria-label="Demo style">${names.map((name,i)=>`<button data-demo-style-choice="${['clean','expressive','focus'][i]}" aria-pressed="false"><i class="style-swatch swatch-${i}"></i>${name}${i===0?'<small>DEFAULT</small>':''}</button>`).join('')}</div><span class="demo-style-note">02 / TRY THE DEMO BELOW ↓</span>`;shell.prepend(bar);
+ const apply=(value,write)=>{shell.dataset.demoStyle=value;bar.querySelectorAll('button').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.demoStyleChoice===value)));if(write){const url=new URL(location.href);url.searchParams.set('style',value);history.replaceState(null,'',url);}};
+ bar.querySelectorAll('button').forEach(b=>b.onclick=()=>apply(b.dataset.demoStyleChoice,true));apply(initial,false);
+ });
+ hydrateStudioPreviews(document);
+}

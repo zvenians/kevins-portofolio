@@ -8,7 +8,7 @@ galleryArrival=function(arrival){
  arrival.querySelectorAll('[data-turn]').forEach(b=>b.onclick=()=>choose(selected+Number(b.dataset.turn)));
  const scene=arrival.querySelector('.scene-viewport');scene.onpointerdown=e=>{startX=e.clientX;dragged=false;};scene.onpointerup=e=>{if(startX!==null&&Math.abs(e.clientX-startX)>45){dragged=true;choose(selected+(e.clientX<startX?1:-1));}startX=null;};scene.onpointercancel=()=>{startX=null;};scene.onpointerleave=()=>{startX=null;};choose(0);hydrateMedia();
 };
-initImmersion=function(){document.body.classList.add('spatial-gallery','spatial-v2');initCreativeLinks();initSpatialGallery();initCleanExperience();};
+initImmersion=function(){document.body.classList.add('spatial-gallery','spatial-v2');initCreativeLinks();initSpatialGallery();initCleanExperience();if(typeof initDemoStyles==='function')initDemoStyles();};
 if(typeof renderLab==='function'){
  const spatialRenderLab=renderLab;renderLab=function(){spatialRenderLab();const root=document.querySelector('#workspace'),controls=root?.querySelector('.lab-controls');if(!controls)return;root.classList.add('analysis-workspace');const layout=document.createElement('div');layout.className='analysis-layout';controls.before(layout);const sidebar=document.createElement('aside');sidebar.className='analysis-sidebar';sidebar.innerHTML='<span class="edition-label">INPUT / PARAMETERS</span>';layout.append(sidebar);sidebar.append(controls);const output=document.createElement('div');output.className='analysis-output';while(layout.nextSibling)output.append(layout.nextSibling);layout.append(output);};
 }

@@ -20,7 +20,7 @@
     ],
     "status": "Real Project",
     "visual": "portal",
-    "coverUrl": "https://raw.githubusercontent.com/zvenians/gmahk-galilea/21a5dd238279f61a48eebcaad59729ccb2da66c8/docs/visitor-ui-proof.jpg",
+    "coverUrl": "https://portfolio-kevins.vercel.app/project-shots/galilea-web-portal.webp",
     "liveUrl": "https://gmahk-galilea.vercel.app",
     "challenge": "A community website needs to serve someone finding a service time and someone presenting a hymn on a large screen. Those are very different reading conditions.",
     "approach": "Keep the public interface lightweight. Separate the reader, schedule, appearance controls, and presentation behaviors into focused modules.",
@@ -62,7 +62,7 @@
     ],
     "status": "Real Project",
     "visual": "archive",
-    "coverUrl": "https://raw.githubusercontent.com/zvenians/gmahk-galilea-digital-archive/9a4b68ee28fa13775ad958048b3b412af3d918c9/public/jesus-hero.jpg",
+    "coverUrl": "https://portfolio-kevins.vercel.app/project-shots/galilea-digital-archive.webp",
     "liveUrl": "https://drive-galilea.vercel.app",
     "challenge": "Recurring documents and media need predictable organization without giving every visitor administrative access to cloud storage.",
     "approach": "Organize records by category and time, then put authentication and folder boundaries between the interface and Google Drive.",
@@ -121,7 +121,8 @@
     "visibility": "public",
     "updatedAt": "2026-10-22",
     "repositoryUrl": "https://github.com/zvenians/majelis-galilea",
-    "revision": "748021b9211b0ac2edc45c7fa15d13b5a4235f70"
+    "revision": "748021b9211b0ac2edc45c7fa15d13b5a4235f70",
+    "coverUrl": "https://portfolio-kevins.vercel.app/project-shots/majelis-galilea.webp"
   },
   {
     "slug": "naomi-rouli",
@@ -159,7 +160,8 @@
     "visibility": "public",
     "updatedAt": "2026-10-22",
     "repositoryUrl": "https://github.com/zvenians/naomirouli",
-    "revision": "486fea3ead595309b8fc1a97d573aa3ec334ec97"
+    "revision": "486fea3ead595309b8fc1a97d573aa3ec334ec97",
+    "coverUrl": "https://portfolio-kevins.vercel.app/project-shots/naomi-rouli.webp"
   },
   {
     "slug": "zvenians-exploration",
@@ -232,7 +234,7 @@
   {
     "slug": "ruang-temu-booking-demo",
     "title": "Booking, without the back-and-forth.",
-    "name": "Ruang Temu — Booking Demo",
+    "name": "Ruang Temu \u2014 Booking Demo",
     "summary": "A local-service booking demo that helps customers choose a service, pick a time, and send one clear booking summary.",
     "category": "Digital Products",
     "disciplines": [
@@ -268,7 +270,7 @@
   {
     "slug": "sera-goods-commerce-demo",
     "title": "A small shop with serious order logic.",
-    "name": "SERA Goods — Commerce Demo",
+    "name": "SERA Goods \u2014 Commerce Demo",
     "summary": "A detailed storefront demonstration with product discovery, variants, stock-aware cart logic, vouchers, shipping choices, and a clear checkout review.",
     "category": "Digital Products",
     "disciplines": [
@@ -367,7 +369,7 @@
     "approach": "Turn the support process into inspectable tools. Each module explains its rule, exposes the inputs, gives a cautious output, and names what it cannot decide. The interface supports learning and revision instead of replacing the student.",
     "implementation": "Eight browser-based modules cover method advising, survey sample estimates, assumption diagnostics, formatted result tables, questionnaire blueprints, author-year consistency checks, defense-question practice, and a locally saved revision plan. Sample exports are generated without uploading research data.",
     "outcome": "Visitors can test a research decision from planning through defense preparation and download selected working files. All examples are fictional, and all generated writing is labeled as a draft for student and supervisor review.",
-    "tradeoff": "The toolkit does not run SPSS, verify source authenticity, approve a methodology, write a thesis, fabricate data, or guarantee an academic result. Discipline-specific decisions still require qualified supervision and the student’s own work.",
+    "tradeoff": "The toolkit does not run SPSS, verify source authenticity, approve a methodology, write a thesis, fabricate data, or guarantee an academic result. Discipline-specific decisions still require qualified supervision and the student\u2019s own work.",
     "evidence": [
       "Research-method decision helper",
       "Finite-population sample-size calculation",
@@ -571,7 +573,7 @@
     "slug": "project-brief-scope-builder",
     "title": "A useful brief before a confident estimate.",
     "name": "Project Brief & Scope Builder",
-    "summary": "A practical intake tool for websites, data work, research support, and automation—without guessing a price or promising an unreviewed deadline.",
+    "summary": "A practical intake tool for websites, data work, research support, and automation\u2014without guessing a price or promising an unreviewed deadline.",
     "category": "Business Systems",
     "disciplines": [
       "Workflow Design",
@@ -609,7 +611,7 @@
     "slug": "morph-presentation-studio",
     "title": "Give the idea room to move.",
     "name": "Morph Presentation Studio",
-    "summary": "An editable slide sequence where the same objects move between layouts—an interactive study of presentation pacing.",
+    "summary": "An editable slide sequence where the same objects move between layouts\u2014an interactive study of presentation pacing.",
     "category": "Visual Communication",
     "disciplines": [
       "Presentation Design",
@@ -681,7 +683,7 @@
     "title": "An invitation worth opening.",
     "name": "Wedding Invitation Experience",
     "summary": "A responsive digital wedding invitation with a live design editor, event details, a fictional story, and RSVP simulation.",
-    "category": "Visual Communication",
+    "category": "Digital Products",
     "disciplines": [
       "Website Design",
       "Invitation Design",
@@ -745,6 +747,74 @@
       "CSS 3D front-and-back page turn",
       "Adaptive single page and two-page spreads",
       "Local bookmark and chapter controls"
+    ]
+  },
+  {
+    "id": "presence-attendance-demo",
+    "slug": "presence-attendance-demo",
+    "title": "A good day, starts together.",
+    "name": "Presence Attendance",
+    "summary": "A working attendance desk with check-in, check-out, status filters, and CSV export. Three styles, one fictional team.",
+    "category": "Digital Products",
+    "disciplines": [
+      "Website Design",
+      "Interactive Development",
+      "Accessible UX"
+    ],
+    "technologies": [
+      "JavaScript",
+      "CSS 3D",
+      "CSV Export"
+    ],
+    "status": "Interactive Demo",
+    "visual": "attendance",
+    "featured": false,
+    "order": 20,
+    "visibility": "public",
+    "updatedAt": "2026-10-27",
+    "challenge": "Make daily attendance easy to understand without hiding corrections or late arrivals.",
+    "approach": "One team view, a clear check-in action, and explicit simulated time.",
+    "implementation": "Local attendance state with duplicate prevention, chronological check-out validation, search, filters, summary metrics, and CSV export.",
+    "outcome": "Try a full check-in and check-out journey with six fictional team members.",
+    "tradeoff": "A production system requires authentication, a trusted server clock, authorization, durable records, and an agreed attendance policy.",
+    "evidence": [
+      "Validated attendance transitions",
+      "Live summary and filters",
+      "Exportable fictional ledger"
+    ]
+  },
+  {
+    "id": "archive-browser-demo",
+    "slug": "archive-browser-demo",
+    "title": "Everything, in its place.",
+    "name": "Archive Browser",
+    "summary": "A fictional document archive with folder navigation, search, sample previews, and a simulated upload queue.",
+    "category": "Digital Products",
+    "disciplines": [
+      "Website Design",
+      "Interactive Development",
+      "Accessible UX"
+    ],
+    "technologies": [
+      "JavaScript",
+      "HTML",
+      "CSS"
+    ],
+    "status": "Interactive Demo",
+    "visual": "archive",
+    "featured": false,
+    "order": 21,
+    "visibility": "public",
+    "updatedAt": "2026-10-27",
+    "challenge": "Help visitors locate a document without searching through an unstructured file list.",
+    "approach": "Use clear folders, document metadata, and a searchable list.",
+    "implementation": "Local sample records, folder filters, document preview and a simulated upload queue.",
+    "outcome": "Try finding, previewing, and downloading a fictional sample.",
+    "tradeoff": "Production storage, identity, authorization, and file scanning are outside this local demonstration.",
+    "evidence": [
+      "Searchable sample records",
+      "Folder navigation",
+      "Local sample preview"
     ]
   }
 ]

@@ -21,7 +21,7 @@
       ],
       "status": "Real Project",
       "visual": "portal",
-      "coverUrl": "https://raw.githubusercontent.com/zvenians/gmahk-galilea/21a5dd238279f61a48eebcaad59729ccb2da66c8/docs/visitor-ui-proof.jpg",
+      "coverUrl": "https://portfolio-kevins.vercel.app/project-shots/galilea-web-portal.webp",
       "liveUrl": "https://gmahk-galilea.vercel.app",
       "challenge": "A community website needs to serve someone finding a service time and someone presenting a hymn on a large screen. Those are very different reading conditions.",
       "approach": "Keep the public interface lightweight. Separate the reader, schedule, appearance controls, and presentation behaviors into focused modules.",
@@ -63,7 +63,7 @@
       ],
       "status": "Real Project",
       "visual": "archive",
-      "coverUrl": "https://raw.githubusercontent.com/zvenians/gmahk-galilea-digital-archive/9a4b68ee28fa13775ad958048b3b412af3d918c9/public/jesus-hero.jpg",
+      "coverUrl": "https://portfolio-kevins.vercel.app/project-shots/galilea-digital-archive.webp",
       "liveUrl": "https://drive-galilea.vercel.app",
       "challenge": "Recurring documents and media need predictable organization without giving every visitor administrative access to cloud storage.",
       "approach": "Organize records by category and time, then put authentication and folder boundaries between the interface and Google Drive.",
@@ -122,7 +122,8 @@
       "visibility": "public",
       "updatedAt": "2026-10-22",
       "repositoryUrl": "https://github.com/zvenians/majelis-galilea",
-      "revision": "748021b9211b0ac2edc45c7fa15d13b5a4235f70"
+      "revision": "748021b9211b0ac2edc45c7fa15d13b5a4235f70",
+      "coverUrl": "https://portfolio-kevins.vercel.app/project-shots/majelis-galilea.webp"
     },
     {
       "slug": "naomi-rouli",
@@ -160,7 +161,8 @@
       "visibility": "public",
       "updatedAt": "2026-10-22",
       "repositoryUrl": "https://github.com/zvenians/naomirouli",
-      "revision": "486fea3ead595309b8fc1a97d573aa3ec334ec97"
+      "revision": "486fea3ead595309b8fc1a97d573aa3ec334ec97",
+      "coverUrl": "https://portfolio-kevins.vercel.app/project-shots/naomi-rouli.webp"
     },
     {
       "slug": "zvenians-exploration",
@@ -682,7 +684,7 @@
       "title": "An invitation worth opening.",
       "name": "Wedding Invitation Experience",
       "summary": "A responsive digital wedding invitation with a live design editor, event details, a fictional story, and RSVP simulation.",
-      "category": "Visual Communication",
+      "category": "Digital Products",
       "disciplines": [
         "Website Design",
         "Invitation Design",
@@ -746,6 +748,74 @@
         "CSS 3D front-and-back page turn",
         "Adaptive single page and two-page spreads",
         "Local bookmark and chapter controls"
+      ]
+    },
+    {
+      "id": "presence-attendance-demo",
+      "slug": "presence-attendance-demo",
+      "title": "A good day, starts together.",
+      "name": "Presence Attendance",
+      "summary": "A working attendance desk with check-in, check-out, status filters, and CSV export. Three styles, one fictional team.",
+      "category": "Digital Products",
+      "disciplines": [
+        "Website Design",
+        "Interactive Development",
+        "Accessible UX"
+      ],
+      "technologies": [
+        "JavaScript",
+        "CSS 3D",
+        "CSV Export"
+      ],
+      "status": "Interactive Demo",
+      "visual": "attendance",
+      "featured": false,
+      "order": 20,
+      "visibility": "public",
+      "updatedAt": "2026-10-27",
+      "challenge": "Make daily attendance easy to understand without hiding corrections or late arrivals.",
+      "approach": "One team view, a clear check-in action, and explicit simulated time.",
+      "implementation": "Local attendance state with duplicate prevention, chronological check-out validation, search, filters, summary metrics, and CSV export.",
+      "outcome": "Try a full check-in and check-out journey with six fictional team members.",
+      "tradeoff": "A production system requires authentication, a trusted server clock, authorization, durable records, and an agreed attendance policy.",
+      "evidence": [
+        "Validated attendance transitions",
+        "Live summary and filters",
+        "Exportable fictional ledger"
+      ]
+    },
+    {
+      "id": "archive-browser-demo",
+      "slug": "archive-browser-demo",
+      "title": "Everything, in its place.",
+      "name": "Archive Browser",
+      "summary": "A fictional document archive with folder navigation, search, sample previews, and a simulated upload queue.",
+      "category": "Digital Products",
+      "disciplines": [
+        "Website Design",
+        "Interactive Development",
+        "Accessible UX"
+      ],
+      "technologies": [
+        "JavaScript",
+        "HTML",
+        "CSS"
+      ],
+      "status": "Interactive Demo",
+      "visual": "archive",
+      "featured": false,
+      "order": 21,
+      "visibility": "public",
+      "updatedAt": "2026-10-27",
+      "challenge": "Help visitors locate a document without searching through an unstructured file list.",
+      "approach": "Use clear folders, document metadata, and a searchable list.",
+      "implementation": "Local sample records, folder filters, document preview and a simulated upload queue.",
+      "outcome": "Try finding, previewing, and downloading a fictional sample.",
+      "tradeoff": "Production storage, identity, authorization, and file scanning are outside this local demonstration.",
+      "evidence": [
+        "Searchable sample records",
+        "Folder navigation",
+        "Local sample preview"
       ]
     }
   ],
