@@ -1,0 +1,116 @@
+/* Invitation-only art direction: portfolio controls retain the shared system. */
+body.clean-ui .wedding-modern{--wed-paper:#f4f0e7;--wed-ink:#38382e;--wed-muted:#656454;--wed-accent:#404b36;--wed-line:#d7d2c5;background:var(--wed-paper);color:var(--wed-ink);isolation:isolate;overflow:clip;border-radius:18px;line-height:1.6}
+body.clean-ui .wedding-modern[data-wedding-theme=botanical]{--wed-paper:#eef0e6;--wed-ink:#273a30;--wed-muted:#526352;--wed-accent:#344c39;--wed-line:#cdd5c3}
+body.clean-ui .wedding-modern[data-wedding-theme=cinema]{--wed-paper:#202621;--wed-ink:#f5eee1;--wed-muted:#c3c6b7;--wed-accent:#dddfc8;--wed-line:#51594e}
+body.clean-ui .wedding-modern :is(h3,h4,p,figure){margin:0;color:inherit;max-width:none}
+body.clean-ui .wedding-modern :is(h3,h4){font-weight:400;letter-spacing:-.055em;line-height:1.04}
+body.clean-ui .wedding-modern h3{font-size:clamp(32px,4.6vw,64px)}
+body.clean-ui .wedding-modern h4{font-size:25px}
+body.clean-ui .wedding-modern h3 em{font-family:var(--system)!important;font-weight:300;font-style:normal;color:var(--wed-muted)}
+body.clean-ui .wedding-modern :is(button,input,select,textarea,summary){font-size:14px;letter-spacing:0;text-transform:none}
+body.clean-ui .wedding-modern button{cursor:pointer;min-height:44px}
+body.clean-ui .wedding-modern :is(button,a,input,select,textarea,summary):focus-visible{outline:3px solid #ab7950;outline-offset:5px}
+body.clean-ui .wedding-modern [hidden]{display:none!important}
+body.clean-ui .wedding-modern img{display:block;width:100%;height:100%;object-fit:cover}
+body.clean-ui .wedding-modern .wed-kicker{display:block;font-size:10px;letter-spacing:.16em;font-weight:500;line-height:1.5;color:var(--wed-muted)}
+body.clean-ui .wed-tools{position:relative;z-index:4;display:flex;align-items:center;justify-content:space-between;gap:20px;padding:18px 28px;border-bottom:1px solid var(--wed-line)}
+body.clean-ui .wed-tools>span{font-size:10px;letter-spacing:.14em}.wed-tools>span i{font-style:normal;opacity:.5;margin:0 8px}
+body.clean-ui .wedding-modern .inv-personalize{margin:0;padding:0;border:0;background:transparent!important;color:var(--wed-ink)}
+body.clean-ui .wedding-modern .inv-personalize summary{cursor:pointer;font-size:12px;list-style:none;padding:8px 0;display:flex;gap:16px}
+body.clean-ui .wedding-modern .inv-personalize>div{position:absolute;top:100%;right:20px;display:grid;grid-template-columns:1fr;gap:16px;width:min(320px,calc(100% - 40px));padding:24px;background:var(--wed-paper);border:1px solid var(--wed-line);box-shadow:0 16px 44px #0002;border-radius:0 0 12px 12px}
+body.clean-ui .wed-cover.inv-opening{display:grid;grid-template-columns:1fr 1fr;position:relative;padding:0;min-height:660px;overflow:hidden;background:var(--wed-paper);border:0;border-radius:0}
+body.clean-ui .wed-cover-photo{grid-column:2;grid-row:1;position:relative;min-height:660px;background:#5d6254;overflow:hidden}
+body.clean-ui .wed-cover-photo img{position:absolute;inset:0;object-position:50% 45%;transition:transform 1.4s cubic-bezier(.2,.7,.2,1)}
+body.clean-ui .is-open .wed-cover-photo img{transform:scale(1.045)}
+body.clean-ui .wed-photo-note{position:absolute;bottom:28px;left:30px;color:#fff;font-size:10px;letter-spacing:.18em;text-shadow:0 1px 10px #000;background:#2227;padding:5px 9px}
+body.clean-ui .wed-cover-copy{grid-column:1;grid-row:1;display:flex;flex-direction:column;align-items:flex-start;justify-content:center;padding:58px 12%;position:relative;z-index:1}
+body.clean-ui .wedding-modern .wed-names{font-size:clamp(62px,7.7vw,106px);line-height:.97;margin:45px 0 30px;overflow-wrap:anywhere;max-width:100%;font-weight:300}
+body.clean-ui .wed-names>span{display:block}body.clean-ui .wedding-modern .wed-names em{display:block;font-size:.52em;margin:14px 0;line-height:.8;letter-spacing:-.07em}
+body.clean-ui .wedding-modern .wed-cover-line{font-size:17px;line-height:1.5;color:var(--wed-muted)}
+body.clean-ui .wed-cover .wed-date{font-size:11px;letter-spacing:.07em;margin-top:25px}
+body.clean-ui .wed-guest{margin:30px 0 22px;padding-top:22px;border-top:1px solid var(--wed-line);width:100%}body.clean-ui .wed-guest small{font-size:9px;letter-spacing:.12em}body.clean-ui .wed-guest p{font-size:13px;margin-top:4px}
+body.clean-ui .wedding-modern .wed-primary{display:flex;align-items:center;justify-content:space-between;gap:30px;width:100%;padding:16px 22px;border:1px solid var(--wed-accent);border-radius:4px;background:var(--wed-accent);color:var(--wed-paper);font-weight:500;box-shadow:none;position:static;transform:none}
+body.clean-ui .wed-primary:hover{filter:brightness(1.12)}body.clean-ui .wed-primary span{font-size:19px}
+body.clean-ui .wed-cover-number{position:absolute;bottom:18px;left:28px;font-size:9px;letter-spacing:.15em;color:var(--wed-muted)}
+body.clean-ui [data-wedding-theme=botanical] .wed-cover-photo{margin:50px 40px 50px 0;border-radius:46% 46% 3px 3px;min-height:560px;box-shadow:12px 15px 0 #273a3010;transform:rotate(2deg)}
+body.clean-ui [data-wedding-theme=botanical] .wed-cover-copy{padding-left:14%;padding-right:10%}
+body.clean-ui [data-wedding-theme=cinema] .wed-cover-photo{position:absolute;inset:0;min-height:100%;width:100%}
+body.clean-ui [data-wedding-theme=cinema] .wed-cover-photo img{object-position:50% 42%}
+body.clean-ui [data-wedding-theme=cinema] .wed-cover-photo:after{content:'';position:absolute;inset:0;background:linear-gradient(90deg,#101710e6,#10171077 60%,#10171022)}
+body.clean-ui [data-wedding-theme=cinema] .wed-cover-copy{--wed-muted:#e0dfd3;--wed-line:#ffffff55;padding-left:14%}
+body.clean-ui [data-wedding-theme=cinema] .wed-cover-number{color:#fff}.wed-content{animation:wed-enter .9s ease both}
+body.clean-ui .wedding-modern :is(.vow-letter,.journal-pages,.film-reel){padding:0;background:transparent;max-width:none;margin:0;text-align:left}
+body.clean-ui .wed-nav{display:flex;align-items:center;justify-content:space-between;gap:20px;padding:18px 5%;border-bottom:1px solid var(--wed-line);background:var(--wed-paper)}
+body.clean-ui .wed-nav>span{font-size:22px;font-weight:300;letter-spacing:-.06em;white-space:nowrap}
+body.clean-ui .wed-nav>div{display:flex;gap:24px}body.clean-ui .wed-nav button{padding:8px 0;border:0;background:none;color:var(--wed-ink);font-size:12px;border-radius:0}
+body.clean-ui .wed-nav button:hover{box-shadow:inset 0 -1px var(--wed-ink)}
+body.clean-ui .wed-intro{text-align:center;padding:100px 10% 90px}
+body.clean-ui .wed-intro h3{margin:28px 0;font-size:clamp(36px,5.1vw,70px)}
+body.clean-ui .wed-intro>p{max-width:530px;margin:0 auto;color:var(--wed-muted);font-size:15px;line-height:1.8}
+body.clean-ui .wed-countdown{display:flex;justify-content:center;gap:0;max-width:540px;margin:45px auto 18px}
+body.clean-ui .wed-countdown>div{flex:1;border-right:1px solid var(--wed-line);padding:0 16px}body.clean-ui .wed-countdown>div:last-child{border:0}
+body.clean-ui .wed-countdown strong{display:block;font-weight:300;font-size:clamp(30px,4vw,52px);line-height:1.2;font-variant-numeric:tabular-nums;letter-spacing:-.04em}
+body.clean-ui .wed-countdown span{display:block;font-size:10px;letter-spacing:.1em;margin-top:8px}
+body.clean-ui .wed-intro .wed-count-status{font-size:12px}
+body.clean-ui .wed-calendar{margin:24px auto 0;background:none;color:var(--wed-ink);border:0;border-bottom:1px solid var(--wed-ink);padding:8px 0;border-radius:0}
+body.clean-ui .wed-calendar:disabled{opacity:.5;cursor:not-allowed}body.clean-ui .wed-intro .wed-calendar-status{font-size:12px;margin-top:12px}
+body.clean-ui .wed-story{display:grid;grid-template-columns:1fr 1fr;gap:7%;padding:0 6% 100px;align-items:center;scroll-margin-top:110px}
+body.clean-ui .wed-story-image{height:580px;position:relative;transform:rotate(-2deg);box-shadow:14px 18px 0 #73795c16}
+body.clean-ui .wed-story-image img{object-position:48% 50%}body.clean-ui .wed-story-image>span{position:absolute;bottom:0;left:0;right:0;background:#1c281acc;color:#fff;padding:20px;font-size:9px;letter-spacing:.12em;text-align:center}
+body.clean-ui .wed-story-copy h3{margin:20px 0 35px}
+body.clean-ui .wed-timeline article{display:grid;grid-template-columns:45px 1fr;gap:16px;padding:22px 0;border-top:1px solid var(--wed-line)}
+body.clean-ui .wed-timeline article>span{font-size:11px;color:var(--wed-muted);padding-top:4px}
+body.clean-ui .wed-timeline h4{font-size:18px;letter-spacing:-.02em;margin-bottom:10px;font-weight:500}
+body.clean-ui .wed-timeline p{font-size:13px;line-height:1.8;color:var(--wed-muted)}
+body.clean-ui .wed-day{padding:80px 7%;border-top:1px solid var(--wed-line);scroll-margin-top:100px}
+body.clean-ui .wed-section-heading{text-align:center;margin-bottom:44px}body.clean-ui .wed-section-heading h3{margin:18px 0}body.clean-ui .wed-section-heading>p{font-size:13px;color:var(--wed-muted)}
+body.clean-ui .wed-events{display:grid;grid-template-columns:1fr 1fr;border-top:1px solid var(--wed-line);border-bottom:1px solid var(--wed-line)}
+body.clean-ui .wed-events article{padding:40px 8%}body.clean-ui .wed-events article+article{border-left:1px solid var(--wed-line)}
+body.clean-ui .wed-events article>span{font-size:10px;letter-spacing:.1em;color:var(--wed-muted)}
+body.clean-ui .wed-events h4{font-size:32px;margin:18px 0 26px}
+body.clean-ui .wed-events p{font-size:14px;line-height:1.8}body.clean-ui .wed-events .wed-time{font-size:28px;margin-bottom:15px;letter-spacing:-.03em}body.clean-ui .wed-time small{font-size:11px;letter-spacing:0}
+body.clean-ui .wed-events .wed-event-note{font-size:12px;color:var(--wed-muted);margin-top:20px}
+body.clean-ui .wed-dress{display:flex;justify-content:space-between;gap:20px;align-items:center;padding:30px 8%}body.clean-ui .wed-dress p{font-size:13px;margin-top:8px}
+body.clean-ui .wed-swatches{display:flex;gap:8px}body.clean-ui .wed-swatches i{width:28px;height:28px;border-radius:50%;background:var(--swatch);border:1px solid #8885}
+body.clean-ui .wed-venue{border-top:1px solid var(--wed-line);padding:0 8%}body.clean-ui .wed-venue summary{padding:24px 0;cursor:pointer;display:flex;justify-content:space-between}body.clean-ui .wed-venue p{font-size:13px;color:var(--wed-muted);margin-bottom:18px}
+body.clean-ui .wed-quote{position:relative;min-height:430px;display:grid;place-items:center;text-align:center;background:#30382d;overflow:hidden;color:#fff9ed}
+body.clean-ui .wed-quote>img{position:absolute;inset:0;filter:brightness(.4);object-position:50% 65%}body.clean-ui .wed-quote>div{position:relative;padding:65px 20px}
+body.clean-ui .wed-quote .wed-kicker{color:#e4dfcf}body.clean-ui .wed-quote p{font-size:clamp(42px,6vw,82px);line-height:1.05;font-weight:300;letter-spacing:-.055em;margin:28px 0}body.clean-ui .wed-quote [data-signature]{font-size:13px}
+body.clean-ui .wed-gallery{padding:85px 6%;scroll-margin-top:100px}
+body.clean-ui .wed-gallery-grid{display:grid;grid-template-columns:1.25fr 1fr;align-items:center;gap:5%}
+body.clean-ui .wed-gallery-grid button{padding:0;background:none;border:0;color:var(--wed-ink);border-radius:0;text-align:left}
+body.clean-ui .wed-gallery-grid img{height:490px;transition:filter .35s;object-position:50% 40%}body.clean-ui .wed-gallery-grid button:nth-child(2) img{height:350px}
+body.clean-ui .wed-gallery-grid button:hover img{filter:brightness(.88)}body.clean-ui .wed-gallery-grid span{display:flex;justify-content:space-between;font-size:10px;letter-spacing:.12em;padding:16px 0}body.clean-ui .wed-gallery-grid b{font-size:20px;font-weight:400}
+body.clean-ui .wed-reply{display:grid;grid-template-columns:.9fr 1.1fr;gap:8%;padding:80px 7%;border-top:1px solid var(--wed-line);border-bottom:1px solid var(--wed-line);scroll-margin-top:100px}
+body.clean-ui .wed-reply h3{font-size:clamp(40px,6vw,80px);margin:24px 0}body.clean-ui .wed-reply>div>p{font-size:15px;color:var(--wed-muted);line-height:1.8}body.clean-ui .wed-reply>div>small{display:block;font-size:11px;color:var(--wed-muted);margin-top:24px}
+body.clean-ui .wedding-modern .wed-rsvp{padding:0;max-width:none;margin:0;background:none;border:0;display:grid;gap:20px;align-content:start;color:var(--wed-ink)}
+body.clean-ui .wedding-modern label{display:grid;gap:9px;color:var(--wed-ink);font-size:12px}
+body.clean-ui .wedding-modern :is(input,select,textarea){width:100%;min-width:0;background:var(--wed-paper);border:1px solid var(--wed-line);border-radius:4px;color:var(--wed-ink);padding:14px;line-height:1.4;min-height:48px;box-sizing:border-box}
+body.clean-ui .wedding-modern :is(input,textarea)::placeholder{color:var(--wed-muted);opacity:1}body.clean-ui .wedding-modern select:disabled{opacity:.5}
+body.clean-ui .wed-form-row{display:grid;grid-template-columns:1.4fr 1fr;gap:15px}body.clean-ui .wed-rsvp textarea{resize:vertical}
+body.clean-ui .wed-rsvp .inv-feedback{font-size:13px;line-height:1.7;color:var(--wed-ink)}body.clean-ui .inv-feedback:empty{display:none}
+body.clean-ui .wed-reply-card{padding:24px;border:1px solid var(--wed-line);transform:rotate(-1deg)}body.clean-ui .wed-reply-card>span{font-size:9px;letter-spacing:.1em}body.clean-ui .wed-reply-card strong{display:block;font-size:22px;font-weight:400;margin:8px 0}body.clean-ui .wed-reply-card p{font-size:14px;overflow-wrap:anywhere}
+body.clean-ui .wed-faq{padding:65px 14%}body.clean-ui .wed-faq>.wed-kicker{margin-bottom:22px}body.clean-ui .wed-faq details{border-bottom:1px solid var(--wed-line)}
+body.clean-ui .wed-faq summary{display:flex;justify-content:space-between;gap:20px;padding:22px 0;cursor:pointer}body.clean-ui .wed-faq details p{font-size:13px;color:var(--wed-muted);padding-bottom:22px;line-height:1.8}
+body.clean-ui .wedding-modern .wed-ending{display:block;text-align:center;padding:65px 20px;border:0;background:var(--wed-ink);color:var(--wed-paper)}
+body.clean-ui .wed-ending .wed-kicker{color:inherit;opacity:.8}body.clean-ui .wed-ending>p{font-size:clamp(40px,6vw,76px);font-weight:300;letter-spacing:-.055em;margin:28px 0 15px;overflow-wrap:anywhere}body.clean-ui .wed-ending>[data-date]{font-size:12px}body.clean-ui .wed-ending>small{display:block;font-size:10px;line-height:1.8;margin-top:25px;opacity:.85}body.clean-ui .wed-ending>small+small{margin-top:4px}body.clean-ui .wed-ending a{color:inherit;text-decoration:underline}
+body.clean-ui .wedding-modern .wed-lightbox{position:fixed;padding:55px 20px 20px;background:#172018;color:#fff;border:1px solid #ffffff30;border-radius:12px;width:min(840px,92vw);max-height:90vh;margin:auto;z-index:100}
+.wed-lightbox::backdrop{background:#080e0bd9;backdrop-filter:blur(9px)}body.clean-ui .wed-lightbox>img{height:65vh;object-fit:contain}body.clean-ui .wed-lightbox>button{position:absolute;right:20px;top:8px;border:0;background:none;color:#fff;padding:8px 12px}body.clean-ui .wed-lightbox>p{font-size:11px;text-align:center;padding-top:15px;color:#eee}
+@keyframes wed-enter{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:none}}
+@media(max-width:700px){
+ body.clean-ui .wed-tools{padding:14px 18px;gap:10px}body.clean-ui .wed-tools>span{font-size:8px;letter-spacing:.05em}body.clean-ui .wedding-modern .inv-personalize summary{font-size:11px;gap:8px}
+ body.clean-ui .wed-cover.inv-opening{display:flex;flex-direction:column;min-height:0}body.clean-ui .wed-cover-photo{min-height:390px;order:0}body.clean-ui .wed-cover-copy{padding:35px 8% 55px;order:1}
+ body.clean-ui .wedding-modern .wed-names{font-size:64px;margin:24px 0;display:flex;flex-wrap:wrap;gap:10px;align-items:baseline;line-height:1.05}body.clean-ui .wedding-modern .wed-names em{display:inline;margin:0;font-size:.55em}body.clean-ui .wed-cover-line br{display:none}body.clean-ui .wed-cover .wed-date{margin-top:16px}body.clean-ui .wed-guest{margin:22px 0 18px;padding-top:18px}body.clean-ui .wed-cover-number{left:8%;bottom:18px;font-size:8px}
+ body.clean-ui [data-wedding-theme=botanical] .wed-cover-photo{min-height:400px;margin:26px 9% 0;transform:rotate(2deg)}body.clean-ui [data-wedding-theme=botanical] .wed-cover-copy{padding:35px 8% 55px}
+ body.clean-ui [data-wedding-theme=cinema] .wed-cover{min-height:740px;justify-content:flex-end}body.clean-ui [data-wedding-theme=cinema] .wed-cover-photo{min-height:100%}body.clean-ui [data-wedding-theme=cinema] .wed-cover-photo:after{background:linear-gradient(0deg,#101710f2,#10171088 50%,#10171011)}body.clean-ui [data-wedding-theme=cinema] .wed-cover-copy{padding:180px 8% 55px}body.clean-ui [data-wedding-theme=cinema] .wed-photo-note{top:25px;bottom:auto;left:8%}
+ body.clean-ui .wed-nav{padding:12px 6%;gap:10px}body.clean-ui .wed-nav>span{font-size:18px}body.clean-ui .wed-nav>div{gap:13px}body.clean-ui .wed-nav button{font-size:10px}
+ body.clean-ui .wed-intro{padding:65px 7%}body.clean-ui .wed-intro>p{font-size:14px}body.clean-ui .wed-intro h3{font-size:36px}body.clean-ui .wed-countdown>div{padding:0 10px}body.clean-ui .wed-countdown strong{font-size:32px}body.clean-ui .wed-countdown span{font-size:9px}
+ body.clean-ui .wed-story{grid-template-columns:1fr;gap:45px;padding:0 8% 60px}body.clean-ui .wed-story-image{height:380px}body.clean-ui .wed-story-copy h3{font-size:42px}body.clean-ui .wed-timeline article{padding:20px 0}
+ body.clean-ui .wed-day{padding:60px 8%}body.clean-ui .wed-events{grid-template-columns:1fr}body.clean-ui .wed-events article{padding:30px 0}body.clean-ui .wed-events article+article{border-left:0;border-top:1px solid var(--wed-line)}body.clean-ui .wed-dress{padding:28px 0;flex-wrap:wrap}body.clean-ui .wed-venue{padding:0}body.clean-ui .wed-events h4{font-size:30px}
+ body.clean-ui .wed-quote{min-height:370px}body.clean-ui .wed-gallery{padding:60px 8%}body.clean-ui .wed-gallery-grid{gap:16px;grid-template-columns:1fr 1fr}body.clean-ui .wed-gallery-grid img{height:260px}body.clean-ui .wed-gallery-grid button:nth-child(2) img{height:200px}body.clean-ui .wed-gallery-grid span{font-size:8px;letter-spacing:.02em}body.clean-ui .wed-gallery-grid b{font-size:14px}
+ body.clean-ui .wed-reply{grid-template-columns:1fr;padding:60px 8%;gap:35px}body.clean-ui .wed-reply h3{font-size:48px}body.clean-ui .wed-form-row{grid-template-columns:1fr}body.clean-ui .wedding-modern :is(input,select,textarea){font-size:16px}body.clean-ui .wed-faq{padding:50px 8%}body.clean-ui .wed-faq summary{font-size:13px}body.clean-ui .wed-ending>small{font-size:10px}
+}
+@media(prefers-reduced-motion:reduce){body.clean-ui .wedding-modern *,body.clean-ui .wedding-modern *:before,body.clean-ui .wedding-modern *:after{animation:none!important;transition:none!important;scroll-behavior:auto!important}}
+body.reduced-motion .wedding-modern *,body.reduce-motion .wedding-modern *{animation:none!important;transition:none!important}
+
+.reduced .wedding-modern *{animation:none!important;transition:none!important;scroll-behavior:auto!important}

@@ -1,10 +1,11 @@
 // Public template registry. Routes remain stable; artwork is an honest layout preview.
 const galleryTemplates=[
+ {id:'web-manga',category:'Websites',name:'KOMA / Manga reader',note:'Original comic · dimensional page turns and reading controls',slug:'koma-manga-reader',kind:'manga'},
  {id:'web-commerce',category:'Websites',name:'SERA / Product studio',note:'Editorial shop · working cart and checkout review',slug:'sera-goods-commerce-demo',kind:'commerce'},
  {id:'web-archive',category:'Websites',name:'Archive / Platform',note:'Structured application · search, preview, simulated upload',slug:'galilea-digital-archive',kind:'platform'},
  {id:'web-booking',category:'Websites',name:'Ruang / Service desk',note:'Appointment-led · service, date, and time selection',slug:'ruang-temu-booking-demo',kind:'booking'},
- {id:'classic',category:'Invitations',name:'The Vow / Classic',note:'Centered invitation · formal typography and ceremony first',slug:'wedding-invitation-demo',kind:'classic'},
- {id:'botanical',category:'Invitations',name:'Evergreen / Botanical',note:'Asymmetric garden journal · story and event panels',slug:'wedding-invitation-demo',kind:'botanical'},
+ {id:'classic',category:'Invitations',name:'The Vow / Classic',note:'Photographic editorial · story, celebration, and personal RSVP',slug:'wedding-invitation-demo',kind:'classic'},
+ {id:'botanical',category:'Invitations',name:'Evergreen / Botanical',note:'Garden portrait · soft greens, curved photography, and shared moments',slug:'wedding-invitation-demo',kind:'botanical'},
  {id:'cinema',category:'Invitations',name:'Afterglow / Cinema',note:'Full-bleed opening · chapter navigation and dark stage',slug:'wedding-invitation-demo',kind:'cinema'},
  {id:'corporate',category:'Presentations',name:'Signal / Strategy',note:'Evidence-led · connected shapes and editorial structure',slug:'morph-presentation-studio',kind:'corporate'},
  {id:'kinetic',category:'Presentations',name:'Type / In motion',note:'Type-led stage · oversized words and directional movement',slug:'morph-presentation-studio',kind:'kinetic'},
@@ -18,7 +19,7 @@ const galleryTemplates=[
  {id:'maintenance',category:'Data & Excel',name:'Service / Maintenance',note:'Inspect equipment histories and export a summary',lab:3,kind:'service'}
 ];
 function galleryHref(t){return t.lab!==undefined?(window.INDEX_HOSTED?'/?lab='+t.lab+'#lab':homeHref('lab')):projectHref(t.slug)+(window.INDEX_HOSTED?'?template='+t.id:'');}
-function galleryArt(t){if(worldNames[t.id])return `<div class="world-thumbnail">${worldSvg(t.id)}</div>`;if(typeof demoSnapshots!=='undefined'&&demoSnapshots[t.id])return `<div class="demo-dom-preview" data-demo-snapshot="${t.id}" aria-hidden="true"></div>`;const word=t.name.split(' / ')[0];return `<div class="gallery-art art-${t.kind}" aria-hidden="true"><span>${esc(t.category)}</span><strong>${esc(word)}</strong><i></i><b>01 — 03</b><small>INTERACTIVE / LAYOUT PREVIEW</small></div>`;}
+function galleryArt(t){if(t.id==='web-manga')return `<div class="manga-thumbnail"><div>${mangaPageSvg(0)}</div><span>One more<br>page.<small>KOMA / THE READING ROOM</small></span></div>`;if(worldNames[t.id])return `<div class="world-thumbnail">${worldSvg(t.id)}</div>`;if(typeof demoSnapshots!=='undefined'&&demoSnapshots[t.id])return `<div class="demo-dom-preview" data-demo-snapshot="${t.id}" aria-hidden="true"></div>`;const word=t.name.split(' / ')[0];return `<div class="gallery-art art-${t.kind}" aria-hidden="true"><span>${esc(t.category)}</span><strong>${esc(word)}</strong><i></i><b>01 — 03</b><small>INTERACTIVE / LAYOUT PREVIEW</small></div>`;}
 function initSpatialGallery(){
  document.body.classList.add('spatial-gallery');
  initGalleryNavigation();

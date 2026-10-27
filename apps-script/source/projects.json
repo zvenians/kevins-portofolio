@@ -388,8 +388,18 @@
     "name": "Asset Field Companion",
     "summary": "An offline-first field workflow for finding an asset, recording its condition, attaching evidence, and synchronizing a reviewable observation later.",
     "category": "Business Systems",
-    "disciplines": ["Operational Systems", "Web Engineering", "Data & Automation"],
-    "technologies": ["Progressive Web App", "Local Queue", "Google Apps Script", "Google Sheets", "Responsive Forms"],
+    "disciplines": [
+      "Operational Systems",
+      "Web Engineering",
+      "Data & Automation"
+    ],
+    "technologies": [
+      "Progressive Web App",
+      "Local Queue",
+      "Google Apps Script",
+      "Google Sheets",
+      "Responsive Forms"
+    ],
     "status": "Interactive Demo",
     "visual": "fieldcompanion",
     "challenge": "Field verification does not always happen beside a reliable connection. A useful tool has to preserve the inventory context, make evidence easy to record on a phone, and show clearly what is local, queued, or synchronized.",
@@ -397,8 +407,17 @@
     "implementation": "The demonstration supports asset selection, field condition, observed location, notes, optional photo selection, an offline switch, a persistent local queue, and simulated synchronization. A production version would use a service worker and authenticated Apps Script writes into controlled Sheets and Drive folders.",
     "outcome": "Visitors can complete a realistic mobile field flow and see the difference between a saved observation and a synchronized record. All asset numbers, locations, and departments are fictional.",
     "tradeoff": "The public demo does not upload photos, request precise location, scan a real QR code, or write to production storage. Those capabilities require clear consent, authentication, retention rules, and conflict handling.",
-    "evidence": ["Persistent browser-local observation queue", "Offline and restored-network states", "Condition, location, note, and evidence workflow", "Explicit sync status and production boundary"],
-    "id": "asset-field-companion", "featured": true, "order": 10, "visibility": "public", "updatedAt": "2026-10-23"
+    "evidence": [
+      "Persistent browser-local observation queue",
+      "Offline and restored-network states",
+      "Condition, location, note, and evidence workflow",
+      "Explicit sync status and production boundary"
+    ],
+    "id": "asset-field-companion",
+    "featured": true,
+    "order": 10,
+    "visibility": "public",
+    "updatedAt": "2026-10-23"
   },
   {
     "slug": "research-data-preparation-studio",
@@ -406,8 +425,18 @@
     "name": "Research Data Preparation Studio",
     "summary": "A hands-on preparation desk for missing codes, duplicate respondents, reverse scoring, implausible values, codebooks, and SPSS-ready working files.",
     "category": "Data & Automation",
-    "disciplines": ["Research Support", "Data & Automation", "Technical Documentation"],
-    "technologies": ["SPSS Syntax", "CSV Export", "Codebook Design", "Data Validation", "JavaScript"],
+    "disciplines": [
+      "Research Support",
+      "Data & Automation",
+      "Technical Documentation"
+    ],
+    "technologies": [
+      "SPSS Syntax",
+      "CSV Export",
+      "Codebook Design",
+      "Data Validation",
+      "JavaScript"
+    ],
     "status": "Interactive Demo",
     "visual": "dataprep",
     "challenge": "Statistical output can look precise even when the input still contains duplicate IDs, hidden missing-value codes, incorrectly scored items, or impossible values. Those decisions need to be recorded before testing begins.",
@@ -415,8 +444,17 @@
     "implementation": "The browser tool identifies a duplicate respondent, converts a chosen missing code, optionally reverse-scores Q2R, calculates a scale mean, flags an implausible age, and exports both a prepared CSV and starter SPSS syntax.",
     "outcome": "Visitors can move a small fictional survey from raw rows to a documented analysis-ready copy without uploading anything. The generated files remain editable and clearly labeled as demonstrations.",
     "tradeoff": "The tool does not determine whether a response should be deleted, validate an instrument, replace subject-matter judgment, or open proprietary SPSS files. A real engagement begins with the actual codebook and research protocol.",
-    "evidence": ["Raw and prepared views remain separate", "Missing-code and duplicate handling", "Reverse scoring and computed scale mean", "CSV, codebook, and SPSS syntax outputs"],
-    "id": "research-data-preparation-studio", "featured": true, "order": 11, "visibility": "public", "updatedAt": "2026-10-23"
+    "evidence": [
+      "Raw and prepared views remain separate",
+      "Missing-code and duplicate handling",
+      "Reverse scoring and computed scale mean",
+      "CSV, codebook, and SPSS syntax outputs"
+    ],
+    "id": "research-data-preparation-studio",
+    "featured": true,
+    "order": 11,
+    "visibility": "public",
+    "updatedAt": "2026-10-23"
   },
   {
     "slug": "document-automation-studio",
@@ -424,8 +462,18 @@
     "name": "Document Automation Studio",
     "summary": "A controlled Sheets-to-document workflow for references, structured fields, draft status, PDF generation, and an archive-ready activity record.",
     "category": "Business Systems",
-    "disciplines": ["Document Systems", "Data & Automation", "Workflow Design"],
-    "technologies": ["Google Apps Script", "Google Sheets", "Google Docs", "Google Drive", "PDF Generation"],
+    "disciplines": [
+      "Document Systems",
+      "Data & Automation",
+      "Workflow Design"
+    ],
+    "technologies": [
+      "Google Apps Script",
+      "Google Sheets",
+      "Google Docs",
+      "Google Drive",
+      "PDF Generation"
+    ],
     "status": "Interactive Demo",
     "visual": "documents",
     "challenge": "Recurring reports and letters are often copied from an old file until their reference, wording, or approval state becomes uncertain. The document needs a dependable source and a visible lifecycle.",
@@ -433,8 +481,17 @@
     "implementation": "The demonstration builds four document types from editable inputs, refreshes an A4-style draft, generates a real sample PDF, and exports a compact archive log. The production blueprint maps the same flow to Sheets, Docs templates, Apps Script, and Drive.",
     "outcome": "Visitors can produce a usable fictional report while seeing its reference, draft state, owner, generation date, and archive destination. No confidential company document is reproduced.",
     "tradeoff": "A generated draft is not an approval. Production use still requires authorized templates, access controls, version retention, naming policy, and a clear sign-off process.",
-    "evidence": ["Structured document input", "Controlled A4-style preview", "Real client-side PDF output", "Archive log with reference and status"],
-    "id": "document-automation-studio", "featured": true, "order": 12, "visibility": "public", "updatedAt": "2026-10-23"
+    "evidence": [
+      "Structured document input",
+      "Controlled A4-style preview",
+      "Real client-side PDF output",
+      "Archive log with reference and status"
+    ],
+    "id": "document-automation-studio",
+    "featured": true,
+    "order": 12,
+    "visibility": "public",
+    "updatedAt": "2026-10-23"
   },
   {
     "slug": "sera-commerce-operations-console",
@@ -442,8 +499,18 @@
     "name": "SERA Commerce Operations Console",
     "summary": "The back-office half of the SERA storefront: fulfilment stages, stock movements, reorder signals, return review, margin context, and a daily close.",
     "category": "Digital Products",
-    "disciplines": ["Business Systems", "Web Engineering", "Data & Automation"],
-    "technologies": ["Inventory Ledger", "Order Fulfilment", "Google Sheets", "Google Apps Script", "CSV Export"],
+    "disciplines": [
+      "Business Systems",
+      "Web Engineering",
+      "Data & Automation"
+    ],
+    "technologies": [
+      "Inventory Ledger",
+      "Order Fulfilment",
+      "Google Sheets",
+      "Google Apps Script",
+      "CSV Export"
+    ],
     "status": "Interactive Demo",
     "visual": "commerceops",
     "challenge": "A polished storefront does not explain what happens after payment. Stock changes, picking, packing, shipping, returns, and end-of-day review need consistent rules behind the public interface.",
@@ -451,8 +518,17 @@
     "implementation": "The local demonstration advances fictional orders, resolves a return-review exception, posts stock movements with validation, calculates visible gross margin, identifies reorder items, and exports a daily operational record.",
     "outcome": "The original storefront and this console now show both sides of a commerce system: the customer journey and the work required to fulfil it. No order, payment, or customer record leaves the browser.",
     "tradeoff": "The demo has no payment reconciliation, courier webhook, accounting integration, or multi-user stock lock. Those features require verified external services and server-side transactional controls.",
-    "evidence": ["Order-stage workflow", "Validated stock movement ledger", "Reorder and gross-margin context", "Exportable daily close"],
-    "id": "sera-commerce-operations-console", "featured": true, "order": 13, "visibility": "public", "updatedAt": "2026-10-23"
+    "evidence": [
+      "Order-stage workflow",
+      "Validated stock movement ledger",
+      "Reorder and gross-margin context",
+      "Exportable daily close"
+    ],
+    "id": "sera-commerce-operations-console",
+    "featured": true,
+    "order": 13,
+    "visibility": "public",
+    "updatedAt": "2026-10-23"
   },
   {
     "slug": "quality-evidence-room",
@@ -460,8 +536,18 @@
     "name": "Performance & Accessibility Evidence Room",
     "summary": "A transparent release-review surface for responsive behavior, keyboard safeguards, reduced motion, semantic structure, and clearly bounded evidence.",
     "category": "Creative Experiments",
-    "disciplines": ["Web Engineering", "UI/UX", "Technical Documentation"],
-    "technologies": ["Accessibility", "Responsive Design", "Release Checks", "Reduced Motion", "Progressive Enhancement"],
+    "disciplines": [
+      "Web Engineering",
+      "UI/UX",
+      "Technical Documentation"
+    ],
+    "technologies": [
+      "Accessibility",
+      "Responsive Design",
+      "Release Checks",
+      "Reduced Motion",
+      "Progressive Enhancement"
+    ],
     "status": "Interactive Demo",
     "visual": "qualityroom",
     "challenge": "Claims such as fast, responsive, and accessible are easy to write and easy to exaggerate. A credible portfolio should separate what the current page can inspect from what still requires external measurement.",
@@ -469,8 +555,17 @@
     "implementation": "The tool inspects the live document for a skip link, main landmark, dialog labels, reduced-motion path, keyboard-scrollable tables, stable project URLs, and demonstration disclosure. It deliberately does not invent Lighthouse or Core Web Vitals scores.",
     "outcome": "Visitors see how quality work is documented instead of receiving an unsupported score. The responsive sample also makes layout behavior observable rather than replacing it with screenshots.",
     "tradeoff": "DOM checks cannot replace assistive-technology testing, real-user metrics, slow-network trials, or cross-browser QA. Those results should only be published after the corresponding test has actually run.",
-    "evidence": ["Live semantic document checks", "Responsive width instrument", "Copyable release report", "Explicit measurement limitations"],
-    "id": "quality-evidence-room", "featured": false, "order": 14, "visibility": "public", "updatedAt": "2026-10-23"
+    "evidence": [
+      "Live semantic document checks",
+      "Responsive width instrument",
+      "Copyable release report",
+      "Explicit measurement limitations"
+    ],
+    "id": "quality-evidence-room",
+    "featured": false,
+    "order": 14,
+    "visibility": "public",
+    "updatedAt": "2026-10-23"
   },
   {
     "slug": "project-brief-scope-builder",
@@ -478,8 +573,18 @@
     "name": "Project Brief & Scope Builder",
     "summary": "A practical intake tool for websites, data work, research support, and automation—without guessing a price or promising an unreviewed deadline.",
     "category": "Business Systems",
-    "disciplines": ["Workflow Design", "Client Communication", "Information Architecture"],
-    "technologies": ["Form Validation", "Structured Briefs", "WhatsApp Handoff", "Email Handoff", "Local Processing"],
+    "disciplines": [
+      "Workflow Design",
+      "Client Communication",
+      "Information Architecture"
+    ],
+    "technologies": [
+      "Form Validation",
+      "Structured Briefs",
+      "WhatsApp Handoff",
+      "Email Handoff",
+      "Local Processing"
+    ],
     "status": "Interactive Demo",
     "visual": "scopebuilder",
     "challenge": "A first message often contains either too little information or a long list of disconnected features. Both make it difficult to understand the actual problem, handover, and boundary.",
@@ -487,16 +592,159 @@
     "implementation": "The builder changes its handover options by service area, validates the brief, creates a readable summary, copies it to the clipboard, and prepares a WhatsApp or email handoff using the published contact settings. Nothing is stored by the page.",
     "outcome": "A prospective client can arrive with an unclear need and leave with a concise message that Kevin can review. Cost and timing remain discussion points instead of fabricated instant calculations.",
     "tradeoff": "The generated brief is not a contract, proposal, quotation, or technical discovery. Sensitive files should only be shared through an agreed channel after the initial review.",
-    "evidence": ["Service-specific handover choices", "Clear scope-boundary prompt", "Copyable structured brief", "Contact handoff without public data storage"],
-    "id": "project-brief-scope-builder", "featured": false, "order": 15, "visibility": "public", "updatedAt": "2026-10-23"
+    "evidence": [
+      "Service-specific handover choices",
+      "Clear scope-boundary prompt",
+      "Copyable structured brief",
+      "Contact handoff without public data storage"
+    ],
+    "id": "project-brief-scope-builder",
+    "featured": false,
+    "order": 15,
+    "visibility": "public",
+    "updatedAt": "2026-10-23"
   },
   {
-    "id": "morph-presentation-studio", "slug": "morph-presentation-studio", "title": "Give the idea room to move.", "name": "Morph Presentation Studio", "summary": "An editable slide sequence where the same objects move between layouts—an interactive study of presentation pacing.", "category": "Visual Communication", "disciplines": ["Presentation Design", "Motion", "Typography"], "technologies": ["HTML", "CSS Transitions", "JavaScript", "SVG Export"], "status": "Interactive Demo", "visual": "morphslides", "featured": false, "order": 16, "visibility": "public", "updatedAt": "2026-10-25", "challenge": "Dense slides make an audience read instead of listen. Movement can clarify the relationship between ideas when it follows the same visual objects.", "approach": "Keep three slides connected by one numbered marker, headline, and geometric object. Let visitors change the wording and choose a visual direction before playing the sequence.", "implementation": "A browser-local stage changes the layout of persistent DOM elements across three scenes. CSS interpolates their position, scale, shape, and color; reduced-motion removes the tween. Export creates an SVG of the selected frame, not a PowerPoint file.", "outcome": "Visitors can edit copy, switch themes, step between slides, autoplay, and download an SVG still. This demonstrates slide direction and Morph-like behavior, not a completed PowerPoint commission.", "tradeoff": "Actual PowerPoint Morph animations require an authored .pptx and are not produced by this browser preview. The export is a static SVG frame.", "evidence": ["Editable copy", "Three connected scenes", "Reduced-motion support", "SVG still export"]
+    "id": "morph-presentation-studio",
+    "slug": "morph-presentation-studio",
+    "title": "Give the idea room to move.",
+    "name": "Morph Presentation Studio",
+    "summary": "An editable slide sequence where the same objects move between layouts—an interactive study of presentation pacing.",
+    "category": "Visual Communication",
+    "disciplines": [
+      "Presentation Design",
+      "Motion",
+      "Typography"
+    ],
+    "technologies": [
+      "HTML",
+      "CSS Transitions",
+      "JavaScript",
+      "SVG Export"
+    ],
+    "status": "Interactive Demo",
+    "visual": "morphslides",
+    "featured": false,
+    "order": 16,
+    "visibility": "public",
+    "updatedAt": "2026-10-25",
+    "challenge": "Dense slides make an audience read instead of listen. Movement can clarify the relationship between ideas when it follows the same visual objects.",
+    "approach": "Keep three slides connected by one numbered marker, headline, and geometric object. Let visitors change the wording and choose a visual direction before playing the sequence.",
+    "implementation": "A browser-local stage changes the layout of persistent DOM elements across three scenes. CSS interpolates their position, scale, shape, and color; reduced-motion removes the tween. Export creates an SVG of the selected frame, not a PowerPoint file.",
+    "outcome": "Visitors can edit copy, switch themes, step between slides, autoplay, and download an SVG still. This demonstrates slide direction and Morph-like behavior, not a completed PowerPoint commission.",
+    "tradeoff": "Actual PowerPoint Morph animations require an authored .pptx and are not produced by this browser preview. The export is a static SVG frame.",
+    "evidence": [
+      "Editable copy",
+      "Three connected scenes",
+      "Reduced-motion support",
+      "SVG still export"
+    ]
   },
   {
-    "id": "identity-mark-studio", "slug": "identity-mark-studio", "title": "A mark with a point of view.", "name": "Identity Mark Studio", "summary": "A small, functioning logo workbench: explore structure, weight, contrast, and export a vector concept.", "category": "Visual Communication", "disciplines": ["Logo Design", "Visual Identity", "Typography"], "technologies": ["SVG", "JavaScript", "Design Systems"], "status": "Interactive Demo", "visual": "logostudio", "featured": false, "order": 17, "visibility": "public", "updatedAt": "2026-10-25", "challenge": "A useful logo must work as a system, not only as a large image on a moodboard.", "approach": "Offer a compact set of structural directions and test each at large and small sizes with deliberate color choices.", "implementation": "The browser renders a live SVG from sanitized initials, geometric construction, color, and wordmark. Visitors can switch three directions and download the selected vector as SVG.", "outcome": "A usable exploration of logo decisions and scalable output. All names and marks are fictional concepts, not client work or a claim of registered identity.", "tradeoff": "This is a concept generator, not a trademark search, final identity strategy, or a substitute for a custom design engagement.", "evidence": ["Live vector construction", "Small-size preview", "Three design directions", "SVG download"]
+    "id": "identity-mark-studio",
+    "slug": "identity-mark-studio",
+    "title": "A mark with a point of view.",
+    "name": "Identity Mark Studio",
+    "summary": "A small, functioning logo workbench: explore structure, weight, contrast, and export a vector concept.",
+    "category": "Visual Communication",
+    "disciplines": [
+      "Logo Design",
+      "Visual Identity",
+      "Typography"
+    ],
+    "technologies": [
+      "SVG",
+      "JavaScript",
+      "Design Systems"
+    ],
+    "status": "Interactive Demo",
+    "visual": "logostudio",
+    "featured": false,
+    "order": 17,
+    "visibility": "public",
+    "updatedAt": "2026-10-25",
+    "challenge": "A useful logo must work as a system, not only as a large image on a moodboard.",
+    "approach": "Offer a compact set of structural directions and test each at large and small sizes with deliberate color choices.",
+    "implementation": "The browser renders a live SVG from sanitized initials, geometric construction, color, and wordmark. Visitors can switch three directions and download the selected vector as SVG.",
+    "outcome": "A usable exploration of logo decisions and scalable output. All names and marks are fictional concepts, not client work or a claim of registered identity.",
+    "tradeoff": "This is a concept generator, not a trademark search, final identity strategy, or a substitute for a custom design engagement.",
+    "evidence": [
+      "Live vector construction",
+      "Small-size preview",
+      "Three design directions",
+      "SVG download"
+    ]
   },
   {
-    "id": "wedding-invitation-demo", "slug": "wedding-invitation-demo", "title": "An invitation worth opening.", "name": "Wedding Invitation Experience", "summary": "A responsive digital wedding invitation with a live design editor, event details, a fictional story, and RSVP simulation.", "category": "Visual Communication", "disciplines": ["Website Design", "Invitation Design", "Responsive UX"], "technologies": ["HTML", "CSS", "JavaScript", "Accessible Forms"], "status": "Interactive Demo", "visual": "wedding", "featured": false, "order": 18, "visibility": "public", "updatedAt": "2026-10-25", "challenge": "An invitation should feel personal without making guests search for the date, location, or RSVP.", "approach": "Lead with the couple, then give the event facts a clear reading order. Keep the guest journey calm on a phone and make every important action available without animation.", "implementation": "The demo updates fictional names, date, and visual direction in real time. It shows ceremony and reception details, an illustrative story, and a local RSVP confirmation with input validation. It does not send, store, or publish guest data.", "outcome": "Visitors can inspect a responsive invitation flow and try the RSVP safely. This is a fictional demonstration, not a commissioned couple or production guest list.", "tradeoff": "A real invitation requires approved photographs, precise event details, delivery and RSVP storage, privacy choices, and an agreed domain or hosting plan.", "evidence": ["Responsive invitation preview", "Live content controls", "Accessible RSVP validation", "No public guest data storage"]
+    "id": "wedding-invitation-demo",
+    "slug": "wedding-invitation-demo",
+    "title": "An invitation worth opening.",
+    "name": "Wedding Invitation Experience",
+    "summary": "A responsive digital wedding invitation with a live design editor, event details, a fictional story, and RSVP simulation.",
+    "category": "Visual Communication",
+    "disciplines": [
+      "Website Design",
+      "Invitation Design",
+      "Responsive UX"
+    ],
+    "technologies": [
+      "HTML",
+      "CSS",
+      "JavaScript",
+      "Accessible Forms"
+    ],
+    "status": "Interactive Demo",
+    "visual": "wedding",
+    "featured": false,
+    "order": 18,
+    "visibility": "public",
+    "updatedAt": "2026-10-27",
+    "challenge": "An invitation should feel personal without making guests search for the date, location, or RSVP.",
+    "approach": "Lead with the couple, then give the event facts a clear reading order. Keep the guest journey calm on a phone and make every important action available without animation.",
+    "implementation": "Three photographic invitation directions with live name and date editing, countdown, ceremony and reception, gallery lightbox, calendar download, and local RSVP with guest count and wishes.",
+    "outcome": "Visitors can inspect a responsive invitation flow and try the RSVP safely. This is a fictional demonstration, not a commissioned couple or production guest list.",
+    "tradeoff": "A real invitation requires approved photographs, precise event details, delivery and RSVP storage, privacy choices, and an agreed domain or hosting plan.",
+    "evidence": [
+      "Responsive invitation preview",
+      "Live content controls",
+      "Accessible RSVP validation",
+      "No public guest data storage"
+    ]
+  },
+  {
+    "id": "koma-manga-reader",
+    "slug": "koma-manga-reader",
+    "title": "One more page.",
+    "name": "KOMA Manga Reader",
+    "summary": "An immersive comic reading room with dimensional page turns, adaptive spreads, chapter navigation, and bookmarks.",
+    "category": "Digital Products",
+    "disciplines": [
+      "Website Design",
+      "Interactive Development",
+      "Accessible UX"
+    ],
+    "technologies": [
+      "JavaScript",
+      "CSS 3D",
+      "SVG",
+      "Local Storage"
+    ],
+    "status": "Interactive Demo",
+    "visual": "manga",
+    "featured": false,
+    "order": 19,
+    "visibility": "public",
+    "updatedAt": "2026-10-27",
+    "challenge": "A comic reader should make the art central while keeping reading controls predictable on phones and larger screens.",
+    "approach": "Use a quiet reading room, a dimensional cover, and restrained page turns. Keep single-page and spread modes available with a clear direction selector.",
+    "implementation": "An original eight-page vector comic supports keyboard navigation, two reading directions, chapter jumps, page seeking, fullscreen, and a bookmark stored only on the current device. Reduced-motion preferences skip page-turn animation.",
+    "outcome": "Visitors can open the volume and read both chapters without accounts, external comic sources, or a backend.",
+    "tradeoff": "This demo contains one original short story. A production catalogue would require licensed titles, content management, image optimization, and optional account synchronization.",
+    "evidence": [
+      "Original vector comic and transcript",
+      "CSS 3D front-and-back page turn",
+      "Adaptive single page and two-page spreads",
+      "Local bookmark and chapter controls"
+    ]
   }
 ]

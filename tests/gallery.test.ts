@@ -20,6 +20,7 @@ for (const kind of ['wedding', 'morphslides', 'logostudio']) {
   const w = dom.window;
   w.eval(`var $=s=>document.querySelector(s); var reduced=true; var homeHref=s=>'#'+s; var esc=s=>String(s).replaceAll('<','&lt;');`);
   w.eval(readFileSync('apps-script/source/CreativeStudios.js','utf8'));w.eval(readFileSync('apps-script/source/CreativeWorlds.js','utf8'));
+  w.eval(readFileSync('apps-script/source/Wedding.js','utf8'));
   w.eval(readFileSync('apps-script/source/Gallery.js','utf8'));
   w.eval(`creativeStudio('${kind}'); setupGalleryVariants(document.querySelector('#creative-demo'));`);
   const buttons = w.document.querySelectorAll<HTMLButtonElement>('button[data-variant]');
@@ -31,7 +32,7 @@ for (const kind of ['wedding', 'morphslides', 'logostudio']) {
    expect(w.document.querySelector<HTMLElement>('.film-reel')?.hidden).toBe(false);
    const first=w.document.querySelector<HTMLInputElement>('#wed-one')!;
    first.value='Nadia';first.dispatchEvent(new w.Event('input'));
-   expect(w.document.querySelector('.inv-opening svg')?.textContent).toContain('Nadia');
+   expect(w.document.querySelector('.inv-opening [data-first]')?.textContent).toContain('Nadia');
    w.document.querySelector<HTMLInputElement>('[name=guest]')!.value='Demo Guest';
    w.document.querySelector<HTMLSelectElement>('[name=reply]')!.value='Joyfully attending';
    w.document.querySelector('form')!.dispatchEvent(new w.Event('submit',{bubbles:true,cancelable:true}));

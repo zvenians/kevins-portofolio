@@ -699,10 +699,10 @@
       "featured": false,
       "order": 18,
       "visibility": "public",
-      "updatedAt": "2026-10-25",
+      "updatedAt": "2026-10-27",
       "challenge": "An invitation should feel personal without making guests search for the date, location, or RSVP.",
       "approach": "Lead with the couple, then give the event facts a clear reading order. Keep the guest journey calm on a phone and make every important action available without animation.",
-      "implementation": "The demo updates fictional names, date, and visual direction in real time. It shows ceremony and reception details, an illustrative story, and a local RSVP confirmation with input validation. It does not send, store, or publish guest data.",
+      "implementation": "Three photographic invitation directions with live name and date editing, countdown, ceremony and reception, gallery lightbox, calendar download, and local RSVP with guest count and wishes.",
       "outcome": "Visitors can inspect a responsive invitation flow and try the RSVP safely. This is a fictional demonstration, not a commissioned couple or production guest list.",
       "tradeoff": "A real invitation requires approved photographs, precise event details, delivery and RSVP storage, privacy choices, and an agreed domain or hosting plan.",
       "evidence": [
@@ -710,6 +710,42 @@
         "Live content controls",
         "Accessible RSVP validation",
         "No public guest data storage"
+      ]
+    },
+    {
+      "id": "koma-manga-reader",
+      "slug": "koma-manga-reader",
+      "title": "One more page.",
+      "name": "KOMA Manga Reader",
+      "summary": "An immersive comic reading room with dimensional page turns, adaptive spreads, chapter navigation, and bookmarks.",
+      "category": "Digital Products",
+      "disciplines": [
+        "Website Design",
+        "Interactive Development",
+        "Accessible UX"
+      ],
+      "technologies": [
+        "JavaScript",
+        "CSS 3D",
+        "SVG",
+        "Local Storage"
+      ],
+      "status": "Interactive Demo",
+      "visual": "manga",
+      "featured": false,
+      "order": 19,
+      "visibility": "public",
+      "updatedAt": "2026-10-27",
+      "challenge": "A comic reader should make the art central while keeping reading controls predictable on phones and larger screens.",
+      "approach": "Use a quiet reading room, a dimensional cover, and restrained page turns. Keep single-page and spread modes available with a clear direction selector.",
+      "implementation": "An original eight-page vector comic supports keyboard navigation, two reading directions, chapter jumps, page seeking, fullscreen, and a bookmark stored only on the current device. Reduced-motion preferences skip page-turn animation.",
+      "outcome": "Visitors can open the volume and read both chapters without accounts, external comic sources, or a backend.",
+      "tradeoff": "This demo contains one original short story. A production catalogue would require licensed titles, content management, image optimization, and optional account synchronization.",
+      "evidence": [
+        "Original vector comic and transcript",
+        "CSS 3D front-and-back page turn",
+        "Adaptive single page and two-page spreads",
+        "Local bookmark and chapter controls"
       ]
     }
   ],
