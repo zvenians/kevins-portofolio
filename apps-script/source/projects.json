@@ -234,9 +234,9 @@
   {
     "slug": "ruang-temu-booking-demo",
     "title": "Booking, without the back-and-forth.",
-    "name": "Ruang Temu \u2014 Booking Demo",
+    "name": "Ruang Temu — Booking Demo",
     "summary": "A local-service booking demo that helps customers choose a service, pick a time, and send one clear booking summary.",
-    "category": "Digital Products",
+    "category": "Websites",
     "disciplines": [
       "Web Engineering",
       "UI/UX"
@@ -270,9 +270,9 @@
   {
     "slug": "sera-goods-commerce-demo",
     "title": "A small shop with serious order logic.",
-    "name": "SERA Goods \u2014 Commerce Demo",
+    "name": "SERA Goods — Commerce Demo",
     "summary": "A detailed storefront demonstration with product discovery, variants, stock-aware cart logic, vouchers, shipping choices, and a clear checkout review.",
-    "category": "Digital Products",
+    "category": "Websites",
     "disciplines": [
       "Web Engineering",
       "Business Systems",
@@ -369,7 +369,7 @@
     "approach": "Turn the support process into inspectable tools. Each module explains its rule, exposes the inputs, gives a cautious output, and names what it cannot decide. The interface supports learning and revision instead of replacing the student.",
     "implementation": "Eight browser-based modules cover method advising, survey sample estimates, assumption diagnostics, formatted result tables, questionnaire blueprints, author-year consistency checks, defense-question practice, and a locally saved revision plan. Sample exports are generated without uploading research data.",
     "outcome": "Visitors can test a research decision from planning through defense preparation and download selected working files. All examples are fictional, and all generated writing is labeled as a draft for student and supervisor review.",
-    "tradeoff": "The toolkit does not run SPSS, verify source authenticity, approve a methodology, write a thesis, fabricate data, or guarantee an academic result. Discipline-specific decisions still require qualified supervision and the student\u2019s own work.",
+    "tradeoff": "The toolkit does not run SPSS, verify source authenticity, approve a methodology, write a thesis, fabricate data, or guarantee an academic result. Discipline-specific decisions still require qualified supervision and the student’s own work.",
     "evidence": [
       "Research-method decision helper",
       "Finite-population sample-size calculation",
@@ -573,7 +573,7 @@
     "slug": "project-brief-scope-builder",
     "title": "A useful brief before a confident estimate.",
     "name": "Project Brief & Scope Builder",
-    "summary": "A practical intake tool for websites, data work, research support, and automation\u2014without guessing a price or promising an unreviewed deadline.",
+    "summary": "A practical intake tool for websites, data work, research support, and automation—without guessing a price or promising an unreviewed deadline.",
     "category": "Business Systems",
     "disciplines": [
       "Workflow Design",
@@ -611,7 +611,7 @@
     "slug": "morph-presentation-studio",
     "title": "Give the idea room to move.",
     "name": "Morph Presentation Studio",
-    "summary": "An editable slide sequence where the same objects move between layouts\u2014an interactive study of presentation pacing.",
+    "summary": "An editable slide sequence where the same objects move between layouts—an interactive study of presentation pacing.",
     "category": "Visual Communication",
     "disciplines": [
       "Presentation Design",
@@ -683,7 +683,7 @@
     "title": "An invitation worth opening.",
     "name": "Wedding Invitation Experience",
     "summary": "A responsive digital wedding invitation with a live design editor, event details, a fictional story, and RSVP simulation.",
-    "category": "Digital Products",
+    "category": "Websites",
     "disciplines": [
       "Website Design",
       "Invitation Design",
@@ -719,7 +719,7 @@
     "title": "One more page.",
     "name": "KOMA Manga Reader",
     "summary": "An immersive comic reading room with dimensional page turns, adaptive spreads, chapter navigation, and bookmarks.",
-    "category": "Digital Products",
+    "category": "Websites",
     "disciplines": [
       "Website Design",
       "Interactive Development",
@@ -755,7 +755,7 @@
     "title": "A good day, starts together.",
     "name": "Presence Attendance",
     "summary": "A working attendance desk with check-in, check-out, status filters, and CSV export. Three styles, one fictional team.",
-    "category": "Digital Products",
+    "category": "Websites",
     "disciplines": [
       "Website Design",
       "Interactive Development",
@@ -789,7 +789,7 @@
     "title": "Everything, in its place.",
     "name": "Archive Browser",
     "summary": "A fictional document archive with folder navigation, search, sample previews, and a simulated upload queue.",
-    "category": "Digital Products",
+    "category": "Websites",
     "disciplines": [
       "Website Design",
       "Interactive Development",

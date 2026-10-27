@@ -1,6 +1,9 @@
 function hydrateStudioPreviews(root){
- const styles=[...document.querySelectorAll('style')].map(s=>s.textContent).join('\n');
- root.querySelectorAll('[data-demo-snapshot]').forEach(host=>{const id=host.dataset.demoSnapshot;if(!demoSnapshots[id]||host.dataset.previewReady)return;host.dataset.previewReady='true';const frame=document.createElement('iframe');frame.setAttribute('sandbox','');frame.setAttribute('tabindex','-1');frame.setAttribute('aria-hidden','true');frame.setAttribute('loading','lazy');frame.title='Static preview of '+id;frame.srcdoc='<!doctype html><html lang="en"><head><meta charset="utf-8"><style>'+styles+'</style><style>html,body{margin:0!important;padding:0!important;width:1100px!important;min-width:0!important;overflow:hidden!important;background:#eee9df!important}body>*{margin:0!important;width:100%!important;max-width:none!important;transform:none!important}*{animation:none!important;transition:none!important}#commerce-demo .commerce-blueprint,#commerce-demo .commerce-checkout{display:none}#workspace{min-height:720px}.commerce-product-art{height:180px!important}.commerce-store-head h3{font-size:44px!important}</style></head><body class="spatial-gallery spatial-v2 clean-ui">'+demoSnapshots[id]+'</body></html>';host.append(frame);const size=()=>frame.style.transform='scale('+host.clientWidth/1100+')';size();const observer=new ResizeObserver(()=>{if(!host.isConnected){observer.disconnect();return;}size();});observer.observe(host);});
+ root.querySelectorAll('[data-demo-snapshot]').forEach(host=>{
+  const id=host.dataset.demoSnapshot;if(!demoSnapshots[id]||host.dataset.previewReady)return;
+  host.dataset.previewReady='true';const image=document.createElement('img');image.loading='lazy';image.decoding='async';image.width=1100;image.height=720;image.alt='';
+  image.src=(window.INDEX_HOSTED?'':'https://portfolio-kevins.vercel.app')+'/demo-shots/'+encodeURIComponent(id)+'.webp';host.append(image);
+ });
 }
 // Three different web journeys: editorial commerce, a file workspace, and a booking concierge.
 function productIllustration(id){

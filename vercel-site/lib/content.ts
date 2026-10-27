@@ -15,7 +15,7 @@ function withBundledProjects(content: Content): Content {
   const bundledProjects = fallbackProjects.filter(
     p => p.visibility === 'public' && p.status === 'Interactive Demo' && !remoteSlugs.has(p.slug)
   );
-  return { ...content, projects: [...remoteProjects, ...bundledProjects].sort((a, b) => (Number(a.order) || 0) - (Number(b.order) || 0)) };
+  return { ...content, projects: [...remoteProjects, ...bundledProjects].map(p => p.status === 'Interactive Demo' && ['wedding','manga','attendance','booking','commerce','archive'].includes(p.visual) ? { ...p, category: 'Websites' } : p).sort((a, b) => (Number(a.order) || 0) - (Number(b.order) || 0)) };
 }
 
 let cached: Content | null = null;

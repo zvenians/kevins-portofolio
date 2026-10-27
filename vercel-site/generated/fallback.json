@@ -237,7 +237,7 @@
       "title": "Booking, without the back-and-forth.",
       "name": "Ruang Temu — Booking Demo",
       "summary": "A local-service booking demo that helps customers choose a service, pick a time, and send one clear booking summary.",
-      "category": "Digital Products",
+      "category": "Websites",
       "disciplines": [
         "Web Engineering",
         "UI/UX"
@@ -273,7 +273,7 @@
       "title": "A small shop with serious order logic.",
       "name": "SERA Goods — Commerce Demo",
       "summary": "A detailed storefront demonstration with product discovery, variants, stock-aware cart logic, vouchers, shipping choices, and a clear checkout review.",
-      "category": "Digital Products",
+      "category": "Websites",
       "disciplines": [
         "Web Engineering",
         "Business Systems",
@@ -684,7 +684,7 @@
       "title": "An invitation worth opening.",
       "name": "Wedding Invitation Experience",
       "summary": "A responsive digital wedding invitation with a live design editor, event details, a fictional story, and RSVP simulation.",
-      "category": "Digital Products",
+      "category": "Websites",
       "disciplines": [
         "Website Design",
         "Invitation Design",
@@ -720,7 +720,7 @@
       "title": "One more page.",
       "name": "KOMA Manga Reader",
       "summary": "An immersive comic reading room with dimensional page turns, adaptive spreads, chapter navigation, and bookmarks.",
-      "category": "Digital Products",
+      "category": "Websites",
       "disciplines": [
         "Website Design",
         "Interactive Development",
@@ -756,7 +756,7 @@
       "title": "A good day, starts together.",
       "name": "Presence Attendance",
       "summary": "A working attendance desk with check-in, check-out, status filters, and CSV export. Three styles, one fictional team.",
-      "category": "Digital Products",
+      "category": "Websites",
       "disciplines": [
         "Website Design",
         "Interactive Development",
@@ -790,7 +790,7 @@
       "title": "Everything, in its place.",
       "name": "Archive Browser",
       "summary": "A fictional document archive with folder navigation, search, sample previews, and a simulated upload queue.",
-      "category": "Digital Products",
+      "category": "Websites",
       "disciplines": [
         "Website Design",
         "Interactive Development",

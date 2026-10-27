@@ -177,7 +177,7 @@ const galleryTemplates=[
   "kind": "lab"
  }
 ];
-function galleryHref(t){return t.lab!==undefined?(window.INDEX_HOSTED?'/?lab='+t.lab+'#lab':homeHref('lab')):projectHref(t.slug)+(window.INDEX_HOSTED?'?template='+t.id:'');}
+function galleryHref(t){return t.lab!==undefined?(window.INDEX_HOSTED?'/studio?lab='+t.lab+'#lab':homeHref('lab')):projectHref(t.slug)+(window.INDEX_HOSTED?'?template='+t.id:'');}
 function galleryStyles(t){return ({classic:['Clean','Botanical Garden','Wedding Cinema'],corporate:['Clean','Kinetic Type','Editorial Story'],geometric:['Clean','Luxury Editorial','Expressive'],platform:['Clean','Library Index','Archive Desk']})[t.kind]||demoStyleNames[t.kind]||demoStyleNames.lab;}
 function galleryArt(t){if(typeof demoSnapshots!=='undefined'&&demoSnapshots[t.id])return `<div class="demo-dom-preview" data-demo-snapshot="${t.id}" aria-hidden="true"></div>`;return `<div class="world-thumbnail">${worldSvg(t.id)}</div>`;}
 function initSpatialGallery(){

@@ -3,7 +3,7 @@
 const $=s=>document.querySelector(s), $$=s=>[...document.querySelectorAll(s)];
 const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const safeUrl=u=>/^https:\/\/[^\s<>"']+$/.test(u||'')?u:'';
-const data=window.INDEX_BOOTSTRAP;let state={view:'atlas',collection:'selected',category:'All work',query:'',lab:0,research:0,source:'reconciled',threshold:500000,highlight:true};
+const data=window.INDEX_BOOTSTRAP;data.projects.forEach(p=>{if(p.status==='Interactive Demo'&&['wedding','manga','attendance','booking','commerce','archive'].includes(p.visual))p.category='Websites';});let state={view:'atlas',collection:'selected',category:'All work',query:'',lab:0,research:0,source:'reconciled',threshold:500000,highlight:true};
 try{Object.assign(state,JSON.parse(sessionStorage.getItem('living-view')||'{}'));}catch{}
 let toastTimer;function toast(text){$('#toast').textContent=text;$('#toast').classList.add('visible');clearTimeout(toastTimer);toastTimer=setTimeout(()=>$('#toast').classList.remove('visible'),5000);}
 function rpc(name,...args){return new Promise((resolve,reject)=>{if(!window.google?.script?.run){if(!window.INDEX_HOSTED||!['getResumeFile','getMediaFile'].includes(name)||name==='getResumeFile'&&args.length)return reject(new Error('This action needs the owner workspace.'));const path=name==='getResumeFile'?'/api/file?type=resume':'/api/file?type=media&id='+encodeURIComponent(args[0]);fetch(path).then(async r=>{if(!r.ok)throw new Error('The published file is unavailable.');return r.json()}).then(resolve,reject);return;}google.script.run.withSuccessHandler(resolve).withFailureHandler(e=>reject(new Error(e.message||'The request could not be completed.')))[name](...args);});}
