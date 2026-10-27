@@ -1,0 +1,297 @@
+/* Public UI system: one type family, neutral surfaces, generous composition. */
+body.clean-ui {
+ --sans:var(--system);--display:var(--system);--serif:var(--system);--mono:var(--system);
+ --clean-paper:#f5f5f7;--clean-white:#fff;--clean-ink:#24252b;--clean-muted:#62646e;
+ --clean-line:#dedee5;--clean-accent:#69528f;--clean-radius:20px;
+}
+body.clean-ui *,body.clean-ui svg text {font-family:var(--system)!important}
+body.clean-ui .arrival-editorial h1 em {font-family:Georgia,serif!important}
+body.clean-ui :is(h2,h3,h4) {font-weight:550;letter-spacing:-.035em;line-height:1.12}
+body.clean-ui :is(h2,h3,h4) i {font-family:inherit!important;font-style:normal;font-weight:inherit}
+body.clean-ui :is(p,li) {line-height:1.7}
+body.clean-ui :is(.eyebrow,.section-label,.exhibit-meta,.micro,.edition-label) {font-size:11px;line-height:1.5;letter-spacing:.055em}
+body.clean-ui :is(button,input,select,textarea) {font-size:14px;line-height:1.4}
+body.clean-ui :is(input,select,textarea) {border:1px solid #d0d1d9;border-radius:10px;min-height:46px;padding:12px 14px;box-shadow:none}
+body.clean-ui input[type=checkbox],body.clean-ui input[type=radio] {min-height:0;padding:0;width:18px;height:18px;accent-color:#69528f}
+body.clean-ui :is(input,select,textarea):focus-visible {outline:3px solid #9d89bd;outline-offset:3px}
+body.clean-ui button {border-radius:10px;transition:background .2s,color .2s,box-shadow .2s}
+body.clean-ui button:disabled {opacity:.5;cursor:not-allowed}
+body.clean-ui :is(.solid-button,.dark-button,.ink-button) {border-radius:10px;padding:13px 20px!important;background:#34313c!important;color:#fff!important;border-color:#34313c!important}
+body.clean-ui :is(.case-links,.desk-actions,.world-playback,.gallery-categories,.lab-tabs) button {min-height:44px}
+body.clean-ui .header {min-height:72px}
+body.clean-ui .header :is(a,button,select) {font-size:13px}
+body.clean-ui .header .identity b {font-size:23px}
+
+/* Main journey. Two stable columns replace uneven sizes and scattered spacing. */
+body.clean-ui main>section:not(.arrival) {padding:110px max(6%,calc((100vw - 1240px)/2));border:0}
+body.clean-ui .section-label {border:0;padding:0;margin-bottom:32px}
+body.clean-ui :is(.section-heading,.gallery-section-head) {margin-bottom:44px;padding:0;border:0;gap:50px}
+body.clean-ui :is(.section-heading,.gallery-section-head) h2 {font-size:clamp(34px,4.1vw,58px);font-weight:550;line-height:1.09;letter-spacing:-.05em}
+body.clean-ui .section-heading h2 {max-width:18ch}
+body.clean-ui :is(.section-heading,.gallery-section-head) p {font-size:16px;line-height:1.65;max-width:40ch}
+body.clean-ui #field {--bg:#f5f5f7;--ink:#24252b;--muted:#62646e;--line:#dedee5;background:#f5f5f7}
+body.clean-ui #field .collection-switch {display:flex;flex-wrap:wrap;gap:6px;border:0;background:#e9e9ef;border-radius:13px;padding:5px;width:fit-content;margin-bottom:24px}
+body.clean-ui #field .collection-switch button {font-size:13px;padding:12px 18px;border:0!important;border-radius:9px;color:#60616c}
+body.clean-ui #field .collection-switch button[aria-pressed=true] {color:#292731;background:#fff;box-shadow:0 2px 7px #17141f0c}
+body.clean-ui #field .toolbar {padding:0 0 16px;gap:16px;border:0;align-items:center}
+body.clean-ui #field .filters {display:flex;flex-wrap:wrap;gap:4px 8px}
+body.clean-ui #field .filters button {font-size:12px;padding:9px 12px;border:0;background:none;color:#62646e}
+body.clean-ui #field .filters button[aria-pressed=true] {background:#e7e2ed;color:#4e3b6c}
+body.clean-ui #field .view-switch button {padding:9px 12px;font-size:12px;border:0}
+body.clean-ui #field .search-row {border:0;padding:0;margin:0 0 34px}
+body.clean-ui #field .search-row input {width:min(100%,420px);background:#fff;font-size:14px}
+body.clean-ui #field .exhibition.atlas {display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:48px 30px}
+body.clean-ui #field .exhibition.atlas .exhibit {grid-column:auto;align-self:start;margin:0!important;perspective:1400px;overflow:visible;min-width:0}
+body.clean-ui #field .exhibit .visual {height:330px;border-radius:16px;margin-bottom:22px;border:1px solid #00000008;box-shadow:0 18px 40px -28px #17141f75;transform:rotateX(var(--depth-y,0deg)) rotateY(var(--depth-x,0deg))!important;transition:transform .5s cubic-bezier(.2,.8,.2,1),box-shadow .4s;transform-origin:center}
+body.clean-ui #field .exhibit:hover .visual {box-shadow:0 25px 45px -25px #17141f75}
+body.clean-ui #field .exhibit h3 {font-size:24px;margin:12px 0 10px;letter-spacing:-.035em}
+body.clean-ui #field .exhibit p {font-size:14px;max-width:50ch}
+body.clean-ui #field .exhibit-meta {font-size:11px;text-transform:none;letter-spacing:0}
+body.clean-ui #field .illustration {display:none}
+body.clean-ui #field .exhibition.index .exhibit {padding:24px 0;margin:0!important}
+body.clean-ui #field .exhibition.index .visual {height:90px;box-shadow:none;transform:none!important}
+
+/* Studio: a dimensional installation, followed by large clean previews. */
+body.clean-ui #studio {--ink:#f6f6f8;--muted:#b9bac5;background:#191a1f;color:#f6f6f8}
+body.clean-ui #studio .gallery-section-head {display:grid;grid-template-columns:1fr 1fr;gap:20px 60px;align-items:center;margin-bottom:50px}
+body.clean-ui #studio .gallery-section-head>div {grid-column:1}
+body.clean-ui #studio .gallery-section-head>p {grid-column:1;align-self:start;color:#b9bac5;margin:0}
+body.clean-ui #studio .gallery-section-head .eyebrow {display:block;margin-bottom:20px;color:#c6bbd9}
+body.clean-ui #studio .gallery-categories {border:0;background:#27282e;padding:5px;border-radius:13px;display:flex;gap:4px;width:fit-content;margin-bottom:36px}
+body.clean-ui #studio .gallery-categories button {padding:12px 18px;border:0;color:#c5c5cf;font-size:13px;border-radius:9px;background:transparent}
+body.clean-ui #studio .gallery-categories button[aria-pressed=true] {background:#e5dcf3;color:#30283e;box-shadow:none}
+body.clean-ui .gallery-template-list {gap:44px 30px;grid-template-columns:repeat(2,minmax(0,1fr))}
+body.clean-ui .gallery-template {perspective:1500px;min-width:0;display:block}
+body.clean-ui .gallery-template :is(.world-thumbnail,.demo-dom-preview) {border-radius:16px;border:1px solid #ffffff14;box-shadow:0 20px 35px -24px #000b;transform:rotateX(var(--depth-y,2deg)) rotateY(var(--depth-x,-3deg));transition:transform .5s cubic-bezier(.2,.8,.2,1),box-shadow .5s;transform-origin:center}
+body.clean-ui .gallery-template:focus-visible :is(.world-thumbnail,.demo-dom-preview) {transform:rotateY(0) translateY(-5px)}
+body.clean-ui .gallery-template>div:last-child {border:0;margin:0;padding:24px 2px 0}
+body.clean-ui #studio .gallery-template h3 {font-size:24px;line-height:1.2;margin:8px 0 10px;color:#f6f6f8}
+body.clean-ui #studio .gallery-template p {font-size:14px;color:#b9bac5;line-height:1.6;max-width:48ch}
+body.clean-ui .gallery-template>div>span {font-size:10px;letter-spacing:.06em}
+body.clean-ui .gallery-disclosure {max-width:74ch;font-size:12px;line-height:1.7;margin-top:44px}
+body.clean-ui .demo-dom-preview:after {content:none}
+.studio-sculpture {grid-column:2;grid-row:1/3;align-self:center;display:block;width:100%;padding:0!important;border:0!important;background:none!important;color:#c7c1d2!important;text-align:left;--sculpture-angle:-18deg}
+.sculpture-space {display:block;height:340px;perspective:1000px;position:relative;isolation:isolate}
+.sculpture-pages {position:absolute;inset:0;transform-style:preserve-3d;transform:rotateY(var(--sculpture-angle)) rotateX(14deg);transition:transform 1.2s cubic-bezier(.2,.8,.2,1)}
+.sculpture-page {display:block;position:absolute;width:62%;aspect-ratio:1000/650;left:calc(8% + var(--page)*12%);top:calc(20px + var(--page)*28px);border-radius:7px;transform-style:preserve-3d;transform:translateZ(calc(var(--page)*42px)) rotateZ(calc(-12deg + var(--page)*8deg));box-shadow:4px 6px 0 #a29aa9,18px 26px 34px #0007;backface-visibility:hidden}
+.sculpture-page svg {display:block;width:100%;height:100%;border-radius:7px;border:1px solid #ffffff80}
+.sculpture-shadow {position:absolute;bottom:3%;left:15%;right:5%;height:40px;background:#0006;border-radius:50%;filter:blur(16px)}
+#studio-depth-note {display:flex;justify-content:space-between;font-size:12px;letter-spacing:0;color:#c6c3cf;border-top:1px solid #ffffff1c;padding-top:18px}
+#studio-depth-note>span {font-size:24px;line-height:16px}
+
+/* Services show the decision first; supporting detail opens on request. */
+body.clean-ui #services {background:#f5f5f7!important;--ink:#24252b;--muted:#62646e;--line:#dedee5;color:#24252b}
+body.clean-ui #services :is(h2,h3,h4) {color:#24252b}
+body.clean-ui #services p {color:#62646e}
+body.clean-ui .service-lanes {display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:20px;background:none;border:0}
+body.clean-ui .service-lanes article {display:flex;flex-direction:column;gap:0;background:#fff!important;border:0!important;border-radius:18px;padding:34px!important;min-height:0}
+body.clean-ui .service-lanes h3 {font-size:27px;line-height:1.15;margin:20px 0 14px}
+body.clean-ui .service-lanes p {font-size:15px;margin-bottom:24px}
+body.clean-ui .service-lanes .eyebrow {color:#79658f;font-size:11px}
+body.clean-ui .service-lanes .text-link {color:#5a4278;padding:16px 0 0;margin-top:auto;border:0;font-size:14px}
+.service-detail {border-top:1px solid #e6e6ec;padding:16px 0;color:#62646e;margin-bottom:12px}
+.service-detail summary {display:flex;justify-content:space-between;cursor:pointer;list-style:none;font-size:13px;color:#393641}
+.service-detail ul {padding-left:18px;margin:20px 0!important}
+body.clean-ui .service-detail li {font-size:14px;margin:8px 0}
+body.clean-ui .service-detail small {font-size:12px;line-height:1.65;color:#62646e;margin:0;display:block}
+body.clean-ui .service-detail[open] summary>span {transform:rotate(45deg)}
+body.clean-ui #services .working-process {margin-top:50px}
+body.clean-ui #services :is(.process-step,.process-card) {background:transparent;color:#24252b}
+
+/* Data, research and demo tools share the same surface and control language. */
+body.clean-ui #lab {background:#eeeef2;color:#24252b;--ink:#24252b;--muted:#62646e;--line:#dedee5}
+body.clean-ui .lab-tabs {display:flex;flex-wrap:wrap;gap:6px;background:transparent;border:0;margin-bottom:24px}
+body.clean-ui .lab-tabs button {font-size:13px;color:#62646e;background:#e2e2e9;border:0;border-radius:10px;padding:12px 18px}
+body.clean-ui .lab-tabs button[aria-pressed=true] {background:#34313c;color:#fff}
+body.clean-ui .lab-tabs button span {font-size:11px;margin-right:7px;color:inherit}
+body.clean-ui #workspace[data-lab-world] {background:#fff;border:0;border-radius:20px;padding:32px;box-shadow:0 15px 45px -30px #19162335;color:#24252b;--ink:#24252b;--muted:#62646e;--line:#dedee5}
+body.clean-ui #workspace .data-world-intro {border:0;padding:0 0 24px;margin:0}
+body.clean-ui #workspace .data-world-intro h3 {font-size:32px;letter-spacing:-.04em;margin:12px 0;max-width:none}
+body.clean-ui #workspace .data-world-intro p {font-size:14px;line-height:1.6;margin:0}
+body.clean-ui #workspace .data-world-intro>small {font-size:10px;margin-top:16px;letter-spacing:.04em}
+body.clean-ui #workspace .workspace-heading {margin-bottom:24px;border:0;padding:0}
+body.clean-ui #workspace .workspace-heading .eyebrow {display:none}
+body.clean-ui #workspace .workspace-heading button {font-size:13px;border-radius:9px;padding:12px 16px}
+body.clean-ui #workspace .analysis-layout {grid-template-columns:220px minmax(0,1fr);gap:28px}
+body.clean-ui #workspace .analysis-sidebar {background:#f5f5f7;padding:22px;border-radius:14px}
+body.clean-ui #workspace .lab-controls label {font-size:13px;line-height:1.5;color:#62646e}
+body.clean-ui #workspace button {border-color:#dedee5;border-radius:9px;font-size:12px}
+body.clean-ui #workspace .segmented {gap:5px}
+body.clean-ui #workspace .segmented button {text-transform:capitalize;border:0;color:#62646e;background:transparent}
+body.clean-ui #workspace .segmented button[aria-pressed=true] {background:#fff;color:#4e3b6c;box-shadow:0 2px 8px #0000000c}
+body.clean-ui #workspace .lab-stats {grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;margin-bottom:26px}
+body.clean-ui #workspace .lab-stats>div {background:#f5f5f7;border-radius:12px;padding:22px}
+body.clean-ui #workspace .lab-stats strong {font-size:36px;font-weight:500;color:#393341;letter-spacing:-.04em}
+body.clean-ui #workspace .lab-stats span {font-size:12px;color:#62646e;margin-top:8px;letter-spacing:0}
+body.clean-ui #workspace :is(td,th) {font-size:12px;padding:14px;letter-spacing:0;font-weight:400;line-height:1.5}
+body.clean-ui #workspace th {background:#f5f5f7;color:#62646e;font-weight:500;text-transform:none}
+body.clean-ui #workspace td {color:#393941;border-color:#eeeef2}
+body.clean-ui #workspace .calculation {background:#f5f5f7;color:#62646e;font-size:13px;line-height:1.65;border:0;border-radius:12px;margin-top:24px}
+body.clean-ui .data-proof {background:transparent;border:0;gap:20px;padding:30px 0 0}
+body.clean-ui .data-proof>div {border:0;padding:0;background:transparent}
+body.clean-ui .data-proof small {color:#535560;font-size:12px;background:#e5e5ec;border-radius:8px;padding:12px}
+body.clean-ui .gallery-deep-dive {background:#f5f5f7;color:#24252b;border-top:1px solid #dedee5}
+body.clean-ui .gallery-deep-dive>summary {padding:32px max(6%,calc((100vw - 1240px)/2));gap:25px;list-style:none}
+body.clean-ui .gallery-deep-dive>summary span {font-size:25px;font-weight:500;letter-spacing:-.035em}
+body.clean-ui .gallery-deep-dive>summary b {font-size:12px;font-weight:400;color:#62646e;letter-spacing:0}
+body.clean-ui .gallery-deep-dive[open]>summary {background:#ebebf0}
+body.clean-ui #research {padding:60px 6%;background:#f5f5f7}
+body.clean-ui .research-toolkit {background:#fff;border:0;border-radius:18px;padding:30px;box-shadow:none}
+body.clean-ui .toolkit-shell {border:1px solid #e7e7ed;border-radius:12px;overflow:hidden}
+body.clean-ui .toolkit-tabs {background:#f5f5f7;border-color:#e7e7ed}
+body.clean-ui .toolkit-tabs button {font-size:13px;padding:18px;border:0;border-radius:0;color:#62646e}
+body.clean-ui .toolkit-tabs button[aria-selected=true] {background:#e8e2f0;color:#473656}
+body.clean-ui .toolkit-workspace {background:#fff}
+body.clean-ui .tool-title h4 {font-size:32px;font-style:normal}
+body.clean-ui .tool-result {background:#f5f5f7;border:0;border-radius:12px;font-size:14px}
+body.clean-ui .research-index {gap:8px;background:transparent;border:0}
+body.clean-ui .research-index button {border:0;border-radius:10px;background:#e9e9ef;color:#62646e;padding:16px}
+body.clean-ui .research-index button[aria-pressed=true] {background:#34313c;color:#fff}
+
+/* Demo pages lead straight into the interactive artboard. */
+body.clean-ui .case-page {background:#f5f5f7;max-width:none;padding:60px max(5%,calc((100vw - 1280px)/2));--ink:#24252b;--muted:#62646e;--line:#dedee5}
+body.clean-ui .case-page>.eyebrow {margin-top:38px;font-size:12px;text-transform:none;letter-spacing:0;color:#62646e}
+body.clean-ui .case-page>h1 {font-size:clamp(36px,4.5vw,64px);line-height:1.08;max-width:20ch;margin:18px 0;letter-spacing:-.05em}
+body.clean-ui .case-summary {font-size:17px;line-height:1.65;max-width:66ch;margin:0 0 25px}
+body.clean-ui .case-links {margin:0 0 40px;gap:12px}
+body.clean-ui .case-links :is(a,button) {font-size:13px;padding:11px 16px;border:0;background:#e9e9ef;color:#4a4652;border-radius:10px}
+body.clean-ui #interactive-evidence {margin:0!important;padding:0!important;border:0;display:block}
+body.clean-ui #interactive-evidence>h2 {font-size:23px;margin:0 0 24px;letter-spacing:-.025em}
+body.clean-ui .demo-context {margin:44px 0;border-block:1px solid #dedee5;padding:24px 0}
+.demo-context>summary {list-style:none;cursor:pointer;display:flex;justify-content:space-between;gap:20px;font-size:20px;font-weight:500}
+.demo-context>summary>span {font-size:12px;color:#62646e;font-weight:400}
+body.clean-ui .demo-context .case-visual {max-width:600px;margin:35px auto;border-radius:16px;overflow:hidden}
+body.clean-ui .demo-context .case-copy {padding:30px 0;border-color:#e2e2e8;gap:25px}
+body.clean-ui .demo-context .case-copy h2 {font-size:24px}
+body.clean-ui .demo-context .case-copy p {font-size:15px;line-height:1.75;color:#62646e}
+body.clean-ui .case-page .case-contact {background:#eae6f0;border-radius:18px;padding:38px!important;margin-top:55px}
+body.clean-ui .case-contact p {color:#56505f}
+body.clean-ui .case-contact h2 {font-size:34px;letter-spacing:-.04em}
+
+body.clean-ui :is(.archive-app,.concierge,.working-demo,.creative-world),body.clean-ui #commerce-demo .commerce-demo {border:1px solid #e3e3e9;border-radius:20px;box-shadow:0 20px 55px -40px #19162340;background:#fff;color:#24252b;--ink:#24252b;--muted:#62646e;--line:#dedee5;--paper:#f5f5f7}
+body.clean-ui :is(.archive-app aside,.creative-world .world-switch,.working-demo-head),body.clean-ui #commerce-demo .commerce-store-head {background:#f0edf5;color:#34303d;border:0;padding:30px}
+body.clean-ui .archive-app aside h3 {font-size:22px}
+body.clean-ui .archive-app aside nav button {font-size:13px;border-radius:9px;color:#62646e;padding:12px}
+body.clean-ui .archive-app nav [aria-pressed=true] {background:#fff;color:#473656}
+body.clean-ui .archive-app section {padding:32px}
+body.clean-ui .archive-app .record-list button {padding:24px;border:0;background:#f5f5f7;border-radius:12px;gap:18px;min-height:100px}
+body.clean-ui .archive-app .record-list button>b {border:0;background:#e8e3ee;color:#61526e;border-radius:8px;font-size:11px;padding:18px 10px}
+body.clean-ui .archive-app .record-list strong {font-size:15px;font-weight:500}
+body.clean-ui .archive-app footer {font-size:12px;border-color:#e3e3e9}
+body.clean-ui .concierge>aside {background:#e9e4f0;color:#393041;padding:40px}
+body.clean-ui .concierge aside h3 {font-size:44px;font-weight:500;letter-spacing:-.045em}
+body.clean-ui .concierge>section {padding:36px}
+body.clean-ui .concierge-steps {gap:12px;border-color:#e3e3e9}
+body.clean-ui .concierge-steps button {font-size:12px;color:#62646e}
+body.clean-ui .concierge section h3 {font-size:30px;letter-spacing:-.035em}
+body.clean-ui .concierge form :is(input,select) {background:#f8f8fa;border:1px solid #d4d4df;border-radius:10px;padding:13px;font-size:15px}
+body.clean-ui .concierge .appointment-slots span {border-color:#dedee5;border-radius:10px;font-size:14px}
+body.clean-ui #commerce-demo .commerce-store-head {padding:40px;min-height:240px;background:#eeeaf3}
+body.clean-ui #commerce-demo .commerce-store-head h3 {font-size:clamp(36px,4vw,56px)!important;font-weight:550!important;letter-spacing:-.045em}
+body.clean-ui #commerce-demo .commerce-store-head h3 i {font-style:normal}
+body.clean-ui #commerce-demo .commerce-notice {background:#34313c;color:#eceaf1;font-size:11px;line-height:1.6;letter-spacing:0;padding:12px 24px}
+body.clean-ui #commerce-demo .commerce-product-art {min-height:240px;border-radius:14px;background:#eeeaf3}
+body.clean-ui #commerce-demo .commerce-product-copy {padding:20px 0;border-color:#dedee5}
+body.clean-ui #commerce-demo .commerce-product-copy h4 {font-size:21px;line-height:1.2}
+body.clean-ui #commerce-demo .commerce-product-copy small {font-size:11px;line-height:1.5;color:#62646e;letter-spacing:0}
+body.clean-ui #commerce-demo .commerce-product-art>span,body.clean-ui #commerce-demo .commerce-product-art>i {font-size:11px;letter-spacing:0;font-style:normal}
+body.clean-ui #commerce-demo .commerce-product-copy label {font-size:12px;letter-spacing:0}
+body.clean-ui #commerce-demo .commerce-product-copy button {border-radius:9px;font-size:14px;background:#34313c}
+body.clean-ui #commerce-demo .commerce-cart {padding:28px;background:#fafafa;border-color:#e3e3e9}
+body.clean-ui #commerce-demo .commerce-cart :is(label,p,small) {font-size:12px;letter-spacing:0;line-height:1.6}
+body.clean-ui #commerce-demo .commerce-checkout {background:#fff;color:#24252b;border-top:1px solid #e3e3e9;padding:40px}
+body.clean-ui #commerce-demo .commerce-checkout :is(h3,p,label) {color:#24252b}
+body.clean-ui #commerce-demo .commerce-checkout p {color:#62646e;font-size:15px}
+body.clean-ui #commerce-demo .commerce-blueprint {background:#f5f5f7;color:#24252b;padding:35px}
+body.clean-ui .creative-world .world-switch {display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:18px}
+body.clean-ui .world-switch p {color:#62646e;font-size:11px;letter-spacing:.04em;margin:0}
+body.clean-ui .world-switch button {background:transparent;color:#62646e;border:0;border-radius:9px;font-size:13px;padding:12px 16px}
+body.clean-ui .world-switch button[aria-pressed=true] {background:#fff;color:#473656;box-shadow:0 2px 8px #00000009}
+body.clean-ui .world-bottom {background:#f5f5f7;border-color:#e3e3e9;padding:24px 30px;color:#62646e;font-size:11px;letter-spacing:0}
+body.clean-ui .world-bottom a {font-size:13px}
+body.clean-ui .world-playback {background:#f5f5f7;padding:14px;gap:8px}
+body.clean-ui .world-playback button {color:#46404e;border:0;background:#e9e6ef;border-radius:9px;font-size:12px;padding:12px}
+body.clean-ui .slide-chapters {padding:12px 14px;gap:8px}
+body.clean-ui .slide-chapters button {border:0;background:#f5f5f7;border-radius:8px;padding:13px;font-size:12px;color:#62646e}
+body.clean-ui .slide-chapters button[aria-pressed=true] {background:#e5ddec;color:#473656}
+body.clean-ui :is(.slide-editor,.inv-personalize) {background:#f5f5f7!important;border-color:#e3e3e9;padding:24px 30px;color:#46404e;font-size:14px}
+body.clean-ui :is(.identity-tools,.identity-construction,.identity-application) {border-radius:14px}
+body.clean-ui .identity-application {box-shadow:0 15px 35px -25px #0006}
+body.clean-ui .working-demo-head h3 {font-size:34px;line-height:1.1}
+body.clean-ui .working-demo-head p {font-size:14px;color:#62646e}
+body.clean-ui .working-demo :is(label,small) {letter-spacing:0;text-transform:none}
+body.clean-ui .working-demo label {font-size:13px}
+body.clean-ui :is(.prep-layout>aside,.field-device>aside,.scope-output) {border-radius:0}
+body.clean-ui .paper-preview {border-radius:10px;box-shadow:0 15px 40px -20px #24252b30}
+body.clean-ui .working-demo>footer {background:#f5f5f7;color:#62646e;border-color:#e3e3e9}
+body.clean-ui #profile {background:#f5f5f7;color:#24252b;--ink:#24252b;--muted:#62646e;--line:#dedee5}
+body.clean-ui #profile :is(h2,h3,h4) {color:#24252b}
+body.clean-ui #profile p {font-size:16px;color:#62646e}
+body.clean-ui #profile .capability button {background:#e9e9ef;color:#4b4753;border:0;border-radius:10px;padding:14px 18px;font-size:14px}
+body.clean-ui #profile .capability button[aria-pressed=true] {background:#34313c;color:#fff}
+body.clean-ui #connect {padding-block:100px;background:#e5ddef;color:#302638}
+body.clean-ui #connect h2 {font-size:clamp(40px,6vw,76px);line-height:1.08;letter-spacing:-.05em;font-weight:500}
+body.clean-ui #connect .section-label {color:#655374}
+body.clean-ui #connect .text-link {border:0;background:#ffffff85;border-radius:10px;padding:14px 20px;font-size:14px}
+
+@media(max-width:1000px) {
+ body.clean-ui main>section:not(.arrival) {padding:80px 5%}
+ body.clean-ui #studio .gallery-section-head {gap:20px 30px}
+ body.clean-ui #workspace .analysis-layout {grid-template-columns:190px minmax(0,1fr)}
+ body.clean-ui #field .exhibit .visual {height:280px}
+ body.clean-ui .service-lanes {grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+@media(max-width:750px) {
+ body.clean-ui main>section:not(.arrival) {padding:65px 5%}
+ body.clean-ui :is(.section-heading,.gallery-section-head) {display:block;gap:20px;margin-bottom:32px}
+ body.clean-ui :is(.section-heading,.gallery-section-head) p {margin-top:22px;font-size:15px}
+ body.clean-ui #field .collection-switch {display:grid;grid-template-columns:1fr 1fr;width:100%}
+ body.clean-ui #field .collection-switch button {padding:12px 9px;font-size:12px}
+ body.clean-ui #field .toolbar {display:block}
+ body.clean-ui #field .view-switch {margin-top:14px;justify-content:flex-end}
+ body.clean-ui #field .exhibition.atlas {grid-template-columns:1fr;gap:36px}
+ body.clean-ui #field .exhibit .visual {height:290px}
+ body.clean-ui #field .exhibit h3 {font-size:24px}
+ body.clean-ui #studio .gallery-section-head {display:block}
+ body.clean-ui .studio-sculpture {margin:30px auto 0;max-width:420px}
+ .sculpture-space {height:280px}
+ body.clean-ui #studio .gallery-categories {flex-wrap:wrap;width:100%;gap:4px}
+ body.clean-ui #studio .gallery-categories button {font-size:12px;padding:11px 12px}
+ body.clean-ui .gallery-template-list,body.clean-ui .service-lanes {grid-template-columns:1fr;gap:26px}
+ body.clean-ui .service-lanes article {padding:28px!important}
+ body.clean-ui #workspace[data-lab-world] {padding:24px 16px;border-radius:16px}
+ body.clean-ui #workspace .analysis-layout {display:block}
+ body.clean-ui #workspace .data-world-intro h3 {font-size:28px}
+ body.clean-ui #workspace .lab-stats>div {padding:18px}
+ body.clean-ui #workspace .lab-stats strong {font-size:30px}
+ body.clean-ui .gallery-deep-dive>summary {padding:28px 5%;align-items:center}
+ body.clean-ui .gallery-deep-dive>summary span {font-size:21px}
+ body.clean-ui .gallery-deep-dive>summary b {font-size:11px;max-width:85px;text-align:right}
+ body.clean-ui .case-page {padding:35px 5%}
+ body.clean-ui .case-page>h1 {font-size:38px;line-height:1.1}
+ body.clean-ui .case-summary {font-size:15px}
+ body.clean-ui .case-links {gap:8px;margin-bottom:30px}
+ body.clean-ui .case-links :is(a,button) {font-size:12px;padding:12px}
+ body.clean-ui .demo-context>summary {font-size:18px}
+ body.clean-ui .demo-context>summary>span {max-width:110px;font-size:11px;text-align:right}
+ body.clean-ui :is(.archive-app aside,.archive-app section,.concierge>section,.working-demo-head,.creative-world .world-switch) {padding:24px 18px}
+ body.clean-ui .concierge>aside {padding:28px 22px}
+ body.clean-ui .concierge aside h3 {font-size:36px}
+ body.clean-ui .concierge-steps button {font-size:11px}
+ body.clean-ui #commerce-demo .commerce-store-head {padding:28px 20px;min-height:220px}
+ body.clean-ui #commerce-demo .commerce-store-head h3 {font-size:38px!important}
+ body.clean-ui #commerce-demo .commerce-product-art {min-height:170px}
+ body.clean-ui #commerce-demo .commerce-product-copy h4 {font-size:19px}
+ body.clean-ui #commerce-demo .commerce-checkout {padding:28px 20px}
+ body.clean-ui .world-switch>div {gap:6px;margin:0}
+ body.clean-ui .world-switch button {font-size:12px;padding:12px}
+ body.clean-ui .world-bottom {padding:22px 18px;gap:14px}
+ body.clean-ui .working-demo-head h3 {font-size:29px}
+ body.clean-ui #profile p {font-size:15px}
+}
+@media(prefers-reduced-motion:reduce) {
+ .sculpture-pages {transition:none!important}
+ body.clean-ui .gallery-template :is(.world-thumbnail,.demo-dom-preview),body.clean-ui #field .exhibit .visual {transform:none!important;transition:none!important}
+}
+.reduced .sculpture-pages {transition:none!important}
+.reduced body.clean-ui .gallery-template :is(.world-thumbnail,.demo-dom-preview),.reduced body.clean-ui #field .exhibit .visual {transform:none!important;transition:none!important}
