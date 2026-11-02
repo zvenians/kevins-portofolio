@@ -132,3 +132,21 @@ body.clean-ui .gallery-studio .gallery-section-head h2 i {color:#abc4ff;font-fam
 @media (hover:hover) and (prefers-reduced-motion:no-preference) {
  html:not(.reduced) .kinetic-hero h1 em {transform:perspective(650px) rotateY(var(--yaw,0deg));transition:transform .18s ease-out}
 }
+.studio-feature-print {display:block;align-self:center;grid-column:1/-1;width:min(100%,980px);margin:20px auto 0;color:inherit}
+.studio-feature-print figure {margin:0;overflow:hidden;border-block:1px solid #8792a1}
+.studio-feature-print img {display:block;width:100%;height:auto;max-height:430px;object-fit:cover;object-position:center}
+.studio-feature-print figcaption {display:flex;justify-content:space-between;gap:16px;align-items:center;padding:15px 0;color:#edf1ff}
+.studio-feature-print figcaption i {font:italic clamp(17px,2.1vw,32px) Georgia,serif;margin-left:12px}
+.studio-feature-print figcaption span:last-child {font-size:14px}
+.studio-feature-print:focus-visible {outline:3px solid #9ebeff;outline-offset:4px}
+body.clean-ui .demo-dom-preview {overflow:hidden;border-radius:6px}
+body.clean-ui .demo-dom-preview>img {object-fit:contain;background:#e8eaed}
+body.clean-ui .manga-book.is-spread {border-radius:6px 6px 12px 12px;box-shadow:0 2px #919191,0 4px #ececec,0 6px #999,0 8px #ddd,0 11px #373737,0 22px 28px #0007}
+.is-spread>.manga-page:first-child {transform-origin:right;transform:perspective(1500px) rotateY(2deg)}
+.is-spread>.manga-page:nth-child(2) {transform-origin:left;transform:perspective(1500px) rotateY(-2deg)}
+.is-spread>.manga-page::after {content:"";position:absolute;inset:0;pointer-events:none;background:linear-gradient(90deg,transparent 84%,#0002)}
+.is-spread>.manga-page:nth-child(2)::after {transform:scaleX(-1)}
+.manga-toolbar [data-slot=native-select-wrapper] {position:relative;display:inline-block}
+.manga-toolbar [data-slot=native-select] {width:100%;appearance:none;cursor:pointer}
+.manga-toolbar [data-slot=native-select-icon] {position:absolute;right:10px;top:50%;transform:translateY(-50%);width:15px;pointer-events:none;color:#28282e}
+@media(max-width:600px){.studio-feature-print figcaption{align-items:start}.studio-feature-print figcaption i{display:block;margin-left:0}}

@@ -4,9 +4,12 @@ function initCleanExperience(){
  const studio=document.querySelector('#studio');
  if(studio&&!studio.dataset.clean){
   studio.dataset.clean='true';const head=studio.querySelector('.gallery-section-head');
-  const object=document.createElement('button');object.type='button';object.className='studio-sculpture';object.setAttribute('aria-label','Rotate studio preview');object.setAttribute('aria-describedby','studio-depth-note');
-  object.innerHTML=`<span class="sculpture-space" aria-hidden="true"><span class="sculpture-shadow"></span><span class="sculpture-pages">${['classic','corporate','editorial'].map((id,i)=>`<span class="sculpture-page" style="--page:${i}">${worldSvg(id)}</span>`).join('')}</span></span><span id="studio-depth-note">Three disciplines. One studio. <span>↻</span></span>`;
-  let angle=-18;object.onclick=()=>{angle=angle===-18?18:-18;object.style.setProperty('--sculpture-angle',angle+'deg');};head.append(object);
+  const feature = document.createElement('a');
+  feature.className = 'studio-feature-print';
+  feature.href = projectHref('koma-manga-reader');
+  const assetRoot = window.INDEX_HOSTED ? '' : 'https:\x2f\x2fportfolio-kevins.vercel.app';
+  feature.innerHTML = `<figure><img width="1100" height="720" fetchpriority="high" src="${assetRoot}/demo-shots/web-manga.webp" alt="Nara and Ren at the railway station"><figcaption><span>KOMA <i>After the last train</i></span><span>Read volume 01 ↗</span></figcaption></figure>`;
+  head.append(feature);
  }
  document.querySelectorAll('.service-lanes>article').forEach(article=>{
   if(article.dataset.clean)return;article.dataset.clean='true';const list=article.querySelector('ul');if(!list)return;

@@ -23,11 +23,11 @@ test('services progressively disclose supporting copy without removing service l
  expect(d.window.document.querySelector('.service-detail')?.textContent).toContain('Scope note');
  expect(d.window.document.querySelector('a')?.closest('details')).toBeNull();d.window.close();
 });
-test('studio sculpture is a keyboard-operable button and reverses its rotation',()=>{
- const d=setup('<section id="studio"><div class="gallery-section-head"></div></section>');d.window.eval('initCleanExperience();initCleanExperience()');
- const button=d.window.document.querySelector<HTMLButtonElement>('.studio-sculpture')!;
- expect(button.tagName).toBe('BUTTON');expect(button.getAttribute('aria-label')).toBe('Rotate studio preview');
- expect(d.window.document.querySelectorAll('.sculpture-page').length).toBe(3);
- button.click();expect(button.style.getPropertyValue('--sculpture-angle')).toBe('18deg');
- button.click();expect(button.style.getPropertyValue('--sculpture-angle')).toBe('-18deg');d.window.close();
+test('studio shows a single linked comic print',()=>{
+ const d=setup('<section id="studio"><div class="gallery-section-head"></div></section>');
+ d.window.eval("var projectHref=s=>'/work/'+s;initCleanExperience();initCleanExperience()");
+ expect(d.window.document.querySelectorAll('.studio-feature-print')).toHaveLength(1);
+ expect(d.window.document.querySelector('.studio-feature-print')?.getAttribute('href')).toBe('/work/koma-manga-reader');
+ expect(d.window.document.querySelector('.studio-feature-print img')?.getAttribute('src')).toContain('web-manga.webp');
+ d.window.close();
 });
