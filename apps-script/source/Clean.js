@@ -7,8 +7,11 @@ function initCleanExperience(){
   const feature = document.createElement('a');
   feature.className = 'studio-feature-print';
   feature.href = projectHref('koma-manga-reader');
-  const assetRoot = window.INDEX_HOSTED ? '' : 'https:\x2f\x2fportfolio-kevins.vercel.app';
-  feature.innerHTML = `<figure><img width="1100" height="720" fetchpriority="high" src="${assetRoot}/demo-shots/web-manga.webp" alt="Nara and Ren at the railway station"><figcaption><span>KOMA <i>After the last train</i></span><span>Read volume 01 ↗</span></figcaption></figure>`;
+  feature.innerHTML = `<figure class="volume-poster">
+    <figcaption><small>KOMA / VOL. 01</small><strong>After the<br><i>last train.</i></strong>
+    <span>Read the manga <b aria-hidden="true">↗</b></span></figcaption>
+    <div class="volume-object" aria-hidden="true"><div>${mangaPageSvg(2)}</div><div>${mangaPageSvg(1)}</div></div>
+  </figure>`;
   head.append(feature);
  }
  document.querySelectorAll('.service-lanes>article').forEach(article=>{

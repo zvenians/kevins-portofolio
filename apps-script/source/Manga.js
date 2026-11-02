@@ -13,6 +13,13 @@ const mangaStory = [
   title, line, caption: scene + ' “' + line + '”', chapter: index < 5 ? 1 : 2
 }));
 
+// Place the lettering inside the caption boxes drawn into each plate.
+const mangaCaptions = [
+  [], [[526,776,'23:58']], [[519,776,'Peron 04']], [],
+  [[245,785,'Ren!'],[541,785,'Pintunya!']], [[539,783,'Di atas…']],
+  [[534,784,'Sedikit lagi.']], [], [[539,780,'Tamat.']]
+];
+
 function mangaPageSvg(index) {
   const page = mangaStory[index];
   if (!page) return '';
@@ -27,10 +34,7 @@ function mangaPageSvg(index) {
       <rect width="${bubbleWidth}" height="44" rx="19" fill="white" stroke="#161616" stroke-width="3"/>
       <text x="${bubbleWidth / 2}" y="30" text-anchor="middle" font-family="system-ui,sans-serif" font-weight="750" font-size="23">${esc(page.line)}</text>
     </g>
-    ${index && index !== 3 && index !== 7 ? `<g transform="translate(475 775)">
-      <rect width="139" height="68" fill="white" stroke="#222" stroke-width="2"/>
-      <text x="69" y="43" text-anchor="middle" font-family="serif" font-style="italic" font-size="21">${['','23:58','Peron 04','','Tutup.','Di atas...','Sedikit lagi.','','Tamat.'][index]}</text>
-    </g>` : ''}
+    ${mangaCaptions[index].map(([x,y,text]) => `<text x="${x}" y="${y}" text-anchor="middle" font-family="Georgia,serif" font-style="italic" font-size="22">${text}</text>`).join('')}
     <text x="24" y="883" font-family="sans-serif" font-size="14" letter-spacing="2">KOMA · ${esc(page.title.toUpperCase())}</text>
     <text x="616" y="883" text-anchor="end" font-family="serif" font-size="18">${index || 'COVER'}</text>
   </svg>`;
@@ -53,7 +57,7 @@ function mangaDemo(){
  });
  const isSpread=()=>page>0&&(mode==='spread'||mode==='auto'&&root.clientWidth>720);
  const visible=()=>page===0?[0]:isSpread()&&page<8?[page,page+1]:[page];
- const render=()=>{const pages=visible();book.classList.toggle('is-cover',page===0);book.classList.toggle('is-spread',isSpread()&&pages.length>1);book.dataset.direction=direction;const base=Math.min(pages.length>1?880:440,Math.max(240,root.clientWidth*.9));book.style.width=zoom===1?'':base*zoom+'px';book.classList.toggle('is-zoomed',zoom>1);let display=direction==='rtl'?[...pages].reverse():pages;book.innerHTML=display.map(n=>`<div class="manga-page" data-page-number="${n}">${mangaPageSvg(n)}</div>`).join('');root.querySelector('.manga-open').hidden=page!==0;root.querySelector('.manga-prev').disabled=page===0;root.querySelector('.manga-next').disabled=pages.includes(8);root.querySelector('.manga-prev').textContent=direction==='rtl'?'Previous →':'← Previous';root.querySelector('.manga-next').textContent=direction==='rtl'?'← Next':'Next →';root.querySelector('.manga-position').textContent=page===0?'Cover / 8 pages':`Page ${pages.join('–')} of 8`;root.querySelector('.manga-progress').value=page;root.querySelector('.manga-progress').setAttribute('aria-valuetext',page===0?'Cover':`Page ${page} of 8`);root.querySelector('.manga-chapter').value=page===0?'0':page<5?'1':'5';root.querySelector('.manga-chapter-label').textContent=page===0?'THE STORY STARTS HERE':page<5?'CHAPTER 01 / THE SIGNAL':'CHAPTER 02 / FIRST LIGHT';root.querySelector('.manga-direction-label').textContent=direction==='rtl'?'READ RIGHT TO LEFT ←':'READ LEFT TO RIGHT →';const mark=root.querySelector('.manga-bookmark');mark.disabled=page===0;mark.setAttribute('aria-pressed',String(saved===page&&page>0));mark.textContent=saved===page&&page>0?'Bookmarked ✓':'Bookmark';root.querySelector('.manga-transcript>div').innerHTML=pages.map(n=>`<article><h4>${esc(mangaStory[n].title)}</h4><p>${esc(mangaStory[n].caption)}</p></article>`).join('');};
+ const render=()=>{const pages=visible();book.classList.toggle('is-cover',page===0);book.classList.toggle('is-spread',isSpread()&&pages.length>1);book.dataset.direction=direction;const base=Math.min(pages.length>1?880:440,Math.max(240,root.clientWidth*.9));book.style.width=zoom===1?'':base*zoom+'px';book.classList.toggle('is-zoomed',zoom>1);let display=direction==='rtl'?[...pages].reverse():pages;book.innerHTML=display.map(n=>`<div class="manga-page" data-page-number="${n}">${mangaPageSvg(n)}</div>`).join('');root.querySelector('.manga-open').hidden=page!==0;root.querySelector('.manga-prev').disabled=page===0;root.querySelector('.manga-next').disabled=pages.includes(8);root.querySelector('.manga-prev').textContent=direction==='rtl'?'Previous →':'← Previous';root.querySelector('.manga-next').textContent=direction==='rtl'?'← Next':'Next →';root.querySelector('.manga-position').textContent=page===0?'Cover / 8 pages':`Page ${pages.join('–')} of 8`;root.querySelector('.manga-progress').value=page;root.querySelector('.manga-progress').setAttribute('aria-valuetext',page===0?'Cover':`Page ${page} of 8`);root.querySelector('.manga-chapter').value=page===0?'0':page<5?'1':'5';root.querySelector('.manga-chapter-label').textContent=page===0?'THE STORY STARTS HERE':page<5?'CHAPTER 01 / THE SIGNAL':'CHAPTER 02 / FIRST LIGHT';root.querySelector('.manga-direction-label').textContent=direction==='rtl'?'READ RIGHT TO LEFT ←':'READ LEFT TO RIGHT →';const mark=root.querySelector('.manga-bookmark');mark.disabled=page===0;mark.setAttribute('aria-pressed',String(saved===page&&page>0));mark.textContent=saved===page&&page>0?'Bookmarked ✓':'Bookmark';root.querySelector('.manga-transcript>div').innerHTML=pages.map(n=>`<article><h4>${esc(mangaStory[n].title)}</h4><p>${esc([mangaStory[n].caption, ...mangaCaptions[n].map(c => c[2])].join(' '))}</p></article>`).join('');};
  const finish=()=>{clearTimeout(flipTimer);flipTimer=null;busy=false;book.classList.remove('is-turning');book.querySelector('.manga-turn-sheet')?.remove();};
  const go=(next,animate=true)=>{next=Math.max(0,Math.min(8,Math.trunc(Number(next))||0));if(busy||next===page)return;const previous=page,spread=isSpread(),old=mangaPageSvg(next>page?visible().at(-1):page);page=next;render();if(!animate||reduced)return;busy=true;book.classList.add('is-turning');const sheet=document.createElement('div');sheet.className='manga-turn-sheet';const forward=next>previous;sheet.dataset.side=(direction==='rtl')===forward?'left':'right';sheet.classList.toggle('full-sheet',!spread||!isSpread());sheet.innerHTML=`<div class="manga-sheet-front">${old}</div><div class="manga-sheet-back">${mangaPageSvg(next)}</div>`;book.append(sheet);sheet.addEventListener('animationend',finish,{once:true});flipTimer=setTimeout(finish,850);};
  const next=()=>{if(!visible().includes(8))go(page===0?1:Math.min(8,page+(isSpread()?2:1)));};const prev=()=>go(Math.max(0,page-(isSpread()?2:1)));

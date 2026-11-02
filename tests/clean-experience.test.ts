@@ -25,9 +25,9 @@ test('services progressively disclose supporting copy without removing service l
 });
 test('studio shows a single linked comic print',()=>{
  const d=setup('<section id="studio"><div class="gallery-section-head"></div></section>');
- d.window.eval("var projectHref=s=>'/work/'+s;initCleanExperience();initCleanExperience()");
+ d.window.eval("var mangaPageSvg=n=>'<svg data-plate='+n+'></svg>';var projectHref=s=>'/work/'+s;initCleanExperience();initCleanExperience()");
  expect(d.window.document.querySelectorAll('.studio-feature-print')).toHaveLength(1);
  expect(d.window.document.querySelector('.studio-feature-print')?.getAttribute('href')).toBe('/work/koma-manga-reader');
- expect(d.window.document.querySelector('.studio-feature-print img')?.getAttribute('src')).toContain('web-manga.webp');
+ expect(Array.from(d.window.document.querySelectorAll('.volume-object svg'), el=>el.getAttribute('data-plate'))).toEqual(['2','1']);
  d.window.close();
 });
