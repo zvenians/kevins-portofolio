@@ -25,8 +25,8 @@ test('check-in state survives all styles, checkout updates ledger and export',()
 });
 test('invalid style links fall back to clean and valid links reopen selected style',()=>{for(const [url,style] of [['?style=invalid','clean'],['?style=expressive','expressive'],['?style=focus','focus']]){const d=setup(url);expect(d.window.document.querySelector<HTMLElement>('.demo-presentation')!.dataset.demoStyle).toBe(style);d.window.close();}});
 test('every interactive project has three style options and a unique gallery card',()=>{const d=setup();d.window.eval(source('DemoStyles')+source('Gallery')+';window.testGallery=galleryTemplates;');const projects=JSON.parse(readFileSync('apps-script/source/projects.json','utf8'));
- const cards=d.window.eval('window.testGallery');for(const p of projects.filter((p:any)=>p.status==='Interactive Demo')){const matches=cards.filter((x:any)=>x.slug===p.slug);expect(matches.length,p.slug).toBe(1);expect(d.window.eval('galleryStyles('+JSON.stringify(matches[0])+').length')).toBe(3);}
- for(const slug of ['koma-manga-reader','wedding-invitation-demo','presence-attendance-demo'])expect(cards.find((x:any)=>x.slug===slug).category).toBe('Websites');d.window.close();
+ const cards=d.window.eval('window.testGallery') as {slug:string;category:string}[];for(const p of projects.filter((p:any)=>p.status==='Interactive Demo')){const matches=cards.filter((x:any)=>x.slug===p.slug);expect(matches.length,p.slug).toBe(1);expect(d.window.eval('galleryStyles('+JSON.stringify(matches[0])+').length')).toBe(3);}
+ for(const slug of ['koma-manga-reader','wedding-invitation-demo','presence-attendance-demo'])expect(cards.find(x=>x.slug===slug)?.category).toBe('Websites');d.window.close();
 });
 test('wedding style changes preserve edited names, open state and RSVP input',()=>{const d=new JSDOM('<div id="creative-demo"></div>',{url:'https://example.com',runScripts:'outside-only'});const w=d.window;w.HTMLElement.prototype.scrollIntoView=()=>{};
  w.eval(`var reduced=true;var esc=s=>String(s);var homeHref=()=>'/';`+source('CreativeWorlds')+source('Wedding')+`;worldStudio('wedding');`);

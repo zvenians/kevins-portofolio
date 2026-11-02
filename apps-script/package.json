@@ -3,6 +3,14 @@
   "private": true,
   "version": "1.0.0",
   "type": "module",
-  "scripts": {"build": "cd .. && node apps-script/build.mjs", "test": "cd .. && node --test apps-script/tests/core.test.mjs"},
-  "devDependencies": {"esbuild": "0.28.2"}
+  "scripts": {
+    "build": "cd .. && node apps-script/build.mjs",
+    "test": "cd .. && node --test apps-script/tests/core.test.mjs"
+  },
+  "devDependencies": {
+    "esbuild": "0.28.2"
+  },
+  "dependencies": {
+    "motion": "^14.9.0"
+  }
 }

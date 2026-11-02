@@ -2,6 +2,8 @@
 
 # personal digital experience
 
+> Current public deployment: https://portfolio-kevins.vercel.app (Vercel). The Firebase URLs and infrastructure below describe the original product specification. See the root README for the production source and build.
+
 ```text
 https://simatupangkevin.web.app
 ```

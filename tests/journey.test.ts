@@ -22,6 +22,13 @@ test('short home keeps real work, three demo entrances, services and valid studi
  expect(w.document.querySelectorAll('#studio-preview .journey-card').length).toBe(3);
  expect(w.document.querySelectorAll('.journey-services>a').length).toBe(4);
  expect(w.document.querySelector('.header nav')?.innerHTML).toContain('href="/studio"');
+ const trigger=w.document.querySelector<HTMLButtonElement>('.quick-trigger')!;
+ const links=w.document.querySelector('#quick-destinations')!;
+ expect(links.hasAttribute('inert')).toBe(true);
+ trigger.click();expect(links.hasAttribute('inert')).toBe(false);
+ expect(links.querySelectorAll('a')).toHaveLength(4);
+ trigger.dispatchEvent(new w.KeyboardEvent('keydown',{key:'Escape',bubbles:true}));
+ expect(trigger.getAttribute('aria-expanded')).toBe('false');
  expect(w.document.querySelectorAll('iframe').length).toBe(0);
  expect(errors).toEqual([]);dom.window.close();
 });

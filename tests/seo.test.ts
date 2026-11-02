@@ -39,7 +39,7 @@ describe("SEO Helpers", () => {
   };
 
   it("canonical URL generation uses correct production domain", () => {
-    expect(generateCanonicalUrl("test-project")).toBe("https://kevins-portofolio.vercel.app/projects/test-project");
+    expect(generateCanonicalUrl("test-project")).toBe("https://portfolio-kevins.vercel.app/projects/test-project");
   });
 
   it("structured data generation emits valid schema.org Article format", () => {
@@ -48,7 +48,7 @@ describe("SEO Helpers", () => {
     expect(jsonLd["@type"]).toBe("Article");
     expect(jsonLd.headline).toBe("Test Project");
     expect(jsonLd.description).toBe("A test description");
-    expect(jsonLd.url).toBe("https://kevins-portofolio.vercel.app/projects/test-project");
+    expect(jsonLd.url).toBe("https://portfolio-kevins.vercel.app/projects/test-project");
     expect(jsonLd.datePublished).toBe("2024-01-01T00:00:00.000Z");
     expect(jsonLd.dateModified).toBe("2024-01-02T00:00:00.000Z");
   });

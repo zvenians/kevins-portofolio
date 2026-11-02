@@ -1,4 +1,4 @@
-import {test,expect} from 'vitest';
+import {test,expect,vi} from 'vitest';
 import {JSDOM} from 'jsdom';
 import {readFileSync} from 'node:fs';
 import {buildSync} from 'esbuild';
@@ -18,7 +18,7 @@ test('archive filters folders and titles, previews sample records and queues loc
  w.document.querySelector<HTMLButtonElement>('[data-document]')!.click();expect(w.document.querySelector('#preview-title')?.textContent).toBe('Music schedule');
  query.value='';query.dispatchEvent(new w.Event('input'));w.document.querySelector<HTMLButtonElement>('[data-folder=September]')!.click();expect(w.document.querySelector('#archive-count')?.textContent).toBe('1 sample records');
  w.document.querySelector<HTMLButtonElement>('#queue-upload')!.click();expect(w.document.querySelector<HTMLButtonElement>('#queue-upload')!.disabled).toBe(true);
- await new Promise(r=>setTimeout(r,1000));expect(w.document.querySelector('#archive-count')?.textContent).toBe('5 sample records');expect(w.document.querySelector('#upload-status')?.textContent).toContain('100%');d.window.close();
+ await vi.waitFor(()=>expect(w.document.querySelector<HTMLButtonElement>('#queue-upload')!.disabled).toBe(false),{timeout:5000});expect(w.document.querySelector('#archive-count')?.textContent).toBe('5 sample records');expect(w.document.querySelector('#upload-status')?.textContent).toContain('100%');d.window.close();
 });
 test('booking guards date, switches available times, reviews and resets without submitting',()=>{
  const d=setup('booking-demo'),w=d.window;w.eval('bookingExperience()');const doc=w.document;

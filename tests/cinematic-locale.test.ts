@@ -14,8 +14,10 @@ test('newly rendered demo text follows chosen language without replacing control
  const d=setup(),w=d.window;w.eval("setSiteLanguage('id')");let clicked=false;const button=w.document.querySelector<HTMLButtonElement>('#action')!;button.onclick=()=>{clicked=true;};button.click();expect(clicked).toBe(true);
  button.textContent='Copy project link';await new Promise(r=>setTimeout(r,10));expect(button.textContent).toBe('Salin tautan proyek');w.eval("setSiteLanguage('en')");expect(button.textContent).toBe('Copy project link');d.window.close();
 });
-test('first visit language prompt is nonmodal and dismissible',async()=>{
- const d=setup(),w=d.window;await new Promise(r=>setTimeout(r,1900));const prompt=w.document.querySelector('.language-nudge');expect(prompt?.tagName).toBe('ASIDE');expect(w.document.querySelectorAll('dialog[open]').length).toBe(0);w.document.querySelector<HTMLButtonElement>('.nudge-close')!.click();expect(w.document.querySelector('.language-nudge')).toBeNull();expect(w.localStorage.getItem('portfolio-language-seen')).toBe('1');d.window.close();
+test('language is available in the header without interrupting reading',async()=>{
+ const d=setup();await new Promise(r=>setTimeout(r,50));
+ expect(d.window.document.querySelector('#site-language')).toBeTruthy();
+ expect(d.window.document.querySelector('.language-nudge')).toBeNull();d.window.close();
 });
 test('cinematic panels work with keyboard and retain real project links',()=>{
  const d=new JSDOM('<section class="arrival"></section>',{url:'https://example.com',runScripts:'outside-only',pretendToBeVisual:true});
