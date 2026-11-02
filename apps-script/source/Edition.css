@@ -188,3 +188,15 @@ body.clean-ui .kinetic-hero,body.clean-ui .kinetic-hero h1,body.clean-ui .kineti
 body.clean-ui .kinetic-hero h1{font-size:clamp(3rem,7.2vw,7.6rem);letter-spacing:-.065em}
 .kinetic-hero h1 em,.kinetic-hero .k-meta{color:#304a61}.kinetic-hero .k-meta{border-color:#85857b}
 body.clean-ui .kinetic-hero .solid-button{background:#243a4a;color:white!important}.kinetic-hero>*{min-width:0}
+body.clean-ui .kinetic-hero{background:radial-gradient(ellipse at 78% 48%,#1c3447 0%,#101d2a 35%,#0b121b 74%);overflow:hidden;isolation:isolate}
+body.clean-ui .kinetic-hero h1{color:#f4f3ed;font-weight:440}.kinetic-hero h1 em{color:#b7d7eb}
+body.clean-ui .kinetic-hero p,.kinetic-hero .k-meta{color:#ccdbe5}.kinetic-hero .k-meta{border-color:#4a5b6b}
+body.clean-ui .kinetic-hero .journey-actions a{color:#eff8ff}body.clean-ui .kinetic-hero .solid-button{color:#102131!important;background:#c7e5ef}
+.orbital{color:#edf6fc}.orbit-stage{position:relative;display:grid;place-items:center;perspective:950px;padding:9% 5% 8%;isolation:isolate}
+.orbit-line{position:absolute;width:105%;height:65%;border:1px solid #7393a6;border-radius:50%;transform:rotate(-14deg);pointer-events:none}
+.orbit-line::after{content:"";position:absolute;left:13%;top:10%;width:6px;height:6px;background:#caeafe;border-radius:50%;box-shadow:0 0 12px #a3d8ed}
+.orbit-plate{position:relative;display:block;width:100%;transform-style:preserve-3d;transform:rotateY(-9deg) rotateX(5deg);padding:7px;background:#b7c6ce;border:1px solid #edf5f9;border-radius:8px;box-shadow:4px 5px #506071,8px 10px #29394a,12px 20px 28px #050b12aa}
+.orbit-plate img{border:0;border-radius:3px;aspect-ratio:1100/720;object-fit:cover}.orbital figcaption{display:flex;align-items:center;justify-content:space-between;border-top:1px solid #526678;padding-top:12px;gap:12px}.orbital figcaption small{display:block;color:#aac5d6;font-variant-numeric:tabular-nums}.orbital figcaption strong{font-weight:540;font-size:1rem}.orbital figcaption div{display:flex;gap:6px}.orbital button{width:44px;height:44px;color:#e6f4ff;background:#162534;border:1px solid #7792a4;border-radius:50%;cursor:pointer}.orbital button:hover{background:#314b60}.orbital :focus-visible{outline:3px solid #bbdefb;outline-offset:3px}
+@media(prefers-reduced-motion:no-preference){html:not(.reduced) .orbit-line{animation:orbital-arrive 1.2s ease-out both}@keyframes orbital-arrive{from{transform:rotate(-32deg) scale(.84);opacity:.1}}}
+@media(hover:hover) and (prefers-reduced-motion:no-preference){html:not(.reduced) .orbit-plate{transform:rotateX(var(--pitch,5deg)) rotateY(var(--turn,-9deg));transition:transform .22s ease-out}html:not(.reduced) .journey-home .service-shelf>a{transition:transform .25s,box-shadow .25s}html:not(.reduced) .journey-home .service-shelf>a:is(:hover,:focus-visible){position:relative;z-index:1;transform:perspective(760px) translateY(-5px) rotateX(3deg);box-shadow:0 10px 16px #09142130}}
+@media(max-width:839px){.kinetic-hero .orbital{width:min(100%,580px);margin-inline:auto}.orbit-stage{padding:6%}.kinetic-hero .k-intro{padding-bottom:0}}

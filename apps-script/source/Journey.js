@@ -27,14 +27,18 @@ home=function(){
  if(data.studioPage||(!window.INDEX_HOSTED&&location.hash==='#studio')){fullStudioHome();return;}
  document.body.classList.add('journey-home');
  const real=data.projects.filter(p=>p.status==='Real Project');
+ const plates = real.filter(p => ['galilea-web-portal','galilea-digital-archive','majelis-galilea','naomi-rouli'].includes(p.slug));
  const picks=['koma-manga-reader','wedding-invitation-demo','presence-attendance-demo'].map(slug=>data.projects.find(p=>p.slug===slug)).filter(Boolean);
  $('#main').innerHTML=`
  <section class="journey-hero kinetic-hero" id="home">
-   <div class="k-meta"><span>KS / BALIKPAPAN</span><span>01 — 05</span></div>
+   <div class="k-meta"><span>KS / BALIKPAPAN</span><span>Portfolio / Selected works</span></div>
    <h1><span>Kevin</span> <em>Simatupang.</em></h1>
    <div class="k-intro"><p>Full-stack developer building websites,<br>data workflows, and everyday automation.</p>
    <div class="journey-actions"><a class="solid-button" href="${homeHref('field')}">Explore real projects ↗</a><a href="${homeHref('connect')}">Discuss a project</a><a href="${homeHref('resume')}">CV / PDF ↗</a></div></div>
-   <figure class="portfolio-cover"><img src="${editionRoot()}/project-shots/galilea-web-portal.webp" width="1100" height="720" alt="Antarmuka portal Galilea"><figcaption>Proyek pilihan / GMAHK Galilea</figcaption></figure>
+   ${plates.length ? `<figure class="portfolio-cover orbital">
+     <div class="orbit-stage"><i class="orbit-line" aria-hidden="true"></i><a class="orbit-plate" href="${projectHref(plates[0].slug)}"><img src="${editionRoot()}/project-shots/${plates[0].slug}.webp" fetchpriority="high" width="1100" height="720" alt="${esc(plates[0].name)}"></a></div>
+     <figcaption><span aria-live="polite"><small>01 / ${String(plates.length).padStart(2,'0')}</small><strong>${esc(plates[0].name)}</strong></span>${plates.length>1?'<div><button type="button" aria-label="Previous project">←</button><button type="button" aria-label="Next project">→</button></div>':''}</figcaption>
+   </figure>` : ''}
  </section>
  <section id="field" class="journey-section k-work"><span class="eyebrow">02 / SELECTED WORK</span><h2>Selected projects.</h2>
  <div class="k-split"><div class="k-index">${real.map((p,i)=>`<button type="button" aria-pressed="${i===0}" data-project-index="${i}"><small>${String(i+1).padStart(2,'0')}</small><span>${esc(p.name)}</span><b aria-hidden="true">↗</b></button>`).join('')}</div>
@@ -84,13 +88,33 @@ home=function(){
      if (message) location.href = 'mailto:' + email + '?subject=Portfolio&body=' + encodeURIComponent(message);
    };
  }
- const title = $('.kinetic-hero h1');
- title.onpointermove = event => {
-   if (event.pointerType !== 'mouse' || reduced || matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-   const rect = title.getBoundingClientRect();
-   title.style.setProperty('--yaw', ((event.clientX - rect.left) / rect.width * 9 - 4.5) + 'deg');
- };
- title.onpointerleave = () => title.style.removeProperty('--yaw');
+ const stage = document.querySelector('.orbit-stage');
+ if (stage) {
+   const frame = stage.querySelector('a');
+   const image = frame.querySelector('img');
+   const caption = stage.nextElementSibling;
+   let current = 0;
+   caption.querySelectorAll('button').forEach((button, direction) => {
+     button.onclick = () => {
+       current = (current + (direction ? 1 : -1) + plates.length) % plates.length;
+       const project = plates[current];
+       frame.href = projectHref(project.slug);
+       image.src = editionRoot()+'/project-shots/'+project.slug+'.webp';
+       image.alt = project.name;
+       caption.querySelector('strong').textContent = project.name;
+       caption.querySelector('small').textContent = String(current+1).padStart(2,'0')+' / '+String(plates.length).padStart(2,'0');
+       if (!reduced && !matchMedia('(prefers-reduced-motion: reduce)').matches)
+         image.animate?.([{opacity:.55,transform:'translateX(8px)'},{opacity:1,transform:'none'}],{duration:300});
+     };
+   });
+   stage.onpointermove = event => {
+     if (event.pointerType !== 'mouse' || reduced || !matchMedia('(hover:hover) and (prefers-reduced-motion:no-preference)').matches) return;
+     const box = stage.getBoundingClientRect();
+     stage.style.setProperty('--pitch',(0.5-(event.clientY-box.top)/box.height)*12+'deg');
+     stage.style.setProperty('--turn',((event.clientX-box.left)/box.width-0.5)*18+'deg');
+   };
+   stage.onpointerleave = () => {stage.style.removeProperty('--pitch');stage.style.removeProperty('--turn');};
+ }
  renderContact();hydrateMedia();
 };
 initImmersion=function(){
