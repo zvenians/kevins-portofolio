@@ -1,16 +1,25 @@
 import { NextRequest } from 'next/server';
 import { publicContent, GAS_URL, escapeHtml } from '../../lib/content';
 import { template } from '../../generated/template';
+import { renderIndex } from '../../lib/index-page';
 
 export const runtime = 'nodejs';
 
 export async function GET(request: NextRequest, context: { params: Promise<{ path?: string[] }> }) {
   const { path = [] } = await context.params;
+  const section = path.join('/');
+  if (['', 'work', 'demos', 'capabilities', 'about', 'contact', 'nova'].includes(section) && !request.nextUrl.searchParams.has('lab') && !request.nextUrl.searchParams.has('template')) {
+    const content = await publicContent();
+    return new Response(renderIndex(section, content), { headers: { 'content-type': 'text/html; charset=utf-8' } });
+  }
   if (path.length === 2 && path[0] === 'projects') return new Response(null, { status: 308, headers: { location: `/work/${encodeURIComponent(path[1])}` } });
   const studioPage = path.length === 1 && path[0] === 'studio';
   if (!studioPage && path.length && (path.length !== 2 || path[0] !== 'work')) return new Response('Not found', { status: 404 });
   const content = await publicContent();
   const project = !studioPage && path.length ? content.projects.find(p => p.slug === path[1]) : null;
+  if (project && !request.nextUrl.searchParams.has('launch') && !request.nextUrl.searchParams.has('template')) {
+    return new Response(renderIndex(section, content), { headers: { 'content-type': 'text/html; charset=utf-8' } });
+  }
   if (!studioPage && path.length && !project) return new Response('Exhibit not found', { status: 404 });
   const title = studioPage ? 'Demo Studio — Kevin Simatupang' : project ? `${project.name} — Kevin Simatupang` : 'Kevin Simatupang — The Living Index';
   const description = studioPage ? 'Explore interactive restaurant, travel and home care websites alongside data tools, identity studies and presentations.' : project?.summary || 'Kevin Simatupang is a full-stack developer in Balikpapan working across web systems, operational data, workflow automation, and interface design.';
@@ -20,7 +29,7 @@ export async function GET(request: NextRequest, context: { params: Promise<{ pat
   const socialImage = new URL(screenshot, 'https://portfolio-kevins.vercel.app');
   socialImage.searchParams.set('title', project?.name || 'Kevin Simatupang');
   socialImage.searchParams.set('label', project ? `${project.status} / ${project.category}` : 'WEB SYSTEMS / OPERATIONAL DATA / INTERFACE DESIGN');
-  const bootstrap = JSON.stringify({ ...content, appUrl: GAS_URL, admin: false, projectSlug: project?.slug || '', studioPage })
+  const bootstrap = JSON.stringify({ ...content, projects: content.projects.map(p=>({...p,repositoryUrl:''})), appUrl: GAS_URL, admin: false, projectSlug: project?.slug || '', studioPage })
     .replace(/</g, '\\u003c').replace(/\u2028/g, '\\u2028').replace(/\u2029/g, '\\u2029');
   const preview = project ? `<article><h1>${escapeHtml(project.name)}</h1><p>${escapeHtml(description)}</p><p>${escapeHtml(project.challenge)}</p><p>${escapeHtml(project.approach)}</p><p>${escapeHtml(project.implementation)}</p><p>${escapeHtml(project.outcome)}</p></article>`
     : `<section><h1>Kevin Simatupang</h1><p>Full-stack developer working across web systems, operational data, automation, and interface design in Balikpapan, Indonesia.</p><h2>Selected real work</h2>${content.projects.filter(p => p.status === 'Real Project').map(p => `<article><h3><a href="/work/${encodeURIComponent(p.slug)}">${escapeHtml(p.name)}</a></h3><p>${escapeHtml(p.summary)}</p></article>`).join('')}</section>`;
@@ -29,5 +38,7 @@ export async function GET(request: NextRequest, context: { params: Promise<{ pat
   const html = template.replace('<title>Kevin Simatupang — The Living Index</title>', `<title>${escapeHtml(title)}</title>${metadata}`)
     .replace('<main id="main"></main>', `<main id="main">${preview}</main>`)
     .replace('/*BOOTSTRAP*/', `window.INDEX_HOSTED=true;window.INDEX_BOOTSTRAP=${bootstrap};`);
-  return new Response(html, { headers: { 'content-type': 'text/html; charset=utf-8', 'cache-control': 'public, s-maxage=60, stale-while-revalidate=300', 'x-content-type-options': 'nosniff' } });
+  const liveApp = project && request.nextUrl.searchParams.has('launch');
+  const page = liveApp ? html.replace('</head>', '<link rel="stylesheet" href="/atelier/workbench.css"></head>').replace('<body>', '<body class="atelier-workbench"><nav class="apprail"><a href="/demos">← Studio</a><strong>'+escapeHtml(project.name)+'</strong><a href="/work/'+encodeURIComponent(project.slug)+'">Portfolio ↗</a></nav>') : html;
+  return new Response(page, { headers: { 'content-type': 'text/html; charset=utf-8', 'cache-control': 'public, s-maxage=60, stale-while-revalidate=300', 'x-content-type-options': 'nosniff' } });
 }
