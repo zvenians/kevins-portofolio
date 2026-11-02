@@ -19,6 +19,17 @@ test('short home keeps real work, three demo entrances, services and valid studi
  const {dom,w,errors}=page();await new Promise(r=>setTimeout(r,40));
  expect(w.document.querySelectorAll('#main>section').length).toBe(6);
  expect(w.document.querySelectorAll('#field .journey-card').length).toBe(4);
+ const choices = [...w.document.querySelectorAll<HTMLButtonElement>('[data-project-index]')];
+ choices[1].click();
+ expect(choices.map(choice => choice.getAttribute('aria-pressed'))).toEqual(['false','true','false','false']);
+ expect(w.document.querySelectorAll('.k-spot > div:not([hidden])')).toHaveLength(1);
+ expect(w.document.querySelector('.k-spot > div:not([hidden]) a')?.getAttribute('href')).toContain('/work/galilea-digital-archive');
+ const tempo = w.document.querySelector<HTMLInputElement>('#k-tempo')!;
+ tempo.value = '120';
+ tempo.dispatchEvent(new w.Event('input'));
+ expect(w.document.querySelector('.k-controls output')?.textContent).toBe('120 ms');
+ w.document.querySelector<HTMLButtonElement>('#k-play')!.click();
+ expect(w.document.querySelector('.k-frames.playing')).toBeTruthy();
  expect(w.document.querySelectorAll('#studio-preview .journey-card').length).toBe(3);
  expect(w.document.querySelectorAll('.journey-services>a').length).toBe(4);
  expect(w.document.querySelector('.header nav')?.innerHTML).toContain('href="/studio"');

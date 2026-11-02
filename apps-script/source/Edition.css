@@ -41,3 +41,94 @@ body.clean-ui .quick-trigger { border-radius:50%!important; position:relative; z
 @media(max-width:750px),(prefers-reduced-motion:reduce){.liquid-trail{display:none}}
 .reduced .liquid-trail,body:has(.header.menu-open) .quick-nav {display:none}
 body.clean-ui .journey-actions .solid-button {font-size:14px;}
+/* The large type, measured rules and blue registration marks carry across routes. */
+body.clean-ui { --k-ink:#10131b; --k-blue:#244bd8; --k-paper:#fafbf9; --k-line:#b8c3cd }
+body.clean-ui .kinetic-hero {
+  min-height:0; padding:clamp(52px,7vw,110px) 6% 0!important;
+  background:var(--k-ink); color:white;
+}
+.k-meta,.k-feed small {font:500 12px/1.4 ui-monospace,monospace;letter-spacing:.1em}
+.k-meta {display:flex;justify-content:space-between;color:#b6cbff;border-bottom:1px solid #526077;padding-bottom:14px}
+body.clean-ui .kinetic-hero h1,body.clean-ui .k-work h2,body.clean-ui .k-studio h2 {
+  max-width:none;font-weight:480;letter-spacing:-.065em;line-height:.98
+}
+body.clean-ui .kinetic-hero h1 {color:white;font-size:clamp(54px,10.3vw,170px);margin:.46em 0}
+.kinetic-hero h1 span,.kinetic-hero h1 em {display:inline-block}
+.kinetic-hero h1 em {font-family:Georgia,serif;color:#a6c1ff;font-weight:400}
+.k-intro {display:flex;justify-content:space-between;align-items:end;gap:20px;padding-bottom:36px}
+body.clean-ui .kinetic-hero p {color:#e5e9f3;margin:0;line-height:1.5}
+body.clean-ui .kinetic-hero .journey-actions a {color:white}
+body.clean-ui .kinetic-hero .solid-button {background:#b7cbff;color:#0b1430!important;border:0}
+.k-feed {display:grid;grid-template-columns:repeat(3,1fr);margin:0;padding:0;list-style:none;border-top:1px solid #546174}
+.k-feed li {position:relative;padding:20px 0 24px;display:grid;gap:5px;font-size:clamp(16px,2vw,30px)}
+.k-feed li::before {content:"";position:absolute;top:-1px;left:0;background:#a6c1ff;width:92%;height:2px;transform-origin:left}
+.k-feed small {color:#bdcfff}
+body.clean-ui .journey-section {background:var(--k-paper);padding:clamp(50px,7vw,108px) 6%;border-color:var(--k-line)}
+body.clean-ui .journey-section h2 {font-size:clamp(38px,5vw,84px);font-weight:480}
+.k-split {display:grid;grid-template-columns:minmax(0,.8fr) minmax(0,1.2fr);gap:6%;align-items:start}
+.k-index button {display:flex;align-items:center;gap:16px;width:100%;min-height:64px;padding:18px 8px;background:transparent;border:0;border-top:1px solid var(--k-line);border-radius:0;color:#283346;text-align:left;font-size:clamp(16px,2vw,30px);cursor:pointer}
+.k-index button[aria-pressed=true] {color:var(--k-blue);border-top:2px solid currentColor}
+.k-index small {font:12px ui-monospace,monospace}
+.k-index b {margin-left:auto}
+.k-spot [hidden] {display:none}
+body.clean-ui .k-spot .visual {height:auto!important;aspect-ratio:1.65;border-radius:4px}
+body.clean-ui .k-studio,body.clean-ui .journey-contact {background:#10131b;color:white}
+body.clean-ui :is(.k-studio,.journey-contact) :is(h2,h3,.eyebrow,a,.journey-card p,.journey-card>span) {color:#e5ebff}
+body.clean-ui .journey-contact .solid-button {color:#102050;background:#bfd0ff}
+.k-console {display:grid;grid-template-columns:2fr 1fr;align-items:center;gap:6%;padding:34px 0;margin-bottom:32px;border-block:1px solid #536078}
+.k-frames {display:flex;perspective:850px;height:clamp(110px,15vw,235px);padding:4px 5%}
+.k-frames i {display:grid;place-items:center;flex:1;background:#adc4ff;color:#14254c;border:1px solid #5875bb;transform:rotateY(-23deg) skewY(-4deg);font:italic clamp(32px,5vw,88px) Georgia,serif}
+.k-controls {display:grid;grid-template-columns:1fr auto;gap:12px;color:white}
+.k-controls input,.k-controls button {grid-column:1/-1;accent-color:#a6c1ff}
+.k-controls button {min-height:44px;background:transparent;border:1px solid #869ac3;color:white;cursor:pointer}
+body.clean-ui .journey-services {grid-template-columns:repeat(2,minmax(0,1fr));gap:0 4%}
+body.clean-ui .journey-services>a {border:0;border-top:1px solid var(--k-line);border-radius:0;background:none;padding:24px 0}
+body.clean-ui .journey-profile {border-left:clamp(4px,1vw,18px) solid var(--k-blue)}
+body.clean-ui :is(.case-page,.resume-page)>h1 {max-width:16ch;font-weight:450;letter-spacing:-.06em;border-left:4px solid var(--k-blue);padding-left:clamp(16px,3vw,48px)}
+body.clean-ui .gallery-studio .gallery-section-head {border-block:1px solid #64738a;padding-block:28px}
+body.clean-ui .gallery-studio .gallery-section-head h2 i {color:#abc4ff;font-family:Georgia,serif}
+@keyframes k-rise {from {opacity:.3;transform:translateY(.45em) rotateX(-22deg)}}
+@keyframes k-curtain {from {clip-path:inset(0 94% 0 0)} to {clip-path:inset(0)}}
+@keyframes k-trace {from {transform:scaleX(0)}}
+@keyframes k-fold {from {transform:translateY(14px) rotateY(80deg);opacity:.35}}
+@media (prefers-reduced-motion:no-preference) {
+  html:not(.reduced) :is(.kinetic-hero h1 span,.kinetic-hero h1 em,.case-page>h1,.resume-page>h1,.gallery-section-head h2) {animation:k-rise .7s both}
+  html:not(.reduced) .kinetic-hero h1 em {animation-delay:.1s}
+  html:not(.reduced) .k-feed li::before {animation:k-trace .6s both}
+  .k-feed li:nth-child(2)::before {animation-delay:.3s!important}
+  .k-feed li:nth-child(3)::before {animation-delay:.6s!important}
+  html:not(.reduced) .k-spot>div:not([hidden]) .visual {animation:k-curtain .48s cubic-bezier(.2,.65,.2,1)}
+  html:not(.reduced) .k-frames.playing i {animation:k-fold .62s cubic-bezier(.2,.8,.2,1) both;animation-delay:calc(var(--step) * var(--gap,80ms))}
+  @supports (animation-timeline:view()) {
+    html:not(.reduced) :is(.journey-section h2,.case-facts,.resume-overview,.gallery-steps) {animation:k-rise linear both;animation-timeline:view();animation-range:entry 0% entry 95%}
+  }
+}
+@media(max-width:720px) {
+ .k-intro {display:block}.k-intro .journey-actions {gap:8px 18px}
+ .k-split,.k-console {grid-template-columns:1fr;gap:24px}
+ .k-index {display:grid;grid-template-columns:1fr 1fr;gap:0 12px}
+ .k-index button {gap:7px;font-size:15px}
+ .k-controls {max-width:100%}
+ body.clean-ui .journey-services {grid-template-columns:1fr}
+ .k-feed small {font-size:10px}
+}
+.k-dossier {display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,190px),1fr));gap:20px;padding-block:20px}
+.k-dossier div {border-top:1px solid var(--k-line);padding-top:14px}
+.k-dossier dt {font:13px ui-monospace,monospace;color:#41536c}
+.k-dossier dd {margin:8px 0;font-size:20px}
+.k-letter {display:grid;gap:14px;align-self:center}
+.k-letter textarea {width:100%;box-sizing:border-box;background:#191f2a;color:white;border:1px solid #73819e;padding:12px;font:inherit;resize:vertical}
+.k-letter button {justify-self:start;background:#bed0ff;color:#101c37;padding:12px 20px;border:0;cursor:pointer}
+.k-letter :focus-visible,.k-index button:focus-visible,.k-controls :focus-visible {outline:3px solid #719bff;outline-offset:3px}
+@media(min-width:800px) {
+ body.clean-ui .journey-contact:has(.k-letter) {display:grid;grid-template-columns:1.2fr 1fr;column-gap:7%}
+ .journey-contact>* {grid-column:1;justify-self:start}
+ .journey-contact .k-letter {grid-column:2;grid-row:1/5;justify-self:stretch}
+ body.clean-ui :is(.case-page,.resume-page) {display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1fr);column-gap:5%}
+ body.clean-ui :is(.case-page,.resume-page)>* {grid-column:1/-1;min-width:0}
+ body.clean-ui :is(.case-page,.resume-page)>h1 {grid-column:1;align-self:center}
+ body.clean-ui :is(.case-summary,.resume-lead) {grid-column:2;align-self:center}
+}
+@media (hover:hover) and (prefers-reduced-motion:no-preference) {
+ html:not(.reduced) .kinetic-hero h1 em {transform:perspective(650px) rotateY(var(--yaw,0deg));transition:transform .18s ease-out}
+}

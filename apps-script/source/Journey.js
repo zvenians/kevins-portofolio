@@ -9,9 +9,69 @@ home=function(){
  document.body.classList.add('journey-home');
  const real=data.projects.filter(p=>p.status==='Real Project');
  const picks=['koma-manga-reader','wedding-invitation-demo','presence-attendance-demo'].map(slug=>data.projects.find(p=>p.slug===slug)).filter(Boolean);
- $('#main').innerHTML=`<section class="journey-hero" id="home"><span class="eyebrow">KEVIN SIMATUPANG / BALIKPAPAN</span><h1>Clear thinking.<br><i>Useful things.</i></h1><p>Full-stack developer building websites,<br>data workflows, and everyday automation.</p><div class="journey-actions"><a class="solid-button" href="${homeHref('field')}">Explore real projects ↗</a><a href="${homeHref('connect')}">Discuss a project</a><a href="${studioUrl()}">Try the Demo Studio →</a></div><div class="journey-hero-art" aria-hidden="true">${real.slice(0,3).reverse().map(p=>'<div class="edition-sheet">'+visual(p)+'<strong>'+esc(p.name)+'</strong></div>').join('')}</div></section><section id="field" class="journey-section"><span class="eyebrow">01 / SELECTED REAL WORK</span><h2>Built. Used. Open to explore.</h2><div class="journey-grid">${real.map(shortCard).join('')}</div></section><section id="studio-preview" class="journey-section"><div class="journey-heading"><div><span class="eyebrow">02 / THE DEMO STUDIO</span><h2>Try an idea.</h2></div><a href="${studioUrl()}">Explore all demos ↗</a></div><div class="journey-grid journey-three">${picks.map(shortCard).join('')}</div><p class="journey-note">Interactive demos with fictional data. Each has three styles.</p></section><section id="services" class="journey-section"><span class="eyebrow">03 / WORK WITH ME</span><h2>What needs to work better?</h2><div class="journey-services">${[['Websites & systems','Responsive websites, internal tools, and API integrations.','sera-goods-commerce-demo'],['Data & automation','Reconciliation, reporting, spreadsheets, and recurring workflows.','operations-decision-workbench'],['Research support','Method review, data preparation, and understandable results.','research-practice-toolkit'],['Identity & presentations','Visual identities and clear, purposeful presentation systems.','morph-presentation-studio']].map(([name,copy,slug])=>`<a href="${projectHref(slug)}"><h3>${name} ↗</h3><p>${copy}</p><span>Explore an example</span></a>`).join('')}</div><p class="journey-note">Share the context → Agree the scope → Build & review → Hand over.</p></section><section id="profile" class="journey-section journey-profile"><span class="eyebrow">04 / THE PERSON BEHIND THE WORK</span><h2>Kevin Simatupang.</h2><p>I bring web development and operational data together to make complicated work easier to use. Based in Balikpapan, with a degree in Informatics Engineering and experience in IT support and asset workflows.</p><a href="${homeHref('resume')}">Experience & CV ↗</a></section><section id="connect" class="journey-section journey-contact"><span class="eyebrow">05 / START A CONVERSATION</span><h2>Tell me what<br>you have in mind.</h2><a class="solid-button" href="${projectHref('project-brief-scope-builder')}">Discuss your project ↗</a><div id="contact-links" class="connect-actions"></div></section>`;
- const front = document.querySelector('.edition-sheet:last-child img');
- if(front){front.loading='eager';front.fetchPriority='high';}
+ $('#main').innerHTML=`
+ <section class="journey-hero kinetic-hero" id="home">
+   <div class="k-meta"><span>KS / BALIKPAPAN</span><span>01 — 05</span></div>
+   <h1><span>Kevin</span> <em>Simatupang.</em></h1>
+   <div class="k-intro"><p>Full-stack developer building websites,<br>data workflows, and everyday automation.</p>
+   <div class="journey-actions"><a class="solid-button" href="${homeHref('field')}">Explore real projects ↗</a><a href="${homeHref('connect')}">Discuss a project</a><a href="${homeHref('resume')}">CV / PDF ↗</a></div></div>
+   <ol class="k-feed" aria-label="Portfolio architecture"><li><small>01 / SOURCE</small>Apps Script</li><li><small>02 / SYNC</small>JSON feed</li><li><small>03 / RENDER</small>Next.js</li></ol>
+ </section>
+ <section id="field" class="journey-section k-work"><span class="eyebrow">02 / SELECTED WORK</span><h2>Selected projects.</h2>
+ <div class="k-split"><div class="k-index">${real.map((p,i)=>`<button type="button" aria-pressed="${i===0}" data-project-index="${i}"><small>${String(i+1).padStart(2,'0')}</small><span>${esc(p.name)}</span><b aria-hidden="true">↗</b></button>`).join('')}</div>
+ <div class="k-spot">${real.map((p,i)=>`<div ${i?'hidden':''}>${shortCard(p)}</div>`).join('')}</div></div></section>
+ <section id="studio-preview" class="journey-section k-studio"><div class="journey-heading"><div><span class="eyebrow">03 / MOTION STUDIO</span><h2>Motion studies.</h2></div><a href="${studioUrl()}">Explore all demos ↗</a></div>
+ <div class="k-console"><div class="k-frames" aria-hidden="true">${['I','II','III','IV'].map((s,i)=>`<i style="--step:${i}">${s}</i>`).join('')}</div>
+ <div class="k-controls"><label for="k-tempo">Stagger</label><output for="k-tempo">80 ms</output><input id="k-tempo" type="range" min="0" max="160" step="10" value="80"><button type="button" id="k-play">Replay sequence ↗</button></div></div>
+ <div class="journey-grid journey-three">${picks.map(shortCard).join('')}</div></section>
+ <section id="services" class="journey-section"><span class="eyebrow">04 / CAPABILITIES</span><h2>What needs to work better?</h2><div class="journey-services">${[['Websites & systems','Responsive websites, internal tools, and API integrations.','sera-goods-commerce-demo'],['Data & automation','Reconciliation, reporting, spreadsheets, and recurring workflows.','operations-decision-workbench'],['Research support','Method review, data preparation, and understandable results.','research-practice-toolkit'],['Identity & presentations','Visual identities and clear, purposeful presentation systems.','morph-presentation-studio']].map(([name,copy,slug])=>`<a href="${projectHref(slug)}"><h3>${name} ↗</h3><p>${copy}</p><span>Explore an example</span></a>`).join('')}</div><p class="journey-note">Share the context → Agree the scope → Build & review → Hand over.</p></section><section id="profile" class="journey-section journey-profile"><span class="eyebrow">KEVIN / PROFILE</span><h2>Kevin Simatupang.</h2><p>I bring web development and operational data together to make complicated work easier to use. Based in Balikpapan, with a degree in Informatics Engineering and experience in IT support and asset workflows.</p><a href="${homeHref('resume')}">Experience & CV ↗</a></section><section id="connect" class="journey-section journey-contact"><span class="eyebrow">05 / START A CONVERSATION</span><h2>Tell me what<br>you have in mind.</h2><a class="solid-button" href="${projectHref('project-brief-scope-builder')}">Discuss your project ↗</a><div id="contact-links" class="connect-actions"></div></section>`;
+ const spotlight = document.querySelector('.k-spot');
+ const buttons = [...document.querySelectorAll('[data-project-index]')];
+ buttons.forEach((button, index) => button.onclick = () => {
+   buttons.forEach((item, i) => {
+     item.setAttribute('aria-pressed', String(index === i));
+     spotlight.children[i].hidden = index !== i;
+   });
+ });
+ const tempo = document.querySelector('#k-tempo');
+ tempo.oninput = () => {
+   tempo.previousElementSibling.value = tempo.value + ' ms';
+   document.querySelector('.k-frames').style.setProperty('--gap', tempo.value + 'ms');
+ };
+ document.querySelector('#k-play').onclick = () => {
+   const frames = document.querySelector('.k-frames');
+   frames.classList.remove('playing');
+   void frames.offsetWidth;
+   frames.classList.add('playing');
+ };
+ const profile = $('#profile');
+ profile.querySelector('p').insertAdjacentHTML('afterend', `
+   <dl class="k-dossier">
+     <div><dt>Practice</dt><dd>Web engineering · Data automation</dd></div>
+     <div><dt>Education</dt><dd>Informatics Engineering</dd></div>
+     <div><dt>Current role</dt><dd>PT. Wulandari Bangun Laksana</dd></div>
+   </dl>`);
+ const email = data.settings?.email;
+ if (email && /^[^\s@?&]+@[^\s@?&]+\.[^\s@?&]+$/.test(email)) {
+   const contact = $('#connect');
+   contact.insertAdjacentHTML('beforeend', `<form class="k-letter">
+     <label for="k-message">What are you working on?</label>
+     <textarea required id="k-message" rows="3" maxlength="1800"></textarea>
+     <button type="submit">Open email draft ↗</button>
+   </form>`);
+   contact.querySelector('form').onsubmit = event => {
+     event.preventDefault();
+     const message = $('#k-message').value.trim();
+     if (message) location.href = 'mailto:' + email + '?subject=Portfolio&body=' + encodeURIComponent(message);
+   };
+ }
+ const title = $('.kinetic-hero h1');
+ title.onpointermove = event => {
+   if (event.pointerType !== 'mouse' || reduced || matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+   const rect = title.getBoundingClientRect();
+   title.style.setProperty('--yaw', ((event.clientX - rect.left) / rect.width * 9 - 4.5) + 'deg');
+ };
+ title.onpointerleave = () => title.style.removeProperty('--yaw');
  renderContact();hydrateMedia();
 };
 initImmersion=function(){
@@ -63,6 +123,16 @@ Object.assign(localeDictionary,{
  'Development & interface design':'Pengembangan & desain antarmuka','Timeline':'Linimasa','See project history ↗':'Lihat riwayat proyek ↗','01 / Overview':'01 / Gambaran umum','02 / Interface detail':'02 / Detail antarmuka','03 / The outcome':'03 / Hasilnya','← Kevin Simatupang / Home':'← Kevin Simatupang / Beranda'
 });
 // Anonymous, fixed-name events. Never send form values, queries or contact data.
+Object.assign(localeDictionary, {
+ '02 / SELECTED WORK':'02 / KARYA PILIHAN','Selected projects.':'Proyek pilihan.',
+ '03 / MOTION STUDIO':'03 / STUDIO GERAK','Motion studies.':'Studi gerak.',
+ 'Stagger':'Jeda antargerakan','Replay sequence ↗':'Putar ulang urutan ↗',
+ '04 / CAPABILITIES':'04 / KEAHLIAN','KEVIN / PROFILE':'KEVIN / PROFIL',
+ 'Practice':'Bidang kerja','Current role':'Tempat kerja saat ini','Education':'Pendidikan',
+ 'Informatics Engineering':'Teknik Informatika','Web engineering · Data automation':'Pengembangan web · Otomasi data',
+ 'What are you working on?':'Apa yang sedang Anda kerjakan?','Open email draft ↗':'Buka draf email ↗',
+ '01 / SOURCE':'01 / SUMBER','02 / SYNC':'02 / SINKRONISASI','03 / RENDER':'03 / TAMPILAN'
+});
 if(window.INDEX_HOSTED&&navigator.doNotTrack!=='1'){
  let lastEvent='',lastAt=0;
  document.addEventListener('click',e=>{
