@@ -4,6 +4,25 @@ const studioUrl=()=>window.INDEX_HOSTED?'/studio':'#studio';
 const originalHomeHref=homeHref;
 homeHref=function(anchor='home'){if(window.INDEX_HOSTED&&['studio','lab','research','research-intake','open-lab','experiments'].includes(anchor))return '/studio'+(anchor==='studio'?'':'#'+anchor);return originalHomeHref(anchor);};
 const shortCard=p=>`<a class="journey-card" href="${projectHref(p.slug)}">${visual(p)}<span>${esc(p.status)}</span><h3>${esc(p.name)} ↗</h3><p>${esc(p.summary)}</p></a>`;
+const editionRoot = () => window.INDEX_HOSTED ? '' : 'https:\x2f\x2fportfolio-kevins.vercel.app';
+const serviceDemos = [
+ ['resto','Daun & Bara','Buka buku menu','Pilih hidangan dan racik minuman.'],
+ ['travel','Lintas Teluk','Rencanakan perjalanan','Pesan kamar dan kendaraan dalam satu tiket.'],
+ ['care','Ruang Rawat','Atur kunjungan','Pilih perawat dan jadwalkan layanan di rumah.']
+];
+function serviceShelf(){
+ return '<div class="service-shelf">'+serviceDemos.map(([id,title,action,note],i)=>`<a href="${editionRoot()}/edisi/${id}.html"><small>0${i+1} / Demo</small><strong>${title}</strong><p>${note}</p><b>${action} ↗</b></a>`).join('')+'</div>';
+}
+const skillGroups={
+ 'Bahasa & web':'JavaScript TypeScript Python Java C C++ C-Sharp Go Rust PHP Kotlin Swift Ruby HTML5 CSS3',
+ 'Framework & runtime':'React Next.js Vue.js Angular Svelte Django Flask Laravel Spring Node.js Express',
+ 'Database & penyimpanan':'PostgreSQL MySQL MongoDB Redis SQLite Firebase',
+ 'Peralatan IT':'Git Docker Linux GitHub-Actions Figma Bash'
+};
+function skillIndex(){
+ const ids={'C++':'cpp','C-Sharp':'csharp','GitHub-Actions':'githubactions'};
+ return `<div id="skills" class="skill-index"><h2>Skill & teknologi</h2><p>Katalog bahasa, framework, database, dan alat IT. Lihat studi kasus untuk teknologi yang digunakan Kevin.</p>${Object.entries(skillGroups).map(([group,names])=>`<details><summary>${group}</summary><ul>${names.split(' ').map(name=>`<li><img loading="lazy" width="28" height="28" alt="" src="${editionRoot()}/edisi/logos/${ids[name]||name.toLowerCase().replaceAll('.','')}.svg">${name.replace('C-Sharp','C#').replace('GitHub-Actions','GitHub Actions')}</li>`).join('')}</ul></details>`).join('')}<p><a href="${editionRoot()}/edisi/skill.html">Telusuri seluruh katalog teknologi ↗</a></p></div>`;
+}
 home=function(){
  if(data.studioPage||(!window.INDEX_HOSTED&&location.hash==='#studio')){fullStudioHome();return;}
  document.body.classList.add('journey-home');
@@ -15,16 +34,16 @@ home=function(){
    <h1><span>Kevin</span> <em>Simatupang.</em></h1>
    <div class="k-intro"><p>Full-stack developer building websites,<br>data workflows, and everyday automation.</p>
    <div class="journey-actions"><a class="solid-button" href="${homeHref('field')}">Explore real projects ↗</a><a href="${homeHref('connect')}">Discuss a project</a><a href="${homeHref('resume')}">CV / PDF ↗</a></div></div>
-   <ol class="k-feed" aria-label="Portfolio architecture"><li><small>01 / SOURCE</small>Apps Script</li><li><small>02 / SYNC</small>JSON feed</li><li><small>03 / RENDER</small>Next.js</li></ol>
+   <figure class="portfolio-cover"><img src="${editionRoot()}/project-shots/galilea-web-portal.webp" width="1100" height="720" alt="Antarmuka portal Galilea"><figcaption>Proyek pilihan / GMAHK Galilea</figcaption></figure>
  </section>
  <section id="field" class="journey-section k-work"><span class="eyebrow">02 / SELECTED WORK</span><h2>Selected projects.</h2>
  <div class="k-split"><div class="k-index">${real.map((p,i)=>`<button type="button" aria-pressed="${i===0}" data-project-index="${i}"><small>${String(i+1).padStart(2,'0')}</small><span>${esc(p.name)}</span><b aria-hidden="true">↗</b></button>`).join('')}</div>
  <div class="k-spot">${real.map((p,i)=>`<div ${i?'hidden':''}>${shortCard(p)}</div>`).join('')}</div></div></section>
  <section id="studio-preview" class="journey-section k-studio"><div class="journey-heading"><div><span class="eyebrow">03 / MOTION STUDIO</span><h2>Motion studies.</h2></div><a href="${studioUrl()}">Explore all demos ↗</a></div>
- <div class="k-console"><div class="k-frames" aria-hidden="true">${['I','II','III','IV'].map((s,i)=>`<i style="--step:${i}">${s}</i>`).join('')}</div>
+ ${serviceShelf()}<div class="k-console"><div class="k-frames" aria-hidden="true">${['I','II','III','IV'].map((s,i)=>`<i style="--step:${i}">${s}</i>`).join('')}</div>
  <div class="k-controls"><label for="k-tempo">Stagger</label><output for="k-tempo">80 ms</output><input id="k-tempo" type="range" min="0" max="160" step="10" value="80"><button type="button" id="k-play">Replay sequence ↗</button></div></div>
  <div class="journey-grid journey-three">${picks.map(shortCard).join('')}</div></section>
- <section id="services" class="journey-section"><span class="eyebrow">04 / CAPABILITIES</span><h2>What needs to work better?</h2><div class="journey-services">${[['Websites & systems','Responsive websites, internal tools, and API integrations.','sera-goods-commerce-demo'],['Data & automation','Reconciliation, reporting, spreadsheets, and recurring workflows.','operations-decision-workbench'],['Research support','Method review, data preparation, and understandable results.','research-practice-toolkit'],['Identity & presentations','Visual identities and clear, purposeful presentation systems.','morph-presentation-studio']].map(([name,copy,slug])=>`<a href="${projectHref(slug)}"><h3>${name} ↗</h3><p>${copy}</p><span>Explore an example</span></a>`).join('')}</div><p class="journey-note">Share the context → Agree the scope → Build & review → Hand over.</p></section><section id="profile" class="journey-section journey-profile"><span class="eyebrow">KEVIN / PROFILE</span><h2>Kevin Simatupang.</h2><p>I bring web development and operational data together to make complicated work easier to use. Based in Balikpapan, with a degree in Informatics Engineering and experience in IT support and asset workflows.</p><a href="${homeHref('resume')}">Experience & CV ↗</a></section><section id="connect" class="journey-section journey-contact"><span class="eyebrow">05 / START A CONVERSATION</span><h2>Tell me what<br>you have in mind.</h2><a class="solid-button" href="${projectHref('project-brief-scope-builder')}">Discuss your project ↗</a><div id="contact-links" class="connect-actions"></div></section>`;
+ <section id="services" class="journey-section">${skillIndex()}<span class="eyebrow">04 / CAPABILITIES</span><h2>What needs to work better?</h2><div class="journey-services">${[['Websites & systems','Responsive websites, internal tools, and API integrations.','sera-goods-commerce-demo'],['Data & automation','Reconciliation, reporting, spreadsheets, and recurring workflows.','operations-decision-workbench'],['Research support','Method review, data preparation, and understandable results.','research-practice-toolkit'],['Identity & presentations','Visual identities and clear, purposeful presentation systems.','morph-presentation-studio']].map(([name,copy,slug])=>`<a href="${projectHref(slug)}"><h3>${name} ↗</h3><p>${copy}</p><span>Explore an example</span></a>`).join('')}</div><p class="journey-note">Share the context → Agree the scope → Build & review → Hand over.</p></section><section id="profile" class="journey-section journey-profile"><span class="eyebrow">KEVIN / PROFILE</span><h2>Kevin Simatupang.</h2><p>I bring web development and operational data together to make complicated work easier to use. Based in Balikpapan, with a degree in Informatics Engineering and experience in IT support and asset workflows.</p><a href="${homeHref('resume')}">Experience & CV ↗</a></section><section id="connect" class="journey-section journey-contact"><span class="eyebrow">05 / START A CONVERSATION</span><h2>Tell me what<br>you have in mind.</h2><a class="solid-button" href="${projectHref('project-brief-scope-builder')}">Discuss your project ↗</a><div id="contact-links" class="connect-actions"></div></section>`;
  const spotlight = document.querySelector('.k-spot');
  const buttons = [...document.querySelectorAll('[data-project-index]')];
  buttons.forEach((button, index) => button.onclick = () => {
@@ -77,10 +96,10 @@ home=function(){
 initImmersion=function(){
  document.body.classList.add('spatial-gallery','spatial-v2','clean-ui');
  if(document.querySelector('.journey-hero')){initGalleryNavigation();hydrateStudioPreviews(document);}else{document.body.classList.remove('journey-home');previousImmersion();}
- const nav=document.querySelector('.header nav');if(nav)nav.innerHTML=[['Work',homeHref('field')],['Demo Studio',studioUrl()],['Services',homeHref('services')],['About',homeHref('profile')],['Contact',homeHref('connect')],['CV / PDF',homeHref('resume')]].map(([label,href])=>`<a href="${href}">${label}</a>`).join('');
+ const nav=document.querySelector('.header nav');if(nav)nav.innerHTML=[['Work',homeHref('field')],['Demo Studio',studioUrl()],['Skill',homeHref('skills')],['Services',homeHref('services')],['About',homeHref('profile')],['Contact',homeHref('connect')],['CV / PDF',homeHref('resume')]].map(([label,href])=>`<a href="${href}">${label}</a>`).join('');
  setupQuickMenu();
  if(window.INDEX_HOSTED)document.querySelectorAll('.header .identity,footer>a').forEach(a=>a.href='/');
- if(data.studioPage){document.body.classList.add('dedicated-studio');document.querySelectorAll('#home,#field,#services,#profile,#connect').forEach(e=>e.remove());const studio=$('#studio');if(studio&&!studio.dataset.intro){studio.dataset.intro='true';studio.insertAdjacentHTML('afterbegin',`<a class="studio-return" href="/">← Kevin Simatupang / Home</a>`);}}
+ if(data.studioPage){document.body.classList.add('dedicated-studio');document.querySelectorAll('#home,#field,#services,#profile,#connect').forEach(e=>e.remove());const studio=$('#studio');if(studio&&!studio.dataset.intro){studio.dataset.intro='true';studio.querySelector('.gallery-section-head')?.insertAdjacentHTML('afterend',serviceShelf());studio.insertAdjacentHTML('afterbegin',`<a class="studio-return" href="/">← Kevin Simatupang / Home</a>`);}}
 };
 casePage=function(slug){previousCase(slug);const p=data.projects.find(x=>x.slug===slug);if(!p||p.status!=='Real Project')return;
  const page=$('.case-page'),hero=page.querySelector('.case-visual');

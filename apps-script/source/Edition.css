@@ -178,3 +178,13 @@ body.clean-ui .manga-book.is-spread {border-radius:6px 6px 12px 12px;box-shadow:
 body.clean-ui .manga-book.is-spread>.manga-page:first-child {border-radius:2% 10% 0 2% / 1% 2% 0 1%;overflow:hidden}
 body.clean-ui .manga-book.is-spread>.manga-page:nth-child(2) {border-radius:10% 2% 2% 0 / 2% 1% 1% 0;overflow:hidden}
 body.clean-ui .manga-book.is-spread:after {width:9%;left:45.5%;background:linear-gradient(90deg,transparent,#27282729 38%,#1818185c 48%,#1b1c1b78 50%,#fffc 53%,#3d3d3d18 63%,transparent)}
+body.clean-ui .kinetic-hero{display:grid;grid-template-columns:minmax(0,1fr);background:#f4f1e9;padding:clamp(32px,6vw,90px) 6%;gap:18px}
+.kinetic-hero .k-meta{grid-column:1/-1}.kinetic-hero .portfolio-cover{margin:0;align-self:center}.portfolio-cover img{width:100%;height:auto;display:block;border:1px solid #807c74}.portfolio-cover figcaption{margin-top:.65rem;font-size:.85rem}
+.service-shelf{display:grid;gap:1px;background:#929186;border:1px solid #929186;margin:2rem 0}
+.service-shelf a{padding:clamp(18px,3vw,46px);color:#252a24;background:#eceddf;text-decoration:none}.service-shelf a:nth-child(2){color:#eff3ff;background:#20364c}.service-shelf a:nth-child(3){background:#d7e5dc}.service-shelf strong{display:block;margin:1.8rem 0 .4rem;font:normal clamp(26px,3vw,50px)/1 Georgia,serif}.service-shelf a p{color:inherit!important}.service-shelf a b{display:inline-block;border-bottom:1px solid;margin-top:1rem}.service-shelf a:hover b{text-decoration:underline}
+.skill-index{scroll-margin:95px;padding-bottom:4rem}.skill-index details{border-bottom:1px solid #83847e}.skill-index summary{cursor:pointer;padding:1rem 0;font-weight:650}.skill-index ul{display:flex;flex-wrap:wrap;gap:16px 30px;list-style:none;padding:0}.skill-index li{display:flex;gap:9px;align-items:center}
+@media(min-width:840px){body.clean-ui .kinetic-hero{grid-template-columns:1.1fr 1fr}.kinetic-hero .portfolio-cover{grid-column:2;grid-row:2/4}.kinetic-hero h1{font-size:clamp(54px,7vw,120px)}.kinetic-hero .k-intro{display:block}.service-shelf{grid-template-columns:repeat(3,1fr)}}
+body.clean-ui .kinetic-hero,body.clean-ui .kinetic-hero h1,body.clean-ui .kinetic-hero p,body.clean-ui .kinetic-hero .journey-actions a{color:#24251e}
+body.clean-ui .kinetic-hero h1{font-size:clamp(3rem,7.2vw,7.6rem);letter-spacing:-.065em}
+.kinetic-hero h1 em,.kinetic-hero .k-meta{color:#304a61}.kinetic-hero .k-meta{border-color:#85857b}
+body.clean-ui .kinetic-hero .solid-button{background:#243a4a;color:white!important}.kinetic-hero>*{min-width:0}
