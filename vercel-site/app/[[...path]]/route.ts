@@ -8,7 +8,7 @@ export const runtime = 'nodejs';
 export async function GET(request: NextRequest, context: { params: Promise<{ path?: string[] }> }) {
   const { path = [] } = await context.params;
   const section = path.join('/');
-  if (['', 'work', 'demos', 'capabilities', 'about', 'contact', 'nova'].includes(section) && !request.nextUrl.searchParams.has('lab') && !request.nextUrl.searchParams.has('template')) {
+  if (['', 'work', 'demos', 'capabilities', 'about', 'contact', 'nova'].includes(section) && !['lab','template','legacy'].some(key=>request.nextUrl.searchParams.has(key))) {
     const content = await publicContent();
     return new Response(renderIndex(section, content), { headers: { 'content-type': 'text/html; charset=utf-8' } });
   }
@@ -39,6 +39,6 @@ export async function GET(request: NextRequest, context: { params: Promise<{ pat
     .replace('<main id="main"></main>', `<main id="main">${preview}</main>`)
     .replace('/*BOOTSTRAP*/', `window.INDEX_HOSTED=true;window.INDEX_BOOTSTRAP=${bootstrap};`);
   const liveApp = project && request.nextUrl.searchParams.has('launch');
-  const page = liveApp ? html.replace('</head>', '<link rel="stylesheet" href="/atelier/workbench.css"></head>').replace('<body>', '<body class="atelier-workbench"><nav class="apprail"><a href="/demos">← Studio</a><strong>'+escapeHtml(project.name)+'</strong><a href="/work/'+encodeURIComponent(project.slug)+'">Portfolio ↗</a></nav>') : html;
+  const page = liveApp ? html.replace('</head>', '<link rel="stylesheet" href="/atelier/workbench.css"><script type="module" src="/atelier/workbench.js"></script></head>').replace('<body>', '<body class="atelier-workbench"><nav class="apprail" data-kind="'+escapeHtml(project.visual)+'"><a href="/demos">← Studio</a><strong>'+escapeHtml(project.name)+'</strong><a href="/work/'+encodeURIComponent(project.slug)+'">Portfolio ↗</a></nav>') : html;
   return new Response(page, { headers: { 'content-type': 'text/html; charset=utf-8', 'cache-control': 'public, s-maxage=60, stale-while-revalidate=300', 'x-content-type-options': 'nosniff' } });
 }

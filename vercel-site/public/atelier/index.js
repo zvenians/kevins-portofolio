@@ -2,6 +2,7 @@ import { locales, names, translate } from './words.js';
 import { mountScene } from './scene.js';
 import { novaPage } from './nova.js';
 import { caseStudy } from './cases.js';
+import { capabilities } from './capabilities.js';
 const {
   section,
   projects,
@@ -25,6 +26,7 @@ function read(key, otherwise) {
 function save(key, value) {
   try {
     localStorage.setItem('atelier.' + key, value);
+    if (key === 'language') localStorage.setItem('portfolio-language', value === 'id' ? 'id' : 'en');
   } catch {}
 }
 let language = read('language', 'en');
@@ -54,6 +56,7 @@ function home() {
 function skillsSummary() {
   const stacks = new Map();
   for (const p of projects) for (const tech of p.technologies || []) {
+    if (!section && /apps script|google sheets/i.test(tech)) continue;
     if (!stacks.has(tech)) stacks.set(tech, []);
     stacks.get(tech).push(p);
   }
@@ -76,7 +79,7 @@ let step = 0,
 try {
   brief = JSON.parse(sessionStorage.getItem('atelier.brief') || '{}') || {};
 } catch {}
-const steps = [['type', 'scope'], ['budget', 'time'], ['name', 'email']];
+const steps = [['type', 'existing', 'scope', 'audience'], ['budget', 'time'], ['name', 'email']];
 function inquiry() {
   const keys = steps[step];
   return `<div class="flow"><aside>${['project', 'plan', 'contact', 'review'].map((k, i) => `<p class="${i === step ? 'current' : ''}">0${i + 1}　${t(k)}</p>`).join('')}</aside><form id="inquiry"><h2>${t(['project', 'plan', 'contact', 'review'][step])}</h2>${keys ? keys.map(k => `<label>${t(k)}${k === 'scope' ? `<textarea name="scope" required maxlength="2500">${esc(brief.scope)}</textarea>` : `<input name="${k}" type="${k === 'time' ? 'date' : k === 'email' ? 'email' : 'text'}" value="${esc(brief[k])}" maxlength="160" required>`}</label>`).join('') : `<dl>${steps.flat().map(k => `<dt>${t(k)}</dt><dd>${esc(brief[k])}</dd>`).join('')}</dl><p>${t('mailhint')}</p>`}<div class="actions">${step ? `<button type="button" id="back">${t('back')}</button>` : ''}<button class="solid">${t(keys ? 'next' : 'compose')} →</button></div></form></div>`;
@@ -85,6 +88,7 @@ let dispose;
 function render() {
   dispose?.();
   document.documentElement.lang = language;
+  $('.skip').textContent = t('skip');
   document.documentElement.dataset.motion = reduced ? 'reduced' : 'full';
   $('#bar').innerHTML = `<a href="/" class="wordmark">ks<span>.</span></a><nav>${nav()}</nav><div><button data-settings>${language.toUpperCase()} ⌄</button><button data-menu>${t('menu')} ☰</button></div>`;
   $('#foot').innerHTML = `<a class="wordmark" href="/">ks<span>.</span></a><small>Kevin Simatupang · Balikpapan</small><button data-settings>${t('prefs')}</button>`;
@@ -100,7 +104,7 @@ function render() {
       body = `<div class="bio"><p>${t('profile')}</p><small>${t('location')}</small><div class="actions"><a class="solid" href="/work">${t('explore')} ↗</a></div></div>`;
       break;
     case 'capabilities':
-      body = skillsSummary();
+      body = '<div id="capability-map"></div>';
       break;
     case 'contact':
       body = inquiry();
@@ -112,7 +116,23 @@ function render() {
       body = section.startsWith('work/') ? caseStudy(projects.find(p => p.slug === section.slice(5)), language, esc, t) : home();
   }
   $('#content').innerHTML = categories.includes(section) ? `<section class="block sub"><small>Kevin Simatupang / ${t('edition')}</small><h1>${t(section)}</h1>${body}</section>` : body;
+  if (!section || section === 'about') {
+    const notes = t('processNotes').split(' · ');
+    $('#content').insertAdjacentHTML('beforeend', `<section class="block process">${heading('process', '04')}<ol>${t('phases').split(' · ').map((phase, i) => `<li><small>0${i + 1}</small><h3>${phase}</h3><p>${notes[i]}</p></li>`).join('')}</ol></section><section class="block closing"><small>${t('edition')} / Balikpapan</small><h2>${t('contact')}</h2><div class="actions"><a class="solid" href="/contact">${t('contact')} ↗</a><a href="/about">${t('about')} →</a></div></section>`);
+  }
+  if (section === 'about') $('.bio').insertAdjacentHTML('beforeend', `<div class="bio-facts"><strong>${t('education')}</strong><p>${t('practice')}</p><a href="/resume">CV / PDF ↗</a></div>`);
   dispose = mountScene($('canvas'), reduced);
+  document.querySelectorAll('a[href="/edisi/skill.html"]').forEach(a => a.href = '/capabilities');
+  if (section === 'demos') {
+    document.querySelectorAll('.brands .brand').forEach((a, i) => {
+      const [name, kind, url] = flagship[i],
+        wrap = document.createElement('article');
+      a.before(wrap);
+      wrap.append(a);
+      wrap.insertAdjacentHTML('beforeend', `<details class="brief-case"><summary>${t('view')}</summary><h3>${name}</h3><h4>${t('flow')}</h4><p>${t(kind + 'Flow')}</p><h4>${t('logic')}</h4><p>${t(kind + 'Logic')}</p><a href="${url}">${t('open')} ↗</a></details>`);
+    });
+  }
+  if ($('#capability-map')) capabilities($('#capability-map'), projects, language, esc);
   if ($('#search')) {
     const search = () => {
       const q = $('#search').value.toLowerCase();
@@ -154,6 +174,25 @@ function openPanel(mode) {
   panel.className = mode;
   panel.innerHTML = mode === 'menu' ? `<button data-close>${t('close')} ×</button><nav>${nav()}</nav><button data-settings>${t('prefs')}</button>` : `<div class="portal-art" aria-hidden="true"><i></i><i></i><i></i></div><small>KS / PORTFOLIO</small><h2>${t('welcome')}</h2><p>${t('intro')}</p><label>${t('lang')}<select id="locale">${locales.map((l, i) => `<option value="${l}" ${l === language ? 'selected' : ''}>${names[i]}</option>`).join('')}</select></label><label class="check"><input id="motion" type="checkbox" ${reduced ? 'checked' : ''}>${t('motion')}</label><button class="solid" data-enter>${t('enter')} →</button>`;
   panel.setAttribute('aria-label', t(mode === 'menu' ? 'menu' : 'prefs'));
+  if (mode === 'menu') {
+    const visual = document.createElement('figure');
+    visual.className = 'menu-preview';
+    panel.append(visual);
+    const media = ['/project-shots/galilea-web-portal.webp', '/edisi/hidangan.webp', '/demo-shots/operations.webp', '/project-shots/naomi-rouli.webp', '/demo-shots/scopebuilder.webp'];
+    const update = i => {
+      visual.innerHTML = `<img src="${media[i]}" alt=""><figcaption>0${i + 1} / ${t(categories[i])}</figcaption>`;
+    };
+    panel.querySelectorAll('nav a').forEach((a, i) => {
+      a.onpointerenter = a.onfocus = () => update(i);
+    });
+    update(0);
+  } else {
+    panel.onpointermove = e => {
+      if (reduced) return;
+      const rect = panel.getBoundingClientRect();
+      panel.style.setProperty('--yaw', ((e.clientX - rect.left) / rect.width - .5) * 20 + 'deg');
+    };
+  }
   if (!panel.open) panel.showModal();
   if ($('#locale')) $('#locale').onchange = e => {
     language = e.target.value;

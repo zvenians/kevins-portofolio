@@ -1,4 +1,15 @@
 const copy = {
+  industries: 'Industries|Industri|Secteurs|Sectores',
+  culture: 'Culture|Budaya|Culture|Cultura',
+  publishing: 'Publishing|Penerbitan|Édition|Editorial',
+  events: 'Events|Acara|Événements|Eventos',
+  newsletter: 'Journal by email|Jurnal via email|Journal par courriel|Revista por correo',
+  subscribe: 'Subscribe in demo|Berlangganan dalam demo|Essayer l’abonnement|Probar la suscripción',
+  subscribeDone: 'Demo subscription confirmed.|Langganan demo dikonfirmasi.|Abonnement de démonstration confirmé.|Suscripción de demostración confirmada.',
+  find: 'Search the journal|Cari artikel|Rechercher un article|Buscar artículos',
+  otherArticle: 'A type system for small screens|Sistem huruf untuk layar kecil|Composer pour les petits écrans|Tipografía para pantallas pequeñas',
+  otherBody: 'Our first proof is a line of text on a narrow screen. We adjust its width and line spacing before choosing the display face.|Uji pertama kami adalah satu baris teks pada layar sempit. Lebar dan jarak baris ditentukan sebelum memilih huruf judul.|Notre premier essai est une ligne sur un écran étroit. Nous réglons sa largeur et son interligne avant de choisir le caractère de titre.|La primera prueba es una línea en una pantalla estrecha. Ajustamos su ancho e interlineado antes de elegir la tipografía del título.',
+  empty: 'No articles found.|Tidak ada artikel.|Aucun article trouvé.|No se encontraron artículos.',
   home: 'Studio|Studio|Studio|Estudio',
   services: 'Services|Layanan|Services|Servicios',
   work: 'Work|Karya|Projets|Proyectos',
@@ -47,6 +58,9 @@ export function novaPage(language) {
     case 'services':
       body = `<h1>${t('services')}</h1>` + services.map((k, i) => entry('service/' + i, t(k), '0' + (i + 1))).join('');
       break;
+    case 'industries':
+      body = `<h1>${t('industries')}</h1>` + ['culture', 'publishing', 'events'].map((k, i) => entry('case/' + i, t(k), works[i])).join('');
+      break;
     case 'service':
       body = `<h1>${t(services[i])}</h1><p>${t(services[i] + 'Text')}</p>` + entry('case/' + i, works[i], t('work'));
       break;
@@ -57,10 +71,10 @@ export function novaPage(language) {
       body = `<small>${t('work')} / 0${i + 1}</small><h1>${works[i]}</h1><h3>${t(services[i])}</h3><p>${t(services[i] + 'Text')}</p>${link('service/' + i, t('services'))}`;
       break;
     case 'insights':
-      body = `<h1>${t('insights')}</h1>` + entry('article', t('article'), '01');
+      body = `<h1>${t('insights')}</h1><label>${t('find')}<input type="search" id="journal-search"></label>` + entry('article', t('article'), '01') + entry('article/1', t('otherArticle'), '02') + `<p id="journal-empty" hidden>${t('empty')}</p><form id="newsletter"><h3>${t('newsletter')}</h3><label>${t('email')}<input type="email" required></label><button class="solid">${t('subscribe')}</button><p role="status"></p></form>`;
       break;
     case 'article':
-      body = `<h1>${t('article')}</h1><p>${t('articleBody')}</p>`;
+      body = `<h1>${t(i ? 'otherArticle' : 'article')}</h1><p>${t(i ? 'otherBody' : 'articleBody')}</p>`;
       break;
     case 'careers':
       body = `<h1>${t('careers')}</h1>` + entry('job', 'Creative Developer', '01');
@@ -76,6 +90,18 @@ export function novaPage(language) {
       body = `<h1>${t('headline')}</h1><p>${t('intro')}</p>` + works.map((w, i) => entry('case/' + i, w, t(services[i]))).join('');
   }
   queueMicrotask(() => {
+    const journal = document.querySelector('#journal-search');
+    if (journal) journal.oninput = () => {
+      const items = [...document.querySelectorAll('.nova article')];
+      items.forEach(item => item.hidden = !item.textContent.toLowerCase().includes(journal.value.toLowerCase()));
+      document.querySelector('#journal-empty').hidden = items.some(item => !item.hidden);
+    };
+    const newsletter = document.querySelector('#newsletter');
+    if (newsletter) newsletter.onsubmit = e => {
+      e.preventDefault();
+      newsletter.querySelector('[role=status]').textContent = t('subscribeDone');
+      newsletter.reset();
+    };
     const filter = document.querySelector('#industry');
     if (filter) filter.onchange = () => document.querySelectorAll('.nova article').forEach((a, i) => a.hidden = filter.value !== '' && Number(filter.value) !== i);
     const form = document.querySelector('#nova-form'),
@@ -98,5 +124,6 @@ export function novaPage(language) {
       document.querySelector('#nova-done').textContent = t('done');
     };
   });
-  return `<section class="nova"><small>${t('concept')}</small><nav>${['home', 'about', 'services', 'work', 'insights', 'careers', 'inquiry'].map(k => link(k, k === 'home' ? 'NOVA®' : t(k))).join('')}</nav>${body}</section>`;
+  const artwork = page === 'home' || page === 'case' ? `<div class="nova-art nova-art-${i}" aria-hidden="true"><i></i><i></i><i></i><b>N<span>®</span></b><small>NOVA CREATIVE / 0${i + 1}</small></div>` : '';
+  return `<section class="nova"><small>${t('concept')}</small><nav>${['home', 'about', 'services', 'industries', 'work', 'insights', 'careers', 'inquiry'].map(k => link(k, k === 'home' ? 'NOVA®' : t(k))).join('')}</nav>${artwork}${body}</section>`;
 }
