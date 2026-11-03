@@ -141,5 +141,5 @@ export function novaPage(language) {
       document.querySelector('#nova-done').textContent = t('done');
     };
   });
-  return `<section class="nova nova-edition">${mast}<div class="nova-page">${page==='home'?plate(0):''}${body}</div><footer class="nova-credit"><b>NOVA Creative</b><small>${t('concept')}</small></footer></section>`;
+  return `<section class="nova nova-edition" data-dept="${section}">${mast}<div class="nova-page">${page==='home'?plate(0):''}${body}</div><footer class="nova-credit"><b>NOVA Creative</b><small>${t('concept')}</small></footer></section>`;
 }

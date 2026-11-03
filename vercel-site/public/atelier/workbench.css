@@ -1,2 +1,34 @@
 .apprail{display:flex;align-items:center;justify-content:space-between;padding:12px clamp(16px,4vw,70px);gap:16px;background:#141511;color:#f4f1e6;border-bottom:1px solid #54554c;font:500 15px/1.4 system-ui}.apprail a{color:inherit;text-decoration:underline;text-underline-offset:4px}.apprail strong{text-align:center}.atelier-workbench .header,.atelier-workbench>footer,.atelier-workbench .case-page>:not(.demo-case-copy,.creative-case,#interactive-evidence){display:none!important}.atelier-workbench main,.atelier-workbench .case-page,.atelier-workbench #interactive-evidence{margin:0 auto!important;padding:clamp(8px,2vw,32px)!important;max-width:1600px!important;width:100%!important}.atelier-workbench #interactive-evidence>h2{display:none}.atelier-workbench :focus-visible{outline:3px solid #d08843;outline-offset:3px}@media(max-width:650px){.apprail{font-size:12px}.atelier-workbench main,.atelier-workbench .case-page,.atelier-workbench #interactive-evidence{padding:4px!important}}
 .session-guide{background:#22251e;color:#f4f1e6;font:15px/1.5 system-ui;border-bottom:1px solid #585c50}.session-guide summary{cursor:pointer;padding:12px clamp(18px,4vw,70px)}.session-guide summary span{float:right;color:#edbe86}.guide-body{padding:0 clamp(18px,4vw,70px) 18px;display:flex;gap:22px;align-items:start;flex-wrap:wrap}.guide-body>div{max-width:38ch}.guide-body p{margin:5px 0}.guide-body button{padding:9px 12px;margin-top:6px;background:#f6f3e9;color:#25261f;border:0;cursor:pointer}.guide-body small{color:#edbe86}
+/* Contrast pairs belong to each product. Data tables and form fields retain
+   their original language, values, labels and validation. */
+.atelier-workbench:has([data-kind=booking]) .concierge>aside {background:#f0ceb8;color:#37261f;}
+.atelier-workbench .commerce-store-head,.atelier-workbench .commerce-cart {background:#e9e3f2;color:#282039;}
+.atelier-workbench .commerce-cart {border-top:4px solid #7a578c;}
+.atelier-workbench .vendor-layout {background:#123330;padding:clamp(14px,3vw,42px);gap:20px;}
+.atelier-workbench .vendor-layout>section {background:#eff5ef;color:#172c2b;padding:18px;}
+.atelier-workbench .research-toolkit {background:#f3ecdd;color:#372d23;}
+.atelier-workbench .toolkit-heading h3,.atelier-workbench .archive-app h3 {font-family:Georgia,serif;}
+.atelier-workbench .field-device>aside {background-color:#142e55;background-image:linear-gradient(#b4c3d819 1px,transparent 1px),linear-gradient(90deg,#b4c3d819 1px,transparent 1px);background-size:23px 23px;color:#fff;}
+.atelier-workbench .prep-layout {background:#f3f5f7;padding:16px;color:#1c2a36;}
+.atelier-workbench #prep-table {max-width:100%;overflow:auto;}.atelier-workbench #prep-table tr.review {background:#fff1d0;}
+.atelier-workbench .document-desk {background:#e9e3d8;padding:clamp(12px,3vw,32px);}
+.atelier-workbench .paper-preview {background:#fffdf8;color:#272520;font-family:Georgia,serif;box-shadow:0 5px 18px #38291d25;}
+.atelier-workbench .ops-console>nav {background:#32253e;color:#fff;padding:12px;}
+.atelier-workbench .ops-console>nav button[aria-pressed=true] {background:#e9c6f4;color:#32223e;}
+.atelier-workbench .quality-console {background:#f7f7f4;color:#202122;border-top:4px solid #242428;}
+.atelier-workbench .quality-frame {border:1px solid #6d756f;}
+.atelier-workbench .scope-desk {background:#242525;padding:clamp(14px,3vw,35px);}
+.atelier-workbench .scope-desk>form {padding:18px;color:#242527;background:#f6f1e9;}
+.atelier-workbench .morph-studio .studio-top {background:#d94024;color:#fff;}
+.atelier-workbench .morph-stage {outline:4px solid #dc482c;outline-offset:-4px;}
+.atelier-workbench .logo-hero {background-color:#eeece4;background-image:linear-gradient(#3b393519 1px,transparent 1px),linear-gradient(90deg,#3b393519 1px,transparent 1px);background-size:24px 24px;}
+.atelier-workbench .wedding-preview {background:#f3e2df;color:#423032;}
+.atelier-workbench .manga-stage {background:#101012;}
+.atelier-workbench .manga-controls {display:flex;justify-content:center;}
+.atelier-workbench .attendance-head {background:#172b48;color:#eef8f4;}
+.atelier-workbench .attendance-head p,.atelier-workbench .attendance-head .eyebrow {color:#c7dbe6;}
+.atelier-workbench .attendance-seal {background:#b8dfd0;color:#182e38;}
+.atelier-workbench .archive-app>aside {background:#e2d7bd;color:#332b20;}
+@media(min-width:960px){.atelier-workbench .document-desk{display:grid;grid-template-columns:minmax(240px,.8fr) minmax(320px,1.2fr);align-items:start;}.atelier-workbench .commerce-cart{position:sticky;top:24px;align-self:start;}}
+

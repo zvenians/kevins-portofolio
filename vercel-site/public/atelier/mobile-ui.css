@@ -16,6 +16,20 @@
   background:#f0f1e9;
   color:var(--ink);
 }
+.closing .flow {margin-top:24px;text-align:left;}
+.closing #inquiry {background:#f8f8f5;color:#1d1b21;padding:clamp(18px,3vw,40px);--fg:#212028;--bg:#f8f8f5;--muted:#47434d;}
+.closing #inquiry input,.closing #inquiry textarea {background:white;color:#221f26;border:1px solid #706e75;}
+.closing #inquiry .solid {background:#22212a;color:#fff;}
+@media(min-width:960px){.closing:has(.flow) {display:grid;grid-template-columns:minmax(0,.85fr) minmax(0,1.1fr);gap:8px 4vw;align-items:center;}.closing:has(.flow)>:not(.flow){grid-column:1;}.closing>.flow{grid-column:2;grid-row:1/span 3;display:block;}.closing>.flow>aside {display:flex;flex-wrap:wrap;gap:10px;}}
+
+.nova-edition[data-dept=careers] {background:#efa896;--ink:#281f24;--rule:#aa7367;}
+.nova-edition[data-dept=insights] {background:#f5eee9;--ink:#282326;}
+.nova-edition[data-dept=inquiry] {background:#302445;--ink:#fcf4ff;--rule:#9784ab;color:#fcf4ff;}
+.nova-edition[data-dept=inquiry] :is(h1,h2,p,label,a,small) {color:inherit;}
+.nova-edition[data-dept=inquiry] #nova-form {padding:clamp(16px,4vw,45px);background:#e9e1ef;color:#27212d;}
+.nova-edition[data-dept=services] article {border-inline-start:6px solid #735da1;padding-inline-start:18px;}
+@media(min-width:860px){.nova-edition[data-dept=home] .nova-page {display:grid;grid-template-columns:1fr 1.1fr;gap:0 4vw;}.nova-edition[data-dept=home] .nova-plate {grid-column:2;grid-row:1/span 2;height:clamp(280px,35vw,460px);}.nova-edition[data-dept=home] .nova-page>h1{grid-column:1;grid-row:1;align-self:end;} .nova-edition[data-dept=home] .nova-page>article{grid-column:1/-1;}}
+
 .study[data-case] {--case-bg:#f5f2ea;--case-ink:#1d1c22;background:var(--case-bg);color:var(--case-ink);--fg:var(--case-ink);--muted:var(--case-ink);}
 .study[data-case=galilea-web-portal] {--case-bg:#102d32;--case-ink:#f4f8ec;}
 .study[data-case=majelis-galilea] {--case-bg:#202936;--case-ink:#edf2fb;}

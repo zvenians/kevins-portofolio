@@ -18,4 +18,12 @@ body[data-service=care] .mast {border-radius:32px 0;} body[data-service=care] .m
 body[data-service=care] .choice img {width:72px;height:80px;border-radius:12px;}
 body[data-service=care] .option-panel {border-radius:16px;}
 @media(max-width:600px){header{flex-wrap:wrap;padding-block:8px;}header nav{margin-left:auto;} .mast h1 {font-size:clamp(30px,7vw,44px);}body[data-service=travel] .mast>div:first-child {align-self:end;} .mast>div{padding:16px;}body[data-service=resto] .mast img {width:34%;margin:8px;}}
+@media(max-width:600px){
+ body[data-service=travel] .mast {display:grid;grid-template-columns:1fr;min-height:0;}
+ body[data-service=travel] .mast>div:first-child {background:#18364b;}
+ body[data-service=travel] .atlas-art {position:relative;min-height:140px;grid-row:1;}
+ body[data-service=travel] .atlas-art svg {height:145px;}
+ header nav {width:auto;} header {gap:5px;} .mast-action {white-space:normal;}
+}
+
 
