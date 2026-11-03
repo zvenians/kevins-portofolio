@@ -30,7 +30,7 @@ let directory;
 export async function capabilities(root, projects, language, esc) {
   const t = k => labels[k].split('|')[locales.indexOf(language)];
   const groups = ['all', 'front', 'back', 'db', 'infra', 'mobile', 'media', 'tools'];
-  root.innerHTML = `<div class="cap-tools"><label>${t('search')}<input type="search" id="skill-search"></label><label>${t('all')}<select id="skill-group">${groups.map(k => `<option value="${k}">${t(k)}</option>`).join('')}</select></label></div><h2>${t('evidence')}</h2><div id="proven" class="skills"></div><h2>${t('directory')}</h2><div id="directory" class="catalogue"></div><button class="more" id="more">${t('more')}</button>`;
+  root.innerHTML = `<div class="cap-tools"><label>${t('search')}<input type="search" id="skill-search"></label><label>${t('all')}<select id="skill-group">${groups.map(k => `<option value="${k}">${t(k)}</option>`).join('')}</select></label></div><h2>${t('evidence')}</h2><div id="proven" class="skills"></div><h2>${t('directory')}</h2><div id="directory" class="catalogue"></div>`;
   const data = new Map();
   for (const p of projects) for (const tech of p.technologies || []) {
     if (!data.has(tech)) data.set(tech, []);
@@ -38,22 +38,13 @@ export async function capabilities(root, projects, language, esc) {
   }
   const q = root.querySelector('#skill-search'),
     category = root.querySelector('#skill-group');
-  let limit = 32;
   const matches = (name, tags) => name.toLowerCase().includes(q.value.trim().toLowerCase()) && (category.value === 'all' || group(name, tags) === category.value);
   function draw() {
-    root.querySelector('#proven').innerHTML = [...data].filter(([tech]) => matches(tech, '')).map(([tech, ps]) => `<details><summary>${esc(tech)} <small>${ps.length}</small></summary>${ps.map(p => `<a href="/work/${encodeURIComponent(p.slug)}">${esc(p.name)} ${icon('outward')}</a>`).join('')}</details>`).join('') || `<p>${t('empty')}</p>`;
+    root.querySelector('#proven').innerHTML = [...data].filter(([tech]) => matches(tech, '')).map(([tech, ps]) => `<article class="skill-proof" id="tech-${esc(tech)}"><strong>${esc(tech)}</strong>${ps.map(p => `<a href="/work/${encodeURIComponent(p.slug)}">${esc(p.name)} ${icon('outward')}</a>`).join('')}</article>`).join('') || `<p>${t('empty')}</p>`;
     const filtered = (directory || []).filter(r => matches(r.name, r.tags));
-    root.querySelector('#directory').innerHTML = filtered.slice(0, limit).map(r => `<div><i aria-hidden="true" class="${esc(r.icon)}"></i><strong>${esc(r.name)}</strong><small>${t(group(r.name, r.tags))}</small></div>`).join('') || (directory ? `<p>${t('empty')}</p>` : '…');
-    root.querySelector('#more').hidden = filtered.length <= limit;
+    root.querySelector('#directory').innerHTML = filtered.map(r => `<div><i aria-hidden="true" class="${esc(r.icon)}"></i><strong>${esc(r.name)}</strong><small>${t(group(r.name, r.tags))}</small></div>`).join('') || (directory ? `<p>${t('empty')}</p>` : '…');
   }
-  q.oninput = category.onchange = () => {
-    limit = 32;
-    draw();
-  };
-  root.querySelector('#more').onclick = () => {
-    limit += 48;
-    draw();
-  };
+  q.oninput = category.onchange = draw;
   draw();
   if (!directory) try {
     const res = await fetch('/edisi/skill.html');

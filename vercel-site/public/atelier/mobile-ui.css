@@ -91,3 +91,20 @@
   .actions { gap:12px 18px; }
   .actions>a { display:inline-flex; align-items:center; min-height:44px; }
 }
+.scene-toggle { position:absolute; top:10px; right:12px; z-index:2; border:1px solid #56544c; border-radius:2rem; background:#191a17; color:#f5f1e8; font:inherit; font-size:.75rem; min-height:44px; padding:0 16px; cursor:pointer; }
+.hero .scene { z-index:0; }
+.hero .hero-text { position:relative; z-index:1; }
+.skill-wall,.skills:has(.skill-proof) { display:grid; grid-template-columns:repeat(auto-fit,minmax(min(100%,170px),1fr)); gap:14px; }
+.skill-plate,.skill-proof,.catalogue>div { min-width:0; border:1px solid #54544a; border-top-color:#79786a; border-radius:10px; background:linear-gradient(150deg,#30312b,#191a17 80%); color:#f6f2e9; box-shadow:0 3px 0 #34352f,0 7px 14px #0003; }
+.skill-plate,.skill-proof { display:grid; align-content:start; gap:8px; padding:18px; scroll-margin-top:90px; overflow-wrap:anywhere; }
+.skill-mark { display:grid; place-items:center; width:40px; height:40px; margin-bottom:5px; background:#ede9dc; color:#24251f; border-radius:10px; box-shadow:1px 3px 0 #97958a; transform:perspective(240px) rotateY(-13deg) rotateX(9deg); }
+.skill-mark img { width:26px; height:26px; }
+.skill-plate small,.catalogue small,.skill-proof a { color:#d0cfc2; }
+.skill-proof a { display:block; padding:4px 0; font-size:.85rem; }
+#directory.catalogue { grid-template-columns:repeat(auto-fill,minmax(min(100%,142px),1fr)); gap:12px; background:transparent; border:0; }
+#directory.catalogue>div { background:linear-gradient(145deg,#30312b,#191a17); overflow-wrap:anywhere; }
+@keyframes skill-float { to { transform:perspective(240px) translateY(-3px) rotateY(11deg) rotateX(5deg); } }
+html[data-motion="full"] .skill-mark,html[data-motion="full"] .catalogue i { animation:skill-float 3s ease-in-out var(--phase,0s) infinite alternate; }
+#directory>div { content-visibility:auto; contain-intrinsic-size:auto 105px; }
+@media (max-width:600px) { .skill-wall,.skills:has(.skill-proof) { grid-template-columns:repeat(2,minmax(0,1fr)); } .skill-plate,.skill-proof { padding:14px; } }
+@media (hover:hover) { .skill-plate:hover { transform:perspective(650px) translateY(-3px) rotateX(3deg); border-color:#e4ad72; } }

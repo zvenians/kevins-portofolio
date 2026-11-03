@@ -73,7 +73,12 @@ function skillsSummary() {
     'postgresql': 'postgresql',
     'node.js': 'nodejs'
   };
-  return `<div class="skills">${[...stacks].sort((a, b) => b[1].length - a[1].length).slice(0, section ? 60 : 6).map(([tech, ps]) => `<details><summary>${icons[tech.toLowerCase()] ? `<img src="/edisi/logos/${icons[tech.toLowerCase()]}.svg" alt="">` : ''}${esc(tech)} <small>${ps.length}</small></summary>${ps.map(p => `<a href="/work/${encodeURIComponent(p.slug)}">${esc(p.name)} ${icon('outward')}</a>`).join('')}</details>`).join('')}</div><a class="more" href="/edisi/skill.html">${t('catalog')} →</a>`;
+  const plates = [...stacks].sort((a, b) => b[1].length - a[1].length).map(([tech, projects], i) => {
+    const logo = icons[tech.toLowerCase()];
+    const mark = logo ? `<img src="/edisi/logos/${logo}.svg" alt="">` : `<b aria-hidden="true">${esc(tech.slice(0, 2).toUpperCase())}</b>`;
+    return `<a class="skill-plate" href="/capabilities#tech-${encodeURIComponent(tech)}"><span class="skill-mark" style="--phase:-${i % 5}s">${mark}</span><strong>${esc(tech)}</strong><small>${esc(projects[0].name)}</small></a>`;
+  });
+  return `<div class="skill-wall">${plates.join('')}</div><a class="more" href="/capabilities">${t('catalog')} ${icon('outward')}</a>`;
 }
 let step = 0,
   brief = {};
@@ -122,6 +127,19 @@ function render() {
     $('#content').insertAdjacentHTML('beforeend', `<section class="block process">${heading('process', '04')}<ol>${t('phases').split(' · ').map((phase, i) => `<li><small>0${i + 1}</small><h3>${phase}</h3><p>${notes[i]}</p></li>`).join('')}</ol></section><section class="block closing"><small>${t('edition')} / Balikpapan</small><h2>${t('contact')}</h2><div class="actions"><a class="solid" href="/contact">${t('contact')} ${icon('outward')}</a><a href="/about">${t('about')} →</a></div></section>`);
   }
   if (section === 'about') $('.bio').insertAdjacentHTML('beforeend', `<div class="bio-facts"><strong>${t('education')}</strong><p>${t('practice')}</p><a href="/resume">CV / PDF ${icon('outward')}</a></div>`);
+  const scene = $('.scene');
+  if (scene) {
+    const toggle = document.createElement('button');
+    toggle.className = 'scene-toggle';
+    toggle.textContent = t(reduced ? 'playScene' : 'pauseScene');
+    scene.append(toggle);
+    toggle.onclick = () => {
+      reduced = !reduced;
+      save('reduced', String(reduced));
+      render();
+      $('.scene-toggle').focus({preventScroll:true});
+    };
+  }
   dispose = mountScene($('canvas'), reduced);
   document.querySelectorAll('a[href="/edisi/skill.html"]').forEach(a => a.href = '/capabilities');
   if (section === 'demos') {

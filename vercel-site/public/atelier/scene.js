@@ -4,10 +4,13 @@ export function mountScene(canvas, reduced) {
   const ctx = canvas.getContext('2d');
   if (!ctx) return;
   const points = [];
-  for (let i = 0; i < 250; i++) {
-    const a = i / 250 * Math.PI * 2;
-    for (let j = 0; j < 28; j++) {
-      const b = j / 28 * Math.PI * 2 + a * 3;
+  const mobile = matchMedia('(pointer: coarse)').matches || canvas.clientWidth < 480;
+  const rings = mobile ? 128 : 250;
+  const grains = mobile ? 18 : 28;
+  for (let i = 0; i < rings; i++) {
+    const a = i / rings * Math.PI * 2;
+    for (let j = 0; j < grains; j++) {
+      const b = j / grains * Math.PI * 2 + a * 3;
       const r = 1.25 + .34 * Math.cos(b) + .22 * Math.sin(a * 3);
       points.push([r * Math.cos(a), r * Math.sin(a), .38 * Math.sin(b) + .42 * Math.cos(a * 3), Math.sin(b)]);
     }
@@ -26,11 +29,11 @@ export function mountScene(canvas, reduced) {
     }
     ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
     ctx.clearRect(0, 0, width, height);
-    const t = reduced ? .7 : time / 14000;
+    const t = reduced ? .7 : time / (mobile ? 2900 : 6500);
     const angle = .65 + .21 * Math.sin(t) + py,
       c = Math.cos(angle),
       s = Math.sin(angle);
-    const spin = t * .52 + px,
+    const spin = t * .85 + px,
       cs = Math.cos(spin),
       sn = Math.sin(spin);
     const size = Math.min(width * .268, height * .29);

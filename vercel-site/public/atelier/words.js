@@ -1,6 +1,8 @@
 export const locales = ['en', 'id', 'fr', 'es'];
 export const names = ['English', 'Indonesia', 'Français', 'Español'];
 const lines = {
+  playScene: 'Play motion|Putar animasi|Animer|Animar',
+  pauseScene: 'Pause motion|Jeda animasi|Mettre en pause|Pausar',
   flow: 'User journey|Alur pengguna|Parcours|Recorrido',
   logic: 'Product logic|Logika produk|Logique produit|Lógica del producto',
   restaurantFlow: 'Open the menu spread, customize a dish or a drink, then review the kitchen order.|Buka buku menu, atur makanan atau minuman, lalu tinjau pesanan dapur.|Ouvrez la carte, personnalisez un plat ou une boisson et vérifiez la commande.|Abre la carta, personaliza un plato o bebida y revisa la comanda.',
@@ -21,7 +23,7 @@ const lines = {
   skip: 'Skip to content|Lewati ke konten|Aller au contenu|Saltar al contenido',
   work: 'Selected work|Karya pilihan|Projets choisis|Proyectos seleccionados',
   demos: 'Demo studio|Studio demo|Studio démo|Estudio de demos',
-  capabilities: 'Capabilities|Kemampuan|Expertises|Capacidades',
+  capabilities: 'Skills|Keahlian|Compétences|Habilidades',
   about: 'About|Profil|À propos|Perfil',
   contact: 'Start a project|Mulai proyek|Lancer un projet|Iniciar un proyecto',
   menu: 'Menu|Menu|Menu|Menú',
