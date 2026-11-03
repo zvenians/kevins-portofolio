@@ -1,3 +1,4 @@
+import { icon } from './icons.js';
 import { locales } from './words.js';
 const labels = {
   all: 'All domains|Semua bidang|Tous les domaines|Todas las áreas',
@@ -40,7 +41,7 @@ export async function capabilities(root, projects, language, esc) {
   let limit = 32;
   const matches = (name, tags) => name.toLowerCase().includes(q.value.trim().toLowerCase()) && (category.value === 'all' || group(name, tags) === category.value);
   function draw() {
-    root.querySelector('#proven').innerHTML = [...data].filter(([tech]) => matches(tech, '')).map(([tech, ps]) => `<details><summary>${esc(tech)} <small>${ps.length}</small></summary>${ps.map(p => `<a href="/work/${encodeURIComponent(p.slug)}">${esc(p.name)} ↗</a>`).join('')}</details>`).join('') || `<p>${t('empty')}</p>`;
+    root.querySelector('#proven').innerHTML = [...data].filter(([tech]) => matches(tech, '')).map(([tech, ps]) => `<details><summary>${esc(tech)} <small>${ps.length}</small></summary>${ps.map(p => `<a href="/work/${encodeURIComponent(p.slug)}">${esc(p.name)} ${icon('outward')}</a>`).join('')}</details>`).join('') || `<p>${t('empty')}</p>`;
     const filtered = (directory || []).filter(r => matches(r.name, r.tags));
     root.querySelector('#directory').innerHTML = filtered.slice(0, limit).map(r => `<div><i aria-hidden="true" class="${esc(r.icon)}"></i><strong>${esc(r.name)}</strong><small>${t(group(r.name, r.tags))}</small></div>`).join('') || (directory ? `<p>${t('empty')}</p>` : '…');
     root.querySelector('#more').hidden = filtered.length <= limit;

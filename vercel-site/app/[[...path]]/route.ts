@@ -40,5 +40,6 @@ export async function GET(request: NextRequest, context: { params: Promise<{ pat
     .replace('/*BOOTSTRAP*/', `window.INDEX_HOSTED=true;window.INDEX_BOOTSTRAP=${bootstrap};`);
   const liveApp = project && request.nextUrl.searchParams.has('launch');
   const page = liveApp ? html.replace('</head>', '<link rel="stylesheet" href="/atelier/workbench.css"><script type="module" src="/atelier/workbench.js"></script></head>').replace('<body>', '<body class="atelier-workbench"><nav class="apprail" data-kind="'+escapeHtml(project.visual)+'"><a href="/demos">← Studio</a><strong>'+escapeHtml(project.name)+'</strong><a href="/work/'+encodeURIComponent(project.slug)+'">Portfolio ↗</a></nav>') : html;
-  return new Response(page, { headers: { 'content-type': 'text/html; charset=utf-8', 'cache-control': 'public, s-maxage=60, stale-while-revalidate=300', 'x-content-type-options': 'nosniff' } });
+  const withMarks = page.replace('</head>', '<link rel="stylesheet" href="/atelier/legacy-marks.css"><script type="module" src="/atelier/legacy-marks.js"></script></head>');
+  return new Response(withMarks, { headers: { 'content-type': 'text/html; charset=utf-8', 'cache-control': 'public, s-maxage=60, stale-while-revalidate=300', 'x-content-type-options': 'nosniff' } });
 }

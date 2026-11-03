@@ -1,4 +1,8 @@
+import { icon } from './icons.js';
+
 const copy = {
+  index:'Studio index|Indeks studio|Index du studio|Índice del estudio',
+  next:'Next project|Proyek berikutnya|Projet suivant|Proyecto siguiente',
   industries: 'Industries|Industri|Secteurs|Sectores',
   culture: 'Culture|Budaya|Culture|Cultura',
   publishing: 'Publishing|Penerbitan|Édition|Editorial',
@@ -48,7 +52,20 @@ export function novaPage(language) {
     page = route[0] || 'home';
   const number = Number(route[1]);
   const i = Number.isInteger(number) && number >= 0 && number < 3 ? number : 0;
-  const link = (key, label) => `<a href="#${key}">${label} ↗</a>`;
+  const link = (key, label) => `<a class="nova-link" href="#${key}"><span>${label}</span>${icon('forward')}</a>`;
+  const section = ({case:'work',service:'services',article:'insights',job:'careers',apply:'careers'})[page] || page;
+  const sections = ['about','services','industries','work','insights','careers','inquiry'];
+  const directory = sections.map((key,n)=>`<a href="#${key}" ${section===key?'aria-current="page"':''}><small>0${n+1}</small><span>${t(key)}</span></a>`).join('');
+  const mast = `<div class="nova-mast"><a class="nova-logo" href="#home" aria-label="NOVA Creative"><b>NOVA</b><sup>®</sup></a><nav class="nova-wide" aria-label="${t('index')}">${directory}</nav><details class="nova-index"><summary>${t('index')}${icon('plus')}</summary><nav aria-label="${t('index')}">${directory}</nav></details></div>`;
+  const captions=['FORMA / RADIO','PARALLEL / EDITIONS','FIELD / ASSEMBLY'];
+  function plate(index){
+    const lines=Array.from({length:37},(_,n)=>{
+      const y=28+n*4;
+      return `<path d="M-6 ${y+35} C82 ${y+90},100 ${y-110},175 ${y-16} S286 ${y+110},408 ${y-38}"/>`;
+    }).join('');
+    const shapes=[`<g fill="none" stroke="currentColor" stroke-width="1.6">${lines}</g>`,'<g fill="none" stroke="currentColor" stroke-width="11" transform="rotate(-16 200 108)"><rect x="76" y="-40" width="114" height="300"/><rect x="214" y="-40" width="114" height="300"/></g>','<g fill="none" stroke="currentColor" stroke-width="17"><circle cx="100" cy="115" r="94"/><circle cx="213" cy="115" r="94"/><circle cx="326" cy="115" r="94"/></g>'];
+    return `<figure class="nova-plate plate-${index}" aria-hidden="true"><svg viewBox="0 0 400 220" preserveAspectRatio="xMidYMid slice">${shapes[index]}</svg><figcaption><b>${captions[index]}</b><span>NV—00${index+1}</span></figcaption></figure>`;
+  }
   const entry = (key, title, info) => `<article><small>NOVA / ${info}</small><h2>${link(key, title)}</h2></article>`;
   let body = '';
   switch (page) {
@@ -68,7 +85,7 @@ export function novaPage(language) {
       body = `<h1>${t('work')}</h1><select id="industry" aria-label="${t('services')}"><option value="">${t('all')}</option>${services.map((k, i) => `<option value="${i}">${t(k)}</option>`).join('')}</select>` + works.map((w, i) => entry('case/' + i, w, t(services[i]))).join('');
       break;
     case 'case':
-      body = `<small>${t('work')} / 0${i + 1}</small><h1>${works[i]}</h1><h3>${t(services[i])}</h3><p>${t(services[i] + 'Text')}</p>${link('service/' + i, t('services'))}`;
+      body = `<div class="nova-case-head"><small>${t('work')}　/　0${i+1} — 03</small><h1>${works[i]}</h1><p>${t(services[i])} <span> / </span> ${t(['culture','publishing','events'][i])}</p></div>${plate(i)}<div class="nova-case-copy"><h2>${t(services[i])}</h2><p>${t(services[i]+'Text')}</p>${link('service/'+i,t('services'))}</div><div class="nova-next"><small>${t('next')}</small>${link('case/'+((i+1)%3),works[(i+1)%3])}</div>`;
       break;
     case 'insights':
       body = `<h1>${t('insights')}</h1><label>${t('find')}<input type="search" id="journal-search"></label>` + entry('article', t('article'), '01') + entry('article/1', t('otherArticle'), '02') + `<p id="journal-empty" hidden>${t('empty')}</p><form id="newsletter"><h3>${t('newsletter')}</h3><label>${t('email')}<input type="email" required></label><button class="solid">${t('subscribe')}</button><p role="status"></p></form>`;
@@ -124,6 +141,5 @@ export function novaPage(language) {
       document.querySelector('#nova-done').textContent = t('done');
     };
   });
-  const artwork = page === 'home' || page === 'case' ? `<div class="nova-art nova-art-${i}" aria-hidden="true"><i></i><i></i><i></i><b>N<span>®</span></b><small>NOVA CREATIVE / 0${i + 1}</small></div>` : '';
-  return `<section class="nova"><small>${t('concept')}</small><nav>${['home', 'about', 'services', 'industries', 'work', 'insights', 'careers', 'inquiry'].map(k => link(k, k === 'home' ? 'NOVA®' : t(k))).join('')}</nav>${artwork}${body}</section>`;
+  return `<section class="nova nova-edition">${mast}<div class="nova-page">${page==='home'?plate(0):''}${body}</div><footer class="nova-credit"><b>NOVA Creative</b><small>${t('concept')}</small></footer></section>`;
 }

@@ -1,3 +1,4 @@
+import { icon } from './icons.js';
 import { locales, names, translate } from './words.js';
 import { mountScene } from './scene.js';
 import { novaPage } from './nova.js';
@@ -39,19 +40,19 @@ const flagship = [['Daun & Bara', 'restaurant', '/edisi/resto.html', '/edisi/hid
 const real = projects.filter(p => p.status === 'Real Project');
 const demos = projects.filter(p => p.status === 'Interactive Demo');
 function projectRow(p, i) {
-  return `<a class="project-row" href="/work/${encodeURIComponent(p.slug)}"><small>${String(i + 1).padStart(2, '0')}</small><span><strong>${esc(p.name)}</strong><small>${(p.technologies || []).slice(0, 3).map(esc).join(' / ')}</small></span><b aria-hidden="true">↗</b></a>`;
+  return `<a class="project-row" href="/work/${encodeURIComponent(p.slug)}"><small>${String(i + 1).padStart(2, '0')}</small><span><strong>${esc(p.name)}</strong><small>${(p.technologies || []).slice(0, 3).map(esc).join(' / ')}</small></span><b aria-hidden="true">${icon('outward')}</b></a>`;
 }
 function picks() {
-  return `<div class="showcase">${real.slice(0, 2).map((p, i) => `<a class="showpiece" href="/work/${encodeURIComponent(p.slug)}"><div class="shot tone${i}"><img loading="lazy" src="/project-shots/${encodeURIComponent(p.slug)}.webp" alt="${esc(p.name)}"></div><small>0${i + 1} / ${esc(p.technologies.slice(0, 2).join(' + '))}</small><h3>${esc(p.name)} <span>↗</span></h3></a>`).join('')}</div>`;
+  return `<div class="showcase">${real.slice(0, 2).map((p, i) => `<a class="showpiece" href="/work/${encodeURIComponent(p.slug)}"><div class="shot tone${i}"><img loading="lazy" src="/project-shots/${encodeURIComponent(p.slug)}.webp" alt="${esc(p.name)}"></div><small>0${i + 1} / ${esc(p.technologies.slice(0, 2).join(' + '))}</small><h3>${esc(p.name)} <span>${icon('outward')}</span></h3></a>`).join('')}</div>`;
 }
 function brands() {
-  return `<div class="brands">${flagship.map(([name, kind, url, img], i) => `<a href="${url}" class="brand brand-${kind}">${img ? `<img loading="lazy" src="${img}" alt="">` : '<i class="nova-mark" aria-hidden="true">✳</i>'}<div><small>0${i + 1} / ${t(kind)}</small><h3>${name}</h3><span>${t('open')} ↗</span></div></a>`).join('')}</div>`;
+  return `<div class="brands">${flagship.map(([name, kind, url, img], i) => `<a href="${url}" class="brand brand-${kind}">${img ? `<img loading="lazy" src="${img}" alt="">` : '<i class="nova-mark" aria-hidden="true">'+icon('spark')+'</i>'}<div><small>0${i + 1} / ${t(kind)}</small><h3>${name}</h3><span>${t('open')} ${icon('outward')}</span></div></a>`).join('')}</div>`;
 }
 function heading(id, num) {
   return `<div class="heading"><small>${num} / KS</small><h2>${t(id)}</h2></div>`;
 }
 function home() {
-  return `<section class="hero"><div class="scene"><canvas aria-hidden="true"></canvas><small>FIG. 01 &nbsp; / &nbsp; ${t('film')}</small></div><div class="hero-text"><small><i class="dot"></i> ${t('role')}</small><h1>Kevin<br><em>Simatupang.</em></h1><p>${t('hero')}</p><div class="actions"><a class="solid" href="/work">${t('explore')} ↗</a><a href="/contact">${t('contact')} →</a></div></div></section><div class="axis"><small>KS / PORTFOLIO</small><small>${t('location')}</small></div><section class="block" id="work">${heading('work', '01')}${picks()}<a class="more" href="/work">${t('all')} →</a></section><section class="block" id="studio">${heading('demos', '02')}${brands()}<a class="more" href="/demos">${t('legacy')} →</a></section><section id="skills" class="block">${heading('capabilities', '03')}${skillsSummary()}</section>`;
+  return `<section class="hero"><div class="scene"><canvas aria-hidden="true"></canvas><small>FIG. 01 &nbsp; / &nbsp; ${t('film')}</small></div><div class="hero-text"><small><i class="dot"></i> ${t('role')}</small><h1>Kevin<br><em>Simatupang.</em></h1><p>${t('hero')}</p><div class="actions"><a class="solid" href="/work">${t('explore')} ${icon('outward')}</a><a href="/contact">${t('contact')} →</a></div></div></section><div class="axis"><small>KS / PORTFOLIO</small><small>${t('location')}</small></div><section class="block" id="work">${heading('work', '01')}${picks()}<a class="more" href="/work">${t('all')} →</a></section><section class="block" id="studio">${heading('demos', '02')}${brands()}<a class="more" href="/demos">${t('legacy')} →</a></section><section id="skills" class="block">${heading('capabilities', '03')}${skillsSummary()}</section>`;
 }
 function skillsSummary() {
   const stacks = new Map();
@@ -72,7 +73,7 @@ function skillsSummary() {
     'postgresql': 'postgresql',
     'node.js': 'nodejs'
   };
-  return `<div class="skills">${[...stacks].sort((a, b) => b[1].length - a[1].length).slice(0, section ? 60 : 6).map(([tech, ps]) => `<details><summary>${icons[tech.toLowerCase()] ? `<img src="/edisi/logos/${icons[tech.toLowerCase()]}.svg" alt="">` : ''}${esc(tech)} <small>${ps.length}</small></summary>${ps.map(p => `<a href="/work/${encodeURIComponent(p.slug)}">${esc(p.name)} ↗</a>`).join('')}</details>`).join('')}</div><a class="more" href="/edisi/skill.html">${t('catalog')} →</a>`;
+  return `<div class="skills">${[...stacks].sort((a, b) => b[1].length - a[1].length).slice(0, section ? 60 : 6).map(([tech, ps]) => `<details><summary>${icons[tech.toLowerCase()] ? `<img src="/edisi/logos/${icons[tech.toLowerCase()]}.svg" alt="">` : ''}${esc(tech)} <small>${ps.length}</small></summary>${ps.map(p => `<a href="/work/${encodeURIComponent(p.slug)}">${esc(p.name)} ${icon('outward')}</a>`).join('')}</details>`).join('')}</div><a class="more" href="/edisi/skill.html">${t('catalog')} →</a>`;
 }
 let step = 0,
   brief = {};
@@ -90,7 +91,7 @@ function render() {
   document.documentElement.lang = language;
   $('.skip').textContent = t('skip');
   document.documentElement.dataset.motion = reduced ? 'reduced' : 'full';
-  $('#bar').innerHTML = `<a href="/" class="wordmark">ks<span>.</span></a><nav>${nav()}</nav><div><button data-settings>${language.toUpperCase()} ⌄</button><button data-menu>${t('menu')} ☰</button></div>`;
+  $('#bar').innerHTML = `<a href="/" class="wordmark">ks<span>.</span></a><nav>${nav()}</nav><div><button data-settings>${language.toUpperCase()} ${icon('down')}</button><button data-menu>${t('menu')} ${icon('menu')}</button></div>`;
   $('#foot').innerHTML = `<a class="wordmark" href="/">ks<span>.</span></a><small>Kevin Simatupang · Balikpapan</small><button data-settings>${t('prefs')}</button>`;
   let body;
   switch (section) {
@@ -101,7 +102,7 @@ function render() {
       body = brands() + heading('legacy', '02') + `<input id="search" type="search" aria-label="${t('search')}" placeholder="${t('search')}"><div id="results"></div><a class="more" href="/studio">${t('archive')} →</a>`;
       break;
     case 'about':
-      body = `<div class="bio"><p>${t('profile')}</p><small>${t('location')}</small><div class="actions"><a class="solid" href="/work">${t('explore')} ↗</a></div></div>`;
+      body = `<div class="bio"><p>${t('profile')}</p><small>${t('location')}</small><div class="actions"><a class="solid" href="/work">${t('explore')} ${icon('outward')}</a></div></div>`;
       break;
     case 'capabilities':
       body = '<div id="capability-map"></div>';
@@ -118,9 +119,9 @@ function render() {
   $('#content').innerHTML = categories.includes(section) ? `<section class="block sub"><small>Kevin Simatupang / ${t('edition')}</small><h1>${t(section)}</h1>${body}</section>` : body;
   if (!section || section === 'about') {
     const notes = t('processNotes').split(' · ');
-    $('#content').insertAdjacentHTML('beforeend', `<section class="block process">${heading('process', '04')}<ol>${t('phases').split(' · ').map((phase, i) => `<li><small>0${i + 1}</small><h3>${phase}</h3><p>${notes[i]}</p></li>`).join('')}</ol></section><section class="block closing"><small>${t('edition')} / Balikpapan</small><h2>${t('contact')}</h2><div class="actions"><a class="solid" href="/contact">${t('contact')} ↗</a><a href="/about">${t('about')} →</a></div></section>`);
+    $('#content').insertAdjacentHTML('beforeend', `<section class="block process">${heading('process', '04')}<ol>${t('phases').split(' · ').map((phase, i) => `<li><small>0${i + 1}</small><h3>${phase}</h3><p>${notes[i]}</p></li>`).join('')}</ol></section><section class="block closing"><small>${t('edition')} / Balikpapan</small><h2>${t('contact')}</h2><div class="actions"><a class="solid" href="/contact">${t('contact')} ${icon('outward')}</a><a href="/about">${t('about')} →</a></div></section>`);
   }
-  if (section === 'about') $('.bio').insertAdjacentHTML('beforeend', `<div class="bio-facts"><strong>${t('education')}</strong><p>${t('practice')}</p><a href="/resume">CV / PDF ↗</a></div>`);
+  if (section === 'about') $('.bio').insertAdjacentHTML('beforeend', `<div class="bio-facts"><strong>${t('education')}</strong><p>${t('practice')}</p><a href="/resume">CV / PDF ${icon('outward')}</a></div>`);
   dispose = mountScene($('canvas'), reduced);
   document.querySelectorAll('a[href="/edisi/skill.html"]').forEach(a => a.href = '/capabilities');
   if (section === 'demos') {
@@ -129,7 +130,7 @@ function render() {
         wrap = document.createElement('article');
       a.before(wrap);
       wrap.append(a);
-      wrap.insertAdjacentHTML('beforeend', `<details class="brief-case"><summary>${t('view')}</summary><h3>${name}</h3><h4>${t('flow')}</h4><p>${t(kind + 'Flow')}</p><h4>${t('logic')}</h4><p>${t(kind + 'Logic')}</p><a href="${url}">${t('open')} ↗</a></details>`);
+      wrap.insertAdjacentHTML('beforeend', `<details class="brief-case"><summary>${t('view')}</summary><h3>${name}</h3><h4>${t('flow')}</h4><p>${t(kind + 'Flow')}</p><h4>${t('logic')}</h4><p>${t(kind + 'Logic')}</p><a href="${url}">${t('open')} ${icon('outward')}</a></details>`);
     });
   }
   if ($('#capability-map')) capabilities($('#capability-map'), projects, language, esc);
