@@ -54,3 +54,9 @@ body.clean-ui .manga-thumbnail>div{width:100%;transform:rotate(-5deg);box-shadow
 .reduced .manga-book,.reduced .manga-turn-sheet{animation:none!important;transition:none!important}
 
 body.clean-ui .manga-stage{overflow:auto}body.clean-ui .manga-book.is-zoomed{max-width:none;flex-shrink:0;transform:none;margin-inline:auto}body.clean-ui .manga-book.is-cover.is-zoomed{max-width:none}
+.manga-book .koma-fold {position:absolute;top:0;bottom:0;z-index:6;pointer-events:none;transform-style:preserve-3d;perspective:1500px;}
+.koma-fold .koma-strip {position:absolute;top:0;left:0;height:100%;transform-origin:left center;transform-style:preserve-3d;will-change:transform;}
+.koma-strip>div {position:absolute;inset:0;background:#f8f6ec;backface-visibility:hidden;overflow:hidden;}
+.koma-strip>div+div {transform:rotateY(180deg) translateZ(.45px);}
+.koma-strip svg {width:100%;height:100%;display:block;}
+.koma-strip>div:after {content:'';position:absolute;inset:0;background:#29251c;opacity:var(--shade,0);}

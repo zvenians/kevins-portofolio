@@ -1777,6 +1777,12 @@ body.clean-ui .manga-thumbnail>div{width:100%;transform:rotate(-5deg);box-shadow
 .reduced .manga-book,.reduced .manga-turn-sheet{animation:none!important;transition:none!important}
 
 body.clean-ui .manga-stage{overflow:auto}body.clean-ui .manga-book.is-zoomed{max-width:none;flex-shrink:0;transform:none;margin-inline:auto}body.clean-ui .manga-book.is-cover.is-zoomed{max-width:none}
+.manga-book .koma-fold {position:absolute;top:0;bottom:0;z-index:6;pointer-events:none;transform-style:preserve-3d;perspective:1500px;}
+.koma-fold .koma-strip {position:absolute;top:0;left:0;height:100%;transform-origin:left center;transform-style:preserve-3d;will-change:transform;}
+.koma-strip>div {position:absolute;inset:0;background:#f8f6ec;backface-visibility:hidden;overflow:hidden;}
+.koma-strip>div+div {transform:rotateY(180deg) translateZ(.45px);}
+.koma-strip svg {width:100%;height:100%;display:block;}
+.koma-strip>div:after {content:'';position:absolute;inset:0;background:#29251c;opacity:var(--shade,0);}
 
 body.clean-ui .attendance-app{background:#f6f7f9;color:#292d34;border:1px solid #dde0e6;border-radius:20px;overflow:hidden;font-size:14px}
 body.clean-ui .attendance-head{display:flex;align-items:center;justify-content:space-between;gap:25px;padding:36px 40px;background:#fff}
@@ -2924,41 +2930,100 @@ function mangaDemo(){
  const isSpread=()=>page>0&&(mode==='spread'||mode==='auto'&&root.clientWidth>720);
  const visible=()=>page===0?[0]:isSpread()&&page<8?[page,page+1]:[page];
  const render=()=>{const pages=visible();book.classList.toggle('is-cover',page===0);book.classList.toggle('is-spread',isSpread()&&pages.length>1);book.dataset.direction=direction;const base=Math.min(pages.length>1?880:440,Math.max(240,root.clientWidth*.9));book.style.width=zoom===1?'':base*zoom+'px';book.classList.toggle('is-zoomed',zoom>1);let display=direction==='rtl'?[...pages].reverse():pages;book.innerHTML=display.map(n=>`<div class="manga-page" data-page-number="${n}">${mangaPageSvg(n)}</div>`).join('');root.querySelector('.manga-open').hidden=page!==0;root.querySelector('.manga-position').textContent=page===0?'Cover / 8 pages':`Page ${pages.join('–')} of 8`;root.querySelector('.manga-progress').value=page;root.querySelector('.manga-progress').setAttribute('aria-valuetext',page===0?'Cover':`Page ${page} of 8`);root.querySelector('.manga-chapter').value=page===0?'0':page<5?'1':'5';root.querySelector('.manga-chapter-label').textContent=page===0?'THE STORY STARTS HERE':page<5?'CHAPTER 01 / THE SIGNAL':'CHAPTER 02 / FIRST LIGHT';root.querySelector('.manga-direction-label').textContent=direction==='rtl'?'READ RIGHT TO LEFT ←':'READ LEFT TO RIGHT →';const mark=root.querySelector('.manga-bookmark');mark.disabled=page===0;mark.setAttribute('aria-pressed',String(saved===page&&page>0));mark.textContent=saved===page&&page>0?'Bookmarked ✓':'Bookmark';root.querySelector('.manga-transcript>div').innerHTML=pages.map(n=>`<article><h4>${esc(mangaStory[n].title)}</h4><p>${esc([mangaStory[n].caption, ...mangaCaptions[n].map(c => c[2])].join(' '))}</p></article>`).join('');};
- const finish=()=>{clearTimeout(flipTimer);flipTimer=null;busy=false;book.classList.remove('is-turning');book.querySelector('.manga-turn-sheet')?.remove();};
+ const finish=()=>{clearFold();clearTimeout(flipTimer);flipTimer=null;busy=false;book.classList.remove('is-turning');book.querySelector('.manga-turn-sheet')?.remove();};
  const go=(next,animate=true)=>{next=Math.max(0,Math.min(8,Math.trunc(Number(next))||0));if(busy||next===page)return;const previous=page,spread=isSpread(),old=mangaPageSvg(next>page?visible().at(-1):page);page=next;render();if(!animate||reduced)return;busy=true;book.classList.add('is-turning');const sheet=document.createElement('div');sheet.className='manga-turn-sheet';const forward=next>previous;sheet.dataset.side=(direction==='rtl')===forward?'left':'right';sheet.classList.toggle('full-sheet',!spread||!isSpread());sheet.innerHTML=`<div class="manga-sheet-front">${old}</div><div class="manga-sheet-back">${mangaPageSvg(next)}</div>`;book.append(sheet);sheet.addEventListener('animationend',finish,{once:true});flipTimer=setTimeout(finish,850);};
  const next=()=>{if(!visible().includes(8))go(page===0?1:Math.min(8,page+(isSpread()?2:1)));};const prev=()=>go(Math.max(0,page-(isSpread()?2:1)));
- root.querySelector('.manga-open').onclick=next;let drag=null;
- const releaseDrag=()=>{
-   drag=null;book.querySelectorAll('.manga-page').forEach(el=>{el.style.removeProperty('transform');el.style.removeProperty('filter');});
- };
+ root.querySelector('.manga-open').onclick=next;
+ let drag=null, settleFrame=0;
+ const stripCount=16;
+ function clearFold(){
+   if(settleFrame)cancelAnimationFrame(settleFrame);settleFrame=0;
+   if(!drag)return;
+   drag.mesh?.remove();
+   if(drag.under)drag.under.innerHTML=mangaPageSvg(drag.original);
+   drag=null;
+ }
+ function prepareFold(){
+   const leaves=[...book.querySelectorAll(':scope > .manga-page')];
+   const leaf=drag.sign>0?leaves[0]:leaves.at(-1);
+   const width=leaf.offsetWidth;
+   drag.original=Number(leaf.dataset.pageNumber);drag.under=leaf;
+   const targetPages=isSpread() && drag.target>0 && drag.target<8?[drag.target,drag.target+1]:[drag.target];
+   const back=drag.forward?targetPages[0]:targetPages.at(-1);
+   const under=drag.forward?targetPages.at(-1):targetPages[0];
+   leaf.innerHTML=mangaPageSvg(under);
+   const mesh=document.createElement('div');
+   mesh.className='koma-fold';mesh.setAttribute('aria-hidden','true');
+   mesh.style.left=leaf.offsetLeft+'px';mesh.style.width=width+'px';
+   drag.mesh=mesh;drag.width=width;
+   const frontArt=mangaPageSvg(drag.original),backArt=mangaPageSvg(back);
+   drag.strips=Array.from({length:stripCount},(_,i)=>{
+     const strip=document.createElement('div');strip.className='koma-strip';
+     const col=drag.sign>0?stripCount-1-i:i;
+     const slice=(art,n)=>art.replace('viewBox="0 0 640 900"','preserveAspectRatio="none" viewBox="'+n*640/stripCount+' 0 '+640/stripCount+' 900"');
+     strip.innerHTML='<div>'+slice(frontArt,col)+'</div><div>'+slice(backArt,stripCount-1-col)+'</div>';
+     strip.style.width=(width/stripCount+.45)+'px';
+     mesh.append(strip);return strip;
+   });
+   book.append(mesh);
+ }
+ function fold(progress){
+   drag.progress=progress;
+   if(reduced)return;
+   if(!drag.mesh)prepareFold();
+   const outward=-drag.sign,step=drag.width/stripCount;
+   let x=drag.sign>0?drag.width:0,z=0;
+   drag.strips.forEach((strip,i)=>{
+     const theta=Math.PI*progress+Math.sin(Math.PI*progress)*.9*((i+.5)/stripCount-.5);
+     const angle=-outward*theta;
+     const nextX=x+outward*Math.cos(theta)*step,nextZ=z+Math.sin(theta)*step;
+     const left=outward>0?x:nextX,depth=outward>0?z:nextZ;
+     strip.style.transform='translate3d('+left+'px,0,'+(depth+1)+'px) rotateY('+angle+'rad)';
+     strip.style.setProperty('--shade',String(.28*Math.abs(Math.sin(theta))));
+     x=nextX;z=nextZ;
+   });
+ }
+ function settle(commit){
+   if(!drag||drag.settling)return;
+   drag.settling=true;
+   const target=drag.target,from=drag.progress,to=commit?1:0;
+   const done=()=>{clearFold();if(commit)go(target,false);};
+   if(reduced||!from){done();return;}
+   const start=performance.now(),duration=160+140*Math.abs(to-from);
+   function advance(now){
+     if(!drag)return;
+     const elapsed=Math.min(1,(now-start)/duration);
+     fold(from+(to-from)*(1-Math.pow(1-elapsed,3)));
+     if(elapsed<1)settleFrame=requestAnimationFrame(advance);else done();
+   }
+   settleFrame=requestAnimationFrame(advance);
+ }
  book.style.touchAction='pan-y pinch-zoom';
  book.onpointerdown=e=>{
-   if(busy || zoom>1 || e.button!==0)return;
-   drag={id:e.pointerId,x:e.clientX,y:e.clientY,turn:0};
+   if(drag||busy||zoom>1||e.button!==0||e.isPrimary===false)return;
+   const rect=book.getBoundingClientRect(),offset=e.clientX-rect.left;
+   const grip=Math.min(80,Math.max(44,rect.width*.18));
+   if(offset>grip && offset<rect.width-grip)return;
+   const sign=offset<grip?1:-1,forward=(sign===1)===(direction==='rtl');
+   if((forward&&visible().includes(8))||(!forward&&page===0))return;
+   const target=forward?(page===0?1:Math.min(8,page+(isSpread()?2:1))):Math.max(0,page-(isSpread()?2:1));
+   drag={id:e.pointerId,sign,forward,target,x:e.clientX,y:e.clientY,progress:0,lastX:e.clientX,lastTime:e.timeStamp,velocity:0};
  };
  book.onpointermove=e=>{
-   if(!drag||drag.id!==e.pointerId)return;
-   const dx=e.clientX-drag.x,dy=e.clientY-drag.y;
-   if(!drag.turn && Math.abs(dy)>Math.abs(dx)+8){releaseDrag();return;}
-   if(Math.abs(dx)<6)return;
-   const advance=direction==='rtl'?dx>0:dx<0;
-   if((advance && visible().includes(8))||(!advance && page===0)){releaseDrag();return;}
-   book.setPointerCapture(e.pointerId);
-   drag.turn=advance?1:-1;
-   const leaves=book.querySelectorAll('.manga-page');
-   const leaf=dx>0?leaves[0]:leaves[leaves.length-1];
-   const progress=Math.min(.97,Math.abs(dx)/Math.max(90,leaf.clientWidth));
-   leaves.forEach(el=>{if(el!==leaf)el.style.removeProperty('transform');});
-   leaf.style.transformOrigin=dx>0?'right center':'left center';
-   if(!reduced)leaf.style.transform='perspective(950px) rotateY('+(-Math.sign(dx)*progress*152)+'deg)';
-   leaf.style.filter='brightness('+(1-.34*progress)+')';
+   if(!drag||drag.settling||drag.id!==e.pointerId)return;
+   const dx=(e.clientX-drag.x)*drag.sign,dy=e.clientY-drag.y;
+   if(!drag.progress && Math.abs(dy)>Math.abs(dx)+7){clearFold();return;}
+   if(!drag.progress&&dx<5)return;
+   book.setPointerCapture?.(e.pointerId);
+   drag.velocity=(e.clientX-drag.lastX)*drag.sign/Math.max(1,e.timeStamp-drag.lastTime);
+   drag.lastX=e.clientX;drag.lastTime=e.timeStamp;
+   fold(Math.max(0,Math.min(1,dx/Math.max(80,book.offsetWidth*(isSpread()?.88:.85)))));
  };
- book.onpointercancel=releaseDrag;
- book.onpointerleave=e=>{if(!book.hasPointerCapture(e.pointerId))releaseDrag();};
+ book.onpointercancel=e=>{if(drag?.id===e.pointerId)settle(false);};
+ book.onpointerleave=e=>{if(drag&&!drag.settling&&!book.hasPointerCapture?.(e.pointerId))settle(false);};
  book.onpointerup=e=>{
-   if(!drag)return;
-   const commit=Math.abs(e.clientX-drag.x)>Math.min(90,book.clientWidth*.2), turn=drag.turn;
-   releaseDrag();if(commit && turn){go(turn>0?(page===0?1:page+(isSpread()?2:1)):page-(isSpread()?2:1),false);}
+   if(!drag||drag.id!==e.pointerId)return;
+   settle(drag.progress>=.42||(drag.progress>.10&&drag.velocity>.55&&e.timeStamp-drag.lastTime<100));
  };
  
  root.querySelector('.manga-chapter').onchange=e=>{finish();go(e.target.value,false);};root.querySelector('.manga-progress').oninput=e=>{finish();go(e.target.value,false);};
