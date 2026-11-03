@@ -1,6 +1,10 @@
 export const locales = ['en', 'id', 'fr', 'es'];
 export const names = ['English', 'Indonesia', 'Français', 'Español'];
 const lines = {
+  bookShop:'Booking & commerce|Pemesanan & niaga|Réservation et commerce|Reservas y comercio',
+  operationsGroup:'Data & operations|Data & operasional|Données et opérations|Datos y operaciones',
+  creative: 'Creative development|Pengembangan kreatif|Développement créatif|Desarrollo creativo',
+  systems: 'Systems|Sistem|Systèmes|Sistemas',
   playScene: 'Play motion|Putar animasi|Animer|Animar',
   pauseScene: 'Pause motion|Jeda animasi|Mettre en pause|Pausar',
   flow: 'User journey|Alur pengguna|Parcours|Recorrido',
@@ -29,7 +33,7 @@ const lines = {
   menu: 'Menu|Menu|Menu|Menú',
   close: 'Close|Tutup|Fermer|Cerrar',
   role: 'Creative technologist|Teknolog kreatif|Technologue créatif|Tecnólogo creativo',
-  hero: 'I build digital products for the people who use them every day.|Saya membangun produk digital untuk orang yang menggunakannya setiap hari.|Je crée des produits numériques pour celles et ceux qui les utilisent au quotidien.|Creo productos digitales para quienes los usan a diario.',
+  hero: 'I design and build community platforms, booking tools and interactive web experiences.|Saya merancang dan membangun platform komunitas, aplikasi pemesanan, dan pengalaman web interaktif.|Je conçois des plateformes communautaires, des outils de réservation et des expériences web interactives.|Diseño plataformas comunitarias, herramientas de reserva y experiencias web interactivas.',
   explore: 'Explore work|Jelajahi karya|Explorer les projets|Explorar proyectos',
   view: 'View case study|Baca studi kasus|Lire l’étude de cas|Ver caso de estudio',
   open: 'Open application|Buka aplikasi|Ouvrir l’application|Abrir aplicación',
@@ -64,7 +68,7 @@ const lines = {
   compose: 'Open email draft|Buka draf email|Ouvrir le brouillon|Abrir borrador de correo',
   mailhint: 'Review the brief and send it from your email app.|Tinjau brief lalu kirim melalui aplikasi email Anda.|Vérifiez le brief puis envoyez-le depuis votre messagerie.|Revisa el resumen y envíalo desde tu aplicación de correo.',
   catalog: 'Technology catalogue|Katalog teknologi|Catalogue technique|Catálogo tecnológico',
-  film: 'Interactive particle study|Studi partikel interaktif|Étude de particules interactive|Estudio de partículas interactivo',
+  film: 'Iridescent marble|Marmer iridesen|Marbre irisé|Mármol iridiscente',
   archive: 'Open studio archive|Buka arsip studio|Ouvrir les archives|Abrir el archivo'
 };
 export const translate = (key, language) => lines[key]?.split('|')[locales.indexOf(language)] ?? key;

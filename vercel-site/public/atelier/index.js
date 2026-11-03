@@ -43,41 +43,30 @@ function projectRow(p, i) {
   return `<a class="project-row" href="/work/${encodeURIComponent(p.slug)}"><small>${String(i + 1).padStart(2, '0')}</small><span><strong>${esc(p.name)}</strong><small>${(p.technologies || []).slice(0, 3).map(esc).join(' / ')}</small></span><b aria-hidden="true">${icon('outward')}</b></a>`;
 }
 function picks() {
-  return `<div class="showcase">${real.slice(0, 2).map((p, i) => `<a class="showpiece" href="/work/${encodeURIComponent(p.slug)}"><div class="shot tone${i}"><img loading="lazy" src="/project-shots/${encodeURIComponent(p.slug)}.webp" alt="${esc(p.name)}"></div><small>0${i + 1} / ${esc(p.technologies.slice(0, 2).join(' + '))}</small><h3>${esc(p.name)} <span>${icon('outward')}</span></h3></a>`).join('')}</div>`;
+  return `<div class="showcase">${real.filter(p => ['galilea-web-portal','galilea-digital-archive','majelis-galilea','naomi-rouli'].includes(p.slug)).map((p, i) => `<a class="showpiece" href="/work/${encodeURIComponent(p.slug)}"><div class="shot tone${i}"><img loading="lazy" src="/project-shots/${encodeURIComponent(p.slug)}.webp" alt="${esc(p.name)}"></div><small>0${i + 1} / ${esc(p.technologies.filter(tech=>section || !/apps script|google sheets/i.test(tech)).slice(0, 2).join(' + '))}</small><h3>${esc(p.name)} <span>${icon('outward')}</span></h3></a>`).join('')}</div>`;
+}
+function demoArtifact(kind) {
+  const captions={restaurant:['01 / 02','Daun & Bara','Lemongrass chicken','45.000'],travel:['WITA / 09:00','Terminal Teluk → Teluk House','12 km · 28 min','E-TICKET'],care:['Ruang Rawat','Nadia Laras','Balikpapan','75.000 / h'],nova:['FORMA / RADIO','NOVA®','NV—001','STUDIO']};
+  const [folio,title,detail,value]=captions[kind];
+  return `<figure aria-hidden="true" class="artifact artifact-${kind}"><small>${folio}</small><b>${title}</b><span>${detail}</span><strong>${value}</strong></figure>`;
 }
 function brands() {
-  return `<div class="brands">${flagship.map(([name, kind, url, img], i) => `<a href="${url}" class="brand brand-${kind}">${img ? `<img loading="lazy" src="${img}" alt="">` : '<i class="nova-mark" aria-hidden="true">'+icon('spark')+'</i>'}<div><small>0${i + 1} / ${t(kind)}</small><h3>${name}</h3><span>${t('open')} ${icon('outward')}</span></div></a>`).join('')}</div>`;
+  return `<div class="brands">${flagship.map(([name, kind, url, img], i) => `<a href="${url}" class="brand brand-${kind}">${img ? `<img loading="lazy" src="${img}" alt="">` : '<i class="nova-mark" aria-hidden="true">'+icon('spark')+'</i>'}${demoArtifact(kind)}<div><small>0${i + 1} / ${t(kind)}</small><h3>${name}</h3><span>${t('open')} ${icon('outward')}</span></div></a>`).join('')}</div>`;
 }
 function heading(id, num) {
   return `<div class="heading"><small>${num} / KS</small><h2>${t(id)}</h2></div>`;
 }
 function home() {
-  return `<section class="hero"><div class="scene"><canvas aria-hidden="true"></canvas><small>FIG. 01 &nbsp; / &nbsp; ${t('film')}</small></div><div class="hero-text"><small><i class="dot"></i> ${t('role')}</small><h1>Kevin<br><em>Simatupang.</em></h1><p>${t('hero')}</p><div class="actions"><a class="solid" href="/work">${t('explore')} ${icon('outward')}</a><a href="/contact">${t('contact')} →</a></div></div></section><div class="axis"><small>KS / PORTFOLIO</small><small>${t('location')}</small></div><section class="block" id="work">${heading('work', '01')}${picks()}<a class="more" href="/work">${t('all')} →</a></section><section class="block" id="studio">${heading('demos', '02')}${brands()}<a class="more" href="/demos">${t('legacy')} →</a></section><section id="skills" class="block">${heading('capabilities', '03')}${skillsSummary()}</section>`;
+  return `<section class="hero"><div class="scene"><canvas aria-hidden="true"></canvas><small>FIG. 01 &nbsp; / &nbsp; ${t('film')}</small></div><div class="hero-text"><small><i class="dot"></i> Kevin Oloan Simatupang</small><h1><em>Creative</em><br>DEVELOPER.</h1><p>${t('hero')}</p><div class="actions"><a class="solid" href="/work">${t('explore')} ${icon('outward')}</a><a href="/contact">${t('contact')} →</a></div></div></section><div class="axis"><small>KS / PORTFOLIO</small><small>${t('location')}</small></div><section class="block" id="work">${heading('work', '01')}${picks()}<a class="more" href="/work">${t('all')} →</a></section><section class="block" id="studio">${heading('demos', '02')}${brands()}<a class="more" href="/demos">${t('legacy')} →</a></section><section id="skills" class="block">${heading('capabilities', '03')}${skillsSummary()}</section>`;
 }
 function skillsSummary() {
-  const stacks = new Map();
-  for (const p of projects) for (const tech of p.technologies || []) {
-    if (!section && /apps script|google sheets/i.test(tech)) continue;
-    if (!stacks.has(tech)) stacks.set(tech, []);
-    stacks.get(tech).push(p);
-  }
-  const icons = {
-    'javascript': 'javascript',
-    'typescript': 'typescript',
-    'css': 'css3',
-    'html': 'html5',
-    'firebase': 'firebase',
-    'react': 'react',
-    'python': 'python',
-    'git': 'git',
-    'postgresql': 'postgresql',
-    'node.js': 'nodejs'
-  };
-  const plates = [...stacks].sort((a, b) => b[1].length - a[1].length).map(([tech, projects], i) => {
-    const logo = icons[tech.toLowerCase()];
-    const mark = logo ? `<img src="/edisi/logos/${logo}.svg" alt="">` : `<b aria-hidden="true">${esc(tech.slice(0, 2).toUpperCase())}</b>`;
-    return `<a class="skill-plate" href="/capabilities#tech-${encodeURIComponent(tech)}"><span class="skill-mark" style="--phase:-${i % 5}s">${mark}</span><strong>${esc(tech)}</strong><small>${esc(projects[0].name)}</small></a>`;
-  });
+  const strengths = [
+    ['Frontend','react','Galilea Digital Archive','galilea-digital-archive'],
+    ['Backend','firebase','GMAHK Galilea','galilea-web-portal'],
+    [t('creative'),'css3','KOMA Manga Reader','koma-manga-reader'],
+    [t('systems'),'javascript','Majelis Galilea','majelis-galilea']
+  ];
+  const plates = strengths.map(([name,logo,project,slug],i)=>`<a class="skill-plate" href="/work/${slug}"><span class="skill-mark" style="--phase:-${i}s"><img src="/edisi/logos/${logo}.svg" alt=""></span><strong>${name}</strong><small>${project}</small></a>`);
   return `<div class="skill-wall">${plates.join('')}</div><a class="more" href="/capabilities">${t('catalog')} ${icon('outward')}</a>`;
 }
 let step = 0,
@@ -91,17 +80,18 @@ function inquiry() {
   return `<div class="flow"><aside>${['project', 'plan', 'contact', 'review'].map((k, i) => `<p class="${i === step ? 'current' : ''}">0${i + 1}　${t(k)}</p>`).join('')}</aside><form id="inquiry"><h2>${t(['project', 'plan', 'contact', 'review'][step])}</h2>${keys ? keys.map(k => `<label>${t(k)}${k === 'scope' ? `<textarea name="scope" required maxlength="2500">${esc(brief.scope)}</textarea>` : `<input name="${k}" type="${k === 'time' ? 'date' : k === 'email' ? 'email' : 'text'}" value="${esc(brief[k])}" maxlength="160" required>`}</label>`).join('') : `<dl>${steps.flat().map(k => `<dt>${t(k)}</dt><dd>${esc(brief[k])}</dd>`).join('')}</dl><p>${t('mailhint')}</p>`}<div class="actions">${step ? `<button type="button" id="back">${t('back')}</button>` : ''}<button class="solid">${t(keys ? 'next' : 'compose')} →</button></div></form></div>`;
 }
 let dispose;
+let scenePaused = reduced;
 function render() {
   dispose?.();
   document.documentElement.lang = language;
   $('.skip').textContent = t('skip');
   document.documentElement.dataset.motion = reduced ? 'reduced' : 'full';
   $('#bar').innerHTML = `<a href="/" class="wordmark">ks<span>.</span></a><nav>${nav()}</nav><div><button data-settings>${language.toUpperCase()} ${icon('down')}</button><button data-menu>${t('menu')} ${icon('menu')}</button></div>`;
-  $('#foot').innerHTML = `<a class="wordmark" href="/">ks<span>.</span></a><small>Kevin Simatupang · Balikpapan</small><button data-settings>${t('prefs')}</button>`;
+  $('#foot').innerHTML = `<a class="wordmark" href="/">ks<span>.</span></a><small>© 2026 Kevin Oloan Simatupang · Balikpapan</small><button data-settings>${t('prefs')}</button>`;
   let body;
   switch (section) {
     case 'work':
-      body = picks() + real.map(projectRow).join('');
+      body = picks() + projects.filter(p => ['Concept','Historical Prototype'].includes(p.status)).map(projectRow).join('');
       break;
     case 'demos':
       body = brands() + heading('legacy', '02') + `<input id="search" type="search" aria-label="${t('search')}" placeholder="${t('search')}"><div id="results"></div><a class="more" href="/studio">${t('archive')} →</a>`;
@@ -126,21 +116,22 @@ function render() {
     const notes = t('processNotes').split(' · ');
     $('#content').insertAdjacentHTML('beforeend', `<section class="block process">${heading('process', '04')}<ol>${t('phases').split(' · ').map((phase, i) => `<li><small>0${i + 1}</small><h3>${phase}</h3><p>${notes[i]}</p></li>`).join('')}</ol></section><section class="block closing"><small>${t('edition')} / Balikpapan</small><h2>${t('contact')}</h2><div class="actions"><a class="solid" href="/contact">${t('contact')} ${icon('outward')}</a><a href="/about">${t('about')} →</a></div></section>`);
   }
+  if(!section) $('.closing').insertAdjacentHTML('beforebegin', `<section class="block bio-chapter">${heading('about','05')}<p>${t('profile')}</p><a class="more" href="/about">${t('about')} ${icon('outward')}</a></section>`);
+  if(section==='nova') $('#bar nav').innerHTML=`<a href="/demos">← ${t('demos')}</a>`;
   if (section === 'about') $('.bio').insertAdjacentHTML('beforeend', `<div class="bio-facts"><strong>${t('education')}</strong><p>${t('practice')}</p><a href="/resume">CV / PDF ${icon('outward')}</a></div>`);
   const scene = $('.scene');
   if (scene) {
     const toggle = document.createElement('button');
     toggle.className = 'scene-toggle';
-    toggle.textContent = t(reduced ? 'playScene' : 'pauseScene');
+    toggle.textContent = t(scenePaused ? 'playScene' : 'pauseScene');
     scene.append(toggle);
     toggle.onclick = () => {
-      reduced = !reduced;
-      save('reduced', String(reduced));
+      scenePaused = !scenePaused;
       render();
       $('.scene-toggle').focus({preventScroll:true});
     };
   }
-  dispose = mountScene($('canvas'), reduced);
+  dispose = mountScene($('.scene canvas'), scenePaused);
   document.querySelectorAll('a[href="/edisi/skill.html"]').forEach(a => a.href = '/capabilities');
   if (section === 'demos') {
     document.querySelectorAll('.brands .brand').forEach((a, i) => {
@@ -156,7 +147,15 @@ function render() {
     const search = () => {
       const q = $('#search').value.toLowerCase();
       const rows = demos.filter(p => [p.name, ...p.technologies].join(' ').toLowerCase().includes(q));
-      $('#results').innerHTML = rows.map(projectRow).join('') || `<p>${t('empty')}</p>`;
+      const groups=[
+        [t('bookShop'),['booking','commerce','commerceops','scopebuilder']],
+        [t('operationsGroup'),['operations','researchtools','fieldcompanion','dataprep','documents','qualityroom','attendance','archive']],
+        [t('creative'),['morphslides','logostudio','wedding','manga']]
+      ];
+      $('#results').innerHTML = groups.map(([label,types])=>{
+        const group=rows.filter(p=>types.includes(p.visual));
+        return group.length?`<section class="library-group"><h3>${label}</h3>${group.map(projectRow).join('')}</section>`:'';
+      }).join('') + rows.filter(p=>!groups.some(([,types])=>types.includes(p.visual))).map(projectRow).join('') || `<p>${t('empty')}</p>`;
     };
     $('#search').oninput = search;
     search();
@@ -222,6 +221,7 @@ function openPanel(mode) {
   };
   if ($('#motion')) $('#motion').onchange = e => {
     reduced = e.target.checked;
+    scenePaused = reduced;
     save('reduced', String(reduced));
     render();
   };
@@ -239,4 +239,10 @@ if (section === 'nova') window.addEventListener('hashchange', () => {
   window.scrollTo(0, 0);
 });
 render();
-if (read('visited', '') !== 'yes') openPanel('prefs');
+if (!section && read('visited','') !== 'yes') {
+  const welcome=document.createElement('aside');
+  welcome.className='welcome-note';
+  welcome.innerHTML=`<button data-settings>${t('welcome')} · EN / ID / FR / ES</button><button aria-label="${t('close')}">×</button>`;
+  document.body.append(welcome);
+  welcome.addEventListener('click',()=>{welcome.remove();save('visited','yes');});
+}

@@ -1,0 +1,692 @@
+[
+  {
+    "page": 1,
+    "id": "COVER",
+    "title": "Cinematic Project Showcase / Visual Wireframes v2.0",
+    "route": "",
+    "category": "cover",
+    "composition": "",
+    "motion": "",
+    "mobile": ""
+  },
+  {
+    "page": 2,
+    "id": "V00",
+    "title": "Source image and exactness contract",
+    "route": "",
+    "category": "reference",
+    "composition": "",
+    "motion": "",
+    "mobile": ""
+  },
+  {
+    "page": 3,
+    "id": "V01",
+    "title": "Direction approval",
+    "route": "",
+    "category": "overview",
+    "composition": "Hybrid luxury + experimental; near-black and ivory dominate global shell.",
+    "motion": "Cinematic motion is spatial, intentional, scroll-directed, never decorative noise.",
+    "mobile": "Mobile receives independent compositions, not tiny desktop screenshots."
+  },
+  {
+    "page": 4,
+    "id": "V02",
+    "title": "Palette, type, and spacing",
+    "route": "",
+    "category": "overview",
+    "composition": "Global base #08090B / #F8F8F5; accents appear on marble and bespoke demos.",
+    "motion": "Transitions preserve typographic hierarchy; no random letter explosions.",
+    "mobile": "Display scales 40-64px; body 16-18px actual CSS; control targets >=44px."
+  },
+  {
+    "page": 5,
+    "id": "V03",
+    "title": "Site map and content priority",
+    "route": "",
+    "category": "overview",
+    "composition": "Home establishes identity; real work demonstrates engineering; demos prove craft.",
+    "motion": "6 spatial chapters; route changes use restrained transition, never delayed navigation.",
+    "mobile": "All pages direct-linked and keyboard-accessible; no mandatory intro overlay."
+  },
+  {
+    "page": 6,
+    "id": "M00",
+    "title": "Material identity",
+    "route": "",
+    "category": "material",
+    "composition": "Reference screenshot is canonical. White glossy pearl with vivid cyan, magenta and violet liquid ribbons, soft aura, contact shadow and reflection.",
+    "motion": "Surface shader must visually survive spin, shatter and reformation without becoming a blank point cloud.",
+    "mobile": "Use a crisp optimized original asset/material; keep aura readable but not overpowering."
+  },
+  {
+    "page": 7,
+    "id": "M01",
+    "title": "Sphere / primary motion sequence",
+    "route": "",
+    "category": "motion",
+    "composition": "Do not replace marble with monochrome dot cloud; sphere identity is present in rest state.",
+    "motion": "Cursor proximity creates full-volume shatter; moving cursor changes emission direction; on leave spring reform.",
+    "mobile": "Touch drag and swipe impart force; autonomous idle, visible reduced-motion alternative."
+  },
+  {
+    "page": 8,
+    "id": "M02",
+    "title": "Physics contract",
+    "route": "",
+    "category": "motion",
+    "composition": "Three-dimensional particle geometry with individual rest, velocity and rotation data.",
+    "motion": "Stable physics, speed clamp, continuity when pointer crosses sphere; avoid jarring infinite explosions.",
+    "mobile": "Coarse pointer uses touch position/velocity; ambient motion persists without input."
+  },
+  {
+    "page": 9,
+    "id": "M03",
+    "title": "Six-scene camera continuity",
+    "route": "",
+    "category": "motion",
+    "composition": "6 chapters: void → gallery → demo lights → skills lattice → paper → void.",
+    "motion": "Depth, perspective, parallax and object transitions are bound to scroll progress.",
+    "mobile": "No giant sticky pinned sections; reduced-motion uses crossfade/normal scroll."
+  },
+  {
+    "page": 10,
+    "id": "M04",
+    "title": "Input equivalence",
+    "route": "",
+    "category": "motion",
+    "composition": "Touch interactivity is not a hidden degraded replacement for desktop input.",
+    "motion": "Interaction radius, energy and spring damping use normalized device-independent units.",
+    "mobile": "Use touch-action scoped to hero; never block ordinary page scroll."
+  },
+  {
+    "page": 11,
+    "id": "H01",
+    "title": "Home / filmic arrival",
+    "route": "/",
+    "category": "screen",
+    "composition": "Fullscreen dark hero; type-left, marble-right, reflective floor.",
+    "motion": "Automatic direction-aware shatter; subtle autonomous hover; scroll camera pull-through.",
+    "mobile": "Sphere first, clear editorial title, CTA visible; touch shatter; no scroll trapping."
+  },
+  {
+    "page": 12,
+    "id": "H02",
+    "title": "Home / evidence-led real work",
+    "route": "/#work",
+    "category": "screen",
+    "composition": "One featured system as layered artifact and horizontal project index.",
+    "motion": "Depth parallax transitions featured artifact into next panel.",
+    "mobile": "Single editorial featured project with accessible link and four-item browse."
+  },
+  {
+    "page": 13,
+    "id": "H03",
+    "title": "Home / cinematic demo worlds",
+    "route": "/#demos",
+    "category": "screen",
+    "composition": "Asymmetric gallery: no repeated equal-size project cards.",
+    "motion": "Hover brings stage forward; thumbnail motion must represent real functioning demo.",
+    "mobile": "Four readable high-contrast demo entries; tap not hover-only."
+  },
+  {
+    "page": 14,
+    "id": "H04",
+    "title": "Home / visible capabilities",
+    "route": "/#capabilities",
+    "category": "screen",
+    "composition": "Ivory chapter, four curated strengths + lightweight dimensional technical lattice.",
+    "motion": "Lattice responds to scroll and pointer subtly; no forced skills hide/toggle.",
+    "mobile": "All four strengths visible, tap to evidence/complete catalogue."
+  },
+  {
+    "page": 15,
+    "id": "H05",
+    "title": "Home / method and proof",
+    "route": "/#process",
+    "category": "screen",
+    "composition": "Dark method timeline with connected steps and real process evidence.",
+    "motion": "Sequence reveals by scrolling; reduced-motion presents fully readable timeline.",
+    "mobile": "Vertical timeline with connected labels and links."
+  },
+  {
+    "page": 16,
+    "id": "H06",
+    "title": "Home / person and perspective",
+    "route": "/#about",
+    "category": "screen",
+    "composition": "Editorial ivory, human narrative with abstract spatial artwork; do not invent portrait.",
+    "motion": "Camera returns to intimate paper-depth environment.",
+    "mobile": "Narrative first; artwork secondary to legibility."
+  },
+  {
+    "page": 17,
+    "id": "H07",
+    "title": "Home / inquiry + footer",
+    "route": "/#contact",
+    "category": "screen",
+    "composition": "Large closing statement and actual validated contact workflow.",
+    "motion": "Quiet final stage; reversible hover on CTA only.",
+    "mobile": "Form fields remain usable; full copyright; loading/success/error visible."
+  },
+  {
+    "page": 18,
+    "id": "W01",
+    "title": "Real Work / editorial case index",
+    "route": "/work",
+    "category": "screen",
+    "composition": "Four real projects shown once, with context and evidence. Concepts segregated.",
+    "motion": "Depth-led horizontal exhibit, not auto-flipping carousel.",
+    "mobile": "Readable stacked case entries, clear real/concept labels."
+  },
+  {
+    "page": 19,
+    "id": "W02",
+    "title": "GMAHK Galilea / case narrative",
+    "route": "/work/galilea-web-portal",
+    "category": "screen",
+    "composition": "Full case structure and screenshot gallery: challenge, architecture, outcome, tradeoffs.",
+    "motion": "Artifact tilt and restrained scroll reveal; avoid fake testimonials.",
+    "mobile": "Case chapter navigation, real GitHub/live links where verified."
+  },
+  {
+    "page": 20,
+    "id": "W03",
+    "title": "Galilea Digital Archive / case narrative",
+    "route": "/work/galilea-digital-archive",
+    "category": "screen",
+    "composition": "Archive UI artifact with authentic feature evidence and architecture.",
+    "motion": "Document-layer spatial parallax, limited to hero/gallery.",
+    "mobile": "Accessible diagrams, real feature text and source references."
+  },
+  {
+    "page": 21,
+    "id": "W04",
+    "title": "Majelis Galilea / case narrative",
+    "route": "/work/majelis-galilea",
+    "category": "screen",
+    "composition": "Governance workflow exhibit, outcome and constraints rather than fake metrics.",
+    "motion": "Layered paper/dashboard depth, keyboard neutral.",
+    "mobile": "Workflow and evidence sections remain available."
+  },
+  {
+    "page": 22,
+    "id": "W05",
+    "title": "Naomi Rouli / case narrative",
+    "route": "/work/naomi-rouli",
+    "category": "screen",
+    "composition": "Experimental typography with true project-specific assets.",
+    "motion": "Editorial variable-space type and sensitive fade.",
+    "mobile": "No overflow, no fabricated imagery."
+  },
+  {
+    "page": 23,
+    "id": "W06",
+    "title": "Concept / origins / history states",
+    "route": "/work/[slug]",
+    "category": "screen",
+    "composition": "Explicit distinction among concept, historical prototype and real deployments.",
+    "motion": "Archive-card reveal, no misleading product animation.",
+    "mobile": "Honest status labels and links."
+  },
+  {
+    "page": 24,
+    "id": "S01",
+    "title": "Demo Studio / asymmetric cinematic gallery",
+    "route": "/demos",
+    "category": "screen",
+    "composition": "Asymmetric exhibition with 4 flagship entries and immediate paths to all 16 functional demos.",
+    "motion": "Hover/tap previews expose meaningful interaction; no self-running obstructive autoplay.",
+    "mobile": "All demos visible by category browse; clear demo boundaries and safe back to portfolio."
+  },
+  {
+    "page": 25,
+    "id": "F01",
+    "title": "Daun & Bara / working experience",
+    "route": "/demos/daun-bara",
+    "category": "screen",
+    "composition": "Dark copper / ritual editorial. Menu exploration → seating inquiry; validated date/party details.",
+    "motion": "Sculpted dish depth and gentle light sweep; meal picker has visible selected state.",
+    "mobile": "Design-specific mobile composition, accessible controls, complete functional workflow and no hover-only actions."
+  },
+  {
+    "page": 26,
+    "id": "F02",
+    "title": "Lintas Teluk / working experience",
+    "route": "/demos/lintas-teluk",
+    "category": "screen",
+    "composition": "Sea-slate / panoramic route atlas. Destinations → itinerary selections → trip summary.",
+    "motion": "Panoramic topographic parallax and guided itinerary transitions.",
+    "mobile": "No scroll hijack; itinerary may collapse into vertical stepper."
+  },
+  {
+    "page": 27,
+    "id": "F03",
+    "title": "Ruang Rawat / working experience",
+    "route": "/demos/ruang-rawat",
+    "category": "screen",
+    "composition": "Calm sage / rounded care product. Services → provider/time selection → contact summary.",
+    "motion": "Soft spatial transition between services, staff, appointment, and summary.",
+    "mobile": "Design-specific mobile composition, accessible controls, complete functional workflow and no hover-only actions."
+  },
+  {
+    "page": 28,
+    "id": "F04",
+    "title": "NOVA Creative / working experience",
+    "route": "/nova",
+    "category": "screen",
+    "composition": "Electric lilac / brutalist composition. Work / services / journal / careers / inquiry navigation.",
+    "motion": "Bold responsive art motion and direct route transitions; no excessive looping.",
+    "mobile": "Design-specific mobile composition, accessible controls, complete functional workflow and no hover-only actions."
+  },
+  {
+    "page": 29,
+    "id": "D01",
+    "title": "Ruang Temu Booking / working experience",
+    "route": "/demos/ruang-temu-booking-demo",
+    "category": "screen",
+    "composition": "Warm clay / appointment as experience. Choose service/date/time; validation; shareable booking summary.",
+    "motion": "Calendar selection animates availability changes; invalid data shows real feedback.",
+    "mobile": "Design-specific mobile composition, accessible controls, complete functional workflow and no hover-only actions."
+  },
+  {
+    "page": 30,
+    "id": "D02",
+    "title": "SERA Goods / working experience",
+    "route": "/demos/sera-goods-commerce-demo",
+    "category": "screen",
+    "composition": "Soft lavender / boutique product gallery. Filters, variants, stock-aware cart, vouchers, delivery and checkout.",
+    "motion": "Product turn and variant transitions; cart recalculates immediately.",
+    "mobile": "Thumb-friendly variants, cart, delivery and checkout summary."
+  },
+  {
+    "page": 31,
+    "id": "D03",
+    "title": "Operations Decision Workbench / working experience",
+    "route": "/demos/operations-decision-workbench",
+    "category": "screen",
+    "composition": "Midnight analytical / neon mint signal. Editable scoring weights, vendor comparison, true XLSX export.",
+    "motion": "Scores interpolate to exact recalculated values; evidence remains readable.",
+    "mobile": "Score data become vertically stacked comparisons; exports work on supported devices."
+  },
+  {
+    "page": 32,
+    "id": "D04",
+    "title": "Research Practice Toolkit / working experience",
+    "route": "/demos/research-practice-toolkit",
+    "category": "screen",
+    "composition": "Academic parchment / editorial research tools. 8 working tools; method/sample/assumption/citation/revision.",
+    "motion": "Notebook tools unfold inline; actual calculations and exports operate.",
+    "mobile": "Design-specific mobile composition, accessible controls, complete functional workflow and no hover-only actions."
+  },
+  {
+    "page": 33,
+    "id": "D05",
+    "title": "Asset Field Companion / working experience",
+    "route": "/demos/asset-field-companion",
+    "category": "screen",
+    "composition": "Rugged cobalt / map and inspection. Find asset, observe, attach evidence, offline queue, sync states.",
+    "motion": "Map/asset state changes and offline queue visibly persist.",
+    "mobile": "Offline indicator and sync queue visible on touch; input supports camera/file permissions safely."
+  },
+  {
+    "page": 34,
+    "id": "D06",
+    "title": "Research Data Preparation / working experience",
+    "route": "/demos/research-data-preparation-studio",
+    "category": "screen",
+    "composition": "Minimal technical light / precise diff-table. Raw vs prepared, missing/duplicates/reverse scoring, exports.",
+    "motion": "Row-level diff reveal and transformation previews with rollback.",
+    "mobile": "Raw/prepared tables use horizontal scrolling with sticky headings."
+  },
+  {
+    "page": 35,
+    "id": "D07",
+    "title": "Document Automation Studio / working experience",
+    "route": "/demos/document-automation-studio",
+    "category": "screen",
+    "composition": "Editorial paper / A4 artifact studio. Validated fields, draft preview, real PDF and activity archive.",
+    "motion": "Document-page zoom/turn subtly; live A4 preview and real PDF output.",
+    "mobile": "A4 preview zoom and editable form appear as stacked accessible steps."
+  },
+  {
+    "page": 36,
+    "id": "D08",
+    "title": "SERA Operations Console / working experience",
+    "route": "/demos/sera-commerce-operations-console",
+    "category": "screen",
+    "composition": "Deep plum / warehouse control room. Order states, stock movement ledger, returns and daily close.",
+    "motion": "Kanban/order-state moves reflect validated transitions.",
+    "mobile": "Design-specific mobile composition, accessible controls, complete functional workflow and no hover-only actions."
+  },
+  {
+    "page": 37,
+    "id": "D09",
+    "title": "Quality Evidence Room / working experience",
+    "route": "/demos/quality-evidence-room",
+    "category": "screen",
+    "composition": "Swiss monochrome / test instrumentation. Semantic checks, responsive measurement, bounded release report.",
+    "motion": "Metrics animate only from real measured data; limitations clearly labeled.",
+    "mobile": "Design-specific mobile composition, accessible controls, complete functional workflow and no hover-only actions."
+  },
+  {
+    "page": 38,
+    "id": "D10",
+    "title": "Project Brief & Scope Builder / working experience",
+    "route": "/demos/project-brief-scope-builder",
+    "category": "screen",
+    "composition": "Quiet charcoal / cinematic question funnel. Service-specific scope, boundaries and copyable structured brief.",
+    "motion": "Question-by-question spatial slides with durable brief preview.",
+    "mobile": "Design-specific mobile composition, accessible controls, complete functional workflow and no hover-only actions."
+  },
+  {
+    "page": 39,
+    "id": "D11",
+    "title": "Morph Presentation Studio / working experience",
+    "route": "/demos/morph-presentation-studio",
+    "category": "screen",
+    "composition": "Vermilion / theatre for morphing objects. Editable copy, three object-linked scenes, SVG still export.",
+    "motion": "Shared 3D object morphology across scenes with manual timeline scrub.",
+    "mobile": "Manual scene scrub survives on mobile; reduced-motion still displays scene states."
+  },
+  {
+    "page": 40,
+    "id": "D12",
+    "title": "Identity Mark Studio / working experience",
+    "route": "/demos/identity-mark-studio",
+    "category": "screen",
+    "composition": "Swiss typographic / vector geometry. Structure, stroke/weight/contrast, live SVG and export.",
+    "motion": "SVG path updates at drag-time; export faithfully matches visible vector.",
+    "mobile": "Precision sliders and SVG export use large touch targets."
+  },
+  {
+    "page": 41,
+    "id": "D13",
+    "title": "Wedding Invitation Experience / working experience",
+    "route": "/demos/wedding-invitation-demo",
+    "category": "screen",
+    "composition": "Romantic porcelain / rose editorial. Live wedding editor, event details and fictional RSVP state.",
+    "motion": "Very soft editorial reveal; RSVP simulated and labeled fictional.",
+    "mobile": "High-contrast readable RSVP flow and validation; avoid overlapping decorative elements."
+  },
+  {
+    "page": 42,
+    "id": "D14",
+    "title": "KOMA Manga Reader / working experience",
+    "route": "/demos/koma-manga-reader",
+    "category": "screen",
+    "composition": "Ink and paper / tactile spatial book. Mouse-drag / touch-swipe 3D page curl, bookmarks; NO next/prev.",
+    "motion": "REAL 3D PAGE CURL follows edge drag 1:1; drag threshold commits turn, release springs back; NO prev/next.",
+    "mobile": "Edge-swipe page fold with finger; single page by default, bookmark retained; no arrow controls."
+  },
+  {
+    "page": 43,
+    "id": "D15",
+    "title": "Presence Attendance / working experience",
+    "route": "/demos/presence-attendance-demo",
+    "category": "screen",
+    "composition": "Blue chronograph / live workforce rhythm. Check-in/out validation, filters, fictional ledger, CSV.",
+    "motion": "Clock and ledger update from actual mock check-in/out state.",
+    "mobile": "Design-specific mobile composition, accessible controls, complete functional workflow and no hover-only actions."
+  },
+  {
+    "page": 44,
+    "id": "D16",
+    "title": "Archive Browser / working experience",
+    "route": "/demos/archive-browser-demo",
+    "category": "screen",
+    "composition": "Warm archival cabinet / folder architecture. Folder traversal, search, previews and simulated upload queue.",
+    "motion": "Folders open as spatial shelves; accessible tree and search results.",
+    "mobile": "Design-specific mobile composition, accessible controls, complete functional workflow and no hover-only actions."
+  },
+  {
+    "page": 45,
+    "id": "N01",
+    "title": "NOVA / Selected Work",
+    "route": "/nova/work",
+    "category": "screen",
+    "composition": "NOVA experimental identity: Matter into meaning. Bespoke subroute content and hierarchy.",
+    "motion": "Deliberate contemporary art transitions; preserve navigation and working flows.",
+    "mobile": "Strong standalone mobile composition and accessible navigation; direct route links."
+  },
+  {
+    "page": 46,
+    "id": "N02",
+    "title": "NOVA / Services",
+    "route": "/nova/services",
+    "category": "screen",
+    "composition": "NOVA experimental identity: From idea to impact. Bespoke subroute content and hierarchy.",
+    "motion": "Deliberate contemporary art transitions; preserve navigation and working flows.",
+    "mobile": "Strong standalone mobile composition and accessible navigation; direct route links."
+  },
+  {
+    "page": 47,
+    "id": "N03",
+    "title": "NOVA / Journal",
+    "route": "/nova/journal",
+    "category": "screen",
+    "composition": "NOVA experimental identity: Thinking out loud. Bespoke subroute content and hierarchy.",
+    "motion": "Deliberate contemporary art transitions; preserve navigation and working flows.",
+    "mobile": "Strong standalone mobile composition and accessible navigation; direct route links."
+  },
+  {
+    "page": 48,
+    "id": "N04",
+    "title": "NOVA / Careers",
+    "route": "/nova/careers",
+    "category": "screen",
+    "composition": "NOVA experimental identity: Make space for brave ideas. Bespoke subroute content and hierarchy.",
+    "motion": "Deliberate contemporary art transitions; preserve navigation and working flows.",
+    "mobile": "Strong standalone mobile composition and accessible navigation; direct route links."
+  },
+  {
+    "page": 49,
+    "id": "N05",
+    "title": "NOVA / Inquiry",
+    "route": "/nova/inquiry",
+    "category": "screen",
+    "composition": "NOVA experimental identity: Let us build what is next. Bespoke subroute content and hierarchy.",
+    "motion": "Deliberate contemporary art transitions; preserve navigation and working flows.",
+    "mobile": "Strong standalone mobile composition and accessible navigation; direct route links."
+  },
+  {
+    "page": 50,
+    "id": "P01",
+    "title": "Capabilities / complete technical catalogue",
+    "route": "/capabilities",
+    "category": "screen",
+    "composition": "Full searchable filtered skill system; each claim links to genuine evidence.",
+    "motion": "Subtle 3D skill lattice optional; never hide skills to force discovery.",
+    "mobile": "Search and filters reachable by tap and keyboard."
+  },
+  {
+    "page": 51,
+    "id": "P02",
+    "title": "About / engineering narrative",
+    "route": "/about",
+    "category": "screen",
+    "composition": "Professional biography and practice with truthful profile, no fabricated portrait.",
+    "motion": "Quiet editorial spatial transition from work to biography.",
+    "mobile": "Biography and contact links prioritized above decoration."
+  },
+  {
+    "page": 52,
+    "id": "P03",
+    "title": "Contact / validated inquiry",
+    "route": "/contact",
+    "category": "screen",
+    "composition": "Actual functional submission/status, validated fields, privacy disclosure.",
+    "motion": "Focus, validation and submission states; no fake success screen.",
+    "mobile": "Keyboard-visible, screen-reader labeled and touch operable."
+  },
+  {
+    "page": 53,
+    "id": "P04",
+    "title": "Resume / authentic PDF state",
+    "route": "/resume",
+    "category": "screen",
+    "composition": "Real reachable CV file; preview or honest fallback, no dead anchor.",
+    "motion": "Unintrusive microinteractions only.",
+    "mobile": "Download/open works on mobile, PDF available offline if advertised."
+  },
+  {
+    "page": 54,
+    "id": "P05",
+    "title": "Studio bridge / safe legacy routing",
+    "route": "/studio",
+    "category": "screen",
+    "composition": "Old /studio links preserved, redirected or gracefully bridged.",
+    "motion": "No disorienting template switch or entrance wait.",
+    "mobile": "Clear direct destination and back navigation."
+  },
+  {
+    "page": 55,
+    "id": "P06",
+    "title": "404 / contextual recovery",
+    "route": "/404",
+    "category": "screen",
+    "composition": "Dedicated recovery art; links to home, demos and real work.",
+    "motion": "A single subtle atmospheric movement, reduced-motion support.",
+    "mobile": "Helpful links always visible, no hard-to-exit 3D scene."
+  },
+  {
+    "page": 56,
+    "id": "X00",
+    "title": "Navigation / nonblocking first visit",
+    "route": "",
+    "category": "interaction",
+    "composition": "Primary nav visible, unblocked hero; settings accessible through utility control.",
+    "motion": "No surprise intro dialog. Optional scene loading does not block text or navigation.",
+    "mobile": "Standard menu sheet with clear close and focus restoration."
+  },
+  {
+    "page": 57,
+    "id": "X01",
+    "title": "Shared shell / no shared demo template",
+    "route": "",
+    "category": "interaction",
+    "composition": "Global back/reset/help/disclosure elements remain constant, but demo interior layouts remain individually art-directed.",
+    "motion": "Enter/exit transitions short; never delay back action or suppress focus.",
+    "mobile": "Frame chrome adapts to fixed readable controls; each demo has independently composed mobile view."
+  },
+  {
+    "page": 58,
+    "id": "X02",
+    "title": "Loading / empty / error / success",
+    "route": "",
+    "category": "interaction",
+    "composition": "Every demo implements explicit actionable loading, empty, invalid, failure and success states.",
+    "motion": "No perpetual spinners; errors do not disappear without explanation.",
+    "mobile": "Visible messages and focus handling; aria-live announcements for async feedback."
+  },
+  {
+    "page": 59,
+    "id": "X03",
+    "title": "Desktop / tablet / phone rules",
+    "route": "",
+    "category": "responsive",
+    "composition": "Three explicit compositions per screen; tablet interpolates intentionally, never broken desktop.",
+    "motion": "Reduce detail budget, not interaction meaning; honour reduced motion.",
+    "mobile": "Touch targets >=44px, readable type, full behavior parity, intrinsic responsive tables."
+  },
+  {
+    "page": 60,
+    "id": "X04",
+    "title": "Reliability and inclusion matrix",
+    "route": "",
+    "category": "engineering",
+    "composition": "Cinematic scenes coexist with accessible semantic HTML and product behavior.",
+    "motion": "Performance is measured on devices; fallbacks retain identity rather than blank hero.",
+    "mobile": "Low-end profiles and reduced-motion are first-class test cases."
+  },
+  {
+    "page": 61,
+    "id": "G01",
+    "title": "Manga / 4-stage 3D fold",
+    "route": "",
+    "category": "interaction",
+    "composition": "Single spatial page object with continuous folding mesh. Two-page spread desktop, adaptive page on mobile.",
+    "motion": "Grip edge -> deform page with pointer -> live fold/shadow -> commit/cancel on release; never snap before threshold.",
+    "mobile": "Touch edge region, finger follows fold; preserve vertical page scrolling where appropriate."
+  },
+  {
+    "page": 62,
+    "id": "G02",
+    "title": "Manga / drag targets and bookmark",
+    "route": "",
+    "category": "interaction",
+    "composition": "Page edges are draggable; menu and bookmark are separate. No previous/next button affordance.",
+    "motion": "Curved geometry, front/back side, changing light and self-shadow as page folds in 3D.",
+    "mobile": "Minimum responsive edge target and accessible keyboard alternative; reversible navigation and chapter list."
+  },
+  {
+    "page": 63,
+    "id": "G03",
+    "title": "Manga / mobile tactile reading",
+    "route": "",
+    "category": "interaction",
+    "composition": "Page-by-page mobile reading with manga ink identity, bookmark and chapter list above the book.",
+    "motion": "Real time 3D mesh fold with touch sample smoothing and page-turn commit threshold.",
+    "mobile": "Tap controls accessible; swipe page-edge, not gesture-only for keyboard/screen reader users."
+  },
+  {
+    "page": 64,
+    "id": "Q01",
+    "title": "DEMO WORKFLOW CONTRACT / 1 OF 4",
+    "route": "",
+    "category": "flow",
+    "composition": "5 demo products with four required operational steps per experience.",
+    "motion": "Distinct UI presentation; transitions and validation are grounded in real working data/state.",
+    "mobile": "Verify every step on touch input, keyboard and screen reader as applicable."
+  },
+  {
+    "page": 65,
+    "id": "Q02",
+    "title": "DEMO WORKFLOW CONTRACT / 2 OF 4",
+    "route": "",
+    "category": "flow",
+    "composition": "5 demo products with four required operational steps per experience.",
+    "motion": "Distinct UI presentation; transitions and validation are grounded in real working data/state.",
+    "mobile": "Verify every step on touch input, keyboard and screen reader as applicable."
+  },
+  {
+    "page": 66,
+    "id": "Q03",
+    "title": "DEMO WORKFLOW CONTRACT / 3 OF 4",
+    "route": "",
+    "category": "flow",
+    "composition": "5 demo products with four required operational steps per experience.",
+    "motion": "Distinct UI presentation; transitions and validation are grounded in real working data/state.",
+    "mobile": "Verify every step on touch input, keyboard and screen reader as applicable."
+  },
+  {
+    "page": 67,
+    "id": "Q04",
+    "title": "DEMO WORKFLOW CONTRACT / 4 OF 4",
+    "route": "",
+    "category": "flow",
+    "composition": "5 demo products with four required operational steps per experience.",
+    "motion": "Distinct UI presentation; transitions and validation are grounded in real working data/state.",
+    "mobile": "Verify every step on touch input, keyboard and screen reader as applicable."
+  },
+  {
+    "page": 68,
+    "id": "X05",
+    "title": "Visual + engineering sign-off",
+    "route": "",
+    "category": "engineering",
+    "composition": "Design Lock Level 3; deviations must be documented and authorized when material.",
+    "motion": "Capture idle, pointer-shatter, release, scroll scenes and page-curl video evidence.",
+    "mobile": "Capture representative mobile browsers and low-power device checks."
+  },
+  {
+    "page": 69,
+    "id": "Z01",
+    "title": "Signed-off design intent",
+    "route": "",
+    "category": "overview",
+    "composition": "",
+    "motion": "",
+    "mobile": ""
+  }
+]

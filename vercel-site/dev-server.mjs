@@ -7,6 +7,6 @@ const valueAfter = (name, fallback) => {
 };
 const host = valueAfter("--host", "0.0.0.0");
 const port = valueAfter("--port", "3000");
-const child = spawn(process.execPath, ["node_modules/next/dist/bin/next", "dev", "-H", host, "-p", port], { stdio: "inherit" });
+const child = spawn(process.execPath, ["node_modules/next/dist/bin/next", "dev", "--webpack", "-H", host, "-p", port], { stdio: "inherit" });
 child.on("exit", code => process.exit(code ?? 0));
 for (const signal of ["SIGINT", "SIGTERM"]) process.on(signal, () => child.kill(signal));
