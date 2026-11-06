@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @next/next/no-img-element */
 "use client";
 import { type ContentBlock } from "@/types/schema";
@@ -67,7 +66,6 @@ export function VideoBlockEditor({ projectId, block, onChange }: Props) {
               {block.poster?.url ? (
                 <div className="flex items-center gap-4">
                   <div className="w-20 h-12 bg-background rounded overflow-hidden">
-                    {/* eslint-disable-next-line @next/next/no-img-element */}
                     <img src={block.poster.url} alt="Poster" className="w-full h-full object-cover" />
                   </div>
                   <button
