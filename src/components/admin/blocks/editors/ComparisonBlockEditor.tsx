@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @next/next/no-img-element */
 "use client";
-import { type ContentBlock, type MediaAsset } from "@/types/schema";
+import { type ContentBlock } from "@/types/schema";
 import { MediaPicker } from "../../MediaPicker";
 
 export function ComparisonBlockEditor({ projectId, block, onChange }: { projectId: string, block: Extract<ContentBlock, { type: "comparison" }>, onChange: (b: any) => void }) {
