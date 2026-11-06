@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @next/next/no-img-element */
 "use client";
 import { type ContentBlock } from "@/types/schema";
@@ -16,7 +15,6 @@ export function ImageBlockEditor({ projectId, block, onChange }: Props) {
       {block.media.url ? (
         <div className="border border-border rounded p-4 flex gap-6 items-start bg-surface">
           <div className="w-48 h-32 relative bg-background rounded overflow-hidden flex-shrink-0">
-            {/* eslint-disable-next-line @next/next/no-img-element */}
             <img src={block.media.url} alt="Preview" className="w-full h-full object-cover" />
           </div>
           <div className="flex-1 space-y-4">
