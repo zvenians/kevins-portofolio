@@ -16,9 +16,9 @@ async function service(kind, language, saved) {
   const context=dom.getInternalVMContext();
   async function load(name){
     const code=fs.readFileSync(path.join(root,'atelier',name),'utf8');
-    const module=new vm.SourceTextModule(code,{context,identifier:name});
-    await module.link(spec=>load(spec.replace('./','')));
-    return module;
+    const loadedModule=new vm.SourceTextModule(code,{context,identifier:name});
+    await loadedModule.link(spec=>load(spec.replace('./','')));
+    return loadedModule;
   }
   const app=await load('services.js');await app.evaluate();
   return w;
