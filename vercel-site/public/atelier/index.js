@@ -1,6 +1,7 @@
 import { icon } from './icons.js';
 import { locales, names, translate } from './words.js';
 import { mountScene } from './scene.js';
+import { mountChoreography } from './choreography.js';
 import { novaPage } from './nova.js';
 import { caseStudy } from './cases.js';
 import { capabilities } from './capabilities.js';
@@ -62,7 +63,7 @@ function skillsSummary() {
     [t('systems'),'javascript','Majelis Galilea','majelis-galilea']
   ];
   const plates = strengths.map(([name,logo,project,slug],i)=>`<a class="skill-plate" href="/work/${slug}"><span class="skill-mark" style="--phase:-${i}s"><img src="/edisi/logos/${logo}.svg" alt=""></span><strong>${name}</strong><small>${project}</small></a>`);
-  return `<div class="skill-wall">${plates.join('')}</div><a class="more" href="/capabilities">${t('catalog')} ${icon('outward')}</a>`;
+  return `<div class="skill-intro"><div><small>${t('selectedStrengths')}</small><h3><em>${t('craft')}</em><br>${t('verifiable')}</h3><p>${t('craftNote')}</p></div><div class="skill-lattice" aria-hidden="true"></div></div><div class="skill-wall">${plates.join('')}</div><a class="more" href="/capabilities">${t('catalog')} ${icon('outward')}</a>`;
 }
 let step = 0,
   brief = {};
@@ -127,7 +128,9 @@ function render() {
       $('.scene-toggle').focus({preventScroll:true});
     };
   }
-  dispose = mountScene($('.scene canvas'), scenePaused);
+  const disposeScene = mountScene($('.scene canvas'), scenePaused);
+  const disposeCamera = mountChoreography(reduced);
+  dispose = () => { disposeScene?.(); disposeCamera(); };
   document.querySelectorAll('a[href="/edisi/skill.html"]').forEach(a => a.href = '/capabilities');
   if (section === 'demos') {
     document.querySelectorAll('.brands .brand').forEach((a, i) => {

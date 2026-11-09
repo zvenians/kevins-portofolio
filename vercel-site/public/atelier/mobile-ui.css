@@ -194,3 +194,27 @@ html[data-motion="full"] .skill-mark,html[data-motion="full"] .catalogue i { ani
 @media(min-width:801px){.product-gallery .brand-nova {display:grid;grid-template-columns:1.25fr 1fr;align-items:stretch;}.product-gallery .brand-nova div{border-top:none;justify-content:center;}}
 @media(hover:hover){html[data-motion=full] .product-gallery .brand img{transition:transform .45s ease;}html[data-motion=full] .product-gallery .brand:hover img{transform:scale(1.055);}}
 @media(max-width:800px){.product-gallery .brand{aspect-ratio:auto;min-height:330px}.product-gallery .brand figure{min-height:210px}}
+html[data-motion=full] .hero .scene {transform:translate3d(0,var(--camera-y,0px),0) scale(var(--camera-scale,1));transform-origin:50% 52%;}
+html[data-motion=full] :is(#work,#studio) .showpiece .shot,html[data-motion=full] #studio .brand,html[data-motion=full] #skills .skill-plate,html[data-motion=full] .bio-chapter p {transform:translate3d(0,var(--camera-y,0px),0);}
+html[data-motion=full] :is(#work,#studio) .showpiece:nth-child(even) .shot,html[data-motion=full] #studio>div .brand:nth-child(even) {transform:translate3d(0,var(--camera-y-reverse,0px),0);}
+html[data-motion=full] .process li {transform:translate3d(0,var(--camera-y,0px),0);}
+@media(max-width:800px){html[data-motion=full] #studio .brand{transform:translate3d(0,var(--camera-y,0px),0);}}
+#skills .skill-intro {display:grid;grid-template-columns:1fr minmax(180px,35%);gap:24px;align-items:center;min-height:220px;margin:0 0 24px;overflow:hidden;}
+#skills .skill-intro h3 {font-size:clamp(38px,5vw,72px);line-height:.99;margin:8px 0 18px;}
+#skills .skill-intro h3 em {font-weight:400;}
+#skills .skill-intro p {max-width:43ch;font-size:clamp(14px,1.3vw,18px);line-height:1.5;color:#4b4c51;}
+#skills .skill-lattice {width:100%;height:210px;opacity:.7;transform:perspective(460px) rotateX(58deg) rotateZ(-24deg) translate3d(0,var(--camera-y,0px),0);background-image:radial-gradient(circle,#626478 1px,transparent 1.7px);background-size:15px 15px;mask-image:radial-gradient(ellipse at center,#000 12%,transparent 76%);}
+html[data-motion=full] #skills .skill-lattice {animation:lattice-drift 8s ease-in-out infinite alternate;}
+@keyframes lattice-drift {to {background-position:15px -15px;transform:perspective(460px) rotateX(48deg) rotateZ(-18deg) translate3d(0,var(--camera-y,0px),0);}}
+@media(max-width:800px){#skills .skill-intro{grid-template-columns:1fr;min-height:0;margin-bottom:28px}#skills .skill-lattice{height:70px;opacity:.4;margin-top:-8px}#skills .skill-intro h3{font-size:clamp(35px,9vw,58px)}}
+.study[data-case] .case-chapters {display:flex;gap:0;overflow:auto;margin:clamp(28px,4vw,64px) 0 16px;border-block:1px solid currentColor;scrollbar-width:thin;}
+.study[data-case] .case-chapters a {display:flex;align-items:center;flex:none;padding:16px clamp(12px,2vw,28px);min-height:52px;border-right:1px solid currentColor;font:600 12px/1.3 ui-monospace,monospace;letter-spacing:.02em;white-space:nowrap;}
+.study[data-case] .case-chapters a:first-child {padding-left:0;}
+.study[data-case] .case-chapter {display:grid;grid-template-columns:minmax(160px,.42fr) minmax(0,1fr);gap:12px 30px;align-items:start;border-top:1px solid currentColor;padding:clamp(28px,4vw,64px) 0;scroll-margin-top:20px;}
+.study[data-case] .case-chapter small {grid-column:1;grid-row:1/span 2;opacity:.8;}
+.study[data-case] .case-chapter h2 {grid-column:2;font-size:clamp(28px,4vw,56px);font-family:Georgia,serif;font-weight:400;}
+.study[data-case] .case-chapter p {grid-column:2;max-width:62ch;font-size:clamp(17px,1.55vw,22px);line-height:1.52;}
+.study[data-case] .case-evidence ul {grid-column:2;display:flex;flex-wrap:wrap;gap:9px;list-style:none;padding:0;margin:0;}
+.study[data-case] .case-evidence li {padding:9px 12px;border:1px solid currentColor;border-radius:4px;max-width:100%;overflow-wrap:anywhere;}
+.study[data-case] .case-evidence .more {grid-column:2;margin-top:0;justify-self:start;}
+@media(max-width:760px){.study[data-case] .case-chapter{display:block}.study[data-case] .case-chapter small{display:block;margin-bottom:18px}.study[data-case] .case-chapter h2{margin-bottom:18px}.study[data-case] .case-evidence ul{margin-top:20px}}
