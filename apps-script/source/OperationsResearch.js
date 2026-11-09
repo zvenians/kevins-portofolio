@@ -87,13 +87,15 @@ maintenance=function(){
 };
 
 const researchToolLabels=['Method advisor','Sample size','Diagnostics','Results table','Questionnaire','Citation check','Defense practice','Revision tracker'];
-let researchToolIndex=0;
+let researchToolIndex=0,researchFlowStage=0;
 
-function researchToolkitPanel(compact=false){return `<div class="research-toolkit ${compact?'is-compact':''}" id="research-toolkit"><div class="toolkit-heading"><div><span class="eyebrow">OPEN RESEARCH WORKBENCH / LOCAL DEMONSTRATIONS</span><h3>Eight small tools.<br><i>One clearer process.</i></h3></div><p>Use them to think through a method, inspect assumptions, organize evidence, and prepare your own work. Nothing entered here is uploaded.</p></div><div class="toolkit-shell"><div class="toolkit-tabs" role="tablist" aria-label="Research tools">${researchToolLabels.map((label,i)=>`<button role="tab" data-research-tool="${i}" aria-selected="${i===researchToolIndex}"><span>${String(i+1).padStart(2,'0')}</span>${label}</button>`).join('')}</div><div class="toolkit-workspace" id="research-tool-workspace" role="tabpanel"></div></div><p class="disclosure">Learning tools only. They do not replace supervision, disciplinary judgment, or the student’s responsibility for the final research.</p></div>`;}
+const researchStageForTool=[1,1,3,4,2,4,4,4];
+function researchToolkitPanel(compact=false){const stages=['Question','Method','Variables','Assumptions','Interpret and export'];return `<div class="research-toolkit ${compact?'is-compact':''}" id="research-toolkit"><div class="toolkit-heading"><div><span class="eyebrow">OPEN RESEARCH WORKBENCH / LOCAL DEMONSTRATIONS</span><h3>Eight small tools.<br><i>One clearer process.</i></h3></div><p>Start with the research question, inspect assumptions, then explain the output in context. Nothing entered here is uploaded.</p></div><nav class="research-flow" aria-label="Statistical workflow">${stages.map((label,index)=>`<button type="button" data-research-stage="${index}" aria-current="${index===researchFlowStage?'step':'false'}"><span>0${index+1}</span>${label}</button>`).join('')}</nav><div class="toolkit-shell"><div class="toolkit-tabs" role="tablist" aria-label="Research tools">${researchToolLabels.map((label,i)=>`<button role="tab" data-research-tool="${i}" aria-selected="${i===researchToolIndex}"><span>${String(i+1).padStart(2,'0')}</span>${label}</button>`).join('')}</div><div class="toolkit-workspace" id="research-tool-workspace" role="tabpanel"></div></div><p class="disclosure">Learning tools only. They do not replace supervision, disciplinary judgment, or the student’s responsibility for the final research.</p></div>`;}
 
 function bindResearchToolkit(){
   if(!$('#research-toolkit'))return;
-  $$('[data-research-tool]').forEach(button=>button.onclick=()=>{researchToolIndex=Number(button.dataset.researchTool);renderResearchTool();});
+  $$('[data-research-tool]').forEach(button=>button.onclick=()=>{researchToolIndex=Number(button.dataset.researchTool);researchFlowStage=researchStageForTool[researchToolIndex];renderResearchTool();});
+  const stageTools=[0,0,3,2,3];$$('[data-research-stage]').forEach(button=>button.onclick=()=>{researchFlowStage=Number(button.dataset.researchStage);researchToolIndex=stageTools[researchFlowStage];renderResearchTool();$('#research-tool-workspace').scrollIntoView({behavior:'smooth',block:'start'});});
   renderResearchTool();
 }
 
@@ -101,6 +103,7 @@ function toolkitFrame(number,title,intro,form,output='<div id="tool-result" clas
 function renderResearchTool(){
   $('#research-toolkit').dataset.toolWorld=String(researchToolIndex+1).padStart(2,'0');
   $$('[data-research-tool]').forEach(button=>button.setAttribute('aria-selected',Number(button.dataset.researchTool)===researchToolIndex?'true':'false'));
+  $$('[data-research-stage]').forEach(button=>button.setAttribute('aria-current',Number(button.dataset.researchStage)===researchFlowStage?'step':'false'));
   [methodAdvisor,samplePlanner,diagnosticsTool,resultsBuilder,questionnaireBuilder,citationChecker,defensePractice,revisionTracker][researchToolIndex]?.();
 }
 

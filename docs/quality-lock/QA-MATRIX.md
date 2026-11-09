@@ -14,19 +14,19 @@ Date: 2026-11-09
 | DEMO-03 | Home-care selection, cost, review and cancel/change flow passes in EN/ID/FR/ES | PASS |
 | DEMO-04 | NOVA/manga/wedding functional source tests pass; physical touch remains untested | PARTIAL |
 | DEMO-05 | All published demos retain valid slugs, visuals, summaries and public work routing | PASS |
-| DATA-01/02 | Reconciliation, locale parsing, operations and research unit cases pass | PASS |
+| DATA-01/02 | Reconciliation, locale parsing, operations and research unit cases pass; five-step workspace path targets live controls | PASS |
 | DATA-03 | Real XLSX generation/formula tests pass; desktop spreadsheet reopen not performed | PARTIAL |
-| DATA-04 | Responsive CSS present; 390 px visual proof unavailable | NOT TESTED visually |
-| STUDENT-01/02 | Full category → challenge → materials → collaboration → review handoff and validation pass | PASS |
+| DATA-04 | Sticky row/column identifiers and responsive horizontal scrolling are implemented; 390 px visual proof pending | PARTIAL |
+| STUDENT-01/02 | Full four-step need → task → help → review handoff and validation pass | PASS |
 | STUDENT-03/04 | No fake upload/payment/received state; privacy and integrity copy asserted | PASS |
 | A11Y/RESP | Semantic/focus/reduced-motion source audit passes; full manual keyboard and physical device runs pending | PARTIAL |
 | SEO | Route/sitemap/canonical/404 source compiles in public build | PASS (build) |
-| CODE | 88 Vitest, 23 Apps Script, 14 multilingual flagship tests; public Next build exit 0 | PASS |
+| CODE | 89 Vitest, 23 Apps Script, 14 multilingual flagship tests; public Next build exit 0 | PASS |
 | PERF | Adaptive controls and frame instrumentation exist; representative FPS/p95 unmeasured | NOT MEASURED |
 
 Commands executed:
 
 - `node apps-script/build.mjs && node vercel-site/sync.mjs` — exit 0
-- `npm test` — 88/88 Vitest and 23/23 Apps Script tests
+- `npm test` — 89/89 Vitest and 23/23 Apps Script tests
 - `node --experimental-vm-modules --test tests/atelier-flows.cjs` — 14/14
 - `npm --prefix vercel-site run build` — exit 0

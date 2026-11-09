@@ -46,7 +46,7 @@ The local preview was inspected at `http://terminal.local:4173/` before source e
 | NOVA | `/nova` and subroutes | `vercel-site/public/atelier/nova.js` | routes and work filter |
 | Legacy applications | `/work/:slug?launch=1` | `apps-script/source/` plus generated public assets | primary action and honest local state |
 | Data and research tools | workbench routes | `apps-script/source/Lab.js`, `OperationsResearch.js`, `StudioSystems.js`, `data-engine.ts` | calculations, table states, export |
-| Academic support | `/academic-support` | `vercel-site/public/atelier/academic.js` | seven-step ethical consultation handoff |
+| Academic support | `/academic-support` | `vercel-site/public/atelier/academic.js` | four-step ethical consultation handoff |
 
 ## Design read
 
