@@ -5,6 +5,7 @@ import { mountChoreography } from './choreography.js';
 import { novaPage } from './nova.js';
 import { caseStudy } from './cases.js';
 import { capabilities } from './capabilities.js';
+import { academicPage, mountAcademic } from './academic.js';
 const {
   section,
   projects,
@@ -69,6 +70,7 @@ function skillsSummary() {
 }
 let step = 0,
   brief = {};
+let libraryGroup = 'all';
 try {
   brief = JSON.parse(sessionStorage.getItem('atelier.brief') || '{}') || {};
 } catch {}
@@ -106,6 +108,9 @@ function render() {
     case 'resume':
       body = `<section class="block resume-page"><small>KS / ${t('resumeTitle')}</small><h1>${t('resumeTitle')}</h1><p>${t('resumeAvailable')}</p><div class="resume-current"><small>2026 / ${t('currentWork')}</small><h2>PT Wulandari Bangun Laksana Tbk</h2><p>${t('currentPeriod')}</p></div><div class="resume-file"><small>PDF / Kevin Oloan Simatupang</small><a class="solid" href="${publicCV}" target="_blank" rel="noopener">${t('resumeOpen')} ${icon('outward')}</a></div><div class="resume-proof"><h2>${t('work')}</h2>${real.slice(0,4).map(projectRow).join('')}</div><div class="actions"><a class="more" href="/contact">${t('contact')} →</a></div></section>`;
       break;
+    case 'academic-support':
+      body = academicPage(language);
+      break;
     case '404':
       body = `<section class="block missing-page"><small>404 / KS</small><div class="missing-orbit" aria-hidden="true"><i></i><i></i><i></i></div><h1>${t('missingTitle')}</h1><p>${t('missingNote')}</p><div class="actions"><a class="solid" href="/">${t('home')} ${icon('outward')}</a><a href="/work">${t('work')} →</a><a href="/demos">${t('demos')} →</a></div></section>`;
       break;
@@ -138,7 +143,8 @@ function render() {
   }
   const disposeScene = mountScene($('.scene canvas'), scenePaused);
   const disposeCamera = mountChoreography(reduced);
-  dispose = () => { disposeScene?.(); disposeCamera(); };
+  const disposeAcademic = mountAcademic(language,email);
+  dispose = () => { disposeScene?.(); disposeCamera(); disposeAcademic?.(); };
   document.querySelectorAll('a[href="/edisi/skill.html"]').forEach(a => a.href = '/capabilities');
   if (section === 'demos') {
     document.querySelectorAll('.brands .brand').forEach((a, i) => {
@@ -148,16 +154,22 @@ function render() {
       wrap.append(a);
       wrap.insertAdjacentHTML('beforeend', `<details class="brief-case"><summary>${t('view')}</summary><h3>${name}</h3><h4>${t('flow')}</h4><p>${t(kind + 'Flow')}</p><h4>${t('logic')}</h4><p>${t(kind + 'Logic')}</p><a href="${url}">${t('open')} ${icon('outward')}</a></details>`);
     });
+    $('#library').insertAdjacentHTML('beforebegin', `<aside class="academic-entry"><small>STUDENT / SUPPORT</small><h2>${t('academicSupport')}</h2><p>${t('academicLead')}</p><a class="solid" href="/academic-support">${t('academicCta')} ${icon('outward')}</a></aside>`);
   }
   if ($('#capability-map')) capabilities($('#capability-map'), projects, language, esc);
+  if (section === 'capabilities') $('#capability-map').insertAdjacentHTML('afterend', `<aside class="academic-entry"><small>EXCEL / SPSS / DATA / DOCUMENTS</small><h2>${t('academicSupport')}</h2><p>${t('academicLead')}</p><a class="solid" href="/academic-support">${t('academicCta')} ${icon('outward')}</a></aside>`);
+  if (section === 'contact') $('#inquiry').insertAdjacentHTML('afterend', `<aside class="academic-entry"><small>STUDENT / SUPPORT</small><h2>${t('academicSupport')}</h2><p>${t('academicLead')}</p><a class="solid" href="/academic-support">${t('academicCta')} ${icon('outward')}</a></aside>`);
   if ($('#search')) {
+    $('#search').insertAdjacentHTML('beforebegin', `<div class="library-filters" role="group" aria-label="${t('libraryFilter')}">${['all','appsGroup','excelData','researchGroup','creative'].map(key=>`<button data-library="${key}" aria-pressed="${libraryGroup===key}">${t(key)}</button>`).join('')}</div>`);
     const search = () => {
       const q = $('#search').value.toLowerCase();
-      const rows = demos.filter(p => [p.name, ...p.technologies].join(' ').toLowerCase().includes(q));
+      const types={appsGroup:['booking','commerce','commerceops','scopebuilder','fieldcompanion','attendance','archive','qualityroom'],excelData:['operations','dataprep','documents'],researchGroup:['researchtools'],creative:['morphslides','logostudio','wedding','manga']};
+      const rows = demos.filter(p => [p.name, ...p.technologies].join(' ').toLowerCase().includes(q) && (libraryGroup==='all'||types[libraryGroup]?.includes(p.visual)));
       const groups=[
-        [t('bookShop'),['booking','commerce','commerceops','scopebuilder']],
-        [t('operationsGroup'),['operations','researchtools','fieldcompanion','dataprep','documents','qualityroom','attendance','archive']],
-        [t('creative'),['morphslides','logostudio','wedding','manga']]
+        [t('appsGroup'),types.appsGroup],
+        [t('excelData'),types.excelData],
+        [t('researchGroup'),types.researchGroup],
+        [t('creative'),types.creative]
       ];
       $('#results').innerHTML = groups.map(([label,types])=>{
         const group=rows.filter(p=>types.includes(p.visual));
@@ -165,6 +177,11 @@ function render() {
       }).join('') + rows.filter(p=>!groups.some(([,types])=>types.includes(p.visual))).map(projectRow).join('') || `<p>${t('empty')}</p>`;
     };
     $('#search').oninput = search;
+    document.querySelectorAll('[data-library]').forEach(button=>button.onclick=()=>{
+      libraryGroup=button.dataset.library;
+      document.querySelectorAll('[data-library]').forEach(item=>item.setAttribute('aria-pressed',String(item===button)));
+      search();
+    });
     search();
   }
   if ($('#inquiry')) {

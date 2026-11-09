@@ -34,6 +34,12 @@ const picker = document.createElement('select');
 picker.setAttribute('aria-label', 'English / Indonesia / Français / Español');
 locales.forEach((code, i) => picker.add(new Option(names[i], code, false, code === lang)));
 shell.append(picker);
+if (['operations','researchtools','dataprep','documents'].includes(kind)) {
+  const support=document.createElement('a');
+  support.href='/academic-support';
+  support.textContent=lang==='id'?'Bantuan akademik ↗':lang==='fr'?'Soutien académique ↗':lang==='es'?'Apoyo académico ↗':'Academic support ↗';
+  shell.append(support);
+}
 picker.onchange = () => {
   try {
     localStorage.setItem('atelier.language', picker.value);

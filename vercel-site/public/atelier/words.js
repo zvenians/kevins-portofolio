@@ -1,6 +1,13 @@
 export const locales = ['en', 'id', 'fr', 'es'];
 export const names = ['English', 'Indonesia', 'Français', 'Español'];
 const lines = {
+  academicSupport:'Academic support|Bantuan akademik|Soutien académique|Apoyo académico',
+  academicLead:'Tutoring, spreadsheet debugging, statistics guidance and feedback for student-authored work.|Bimbingan belajar, debugging spreadsheet, panduan statistik, dan feedback untuk karya yang ditulis mahasiswa.|Tutorat, débogage de tableurs, conseils statistiques et retours sur le travail rédigé par l’étudiant.|Tutoría, depuración de hojas de cálculo, orientación estadística y comentarios sobre trabajos escritos por el estudiante.',
+  academicCta:'Discuss your assignment|Konsultasikan tugas Anda|Discuter de votre devoir|Consulta tu tarea',
+  libraryFilter:'Filter application library|Filter koleksi aplikasi|Filtrer la bibliothèque d’applications|Filtrar la biblioteca de aplicaciones',
+  appsGroup:'Product applications|Aplikasi produk|Applications produit|Aplicaciones de producto',
+  excelData:'Excel & data workspaces|Workspace Excel & data|Espaces Excel et données|Espacios de Excel y datos',
+  researchGroup:'Research & statistics|Riset & statistik|Recherche et statistiques|Investigación y estadística',
   bookShop:'Booking & commerce|Pemesanan & niaga|Réservation et commerce|Reservas y comercio',
   operationsGroup:'Data & operations|Data & operasional|Données et opérations|Datos y operaciones',
   creative: 'Creative development|Pengembangan kreatif|Développement créatif|Desarrollo creativo',

@@ -31,11 +31,12 @@ for(const language of ['en','id','fr','es']){
       const submit=form=>form.dispatchEvent(new w.Event('submit',{bubbles:true,cancelable:true}));
       assert.equal(doc.documentElement.lang,language);
       if(kind==='resto'){
+        assert.equal(doc.querySelectorAll('.dish-photo').length,6);
         assert.equal(q('aside button.primary').disabled,true);
         q('[data-page="1"]').click();q('[data-dish="6"]').click();
         q('#dish select[name=ice]').value='less';submit(q('#dish'));assert.equal(q('aside button.primary').disabled,false);
-      } else if(kind==='travel'){input(q('[name=guest]'),'Demo 22');input(q('[name=qty]'),'2');input(q('[name=vehicle]'),'2');assert.match(q('aside').textContent,/Bayu Adi/);}
-      else {input(q('[name=address]'),'Demo 22');input(q('[name=qty]'),'4');assert.match(q('aside').textContent,/Demo 22/);}
+      } else if(kind==='travel'){assert.equal(doc.querySelectorAll('.hotel-photo').length,3);input(q('[name=guest]'),'Demo 22');input(q('[name=qty]'),'2');input(q('[name=vehicle]'),'2');assert.match(q('aside').textContent,/Bayu Adi/);}
+      else {assert.equal(doc.querySelectorAll('.choice img').length,3);input(q('[name=address]'),'Demo 22');input(q('[name=qty]'),'4');assert.match(q('aside').textContent,/Demo 22/);}
       assert.equal(q('#order').checkValidity(),true);submit(q('#order'));const reviewTotal=q('.total strong').textContent;
       submit(q('#payment'));assert.equal(q('.total strong').textContent,reviewTotal);
       assert.ok(q('.ref').textContent.startsWith(kind.toUpperCase()));assert.ok(q('[data-print]'));
