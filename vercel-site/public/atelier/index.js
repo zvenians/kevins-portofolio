@@ -41,6 +41,7 @@ const nav = () => categories.map(id => `<a href="/${id}" ${section === id ? 'ari
 const flagship = [['Daun & Bara', 'restaurant', '/edisi/resto.html', 'dining'], ['Lintas Teluk', 'travel', '/edisi/travel.html', 'atlas'], ['Ruang Rawat', 'care', '/edisi/care.html', 'care'], ['NOVA Creative', 'nova', '/nova', 'nova']];
 const real = projects.filter(p => p.status === 'Real Project');
 const demos = projects.filter(p => p.status === 'Interactive Demo');
+const publicCV = '/resume/Kevin-Oloan-Simatupang-CV.pdf';
 function projectRow(p, i) {
   return `<a class="project-row" href="/work/${encodeURIComponent(p.slug)}"><small>${String(i + 1).padStart(2, '0')}</small><span><strong>${esc(p.name)}</strong><small>${(p.technologies || []).slice(0, 3).map(esc).join(' / ')}</small></span><b aria-hidden="true">${icon('outward')}</b></a>`;
 }
@@ -103,7 +104,7 @@ function render() {
       body = inquiry();
       break;
     case 'resume':
-      body = `<section class="block resume-page"><small>KS / ${t('resumeTitle')}</small><h1>${t('resumeTitle')}</h1><p>${t(resume ? 'resumeAvailable' : 'resumeUnavailable')}</p>${resume ? `<div class="resume-file"><small>PDF / ${esc(resume.name)}</small><button class="solid" id="resume-download">${t('resumeOpen')} ${icon('outward')}</button><p role="status" id="resume-status"></p></div>` : ''}<div class="resume-proof"><h2>${t('work')}</h2>${real.slice(0,4).map(projectRow).join('')}</div><div class="actions"><a class="more" href="/contact">${t('contact')} →</a></div></section>`;
+      body = `<section class="block resume-page"><small>KS / ${t('resumeTitle')}</small><h1>${t('resumeTitle')}</h1><p>${t('resumeAvailable')}</p><div class="resume-current"><small>2026 / ${t('currentWork')}</small><h2>PT Wulandari Bangun Laksana Tbk</h2><p>${t('currentPeriod')}</p></div><div class="resume-file"><small>PDF / Kevin Oloan Simatupang</small><a class="solid" href="${publicCV}" target="_blank" rel="noopener">${t('resumeOpen')} ${icon('outward')}</a></div><div class="resume-proof"><h2>${t('work')}</h2>${real.slice(0,4).map(projectRow).join('')}</div><div class="actions"><a class="more" href="/contact">${t('contact')} →</a></div></section>`;
       break;
     case '404':
       body = `<section class="block missing-page"><small>404 / KS</small><div class="missing-orbit" aria-hidden="true"><i></i><i></i><i></i></div><h1>${t('missingTitle')}</h1><p>${t('missingNote')}</p><div class="actions"><a class="solid" href="/">${t('home')} ${icon('outward')}</a><a href="/work">${t('work')} →</a><a href="/demos">${t('demos')} →</a></div></section>`;
@@ -122,7 +123,7 @@ function render() {
   if(!section) $('.closing').insertAdjacentHTML('beforebegin', `<section class="block bio-chapter">${heading('about','05')}<p>${t('profile')}</p><a class="more" href="/about">${t('about')} ${icon('outward')}</a></section>`);
   if(!section) $('.closing').insertAdjacentHTML('beforeend',inquiry());
   if(section==='nova' || section.startsWith('nova/')) $('#bar nav').innerHTML=`<a href="/demos">← ${t('demos')}</a>`;
-  if (section === 'about') $('.bio').insertAdjacentHTML('beforeend', `<div class="bio-facts"><strong>${t('education')}</strong><p>${t('practice')}</p><a href="/resume">CV / PDF ${icon('outward')}</a></div>`);
+  if (section === 'about') $('.bio').insertAdjacentHTML('beforeend', `<div class="bio-facts"><strong>${t('currentWork')}</strong><p>PT Wulandari Bangun Laksana Tbk · ${t('currentPeriod')}</p><strong>${t('education')}</strong><p>${t('practice')}</p><a href="/resume">CV / PDF ${icon('outward')}</a></div>`);
   const scene = $('.scene');
   if (scene) {
     const toggle = document.createElement('button');
@@ -192,30 +193,6 @@ function render() {
       render();
     };
   }
-  if ($('#resume-download')) $('#resume-download').onclick = async () => {
-    const button = $('#resume-download'), status = $('#resume-status');
-    button.disabled = true;
-    status.textContent = t('resumeLoading');
-    try {
-      const response = await fetch('/api/file?type=resume', {cache:'no-store'});
-      if (!response.ok) throw new Error('file unavailable');
-      const file = await response.json();
-      if (file.mime !== 'application/pdf' || typeof file.base64 !== 'string') throw new Error('invalid PDF');
-      const binary = atob(file.base64), bytes = Uint8Array.from(binary, c => c.charCodeAt(0));
-      if (String.fromCharCode(...bytes.slice(0,5)) !== '%PDF-') throw new Error('invalid PDF');
-      const url = URL.createObjectURL(new Blob([bytes], {type:'application/pdf'}));
-      const a = document.createElement('a');
-      a.href = url;
-      a.download = String(file.name || resume.name || 'Kevin-Simatupang-CV.pdf').replace(/[^\w. -]/g,'_');
-      a.click();
-      setTimeout(() => URL.revokeObjectURL(url), 60000);
-      status.textContent = '';
-    } catch {
-      status.textContent = t('resumeError');
-    } finally {
-      button.disabled = false;
-    }
-  };
 }
 const panel = $('#panel');
 function openPanel(mode) {

@@ -75,6 +75,8 @@ const lines = {
   film: 'Iridescent marble|Marmer iridesen|Marbre irisé|Mármol iridiscente',
   archive: 'Open studio archive|Buka arsip studio|Ouvrir les archives|Abrir el archivo',
   resumeTitle: 'Resume & practice|CV dan pengalaman|CV et parcours|CV y trayectoria',
+  currentWork: 'Current work|Pekerjaan saat ini|Poste actuel|Trabajo actual',
+  currentPeriod: 'February 2026 - present|Februari 2026 - sekarang|Février 2026 - aujourd’hui|Febrero de 2026 - actualidad',
   resumeAvailable: 'A published PDF is available. Open it from this page.|PDF yang dipublikasikan tersedia. Buka dari halaman ini.|Un PDF publié est disponible. Ouvrez-le depuis cette page.|Hay un PDF publicado. Ábrelo desde esta página.',
   resumeUnavailable: 'The public PDF is not available yet. Explore the project case studies or contact me for details.|PDF publik belum tersedia. Jelajahi studi kasus proyek atau hubungi saya untuk detailnya.|Le PDF public n’est pas encore disponible. Parcourez les projets ou contactez-moi.|El PDF público aún no está disponible. Explora los proyectos o contáctame.',
   resumeOpen: 'Download published PDF|Unduh PDF publik|Télécharger le PDF|Descargar el PDF',

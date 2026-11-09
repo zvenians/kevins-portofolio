@@ -6,7 +6,9 @@
 .atelier-workbench .commerce-store-head,.atelier-workbench .commerce-cart {background:#e9e3f2;color:#282039;}
 .atelier-workbench .commerce-cart {border-top:4px solid #7a578c;}
 .atelier-workbench .vendor-layout {background:#123330;padding:clamp(14px,3vw,42px);gap:20px;}
-.atelier-workbench .vendor-layout>section {background:#eff5ef;color:#172c2b;padding:18px;}
+.atelier-workbench .vendor-weights {background:#eff5ef;color:#172c2b;padding:clamp(18px,2.5vw,32px);}
+.atelier-workbench .vendor-weights :is(label,output,.eyebrow) {color:#172c2b;}
+.atelier-workbench .vendor-weights input[type=range] {accent-color:#136f68;}
 .atelier-workbench .research-toolkit {background:#f3ecdd;color:#372d23;}
 .atelier-workbench .toolkit-heading h3,.atelier-workbench .archive-app h3 {font-family:Georgia,serif;}
 .atelier-workbench .field-device>aside {background-color:#142e55;background-image:linear-gradient(#b4c3d819 1px,transparent 1px),linear-gradient(90deg,#b4c3d819 1px,transparent 1px);background-size:23px 23px;color:#fff;}
@@ -30,5 +32,7 @@
 .atelier-workbench .attendance-head p,.atelier-workbench .attendance-head .eyebrow {color:#c7dbe6;}
 .atelier-workbench .attendance-seal {background:#b8dfd0;color:#182e38;}
 .atelier-workbench .archive-app>aside {background:#e2d7bd;color:#332b20;}
+.atelier-workbench .demo-style-bar,.atelier-workbench .quick-nav,.atelier-workbench .session-guide {display:none!important;}
+.atelier-workbench .workspace {margin:0;}
 @media(min-width:960px){.atelier-workbench .document-desk{display:grid;grid-template-columns:minmax(240px,.8fr) minmax(320px,1.2fr);align-items:start;}.atelier-workbench .commerce-cart{position:sticky;top:24px;align-self:start;}}
 
