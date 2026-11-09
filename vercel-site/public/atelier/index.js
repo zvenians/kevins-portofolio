@@ -36,7 +36,7 @@ let reduced = read('reduced', String(matchMedia('(prefers-reduced-motion: reduce
 const t = key => translate(key, language);
 const categories = ['work', 'demos', 'capabilities', 'about', 'contact'];
 const nav = () => categories.map(id => `<a href="/${id}" ${section === id ? 'aria-current="page"' : ''}>${t(id)}</a>`).join('');
-const flagship = [['Daun & Bara', 'restaurant', '/edisi/resto.html', '/edisi/hidangan.webp'], ['Lintas Teluk', 'travel', '/edisi/travel.html', '/edisi/pesisir.webp'], ['Ruang Rawat', 'care', '/edisi/care.html', '/edisi/perawat-0.webp'], ['NOVA Creative', 'nova', '/nova', '']];
+const flagship = [['Daun & Bara', 'restaurant', '/edisi/resto.html', 'dining'], ['Lintas Teluk', 'travel', '/edisi/travel.html', 'atlas'], ['Ruang Rawat', 'care', '/edisi/care.html', 'care'], ['NOVA Creative', 'nova', '/nova', 'nova']];
 const real = projects.filter(p => p.status === 'Real Project');
 const demos = projects.filter(p => p.status === 'Interactive Demo');
 function projectRow(p, i) {
@@ -45,13 +45,8 @@ function projectRow(p, i) {
 function picks() {
   return `<div class="showcase">${real.filter(p => ['galilea-web-portal','galilea-digital-archive','majelis-galilea','naomi-rouli'].includes(p.slug)).map((p, i) => `<a class="showpiece" href="/work/${encodeURIComponent(p.slug)}"><div class="shot tone${i}"><img loading="lazy" src="/project-shots/${encodeURIComponent(p.slug)}.webp" alt="${esc(p.name)}"></div><small>0${i + 1} / ${esc(p.technologies.filter(tech=>section || !/apps script|google sheets/i.test(tech)).slice(0, 2).join(' + '))}</small><h3>${esc(p.name)} <span>${icon('outward')}</span></h3></a>`).join('')}</div>`;
 }
-function demoArtifact(kind) {
-  const captions={restaurant:['01 / 02','Daun & Bara','Lemongrass chicken','45.000'],travel:['WITA / 09:00','Terminal Teluk → Teluk House','12 km · 28 min','E-TICKET'],care:['Ruang Rawat','Nadia Laras','Balikpapan','75.000 / h'],nova:['FORMA / RADIO','NOVA®','NV—001','STUDIO']};
-  const [folio,title,detail,value]=captions[kind];
-  return `<figure aria-hidden="true" class="artifact artifact-${kind}"><small>${folio}</small><b>${title}</b><span>${detail}</span><strong>${value}</strong></figure>`;
-}
 function brands() {
-  return `<div class="brands">${flagship.map(([name, kind, url, img], i) => `<a href="${url}" class="brand brand-${kind}">${img ? `<img loading="lazy" src="${img}" alt="">` : '<i class="nova-mark" aria-hidden="true">'+icon('spark')+'</i>'}${demoArtifact(kind)}<div><small>0${i + 1} / ${t(kind)}</small><h3>${name}</h3><span>${t('open')} ${icon('outward')}</span></div></a>`).join('')}</div>`;
+  return `<div class="brands product-gallery">${flagship.map(([name,kind,url,image],i)=>`<a class="brand brand-${kind}" href="${url}"><figure><img loading="lazy" width="940" height="645" src="/demo-shots/showcase/${image}.webp" alt=""></figure><div><small>0${i+1} / ${t(kind)}</small><h3>${name}</h3><span>${t('open')} ${icon('outward')}</span></div></a>`).join('')}</div>`;
 }
 function heading(id, num) {
   return `<div class="heading"><small>${num} / KS</small><h2>${t(id)}</h2></div>`;

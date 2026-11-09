@@ -168,7 +168,7 @@ html[data-motion="full"] .skill-mark,html[data-motion="full"] .catalogue i { ani
 .nova-edition { --ink:#23193f;--rule:#a297ba;background:#ded7fa; }
 .nova-edition .plate-0,.brand-nova {background:#b6a4eb;} .plate-0 svg {color:#35294f;} .plate-0 figcaption {background:#e1d8fd;color:#21142e;}
 @media(min-width:801px) {
- .brands {display:grid;grid-template-columns:1.4fr 1fr 1fr;gap:16px; }
+ .brands {display:grid;grid-template-columns:1.4fr 1fr 1fr;grid-auto-rows:minmax(320px,auto);gap:16px; }
  .brands>:first-child {grid-row:span 2;}
  .brands>:last-child {grid-column:span 2;}
  .brands .brand {height:100%;min-height:210px;}
@@ -183,3 +183,14 @@ html[data-motion="full"] .skill-mark,html[data-motion="full"] .catalogue i { ani
  .hero h1 {font-size:clamp(42px,11.5vw,80px);}
 }
 
+.product-gallery .brand {display:flex;flex-direction:column;justify-content:flex-end;align-items:stretch;background:var(--gallery-ink,#211915);color:#fff;min-width:0;}
+.product-gallery .brand:after {display:none;}
+.product-gallery .brand-travel {--gallery-ink:#122b3f;}
+.product-gallery .brand-care {--gallery-ink:#20392f;}
+.product-gallery .brand-nova {--gallery-ink:#302344;}
+.product-gallery .brand figure {position:relative;flex:1;min-height:0;width:100%;margin:0;overflow:hidden;perspective:850px;}
+.product-gallery .brand img {display:block;position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:top left;transform:scale(1.015);}
+.product-gallery .brand div {position:relative;z-index:1;padding:14px clamp(16px,2.3vw,36px) 22px;border-top:1px solid #ffffff32;background:var(--gallery-ink,#211915);}
+@media(min-width:801px){.product-gallery .brand-nova {display:grid;grid-template-columns:1.25fr 1fr;align-items:stretch;}.product-gallery .brand-nova div{border-top:none;justify-content:center;}}
+@media(hover:hover){html[data-motion=full] .product-gallery .brand img{transition:transform .45s ease;}html[data-motion=full] .product-gallery .brand:hover img{transform:scale(1.055);}}
+@media(max-width:800px){.product-gallery .brand{aspect-ratio:auto;min-height:330px}.product-gallery .brand figure{min-height:210px}}
