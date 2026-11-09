@@ -174,10 +174,7 @@ function discovery(form) {
   else form.prepend(bar);
   const rows = [...form.querySelectorAll(dining ? '.dish' : '.choice')];
   rows.forEach((row, i) => {
-    if (dining) {
-      const id = Number(row.querySelector('[data-dish]').dataset.dish);
-      row.insertAdjacentHTML('afterbegin', `<small>${t('estimateTime')} · ${id > 5 ? 4 : id === 0 ? 18 : 12} ${t('minutes')}</small>`);
-    } else {
+    if (!dining) {
       const details = document.createElement('div');
       details.className = 'profile-detail';
       const features = travel ? [t('breakfast'), t('wifi'), t('access')] : [t('licensed'), t('area') + ' · Balikpapan', t('language') + ' · ' + ['Indonesia / English', 'Indonesia', 'Indonesia / English'][i]];

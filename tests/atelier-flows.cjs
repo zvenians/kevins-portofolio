@@ -32,6 +32,7 @@ for(const language of ['en','id','fr','es']){
       assert.equal(doc.documentElement.lang,language);
       if(kind==='resto'){
         assert.equal(doc.querySelectorAll('.dish-photo').length,6);
+        assert.ok([...doc.querySelectorAll('.dish')].every(card=>card.querySelectorAll('small').length===1));
         assert.equal(q('aside button.primary').disabled,true);
         q('[data-page="1"]').click();q('[data-dish="6"]').click();
         q('#dish select[name=ice]').value='less';submit(q('#dish'));assert.equal(q('aside button.primary').disabled,false);
