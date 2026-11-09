@@ -105,7 +105,7 @@ function render() {
       body = novaPage(language);
       break;
     default:
-      body = section.startsWith('work/') ? caseStudy(projects.find(p => p.slug === section.slice(5)), language, esc, t) : home();
+      body = section.startsWith('nova/') ? novaPage(language) : section.startsWith('work/') ? caseStudy(projects.find(p => p.slug === section.slice(5)), language, esc, t) : home();
   }
   $('#content').innerHTML = categories.includes(section) ? `<section class="block sub"><small>Kevin Simatupang / ${t('edition')}</small><h1>${t(section)}</h1>${body}</section>` : body;
   if (!section || section === 'about') {
@@ -114,7 +114,7 @@ function render() {
   }
   if(!section) $('.closing').insertAdjacentHTML('beforebegin', `<section class="block bio-chapter">${heading('about','05')}<p>${t('profile')}</p><a class="more" href="/about">${t('about')} ${icon('outward')}</a></section>`);
   if(!section) $('.closing').insertAdjacentHTML('beforeend',inquiry());
-  if(section==='nova') $('#bar nav').innerHTML=`<a href="/demos">← ${t('demos')}</a>`;
+  if(section==='nova' || section.startsWith('nova/')) $('#bar nav').innerHTML=`<a href="/demos">← ${t('demos')}</a>`;
   if (section === 'about') $('.bio').insertAdjacentHTML('beforeend', `<div class="bio-facts"><strong>${t('education')}</strong><p>${t('practice')}</p><a href="/resume">CV / PDF ${icon('outward')}</a></div>`);
   const scene = $('.scene');
   if (scene) {

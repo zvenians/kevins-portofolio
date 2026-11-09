@@ -8,7 +8,7 @@ export const runtime = 'nodejs';
 export async function GET(request: NextRequest, context: { params: Promise<{ path?: string[] }> }) {
   const { path = [] } = await context.params;
   const section = path.join('/');
-  if (['', 'work', 'demos', 'capabilities', 'about', 'contact', 'nova'].includes(section) && !['lab','template','legacy'].some(key=>request.nextUrl.searchParams.has(key))) {
+  if ((['', 'work', 'demos', 'capabilities', 'about', 'contact', 'nova'].includes(section) || (path[0] === 'nova' && path.length >= 2 && path.length <= 3)) && !['lab','template','legacy'].some(key=>request.nextUrl.searchParams.has(key))) {
     const content = await publicContent();
     return new Response(renderIndex(section, content), { headers: { 'content-type': 'text/html; charset=utf-8' } });
   }

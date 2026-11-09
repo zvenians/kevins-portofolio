@@ -218,3 +218,18 @@ html[data-motion=full] #skills .skill-lattice {animation:lattice-drift 8s ease-i
 .study[data-case] .case-evidence li {padding:9px 12px;border:1px solid currentColor;border-radius:4px;max-width:100%;overflow-wrap:anywhere;}
 .study[data-case] .case-evidence .more {grid-column:2;margin-top:0;justify-self:start;}
 @media(max-width:760px){.study[data-case] .case-chapter{display:block}.study[data-case] .case-chapter small{display:block;margin-bottom:18px}.study[data-case] .case-chapter h2{margin-bottom:18px}.study[data-case] .case-evidence ul{margin-top:20px}}
+.nova-edition .nova-title {padding:clamp(55px,8vw,130px) 0 clamp(28px,5vw,75px);border-bottom:1px solid var(--rule);}
+.nova-edition .nova-title h1 {font-size:clamp(54px,8.3vw,124px);line-height:.91;max-width:12ch;margin:16px 0 22px;letter-spacing:-.07em;}
+.nova-edition .nova-title p {font-size:clamp(18px,1.7vw,24px);max-width:38ch;line-height:1.42;}
+.nova-edition .nova-filter {display:flex;align-items:center;gap:16px;margin:24px 0;max-width:390px;font-size:14px;}
+.nova-edition .nova-filter select {flex:1;min-height:44px;}
+.nova-edition .nova-work-grid {display:grid;grid-template-columns:1.2fr .8fr;gap:clamp(16px,2vw,32px);}
+.nova-edition .nova-work-grid article {min-width:0;padding:0 0 26px;border:0;border-bottom:1px solid var(--rule);}
+.nova-edition .nova-work-grid article:first-child {grid-row:span 2;}
+.nova-edition .nova-work-grid article[hidden] {display:none;}
+.nova-edition .nova-work-grid .nova-plate {height:auto;aspect-ratio:1.55;margin:0 0 18px;transition:transform .4s ease;}
+.nova-edition .nova-work-grid article:first-child .nova-plate {aspect-ratio:.95;}
+.nova-edition .nova-work-grid article:hover .nova-plate {transform:perspective(900px) rotateY(-3deg) translateY(-3px);}
+.nova-edition .nova-work-grid h2 {font-size:clamp(25px,3vw,46px);margin:4px 0 0;}
+.nova-edition .nova-work-grid h2 a {display:flex;justify-content:space-between;}
+@media(max-width:760px){.nova-edition .nova-title{padding:38px 0 26px}.nova-edition .nova-title h1{font-size:clamp(48px,13vw,72px)}.nova-edition .nova-work-grid{grid-template-columns:1fr}.nova-edition .nova-work-grid article:first-child{grid-row:auto}.nova-edition .nova-work-grid article:first-child .nova-plate{aspect-ratio:1.55}}
