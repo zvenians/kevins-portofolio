@@ -73,6 +73,15 @@ const lines = {
   mailhint: 'Review the brief and send it from your email app.|Tinjau brief lalu kirim melalui aplikasi email Anda.|Vérifiez le brief puis envoyez-le depuis votre messagerie.|Revisa el resumen y envíalo desde tu aplicación de correo.',
   catalog: 'Technology catalogue|Katalog teknologi|Catalogue technique|Catálogo tecnológico',
   film: 'Iridescent marble|Marmer iridesen|Marbre irisé|Mármol iridiscente',
-  archive: 'Open studio archive|Buka arsip studio|Ouvrir les archives|Abrir el archivo'
+  archive: 'Open studio archive|Buka arsip studio|Ouvrir les archives|Abrir el archivo',
+  resumeTitle: 'Resume & practice|CV dan pengalaman|CV et parcours|CV y trayectoria',
+  resumeAvailable: 'A published PDF is available. Open it from this page.|PDF yang dipublikasikan tersedia. Buka dari halaman ini.|Un PDF publié est disponible. Ouvrez-le depuis cette page.|Hay un PDF publicado. Ábrelo desde esta página.',
+  resumeUnavailable: 'The public PDF is not available yet. Explore the project case studies or contact me for details.|PDF publik belum tersedia. Jelajahi studi kasus proyek atau hubungi saya untuk detailnya.|Le PDF public n’est pas encore disponible. Parcourez les projets ou contactez-moi.|El PDF público aún no está disponible. Explora los proyectos o contáctame.',
+  resumeOpen: 'Download published PDF|Unduh PDF publik|Télécharger le PDF|Descargar el PDF',
+  resumeLoading: 'Preparing PDF…|Menyiapkan PDF…|Préparation du PDF…|Preparando PDF…',
+  resumeError: 'The PDF could not be loaded. Please try again later.|PDF belum dapat dimuat. Silakan coba lagi nanti.|Le PDF ne peut pas être chargé. Réessayez plus tard.|No se pudo cargar el PDF. Inténtalo más tarde.',
+  missingTitle: 'The page took another route.|Halaman ini mengambil jalan lain.|Cette page a pris un autre chemin.|Esta página tomó otro camino.',
+  missingNote: 'The address may have changed. Return to the projects or explore the demo studio.|Alamatnya mungkin berubah. Kembali ke proyek atau jelajahi studio demo.|L’adresse a peut-être changé. Retrouvez les projets ou le studio démo.|La dirección puede haber cambiado. Vuelve a los proyectos o al estudio de demos.',
+  home: 'Home|Beranda|Accueil|Inicio'
 };
 export const translate = (key, language) => lines[key]?.split('|')[locales.indexOf(language)] ?? key;

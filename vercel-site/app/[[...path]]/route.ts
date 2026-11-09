@@ -8,19 +8,20 @@ export const runtime = 'nodejs';
 export async function GET(request: NextRequest, context: { params: Promise<{ path?: string[] }> }) {
   const { path = [] } = await context.params;
   const section = path.join('/');
-  if ((['', 'work', 'demos', 'capabilities', 'about', 'contact', 'nova'].includes(section) || (path[0] === 'nova' && path.length >= 2 && path.length <= 3)) && !['lab','template','legacy'].some(key=>request.nextUrl.searchParams.has(key))) {
+  if ((['', 'work', 'demos', 'capabilities', 'about', 'contact', 'nova', 'resume', '404'].includes(section) || (path[0] === 'nova' && path.length >= 2 && path.length <= 3)) && !['lab','template','legacy'].some(key=>request.nextUrl.searchParams.has(key))) {
     const content = await publicContent();
     return new Response(renderIndex(section, content), { headers: { 'content-type': 'text/html; charset=utf-8' } });
   }
   if (path.length === 2 && path[0] === 'projects') return new Response(null, { status: 308, headers: { location: `/work/${encodeURIComponent(path[1])}` } });
+  if (section === 'studio') return new Response(null, { status: 308, headers: { location: '/demos#library' } });
   const studioPage = path.length === 1 && path[0] === 'studio';
-  if (!studioPage && path.length && (path.length !== 2 || path[0] !== 'work')) return new Response('Not found', { status: 404 });
+  if (!studioPage && path.length && (path.length !== 2 || path[0] !== 'work')) return new Response(renderIndex('404', await publicContent()), { status: 404, headers: { 'content-type': 'text/html; charset=utf-8' } });
   const content = await publicContent();
   const project = !studioPage && path.length ? content.projects.find(p => p.slug === path[1]) : null;
   if (project && !request.nextUrl.searchParams.has('launch') && !request.nextUrl.searchParams.has('template')) {
     return new Response(renderIndex(section, content), { headers: { 'content-type': 'text/html; charset=utf-8' } });
   }
-  if (!studioPage && path.length && !project) return new Response('Exhibit not found', { status: 404 });
+  if (!studioPage && path.length && !project) return new Response(renderIndex('404', content), { status: 404, headers: { 'content-type': 'text/html; charset=utf-8' } });
   const title = studioPage ? 'Demo Studio — Kevin Simatupang' : project ? `${project.name} — Kevin Simatupang` : 'Kevin Simatupang — The Living Index';
   const description = studioPage ? 'Explore interactive restaurant, travel and home care websites alongside data tools, identity studies and presentations.' : project?.summary || 'Kevin Simatupang is a full-stack developer in Balikpapan working across web systems, operational data, workflow automation, and interface design.';
   const canonical = new URL(request.nextUrl.pathname, 'https://portfolio-kevins.vercel.app').toString();

@@ -233,3 +233,21 @@ html[data-motion=full] #skills .skill-lattice {animation:lattice-drift 8s ease-i
 .nova-edition .nova-work-grid h2 {font-size:clamp(25px,3vw,46px);margin:4px 0 0;}
 .nova-edition .nova-work-grid h2 a {display:flex;justify-content:space-between;}
 @media(max-width:760px){.nova-edition .nova-title{padding:38px 0 26px}.nova-edition .nova-title h1{font-size:clamp(48px,13vw,72px)}.nova-edition .nova-work-grid{grid-template-columns:1fr}.nova-edition .nova-work-grid article:first-child{grid-row:auto}.nova-edition .nova-work-grid article:first-child .nova-plate{aspect-ratio:1.55}}
+.resume-page,.missing-page {min-height:calc(100svh - 172px);display:flex;flex-direction:column;justify-content:center;align-items:flex-start;position:relative;overflow:hidden;}
+.resume-page h1,.missing-page h1 {max-width:11ch;margin:20px 0;font-size:clamp(48px,8vw,112px);line-height:.94;}
+.resume-page>p,.missing-page>p {max-width:45ch;font-size:clamp(18px,2vw,26px);line-height:1.45;color:var(--muted);}
+.resume-file {display:flex;align-items:center;flex-wrap:wrap;gap:18px;margin:36px 0;padding:22px;border:1px solid var(--line);width:min(100%,620px);}
+.resume-file small {flex:1;overflow-wrap:anywhere;}
+.resume-file p {width:100%;min-height:1.2em;}
+.resume-file button:disabled {opacity:.65;cursor:progress;}
+.resume-proof {width:min(100%,850px);margin-top:clamp(36px,5vw,72px);}
+.resume-proof h2 {font:italic clamp(26px,3vw,44px)/1.2 Georgia,serif;margin-bottom:8px;}
+.resume-proof .project-row {gap:18px;}
+.missing-page {background:radial-gradient(circle at 77% 48%,#302742,#101114 38%,#08090b 75%);}
+.missing-orbit {position:absolute;right:7%;top:23%;width:clamp(140px,28vw,390px);aspect-ratio:1;pointer-events:none;opacity:.6;}
+.missing-orbit i {position:absolute;inset:10%;border:1px solid #cbb5ef;border-radius:50%;transform:rotateX(64deg) rotateZ(28deg);}
+.missing-orbit i:nth-child(2){inset:24%;border-color:#8be9e7;transform:rotateY(68deg) rotateZ(-22deg)}
+.missing-orbit i:nth-child(3){inset:37%;border-color:#f3b7cf;transform:rotateX(38deg) rotateY(32deg)}
+html[data-motion=full] .missing-orbit {animation:missing-orbit 14s ease-in-out infinite alternate;}
+@keyframes missing-orbit {to {transform:rotate(17deg) translateY(-9px)}}
+@media(max-width:760px){.resume-page,.missing-page{min-height:calc(100svh - 110px);justify-content:flex-end;padding-bottom:70px}.missing-orbit{top:10%;right:12%;width:50vw}.resume-file{align-items:stretch}.resume-file button{width:100%}}

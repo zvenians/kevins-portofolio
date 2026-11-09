@@ -2,7 +2,7 @@ import { escapeHtml, type Content } from './content';
 
 const pages: Record<string,string> = {
   '': 'Creative Technologist', work:'Selected Work', demos:'Demo Studio', about:'About',
-  capabilities:'Capabilities', contact:'Start a Project', nova:'NOVA Creative'
+  capabilities:'Capabilities', contact:'Start a Project', nova:'NOVA Creative', resume:'Resume', '404':'Page not found'
 };
 
 export function renderIndex(section: string, content: Content) {
@@ -11,7 +11,7 @@ export function renderIndex(section: string, content: Content) {
   const summary=project?.summary || 'Explore digital products, community systems and interactive software by Kevin Simatupang.';
   const canonical='https://portfolio-kevins.vercel.app/'+section.split('/').map(encodeURIComponent).join('/');
   const data=JSON.stringify({
-    section,projects:content.projects.map(({repositoryUrl:_private,...rest})=>rest),
+    section,projects:content.projects.map(({repositoryUrl:_private,...rest})=>rest),resume:content.resume ? {name:content.resume.name,uploadedAt:content.resume.uploadedAt} : null,
     email:content.settings.email || 'simatupangkevin9@gmail.com'
   }).replace(/</g,'\\u003c');
   const list=content.projects.filter(p=>section==='demos'?p.status==='Interactive Demo':p.status==='Real Project');

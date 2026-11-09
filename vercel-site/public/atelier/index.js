@@ -8,6 +8,7 @@ import { capabilities } from './capabilities.js';
 const {
   section,
   projects,
+  resume,
   email
 } = JSON.parse(document.querySelector('#payload').textContent);
 const $ = selector => document.querySelector(selector);
@@ -90,7 +91,7 @@ function render() {
       body = picks() + projects.filter(p => ['Concept','Historical Prototype'].includes(p.status)).map(projectRow).join('');
       break;
     case 'demos':
-      body = brands() + heading('legacy', '02') + `<input id="search" type="search" aria-label="${t('search')}" placeholder="${t('search')}"><div id="results"></div><a class="more" href="/studio">${t('archive')} →</a>`;
+      body = brands() + `<div id="library">${heading('legacy', '02')}<input id="search" type="search" aria-label="${t('search')}" placeholder="${t('search')}"><div id="results"></div></div>`;
       break;
     case 'about':
       body = `<div class="bio"><p>${t('profile')}</p><small>${t('location')}</small><div class="actions"><a class="solid" href="/work">${t('explore')} ${icon('outward')}</a></div></div>`;
@@ -100,6 +101,12 @@ function render() {
       break;
     case 'contact':
       body = inquiry();
+      break;
+    case 'resume':
+      body = `<section class="block resume-page"><small>KS / ${t('resumeTitle')}</small><h1>${t('resumeTitle')}</h1><p>${t(resume ? 'resumeAvailable' : 'resumeUnavailable')}</p>${resume ? `<div class="resume-file"><small>PDF / ${esc(resume.name)}</small><button class="solid" id="resume-download">${t('resumeOpen')} ${icon('outward')}</button><p role="status" id="resume-status"></p></div>` : ''}<div class="resume-proof"><h2>${t('work')}</h2>${real.slice(0,4).map(projectRow).join('')}</div><div class="actions"><a class="more" href="/contact">${t('contact')} →</a></div></section>`;
+      break;
+    case '404':
+      body = `<section class="block missing-page"><small>404 / KS</small><div class="missing-orbit" aria-hidden="true"><i></i><i></i><i></i></div><h1>${t('missingTitle')}</h1><p>${t('missingNote')}</p><div class="actions"><a class="solid" href="/">${t('home')} ${icon('outward')}</a><a href="/work">${t('work')} →</a><a href="/demos">${t('demos')} →</a></div></section>`;
       break;
     case 'nova':
       body = novaPage(language);
@@ -185,6 +192,30 @@ function render() {
       render();
     };
   }
+  if ($('#resume-download')) $('#resume-download').onclick = async () => {
+    const button = $('#resume-download'), status = $('#resume-status');
+    button.disabled = true;
+    status.textContent = t('resumeLoading');
+    try {
+      const response = await fetch('/api/file?type=resume', {cache:'no-store'});
+      if (!response.ok) throw new Error('file unavailable');
+      const file = await response.json();
+      if (file.mime !== 'application/pdf' || typeof file.base64 !== 'string') throw new Error('invalid PDF');
+      const binary = atob(file.base64), bytes = Uint8Array.from(binary, c => c.charCodeAt(0));
+      if (String.fromCharCode(...bytes.slice(0,5)) !== '%PDF-') throw new Error('invalid PDF');
+      const url = URL.createObjectURL(new Blob([bytes], {type:'application/pdf'}));
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = String(file.name || resume.name || 'Kevin-Simatupang-CV.pdf').replace(/[^\w. -]/g,'_');
+      a.click();
+      setTimeout(() => URL.revokeObjectURL(url), 60000);
+      status.textContent = '';
+    } catch {
+      status.textContent = t('resumeError');
+    } finally {
+      button.disabled = false;
+    }
+  };
 }
 const panel = $('#panel');
 function openPanel(mode) {
