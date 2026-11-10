@@ -1,7 +1,4 @@
-# rules.md
-
-# personal digital experience
-## engineering and design rules
+# Engineering and design rules
 
 Dokumen ini adalah aturan utama untuk seluruh development website.
 
@@ -87,7 +84,7 @@ dilarang menjadikan TSX/JSX sebagai primary production content database.
 
 contoh yang dilarang:
 
-```ts id="u8q4nr"
+```ts
 const projects = [
   {
     title: "project one"
@@ -123,7 +120,7 @@ kecuali project memperkenalkan capability baru yang memang belum didukung schema
 
 jangan membuat:
 
-```text id="j8i8a4"
+```text
 GmahkProject.tsx
 PortfolioProject.tsx
 ChurchProject.tsx
@@ -139,7 +136,7 @@ project differentiation harus berasal dari content.
 
 dilarang:
 
-```ts id="zwdrw2"
+```ts
 if (slug === "gmahk-digital-archive") {
   ...
 }
@@ -147,7 +144,7 @@ if (slug === "gmahk-digital-archive") {
 
 atau:
 
-```ts id="m0l2pv"
+```ts
 switch (slug) {
   ...
 }
@@ -183,7 +180,7 @@ jangan mengganti atau memperkenalkan backend baru tanpa alasan kuat.
 
 default architecture:
 
-```text id="rgn1j8"
+```text
 Firebase Hosting
 Firebase Authentication
 Firestore
@@ -203,7 +200,7 @@ gunakan data access layer.
 
 correct:
 
-```text id="5c2k3v"
+```text
 component
 ↓
 data service
@@ -213,7 +210,7 @@ Firestore
 
 incorrect:
 
-```text id="g0n4gx"
+```text
 component
 ↓
 Firestore
@@ -227,7 +224,7 @@ jangan melakukan duplicate reads untuk data yang sama.
 
 hindari:
 
-```text id="rz5m1k"
+```text
 Hero → projects query
 Projects → projects query
 Footer → projects query
@@ -247,7 +244,7 @@ jangan mengandalkan frontend authorization.
 
 frontend:
 
-```text id="zyijfn"
+```text
 "admin"
 ```
 
@@ -275,14 +272,14 @@ gunakan Firebase Storage.
 
 Firestore menyimpan:
 
-```text id="3qfr9x"
+```text
 metadata
 reference
 ```
 
 Storage menyimpan:
 
-```text id="wip1cp"
+```text
 actual file
 ```
 
@@ -364,7 +361,7 @@ semua component harus dimulai dari mobile.
 
 workflow:
 
-```text id="1d5vu1"
+```text
 mobile
 ↓
 tablet
@@ -376,7 +373,7 @@ wide desktop
 
 bukan:
 
-```text id="oqpnd2"
+```text
 desktop
 ↓
 shrink until it fits mobile
@@ -402,7 +399,7 @@ setiap major UI change harus diuji terhadap:
 
 jangan membuat functionality penting bergantung pada:
 
-```text id="1m1yjq"
+```text
 hover
 ```
 
@@ -431,7 +428,7 @@ minimum:
 
 semua major motion system harus menghormati:
 
-```text id="0k5s3g"
+```text
 prefers-reduced-motion
 ```
 
@@ -456,7 +453,7 @@ reason yang valid:
 
 jangan menggunakan:
 
-```text id="j4gqgk"
+```text
 "use client"
 ```
 
@@ -470,7 +467,7 @@ buat client boundaries sekecil mungkin.
 
 contoh:
 
-```text id="k9l9je"
+```text
 Page
 ├── Server
 ├── Server
@@ -479,7 +476,7 @@ Page
 
 lebih disukai daripada:
 
-```text id="6ye9g7"
+```text
 EntirePageClientComponent
 ```
 
@@ -491,7 +488,7 @@ component harus reusable.
 
 hindari component seperti:
 
-```text id="2ujm5l"
+```text
 KevinHeroFinalFinal2
 ```
 
@@ -499,7 +496,7 @@ component harus dinamai berdasarkan responsibility.
 
 contoh:
 
-```text id="c1d2cu"
+```text
 Hero
 ProjectCard
 ProjectGallery
@@ -540,7 +537,7 @@ gunakan design tokens sebanyak mungkin.
 
 hindari:
 
-```css id="7gb5kg"
+```css
 margin-left: 13px;
 top: 27px;
 width: 843px;
@@ -588,7 +585,7 @@ gunakan card hanya jika membantu grouping dan hierarchy.
 
 hindari default:
 
-```text id="k9u2t2"
+```text
 6 skill cards
 6 project cards
 3 testimonials
@@ -606,7 +603,7 @@ content structure harus mengikuti product narrative.
 
 project detail harus menjawab secara natural:
 
-```text id="pr7btp"
+```text
 what was this?
 why did it exist?
 what problem did it solve?
@@ -628,7 +625,7 @@ admin panel harus mengoptimalkan content entry.
 
 user harus dapat:
 
-```text id="l4nr3r"
+```text
 Add Project
 ↓
 Fill information
@@ -652,7 +649,7 @@ admin UI tidak perlu memiliki visual extravagance seperti public website.
 
 prioritas admin:
 
-```text id="v5peki"
+```text
 clarity
 speed
 reliability
@@ -660,7 +657,7 @@ reliability
 
 public website:
 
-```text id="w4quqf"
+```text
 emotion
 storytelling
 immersion
@@ -678,7 +675,7 @@ jangan otomatis publish content hanya karena save berhasil.
 
 recommended lifecycle:
 
-```text id="b9kpnv"
+```text
 draft
 ↓
 preview
@@ -719,7 +716,7 @@ jangan hardcode project title di metadata implementation.
 
 gunakan fallback:
 
-```text id="jk2qzo"
+```text
 project SEO title
 ↓
 project title
@@ -763,7 +760,7 @@ tidak boleh menampilkan raw error ke public user.
 
 hindari:
 
-```text id="f1o50r"
+```text
 FirebaseError: PERMISSION_DENIED
 ```
 
@@ -787,7 +784,7 @@ jika content belum tersedia:
 
 jangan render:
 
-```text id="41oi8e"
+```text
 null
 undefined
 empty container
@@ -828,7 +825,7 @@ jangan silently rewrite core architecture.
 
 schema changes harus mengikuti:
 
-```text id="w2o2gr"
+```text
 schema change
 ↓
 update schema.md
@@ -868,7 +865,7 @@ jangan membuat schema baru yang hanya bekerja untuk future data sementara old da
 
 minimum validation sebelum production:
 
-```text id="x8x6z7"
+```text
 typecheck
 lint
 unit tests where applicable
@@ -886,7 +883,7 @@ major UI change wajib dicek secara visual.
 
 minimum:
 
-```text id="4nmqyy"
+```text
 mobile
 tablet
 desktop
@@ -943,7 +940,7 @@ setiap new dependency harus memiliki justification.
 
 format internal:
 
-```text id="zy2xct"
+```text
 why
 what it replaces
 bundle impact
@@ -959,7 +956,7 @@ gunakan meaningful commits.
 
 contoh:
 
-```text id="2jr1yr"
+```text
 feat: add dynamic project renderer
 feat: add project admin editor
 fix: prevent mobile hero overflow
@@ -969,7 +966,7 @@ perf: optimize project media loading
 
 hindari:
 
-```text id="9mny3r"
+```text
 update
 fix
 test
@@ -986,7 +983,7 @@ production deployment hanya dilakukan setelah verification.
 
 minimum flow:
 
-```text id="m8m6i7"
+```text
 develop
 ↓
 typecheck
@@ -1010,7 +1007,7 @@ production verification
 
 production domain:
 
-```text id="ttt8ri"
+```text
 https://simatupangkevin.web.app
 ```
 
@@ -1061,7 +1058,7 @@ gunakan naming yang descriptive.
 
 lebih baik:
 
-```text id="q0yo97"
+```text
 ProjectRenderer
 ProjectRepository
 MediaUploader
@@ -1069,7 +1066,7 @@ MediaUploader
 
 daripada:
 
-```text id="9pqgwi"
+```text
 PR
 Repo2
 Thing
@@ -1091,7 +1088,7 @@ bukan:
 
 hindari comment seperti:
 
-```ts id="g3b7qb"
+```ts
 // set project title
 project.title = title
 ```
@@ -1169,7 +1166,7 @@ ketika terdapat dua implementation yang sama-sama valid:
 
 prioritaskan:
 
-```text id="8s7cwp"
+```text
 simplicity
 ↓
 performance
@@ -1183,7 +1180,7 @@ creative quality
 
 namun untuk public visual layer:
 
-```text id="2c9ey6"
+```text
 clarity
 ↓
 experience
@@ -1216,13 +1213,13 @@ Jika perubahan tersebut benar-benar diperlukan, dokumentasikan dan flag sebagai 
 
 feature belum dianggap selesai hanya karena:
 
-```text id="lguqlg"
+```text
 "code works"
 ```
 
 feature dianggap selesai jika:
 
-```text id="f3c7ow"
+```text
 works
 +
 responsive
@@ -1242,7 +1239,7 @@ documented
 
 selalu pikirkan:
 
-```text id="l7edtr"
+```text
 is this reusable?
 is this necessary?
 is this scalable?
@@ -1261,7 +1258,7 @@ jika jawabannya tidak, pertimbangkan untuk tidak membangunnya.
 
 website harus menunjukkan:
 
-```text id="j7w0v8"
+```text
 taste
 +
 technical ability
@@ -1281,7 +1278,7 @@ tanpa menjadi sulit digunakan.
 
 hasil akhir harus memenuhi kondisi:
 
-```text id="z5p3hm"
+```text
 Firebase
     ↓
 structured content
@@ -1295,7 +1292,7 @@ immersive experience
 
 dan:
 
-```text id="4r7f6b"
+```text
 new project
     ↓
 admin
@@ -1315,7 +1312,7 @@ tanpa pembuatan halaman baru.
 
 yang berikut bersifat mandatory:
 
-```text id="8u1lko"
+```text
 Firebase remains primary backend.
 Production domain is simatupangkevin.web.app.
 Projects are data-driven.
