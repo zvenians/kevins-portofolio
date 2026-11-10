@@ -1,5 +1,5 @@
 import { test, expect } from 'vitest';
-import { JSDOM } from 'jsdom';
+import { JSDOM, VirtualConsole } from 'jsdom';
 import { readFileSync } from 'node:fs';
 
 test('navigation opens, closes on selection, and returns focus on Escape',()=>{
@@ -16,9 +16,12 @@ test('navigation opens, closes on selection, and returns focus on Escape',()=>{
 
 for (const kind of ['wedding', 'morphslides', 'logostudio']) {
  test(`gallery ${kind} initializes and switches every direction`, () => {
-  const dom = new JSDOM(`<div id="creative-demo" data-demo="${kind}"></div>`, {url:'https://example.com/work/demo', runScripts:'outside-only'});
+  const virtualConsole = new VirtualConsole();
+  const runtimeErrors: string[] = [];
+  virtualConsole.on('jsdomError', (error) => runtimeErrors.push(String(error)));
+  const dom = new JSDOM(`<div id="creative-demo" data-demo="${kind}"></div>`, {url:'https://example.com/work/demo', runScripts:'outside-only', virtualConsole});
   const w = dom.window;
-  w.eval(`var $=s=>document.querySelector(s); var reduced=true; var homeHref=s=>'#'+s; var esc=s=>String(s).replaceAll('<','&lt;');`);
+  w.eval(`var $=s=>document.querySelector(s); var reduced=true; var homeHref=s=>'#'+s; var esc=s=>String(s??'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/\"/g,'&quot;').replace(/'/g,'&#39;');`);
   w.eval(readFileSync('apps-script/source/CreativeStudios.js','utf8'));w.eval(readFileSync('apps-script/source/CreativeWorlds.js','utf8'));
   w.eval(readFileSync('apps-script/source/Wedding.js','utf8'));
   w.eval(readFileSync('apps-script/source/Gallery.js','utf8'));
@@ -54,6 +57,7 @@ for (const kind of ['wedding', 'morphslides', 'logostudio']) {
    expect(w.document.querySelector('.slide-word')?.textContent).toBe('A clear idea');
    w.document.querySelector<HTMLButtonElement>('#slide-reset')!.click();expect(w.document.querySelector('.slide-word')?.textContent).toBe('Observe');
   }
+  expect(runtimeErrors).toEqual([]);
   dom.window.close();
  });
 }

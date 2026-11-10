@@ -11,7 +11,7 @@ test('edge drag bends the printed page, cancels cleanly and commits only from th
  const position=()=>w.document.querySelector('.manga-position')!.textContent;
  Object.defineProperty(book,'offsetWidth',{value:340});
  book.getBoundingClientRect=()=>({left:0,width:340} as DOMRect);
- let now=0,queue=new Map<number,FrameRequestCallback>(),id=0;
+ let now=0,id=0;const queue=new Map<number,FrameRequestCallback>();
  Object.defineProperty(w.performance,'now',{value:()=>now});
  w.requestAnimationFrame=fn=>{queue.set(++id,fn);return id;};
  w.cancelAnimationFrame=n=>{queue.delete(n);};
@@ -19,7 +19,7 @@ test('edge drag bends the printed page, cancels cleanly and commits only from th
  const fire=(event:string,x:number,y=10)=>{
    const pointer=new w.MouseEvent(event,{clientX:x,clientY:y,button:0});
    Object.defineProperty(pointer,'pointerId',{value:1});
-   (book as unknown as Record<string,Function>)['on'+event](pointer);
+   (book as unknown as Record<string,(value:Event)=>unknown>)['on'+event](pointer);
  };
  const prepare=()=>Object.defineProperty(book.querySelector('.manga-page')!,'offsetWidth',{value:340,configurable:true});
  prepare();fire('pointerdown',160);fire('pointermove',290);expect(book.querySelector('.koma-fold')).toBeNull();

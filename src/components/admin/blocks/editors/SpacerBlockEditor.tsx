@@ -1,5 +1,4 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-/* eslint-disable @next/next/no-img-element */
 "use client";
 import { type ContentBlock } from "@/types/schema";
 export function SpacerBlockEditor({ block, onChange }: { block: Extract<ContentBlock, { type: "spacer" }>, onChange: (b: any) => void }) {
