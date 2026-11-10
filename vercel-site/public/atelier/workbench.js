@@ -22,6 +22,18 @@ const targets = {
   archive: ['#archive-search,[data-folder]', '[data-document],#queue-upload']
 };
 const labels = ['Session guide|Panduan sesi|Guide de session|Guía de sesión', 'Observed actions|Aksi tercatat|Actions observées|Acciones registradas', 'Go to control|Ke kontrol|Aller au contrôle|Ir al control', 'Clear progress|Hapus progres|Effacer le suivi|Borrar progreso', 'Continue in the application to reveal this control.|Lanjutkan alur di aplikasi untuk membuka kontrol ini.|Poursuivez le parcours pour afficher cette commande.|Avanza en la aplicación para mostrar este control.'];
+const studentPaths={
+ operations:[['Choose a worksheet','Pilih lembar kerja','Choisir une feuille','Elegir una hoja'],['Load a sample','Buka data contoh','Ouvrir un exemple','Abrir un ejemplo'],['Edit inputs','Ubah input','Modifier les entrées','Editar entradas'],['Read the result','Pahami hasil','Comprendre le résultat','Entender el resultado'],['Export or ask for help','Ekspor atau minta bantuan','Exporter ou demander de l’aide','Exportar o pedir ayuda']],
+ researchtools:[['Choose a research tool','Pilih alat riset','Choisir un outil','Elegir una herramienta'],['Set the question','Tentukan pertanyaan','Définir la question','Definir la pregunta'],['Edit variables','Ubah variabel','Modifier les variables','Editar variables'],['Check the interpretation','Periksa interpretasi','Vérifier l’interprétation','Revisar la interpretación'],['Export or ask for help','Ekspor atau minta bantuan','Exporter ou demander de l’aide','Exportar o pedir ayuda']],
+ dataprep:[['Inspect the raw import','Periksa data mentah','Inspecter les données brutes','Revisar datos brutos'],['Set preparation rules','Atur aturan persiapan','Définir les règles','Definir reglas'],['Prepare a working copy','Buat salinan kerja','Préparer une copie','Preparar una copia'],['Review every change','Tinjau setiap perubahan','Vérifier chaque changement','Revisar cada cambio'],['Export or ask for help','Ekspor atau minta bantuan','Exporter ou demander de l’aide','Exportar o pedir ayuda']],
+ documents:[['Choose a document','Pilih dokumen','Choisir un document','Elegir un documento'],['Edit source fields','Ubah data sumber','Modifier les champs','Editar campos'],['Refresh the draft','Perbarui draf','Actualiser le brouillon','Actualizar borrador'],['Validate the preview','Periksa pratinjau','Vérifier l’aperçu','Validar vista previa'],['Export or ask for help','Ekspor atau minta bantuan','Exporter ou demander de l’aide','Exportar o pedir ayuda']]
+};
+const studentSelectors={
+ operations:['[data-lab]','[data-source],#threshold,[data-vendor-weight]','#threshold,[data-vendor-weight]','#workspace .table-scroll,.vendor-recommendation','#workbook-export,#vendor-export,.apprail a[href="/academic-support"]'],
+ researchtools:['[data-research-tool]','#method-advisor select,#research-tool-workspace form select','#research-tool-workspace input,#research-tool-workspace textarea','#tool-result','#research-tool-workspace button,.apprail a[href="/academic-support"]'],
+ dataprep:['[data-prep-view="raw"]','#prep-missing,#prep-min,#prep-max,#prep-reverse','#prep-run','#prep-findings,[data-prep-view="clean"]','#prep-csv,#prep-syntax,.apprail a[href="/academic-support"]'],
+ documents:['#document-form select','#document-form input,#document-form textarea','#document-form button[type="submit"]','#document-preview','#document-pdf,#document-log,.apprail a[href="/academic-support"]']
+};
 let lang = 'en',
   progress = [false, false];
 const key = 'atelier.progress.' + kind;
@@ -34,6 +46,21 @@ const picker = document.createElement('select');
 picker.setAttribute('aria-label', 'English / Indonesia / Français / Español');
 locales.forEach((code, i) => picker.add(new Option(names[i], code, false, code === lang)));
 shell.append(picker);
+if (['operations','researchtools','dataprep','documents'].includes(kind)) {
+  const support=document.createElement('a');
+  support.href='/academic-support';
+  support.textContent=lang==='id'?'Bantuan akademik ↗':lang==='fr'?'Soutien académique ↗':lang==='es'?'Apoyo académico ↗':'Academic support ↗';
+  shell.append(support);
+}
+if(studentPaths[kind]){
+  const path=document.createElement('nav');
+  path.className='student-path';
+  path.setAttribute('aria-label',{id:'Alur kerja aplikasi',fr:'Parcours de l’application',es:'Flujo de la aplicación'}[lang]||'Application workflow');
+  const drawPath=()=>{let current=0,localeIndex=Math.max(0,locales.indexOf(lang));studentSelectors[kind].forEach((selector,index)=>{if([...document.querySelectorAll(selector)].some(node=>node.dataset.pathObserved==='true'))current=Math.min(index+1,4);});path.innerHTML=studentPaths[kind].map((pair,index)=>`<button type="button" data-path-step="${index}" aria-current="${index===current?'step':'false'}"><span>${String(index+1).padStart(2,'0')}</span>${pair[localeIndex]}</button>`).join('');};
+  path.addEventListener('click',event=>{const button=event.target.closest('[data-path-step]');if(!button)return;const index=Number(button.dataset.pathStep),control=[...document.querySelectorAll(studentSelectors[kind][index])].find(node=>node.getClientRects().length&&!node.disabled);if(!control)return;control.scrollIntoView({block:'center'});control.focus({preventScroll:true});});
+  for(const eventName of ['change','click','submit'])document.addEventListener(eventName,event=>{const index=studentSelectors[kind].findIndex(selector=>event.target.closest(selector));if(index<0)return;event.target.closest(studentSelectors[kind][index]).dataset.pathObserved='true';drawPath();},true);
+  shell.after(path);drawPath();
+}
 picker.onchange = () => {
   try {
     localStorage.setItem('atelier.language', picker.value);

@@ -132,24 +132,30 @@ function ticketCode(reference) {
 }
 function book() {
   const start = state.spread * 6;
-  return `<div class="tabs">${['food', 'drinks'].map((k, i) => `<button data-page="${i}" aria-pressed="${state.spread === i}">${t(k)}</button>`).join('')}</div><div class="book">${[0, 1].map(side => `<article><small>${t('page')} 0${state.spread * 2 + side + 1}</small><h2>${t(state.spread ? 'drinks' : 'food')}</h2>${dishes.slice(start + side * 3, start + side * 3 + 3).map(([k, p], j) => `<div class="dish"><h3>${t(k)}</h3><p>${money(p)}</p><button data-dish="${start + side * 3 + j}" aria-label="${t('add')} · ${t(k)}">+ ${t('add')}</button></div>`).join('')}</article>`).join('')}</div>`;
+  return `<div class="tabs">${['food', 'drinks'].map((k, i) => `<button data-page="${i}" aria-pressed="${state.spread === i}">${t(k)}</button>`).join('')}</div><div class="book">${[0, 1].map(side => `<article><small>${t('page')} 0${state.spread * 2 + side + 1}</small><h2>${t(state.spread ? 'drinks' : 'food')}</h2>${dishes.slice(start + side * 3, start + side * 3 + 3).map(([k, p], j) => {
+    const id=start+side*3+j,
+      x=(id%4)/3*100,
+      y=Math.floor(id/4)/2*100;
+    return `<div class="dish"><span class="dish-photo" style="--dish-x:${x}%;--dish-y:${y}%" aria-hidden="true"></span><div class="dish-copy"><small>${t('estimateTime')} · ${id > 5 ? 4 : id === 0 ? 18 : 12} ${t('minutes')}</small><h3>${t(k)}</h3><p>${money(p)}</p><button data-dish="${id}" aria-label="${t('add')} · ${t(k)}">+ ${t('add')}</button></div></div>`;
+  }).join('')}</article>`).join('')}</div>`;
 }
 function serviceForm() {
   const choices = travel ? hotels.map(h => h[0]) : nurses;
-  return `<h2>${t(travel ? 'hotel' : 'nurse')}</h2><div class="choices">${choices.map((n, i) => `<label class="choice">${travel ? '' : `<img src="/edisi/perawat-${i}.webp" alt="">`}<span><strong>${n}</strong><small>${travel ? money(hotels[i][1]) + ' / ' + t('perNight') : t(specialties[i])}</small></span><input type="radio" name="place" value="${i}" ${Number(state.place) === i ? 'checked' : ''}></label>`).join('')}</div><div class="inputs"><label>${t('date')}<input name="date" required type="date" min="${todayISO}" value="${safe(state.date)}"></label><label>${t('time')} (WITA)<input name="time" required type="time" value="${safe(state.time)}"></label>${select('qty', travel ? 'nights' : 'hours', travel ? [1, 2, 3, 4, 5, 6, 7] : [1, 2, 4, 8], String)}${travel ? select('vehicle', 'car', [0, 1, 2], i => drivers[i][0]) : select('service', 'service', specialties)}</div>${travel ? '' : `<label>${t('address')}<input name="address" maxlength="200" required value="${safe(state.address)}"></label><label class="inline"><input type="checkbox" name="extra" ${state.extra ? 'checked' : ''}> ${t('companion')} + ${money(45000)}</label>`}`;
+  return `<h2>${t(travel ? 'hotel' : 'nurse')}</h2><div class="choices">${choices.map((n, i) => `<label class="choice">${travel ? `<span class="hotel-photo" style="--hotel-x:${i*50}%" aria-hidden="true"></span>` : `<img src="/edisi/perawat-${i}.webp" alt="">`}<span><strong>${n}</strong><small>${travel ? money(hotels[i][1]) + ' / ' + t('perNight') : t(specialties[i])}</small></span><input type="radio" name="place" value="${i}" ${Number(state.place) === i ? 'checked' : ''}></label>`).join('')}</div><div class="inputs"><label>${t('date')}<input name="date" required type="date" min="${todayISO}" value="${safe(state.date)}"></label><label>${t('time')} (WITA)<input name="time" required type="time" value="${safe(state.time)}"></label>${select('qty', travel ? 'nights' : 'hours', travel ? [1, 2, 3, 4, 5, 6, 7] : [1, 2, 4, 8], String)}${travel ? select('vehicle', 'car', [0, 1, 2], i => drivers[i][0]) : select('service', 'service', specialties)}</div>${travel ? '' : `<label>${t('address')}<input name="address" maxlength="200" required value="${safe(state.address)}"></label><label class="inline"><input type="checkbox" name="extra" ${state.extra ? 'checked' : ''}> ${t('companion')} + ${money(45000)}</label>`}`;
 }
 function map() {
   const [hotel,, km, min, x, y] = hotels[state.place];
-  return `<figure><svg viewBox="0 0 340 170" aria-hidden="true"><rect width="340" height="170" fill="#e8eddf"/><path d="M0 115Q90 130 140 42L200 0H0" fill="#a8d0d7"/><path d="M0 160L80 120 120 130 170 100 330 40M100 170L128 95 278 0M140 170L190 112 340 90" stroke="white" fill="none" stroke-width="8"/><path d="M30 150L80 120 120 130 170 100 ${x} ${y}" fill="none" stroke="#146b78" stroke-width="5"/><circle cx="30" cy="150" r="6"/><circle cx="${x}" cy="${y}" r="6"/></svg><figcaption>${t('layout')} · ${km} km · ${min} ${t('minutes')}</figcaption></figure><p>Terminal Teluk → ${hotel}</p>`;
+  return `<figure><svg viewBox="0 0 340 170" aria-hidden="true"><rect width="340" height="170" fill="#e8eddf"/><path d="M0 115Q90 130 140 42L200 0H0" fill="#a8d0d7"/><path d="M0 160L80 120 120 130 170 100 330 40M100 170L128 95 278 0M140 170L190 112 340 90" stroke="white" fill="none" stroke-width="8"/><path d="M30 150L80 120 120 130 170 100 ${x} ${y}" fill="none" stroke="#146b78" stroke-width="5"/><circle cx="30" cy="150" r="6"/><circle cx="${x}" cy="${y}" r="6"/><g font-family="system-ui" font-size="12" font-weight="700" fill="#123341" stroke="#f9f7ec" stroke-width="3" paint-order="stroke"><text x="12" y="139">Terminal Teluk</text><text x="${x-8}" y="${y-12}" text-anchor="end">${hotel}</text></g></svg><figcaption>${t('layout')} · ${km} km · ${min} ${t('minutes')}</figcaption></figure><p>Terminal Teluk → ${hotel}</p>`;
 }
 function summary() {
   if (dining) return state.bag.length ? state.bag.map((item, i) => `<div class="line"><span><strong>${t(dishes[item.id][0])}</strong><small>${item.opts.map(o => t(o)).join(' / ')} · ${safe(item.note)}</small></span><span>${money(dishes[item.id][1] * (item.double ? 2 : 1))}${state.stage === 0 ? `<button data-remove="${i}">${t('remove')}</button>` : ''}</span></div>`).join('') : `<p>${t('empty')}</p>`;
+  const duration = (key,singular) => Number(state.qty) === 1 && lang === 'en' ? singular : t(key);
   if (travel) {
     const [car, driver, fare] = drivers[state.vehicle],
       h = hotels[state.place];
-    return map() + `<p>${h[0]} · ${t(state.room)} · ${state.qty} ${t('nights')} · ${money((h[1] + (state.room === 'suite' ? 220000 : 0)) * state.qty)}</p><p>${t('guests')} · ${state.guests} · ${safe(state.guest)}</p><p>${car} · ${t('driver')} · ${driver} · KT 11${state.vehicle}2 LT · ${money(fare + h[2] * 3000)}</p><p>${safe(state.date)} · ${safe(state.time)} WITA</p>`;
+    return map() + `<p>${h[0]} · ${t(state.room)} · ${state.qty} ${duration('nights','night')} · ${money((h[1] + (state.room === 'suite' ? 220000 : 0)) * state.qty)}</p><p>${t('guests')} · ${state.guests}${state.guest ? ' · '+safe(state.guest) : ''}</p><p>${car} · ${t('driver')} · ${driver} · KT 11${state.vehicle}2 LT · ${money(fare + h[2] * 3000)}</p><p>${safe(state.date)} · ${safe(state.time)} WITA</p>`;
   }
-  return `<strong>${nurses[state.place]}</strong><p>${t(state.service)} · ${money(rates[state.service])} / ${t('perHour')}</p><p>${state.qty} ${t('hours')} · ${safe(state.date)} · ${safe(state.time)} WITA</p><p>${safe(state.address)}</p>${state.extra ? `<p>${t('companion')} + ${money(45000)}</p>` : ''}`;
+  return `<strong>${nurses[state.place]}</strong><p>${t(state.service)} · ${money(rates[state.service])} / ${t('perHour')}</p><p>${state.qty} ${duration('hours','hour')} · ${safe(state.date)} · ${safe(state.time)} WITA</p><p>${safe(state.address)}</p>${state.extra ? `<p>${t('companion')} + ${money(45000)}</p>` : ''}`;
 }
 function total() {
   const details = [];
@@ -164,13 +170,11 @@ function discovery(form) {
   bar.className = 'discovery';
   const filters = dining ? select('filter', 'diet', ['any', 'plant']) : travel ? select('filter', 'sort', ['any', 'priceAsc', 'durationSort']) : select('filter', 'service', ['any', ...specialties]);
   bar.innerHTML = `<label>${t('search')}<input type="search" autocomplete="off"></label>${filters}<p hidden role="status">${t('noResults')}</p>`;
-  form.prepend(bar);
+  if(dining) form.querySelector('.book').after(bar);
+  else form.prepend(bar);
   const rows = [...form.querySelectorAll(dining ? '.dish' : '.choice')];
   rows.forEach((row, i) => {
-    if (dining) {
-      const id = Number(row.querySelector('[data-dish]').dataset.dish);
-      row.insertAdjacentHTML('afterbegin', `<small>${t('estimateTime')} · ${id > 5 ? 4 : id === 0 ? 18 : 12} ${t('minutes')}</small>`);
-    } else {
+    if (!dining) {
       const details = document.createElement('div');
       details.className = 'profile-detail';
       const features = travel ? [t('breakfast'), t('wifi'), t('access')] : [t('licensed'), t('area') + ' · Balikpapan', t('language') + ' · ' + ['Indonesia / English', 'Indonesia', 'Indonesia / English'][i]];
@@ -215,7 +219,7 @@ function render() {
   $('footer').textContent = brand + ' · ' + t('demo');
   const stage = state.stage,
     output = dining ? 'receipt' : travel ? 'ticket' : 'visit';
-  $('main').innerHTML = stage === 0 ? `<div class="mast"><div><small>${t(kind)}</small><h1>${t(kind + 'Title')}</h1></div><img src="/edisi/${image}" alt=""></div><div class="workspace"><form id="order">${dining ? select('mode', 'mode', ['dine', 'pickup']) + book() : serviceForm()}</form><aside>${side()}</aside></div>` : `<section class="paper"><small>${t('demo')}</small><h1>${t(stage === 1 ? 'next' : output)}</h1>${state.reference ? `<p class="ref">${safe(state.reference)}</p>` : ''}${dining ? `<p>${t(state.mode)} · ${t('table')}</p>` : ''}${summary()}${total()}${stage === 1 ? `<form id="payment">${select('method', 'method', ['card', 'wallet'])}<button class="primary">${t('pay')}</button></form><button data-back>${t('back')}</button>` : `<p>${t('method')} · ${t(state.method)}</p><p class="status">${t('status')} · ${t(state.cancelled ? 'cancelled' : dining ? 'preparing' : 'confirmed')}</p><div class="controls"><button data-print>${t('print')}</button>${!dining && !state.cancelled ? `<button data-back>${t('change')}</button><button data-cancel>${t('cancel')}</button>` : ''}<button data-new>${t('again')}</button></div>`}</section>`;
+  $('main').innerHTML = stage === 0 ? `<div class="mast"><div><small>${t(kind)}</small><h1>${t(kind + 'Title')}</h1></div><img src="/edisi/${image}" alt=""></div><div class="workspace"><form id="order">${dining ? book() + select('mode', 'mode', ['dine', 'pickup']) : serviceForm()}</form><aside>${side()}</aside></div>` : `<section class="paper"><small>${t('demo')}</small><h1>${t(stage === 1 ? 'next' : output)}</h1>${state.reference ? `<p class="ref">${safe(state.reference)}</p>` : ''}${dining ? `<p>${t(state.mode)} · ${t('table')}</p>` : ''}${summary()}${total()}${stage === 1 ? `<form id="payment">${select('method', 'method', ['card', 'wallet'])}<button class="primary">${t('pay')}</button></form><button data-back>${t('back')}</button>` : `<p>${t('method')} · ${t(state.method)}</p><p class="status">${t('status')} · ${t(state.cancelled ? 'cancelled' : dining ? 'preparing' : 'confirmed')}</p><div class="controls"><button data-print>${t('print')}</button>${!dining && !state.cancelled ? `<button data-back>${t('change')}</button><button data-cancel>${t('cancel')}</button>` : ''}<button data-new>${t('again')}</button></div>`}</section>`;
   if (stage === 0) {
     if (dining) {
       const mode = $('select[name=mode]');
@@ -230,7 +234,14 @@ function render() {
       document.querySelectorAll('.choice span').forEach((el, i) => el.insertAdjacentHTML('beforeend', `<small>${[6, 4, 8][i]} ${t('exp')} · Balikpapan</small>`));
     }
   }
-  if (stage === 0) discovery($('#order'));
+  if (stage === 0) {
+    discovery($('#order'));
+    const mast=$('.mast'), heading=mast.querySelector('h1');
+    const titles={resto:'Daun & Bara.',travel:'Lintas Teluk.',care:t('careTitle')};
+    heading.textContent=titles[kind];
+    mast.querySelector('div').insertAdjacentHTML('beforeend',`<a class="mast-action" href="#order">${t(dining?'food':travel?'hotel':'nurse')} ↓</a>`);
+    if(travel) mast.querySelector('img').outerHTML=`<div class="atlas-art" aria-hidden="true">${map()}</div>`;
+  }
   if (stage === 2 && travel) {
     $('.ref').insertAdjacentHTML('afterend', ticketCode(state.reference));
     $('.controls').insertAdjacentHTML('afterbegin', `<button data-download>${t('download')}</button>`);
@@ -256,6 +267,7 @@ function update(e) {
     return;
   }
   if ($('aside')) $('aside').innerHTML = side();
+  if(travel && el.name==='place') $('.atlas-art').innerHTML=map();
 }
 document.addEventListener('input', update);
 document.addEventListener('submit', e => {

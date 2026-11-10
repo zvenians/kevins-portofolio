@@ -1,6 +1,21 @@
 export const locales = ['en', 'id', 'fr', 'es'];
 export const names = ['English', 'Indonesia', 'Français', 'Español'];
 const lines = {
+  academicSupport:'Academic support|Bantuan akademik|Soutien académique|Apoyo académico',
+  academicLead:'Tutoring, spreadsheet debugging, statistics guidance and feedback for student-authored work.|Bimbingan belajar, debugging spreadsheet, panduan statistik, dan feedback untuk karya yang ditulis mahasiswa.|Tutorat, débogage de tableurs, conseils statistiques et retours sur le travail rédigé par l’étudiant.|Tutoría, depuración de hojas de cálculo, orientación estadística y comentarios sobre trabajos escritos por el estudiante.',
+  academicCta:'Discuss your assignment|Konsultasikan tugas Anda|Discuter de votre devoir|Consulta tu tarea',
+  libraryFilter:'Filter application library|Filter koleksi aplikasi|Filtrer la bibliothèque d’applications|Filtrar la biblioteca de aplicaciones',
+  appsGroup:'Product applications|Aplikasi produk|Applications produit|Aplicaciones de producto',
+  excelData:'Excel & data workspaces|Workspace Excel & data|Espaces Excel et données|Espacios de Excel y datos',
+  researchGroup:'Research & statistics|Riset & statistik|Recherche et statistiques|Investigación y estadística',
+  bookShop:'Booking & commerce|Pemesanan & niaga|Réservation et commerce|Reservas y comercio',
+  operationsGroup:'Data & operations|Data & operasional|Données et opérations|Datos y operaciones',
+  creative: 'Creative development|Pengembangan kreatif|Développement créatif|Desarrollo creativo',
+  systems: 'Systems|Sistem|Systèmes|Sistemas',
+  craft: 'Technical craft.|Keahlian teknis.|Savoir-faire technique.|Oficio técnico.',
+  selectedStrengths: 'Selected strengths|Keahlian utama|Expertises choisies|Fortalezas destacadas',
+  verifiable: 'Visible. Verifiable.|Terlihat. Teruji.|Visible. Vérifiable.|Visible. Verificable.',
+  craftNote: 'Interface, systems, creative development and real project evidence.|Antarmuka, sistem, pengembangan kreatif, dan bukti proyek nyata.|Interfaces, systèmes, création et preuves de projets réels.|Interfaces, sistemas, desarrollo creativo y pruebas de proyectos reales.',
   playScene: 'Play motion|Putar animasi|Animer|Animar',
   pauseScene: 'Pause motion|Jeda animasi|Mettre en pause|Pausar',
   flow: 'User journey|Alur pengguna|Parcours|Recorrido',
@@ -29,7 +44,7 @@ const lines = {
   menu: 'Menu|Menu|Menu|Menú',
   close: 'Close|Tutup|Fermer|Cerrar',
   role: 'Creative technologist|Teknolog kreatif|Technologue créatif|Tecnólogo creativo',
-  hero: 'I build digital products for the people who use them every day.|Saya membangun produk digital untuk orang yang menggunakannya setiap hari.|Je crée des produits numériques pour celles et ceux qui les utilisent au quotidien.|Creo productos digitales para quienes los usan a diario.',
+  hero: 'I design and build community platforms, booking tools and interactive web experiences.|Saya merancang dan membangun platform komunitas, aplikasi pemesanan, dan pengalaman web interaktif.|Je conçois des plateformes communautaires, des outils de réservation et des expériences web interactives.|Diseño plataformas comunitarias, herramientas de reserva y experiencias web interactivas.',
   explore: 'Explore work|Jelajahi karya|Explorer les projets|Explorar proyectos',
   view: 'View case study|Baca studi kasus|Lire l’étude de cas|Ver caso de estudio',
   open: 'Open application|Buka aplikasi|Ouvrir l’application|Abrir aplicación',
@@ -64,7 +79,18 @@ const lines = {
   compose: 'Open email draft|Buka draf email|Ouvrir le brouillon|Abrir borrador de correo',
   mailhint: 'Review the brief and send it from your email app.|Tinjau brief lalu kirim melalui aplikasi email Anda.|Vérifiez le brief puis envoyez-le depuis votre messagerie.|Revisa el resumen y envíalo desde tu aplicación de correo.',
   catalog: 'Technology catalogue|Katalog teknologi|Catalogue technique|Catálogo tecnológico',
-  film: 'Interactive particle study|Studi partikel interaktif|Étude de particules interactive|Estudio de partículas interactivo',
-  archive: 'Open studio archive|Buka arsip studio|Ouvrir les archives|Abrir el archivo'
+  film: 'Iridescent marble|Marmer iridesen|Marbre irisé|Mármol iridiscente',
+  archive: 'Open studio archive|Buka arsip studio|Ouvrir les archives|Abrir el archivo',
+  resumeTitle: 'Resume & practice|CV dan pengalaman|CV et parcours|CV y trayectoria',
+  currentWork: 'Current work|Pekerjaan saat ini|Poste actuel|Trabajo actual',
+  currentPeriod: 'February 2026 - present|Februari 2026 - sekarang|Février 2026 - aujourd’hui|Febrero de 2026 - actualidad',
+  resumeAvailable: 'A published PDF is available. Open it from this page.|PDF yang dipublikasikan tersedia. Buka dari halaman ini.|Un PDF publié est disponible. Ouvrez-le depuis cette page.|Hay un PDF publicado. Ábrelo desde esta página.',
+  resumeUnavailable: 'The public PDF is not available yet. Explore the project case studies or contact me for details.|PDF publik belum tersedia. Jelajahi studi kasus proyek atau hubungi saya untuk detailnya.|Le PDF public n’est pas encore disponible. Parcourez les projets ou contactez-moi.|El PDF público aún no está disponible. Explora los proyectos o contáctame.',
+  resumeOpen: 'Download published PDF|Unduh PDF publik|Télécharger le PDF|Descargar el PDF',
+  resumeLoading: 'Preparing PDF…|Menyiapkan PDF…|Préparation du PDF…|Preparando PDF…',
+  resumeError: 'The PDF could not be loaded. Please try again later.|PDF belum dapat dimuat. Silakan coba lagi nanti.|Le PDF ne peut pas être chargé. Réessayez plus tard.|No se pudo cargar el PDF. Inténtalo más tarde.',
+  missingTitle: 'The page took another route.|Halaman ini mengambil jalan lain.|Cette page a pris un autre chemin.|Esta página tomó otro camino.',
+  missingNote: 'The address may have changed. Return to the projects or explore the demo studio.|Alamatnya mungkin berubah. Kembali ke proyek atau jelajahi studio demo.|L’adresse a peut-être changé. Retrouvez les projets ou le studio démo.|La dirección puede haber cambiado. Vuelve a los proyectos o al estudio de demos.',
+  home: 'Home|Beranda|Accueil|Inicio'
 };
 export const translate = (key, language) => lines[key]?.split('|')[locales.indexOf(language)] ?? key;

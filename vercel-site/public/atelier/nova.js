@@ -15,6 +15,12 @@ const copy = {
   otherBody: 'Our first proof is a line of text on a narrow screen. We adjust its width and line spacing before choosing the display face.|Uji pertama kami adalah satu baris teks pada layar sempit. Lebar dan jarak baris ditentukan sebelum memilih huruf judul.|Notre premier essai est une ligne sur un écran étroit. Nous réglons sa largeur et son interligne avant de choisir le caractère de titre.|La primera prueba es una línea en una pantalla estrecha. Ajustamos su ancho e interlineado antes de elegir la tipografía del título.',
   empty: 'No articles found.|Tidak ada artikel.|Aucun article trouvé.|No se encontraron artículos.',
   home: 'Studio|Studio|Studio|Estudio',
+  journal: 'Journal|Jurnal|Journal|Revista',
+  workHeadline: 'Matter into meaning.|Materi menjadi makna.|La matière prend sens.|De materia a significado.',
+  servicesHeadline: 'From idea to impact.|Dari ide menuju dampak.|De l’idée à l’impact.|De la idea al impacto.',
+  journalHeadline: 'Thinking out loud.|Gagasan yang terbuka.|Penser à voix haute.|Pensar en voz alta.',
+  careersHeadline: 'Make space for brave ideas.|Ruang untuk ide berani.|Une place aux idées audacieuses.|Espacio para ideas valientes.',
+  inquiryHeadline: 'Let us build what is next.|Mari bangun langkah berikutnya.|Construisons la suite.|Construyamos lo que sigue.',
   services: 'Services|Layanan|Services|Servicios',
   work: 'Work|Karya|Projets|Proyectos',
   insights: 'Journal|Jurnal|Journal|Revista',
@@ -48,15 +54,16 @@ export function novaPage(language) {
     t = k => copy[k].split('|')[idx];
   const services = ['strategy', 'product', 'space'],
     works = ['Forma Radio', 'Parallel Editions', 'Field Assembly'];
-  const route = location.hash.slice(1).split('/'),
+  const route = location.pathname.startsWith('/nova/') ? location.pathname.slice(6).split('/') : location.hash.slice(1).split('/'),
     page = route[0] || 'home';
   const number = Number(route[1]);
   const i = Number.isInteger(number) && number >= 0 && number < 3 ? number : 0;
-  const link = (key, label) => `<a class="nova-link" href="#${key}"><span>${label}</span>${icon('forward')}</a>`;
-  const section = ({case:'work',service:'services',article:'insights',job:'careers',apply:'careers'})[page] || page;
-  const sections = ['about','services','industries','work','insights','careers','inquiry'];
-  const directory = sections.map((key,n)=>`<a href="#${key}" ${section===key?'aria-current="page"':''}><small>0${n+1}</small><span>${t(key)}</span></a>`).join('');
-  const mast = `<div class="nova-mast"><a class="nova-logo" href="#home" aria-label="NOVA Creative"><b>NOVA</b><sup>®</sup></a><nav class="nova-wide" aria-label="${t('index')}">${directory}</nav><details class="nova-index"><summary>${t('index')}${icon('plus')}</summary><nav aria-label="${t('index')}">${directory}</nav></details></div>`;
+  const url = key => key === 'home' ? '/nova' : `/nova/${key}`;
+  const link = (key, label) => `<a class="nova-link" href="${url(key)}"><span>${label}</span>${icon('forward')}</a>`;
+  const section = ({case:'work',service:'services',article:'journal',job:'careers',apply:'careers',insights:'journal'})[page] || page;
+  const sections = ['about','services','industries','work','journal','careers','inquiry'];
+  const directory = sections.map((key,n)=>`<a href="${url(key)}" ${section===key?'aria-current="page"':''}><small>0${n+1}</small><span>${t(key)}</span></a>`).join('');
+  const mast = `<div class="nova-mast"><a class="nova-logo" href="/nova" aria-label="NOVA Creative"><b>NOVA</b><sup>®</sup></a><nav class="nova-wide" aria-label="${t('index')}">${directory}</nav><details class="nova-index"><summary>${t('index')}${icon('plus')}</summary><nav aria-label="${t('index')}">${directory}</nav></details></div>`;
   const captions=['FORMA / RADIO','PARALLEL / EDITIONS','FIELD / ASSEMBLY'];
   function plate(index){
     const lines=Array.from({length:37},(_,n)=>{
@@ -67,13 +74,14 @@ export function novaPage(language) {
     return `<figure class="nova-plate plate-${index}" aria-hidden="true"><svg viewBox="0 0 400 220" preserveAspectRatio="xMidYMid slice">${shapes[index]}</svg><figcaption><b>${captions[index]}</b><span>NV—00${index+1}</span></figcaption></figure>`;
   }
   const entry = (key, title, info) => `<article><small>NOVA / ${info}</small><h2>${link(key, title)}</h2></article>`;
+  const titleBlock = (sectionKey, headline, description) => `<div class="nova-title"><small>NOVA / ${t(sectionKey)}</small><h1>${t(headline)}</h1><p>${t(description)}</p></div>`;
   let body = '';
   switch (page) {
     case 'about':
       body = `<h1>NOVA Creative.</h1><p>${t('intro')}</p>` + services.map(k => `<article><h3>${t(k)}</h3><p>${t(k + 'Text')}</p></article>`).join('');
       break;
     case 'services':
-      body = `<h1>${t('services')}</h1>` + services.map((k, i) => entry('service/' + i, t(k), '0' + (i + 1))).join('');
+      body = titleBlock('services','servicesHeadline','intro') + services.map((k, i) => entry('service/' + i, t(k), '0' + (i + 1))).join('');
       break;
     case 'industries':
       body = `<h1>${t('industries')}</h1>` + ['culture', 'publishing', 'events'].map((k, i) => entry('case/' + i, t(k), works[i])).join('');
@@ -82,26 +90,27 @@ export function novaPage(language) {
       body = `<h1>${t(services[i])}</h1><p>${t(services[i] + 'Text')}</p>` + entry('case/' + i, works[i], t('work'));
       break;
     case 'work':
-      body = `<h1>${t('work')}</h1><select id="industry" aria-label="${t('services')}"><option value="">${t('all')}</option>${services.map((k, i) => `<option value="${i}">${t(k)}</option>`).join('')}</select>` + works.map((w, i) => entry('case/' + i, w, t(services[i]))).join('');
+      body = titleBlock('work','workHeadline','intro') + `<label class="nova-filter">${t('services')}<select id="industry"><option value="">${t('all')}</option>${services.map((k, i) => `<option value="${i}">${t(k)}</option>`).join('')}</select></label><div class="nova-work-grid">${works.map((w, i) => `<article data-industry="${i}"><a href="${url('case/'+i)}" aria-label="${w}">${plate(i)}</a><small>NOVA / ${t(services[i])}</small><h2>${link('case/' + i, w)}</h2></article>`).join('')}</div>`;
       break;
     case 'case':
       body = `<div class="nova-case-head"><small>${t('work')}　/　0${i+1} — 03</small><h1>${works[i]}</h1><p>${t(services[i])} <span> / </span> ${t(['culture','publishing','events'][i])}</p></div>${plate(i)}<div class="nova-case-copy"><h2>${t(services[i])}</h2><p>${t(services[i]+'Text')}</p>${link('service/'+i,t('services'))}</div><div class="nova-next"><small>${t('next')}</small>${link('case/'+((i+1)%3),works[(i+1)%3])}</div>`;
       break;
     case 'insights':
-      body = `<h1>${t('insights')}</h1><label>${t('find')}<input type="search" id="journal-search"></label>` + entry('article', t('article'), '01') + entry('article/1', t('otherArticle'), '02') + `<p id="journal-empty" hidden>${t('empty')}</p><form id="newsletter"><h3>${t('newsletter')}</h3><label>${t('email')}<input type="email" required></label><button class="solid">${t('subscribe')}</button><p role="status"></p></form>`;
+    case 'journal':
+      body = titleBlock('journal','journalHeadline','intro') + `<label>${t('find')}<input type="search" id="journal-search"></label>` + entry('article', t('article'), '01') + entry('article/1', t('otherArticle'), '02') + `<p id="journal-empty" hidden>${t('empty')}</p><form id="newsletter"><h3>${t('newsletter')}</h3><label>${t('email')}<input type="email" required></label><button class="solid">${t('subscribe')}</button><p role="status"></p></form>`;
       break;
     case 'article':
       body = `<h1>${t(i ? 'otherArticle' : 'article')}</h1><p>${t(i ? 'otherBody' : 'articleBody')}</p>`;
       break;
     case 'careers':
-      body = `<h1>${t('careers')}</h1>` + entry('job', 'Creative Developer', '01');
+      body = titleBlock('careers','careersHeadline','intro') + entry('job', 'Creative Developer', '01');
       break;
     case 'job':
       body = `<h1>Creative Developer</h1><p>${t('productText')}</p>${link('apply', t('apply'))}`;
       break;
     case 'apply':
     case 'inquiry':
-      body = `<h1>${t(page === 'apply' ? 'apply' : 'inquiry')}</h1><form id="nova-form"><label>${t('email')}<input name="email" type="email" required></label><label>${t('brief')}<textarea name="brief" required minlength="8"></textarea></label><button class="solid">${t('send')} →</button></form><article id="nova-review" hidden><h2>${t('review')}</h2><p></p><button data-edit>${t('edit')}</button><button data-confirm class="solid">${t('confirm')}</button></article><p id="nova-done" role="status"></p>`;
+      body = titleBlock(page === 'apply' ? 'careers' : 'inquiry',page === 'apply' ? 'careersHeadline' : 'inquiryHeadline','intro') + `<form id="nova-form"><label>${t('email')}<input name="email" type="email" required></label><label>${t('brief')}<textarea name="brief" required minlength="8"></textarea></label><button class="solid">${t('send')} →</button></form><article id="nova-review" hidden><h2>${t('review')}</h2><p></p><button data-edit>${t('edit')}</button><button data-confirm class="solid">${t('confirm')}</button></article><p id="nova-done" role="status"></p>`;
       break;
     default:
       body = `<h1>${t('headline')}</h1><p>${t('intro')}</p>` + works.map((w, i) => entry('case/' + i, w, t(services[i]))).join('');
@@ -109,7 +118,7 @@ export function novaPage(language) {
   queueMicrotask(() => {
     const journal = document.querySelector('#journal-search');
     if (journal) journal.oninput = () => {
-      const items = [...document.querySelectorAll('.nova article')];
+      const items = [...document.querySelectorAll('.nova-page>article')];
       items.forEach(item => item.hidden = !item.textContent.toLowerCase().includes(journal.value.toLowerCase()));
       document.querySelector('#journal-empty').hidden = items.some(item => !item.hidden);
     };
@@ -120,7 +129,7 @@ export function novaPage(language) {
       newsletter.reset();
     };
     const filter = document.querySelector('#industry');
-    if (filter) filter.onchange = () => document.querySelectorAll('.nova article').forEach((a, i) => a.hidden = filter.value !== '' && Number(filter.value) !== i);
+    if (filter) filter.onchange = () => document.querySelectorAll('.nova-work-grid article').forEach(a => a.hidden = filter.value !== '' && filter.value !== a.dataset.industry);
     const form = document.querySelector('#nova-form'),
       review = document.querySelector('#nova-review');
     if (!form) return;
@@ -141,5 +150,5 @@ export function novaPage(language) {
       document.querySelector('#nova-done').textContent = t('done');
     };
   });
-  return `<section class="nova nova-edition">${mast}<div class="nova-page">${page==='home'?plate(0):''}${body}</div><footer class="nova-credit"><b>NOVA Creative</b><small>${t('concept')}</small></footer></section>`;
+  return `<section class="nova nova-edition" data-dept="${section}">${mast}<div class="nova-page">${page==='home'?plate(0):''}${body}</div><footer class="nova-credit"><b>NOVA Creative</b><small>${t('concept')}</small></footer></section>`;
 }

@@ -72,7 +72,7 @@ home=function(){
    <dl class="k-dossier">
      <div><dt>Practice</dt><dd>Web engineering · Data automation</dd></div>
      <div><dt>Education</dt><dd>Informatics Engineering</dd></div>
-     <div><dt>Current role</dt><dd>PT. Wulandari Bangun Laksana</dd></div>
+     <div><dt>Current role</dt><dd>PT Wulandari Bangun Laksana Tbk</dd></div>
    </dl>`);
  const email = data.settings?.email;
  if (email && /^[^\s@?&]+@[^\s@?&]+\.[^\s@?&]+$/.test(email)) {
