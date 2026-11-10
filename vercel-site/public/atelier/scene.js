@@ -36,14 +36,18 @@ void main() {
   ink=mix(ink,blush,smoothstep(.68,.94,ribbon));
   vec3 pearl=mix(vec3(.965,.96,.92),ink,smoothstep(.11,.45,ribbon));
   vec3 lightDir=normalize(vec3(-.42,.68,.76));
+  vec3 fillDir=normalize(vec3(.72,-.18,.42));
   vec3 halfDir=normalize(lightDir+vec3(0.,0.,1.));
   float diffuse=max(0.,dot(n,lightDir));
+  float fill=max(0.,dot(n,fillDir));
   float wrap=max(0.,(dot(n,lightDir)+.34)/1.34);
-  float spec=pow(max(0.,dot(n,halfDir)),58.);
+  float broadSpec=pow(max(0.,dot(n,halfDir)),18.);
+  float sharpSpec=pow(max(0.,dot(n,halfDir)),78.);
   float fresnel=pow(1.-max(0.,n.z),3.2);
   float occlusion=.78+.22*max(0.,n.y);
-  vec3 col=pearl*(.24+.52*wrap+.24*diffuse)*occlusion;
-  col+=vec3(.92,.94,1.)*spec*.78+mix(vec3(.08,.12,.18),ink,.34)*fresnel*.38;
+  float grain=.985+.015*sin(gl_FragCoord.x*1.71+gl_FragCoord.y*2.13);
+  vec3 col=pearl*(.22+.48*wrap+.24*diffuse+.08*fill)*occlusion*grain;
+  col+=vec3(.92,.94,1.)*(sharpSpec*.72+broadSpec*.11)+mix(vec3(.08,.12,.18),ink,.34)*fresnel*.42;
   col=col/(col+vec3(.16));
   gl_FragColor=vec4(col,1.);
 }`;
@@ -107,8 +111,8 @@ function frameReporter(canvas) {
 }
 
 function interaction(canvas) {
-  const target={x:0,y:0,pressed:false,proximity:0};
-  const start={x:0,y:0,captured:false};
+  const target={x:0,y:0,pressed:false,proximity:0,velocityX:0,velocityY:0,pointerType:'mouse'};
+  const start={x:0,y:0,captured:false,lastX:0,lastY:0,lastAt:0};
   function normalise(event) {
     const rect=canvas.getBoundingClientRect();
     const x=(event.clientX-rect.left)/Math.max(1,rect.width)*2-1;
@@ -120,12 +124,22 @@ function interaction(canvas) {
   function down(event) {
     normalise(event);
     target.pressed=true;
+    target.pointerType=event.pointerType||'mouse';
     start.x=event.clientX;
     start.y=event.clientY;
+    start.lastX=event.clientX;
+    start.lastY=event.clientY;
+    start.lastAt=event.timeStamp;
     start.captured=false;
   }
   function move(event) {
     normalise(event);
+    const elapsed=Math.max(8,event.timeStamp-start.lastAt);
+    target.velocityX=target.velocityX*.55+(event.clientX-start.lastX)/elapsed*.45;
+    target.velocityY=target.velocityY*.55+(event.clientY-start.lastY)/elapsed*.45;
+    start.lastX=event.clientX;
+    start.lastY=event.clientY;
+    start.lastAt=event.timeStamp;
     if(!target.pressed) return;
     const dx=event.clientX-start.x;
     const dy=event.clientY-start.y;
@@ -145,6 +159,8 @@ function interaction(canvas) {
       target.x=0;
       target.y=0;
       target.proximity=0;
+      target.velocityX=0;
+      target.velocityY=0;
     }
   }
   const listeners=[
@@ -238,9 +254,11 @@ export function mountScene(canvas,reduced) {
     last=now;
     reportFrame(milliseconds);
     if(!reduced) time+=dt;
-    const motionScale=reduced?0:.26;
-    springStep(orientationX,input.target.x*motionScale,dt,6.5,.92,2.2);
-    springStep(orientationY,-input.target.y*motionScale*.72,dt,6.5,.92,2.2);
+    const motionScale=reduced?0:(input.target.pointerType==='touch'?.32:.26);
+    const kineticX=Math.max(-.12,Math.min(.12,input.target.velocityX*.07));
+    const kineticY=Math.max(-.10,Math.min(.10,input.target.velocityY*.06));
+    springStep(orientationX,input.target.x*motionScale+kineticX,dt,6.5,.92,2.2);
+    springStep(orientationY,-input.target.y*motionScale*.72-kineticY,dt,6.5,.92,2.2);
     springStep(followX,input.target.x*.022,dt,7.5,1,1.1);
     springStep(followY,-input.target.y*.017,dt,7.5,1,1.1);
     const burstTarget=input.target.pressed ? .76 : input.target.proximity*input.target.proximity*.16;
@@ -248,6 +266,8 @@ export function mountScene(canvas,reduced) {
     const gestureX=Math.max(-1,Math.min(1,(input.target.x-previousPointer.x)/Math.max(.008,dt)*.03));
     const gestureY=Math.max(-1,Math.min(1,(previousPointer.y-input.target.y)/Math.max(.008,dt)*.03));
     previousPointer={x:input.target.x,y:input.target.y};
+    input.target.velocityX*=Math.pow(.018,dt);
+    input.target.velocityY*=Math.pow(.018,dt);
     gl.viewport(0,0,canvas.width,canvas.height);
     gl.clear(gl.COLOR_BUFFER_BIT|gl.DEPTH_BUFFER_BIT);
     gl.useProgram(resources.program);
@@ -350,12 +370,16 @@ function softwareScene(canvas,reduced) {
     last=now;
     reportFrame(milliseconds);
     if(!reduced) time+=dt;
-    const motionScale=reduced?0:.18;
-    springStep(yaw,input.target.x*motionScale,dt,6.5,.95,1.8);
-    springStep(pitch,-input.target.y*motionScale*.65,dt,6.5,.95,1.8);
+    const motionScale=reduced?0:(input.target.pointerType==='touch'?.23:.18);
+    const kineticX=Math.max(-.08,Math.min(.08,input.target.velocityX*.05));
+    const kineticY=Math.max(-.07,Math.min(.07,input.target.velocityY*.04));
+    springStep(yaw,input.target.x*motionScale+kineticX,dt,6.5,.95,1.8);
+    springStep(pitch,-input.target.y*motionScale*.65-kineticY,dt,6.5,.95,1.8);
     springStep(followX,input.target.x*10,dt,7.5,1,70);
     springStep(followY,-input.target.y*7,dt,7.5,1,70);
     springStep(scale,input.target.pressed ? .965 : 1,dt,8,1,1.5);
+    input.target.velocityX*=Math.pow(.018,dt);
+    input.target.velocityY*=Math.pow(.018,dt);
     context.setTransform(dpr,0,0,dpr,0,0);
     context.clearRect(0,0,width,height);
     context.save();

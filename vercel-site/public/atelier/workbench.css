@@ -37,4 +37,5 @@
 .atelier-workbench .workspace {margin:0;}
 @media(min-width:960px){.atelier-workbench .document-desk{display:grid;grid-template-columns:minmax(240px,.8fr) minmax(320px,1.2fr);align-items:start;}.atelier-workbench .commerce-cart{position:sticky;top:24px;align-self:start;}}
 @media(max-width:650px){.student-path{grid-template-columns:repeat(5,minmax(142px,1fr))}.student-path button{min-height:66px}.atelier-workbench .table-scroll{max-width:calc(100vw - 8px);overscroll-behavior-inline:contain}.atelier-workbench .desk-actions>*{min-height:44px;flex:1 1 170px}}
+.app-status{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap}
 

@@ -3,6 +3,11 @@ import { locales, names } from './words.js';
 import { controls } from './legacy-words.js';
 const shell = document.querySelector('.apprail');
 const kind = shell.dataset.kind;
+const runtimeStatus=document.createElement('span');
+runtimeStatus.className='app-status';
+runtimeStatus.setAttribute('role','status');
+runtimeStatus.setAttribute('aria-live','polite');
+shell.append(runtimeStatus);
 const targets = {
   manga: ['.manga-direction,.manga-mode,.manga-open', '.manga-bookmark,.manga-next'],
   attendance: ['#att-in,#att-out', '#att-filter,#att-export'],
@@ -42,6 +47,10 @@ try {
   progress = JSON.parse(sessionStorage.getItem(key)) || progress;
 } catch {}
 const text = line => line.split('|')[Math.max(0, locales.indexOf(lang))];
+const statusText=(en,id,fr,es)=>({id,fr,es}[lang]||en);
+window.addEventListener('error',()=>{runtimeStatus.textContent=statusText('This demo hit an error. Reload the page and try again.','Demo mengalami error. Muat ulang halaman lalu coba lagi.','Une erreur est survenue. Rechargez la page.','Se produjo un error. Recarga la página.');});
+window.addEventListener('unhandledrejection',()=>{runtimeStatus.textContent=statusText('The last action could not finish. Try again.','Aksi terakhir belum dapat diselesaikan. Coba lagi.','La dernière action n’a pas abouti. Réessayez.','La última acción no terminó. Inténtalo de nuevo.');});
+document.addEventListener('click',event=>{const control=event.target.closest('button,a');if(!control||control.disabled)return;const marker=`${control.id} ${control.textContent}`.toLowerCase();if(!/export|download|unduh|csv|xlsx|pdf/.test(marker))return;queueMicrotask(()=>{runtimeStatus.textContent=statusText('Download requested. Check your browser downloads.','Unduhan diminta. Periksa unduhan browser.','Téléchargement demandé. Consultez les téléchargements.','Descarga solicitada. Revisa las descargas.');});},true);
 const picker = document.createElement('select');
 picker.setAttribute('aria-label', 'English / Indonesia / Français / Español');
 locales.forEach((code, i) => picker.add(new Option(names[i], code, false, code === lang)));

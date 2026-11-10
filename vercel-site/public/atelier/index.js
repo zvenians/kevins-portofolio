@@ -71,13 +71,19 @@ function skillsSummary() {
 let step = 0,
   brief = {};
 let libraryGroup = 'all';
+const contactCopy={
+  en:{preparing:'Preparing your email draft…',error:'The email draft could not be prepared. Check your connection and try again.'},
+  id:{preparing:'Menyiapkan draf email…',error:'Draf email belum dapat disiapkan. Periksa koneksi lalu coba lagi.'},
+  fr:{preparing:'Préparation du brouillon…',error:'Le brouillon ne peut pas être préparé. Vérifiez la connexion et réessayez.'},
+  es:{preparing:'Preparando el borrador…',error:'No se pudo preparar el borrador. Revisa la conexión e inténtalo de nuevo.'}
+};
 try {
   brief = JSON.parse(sessionStorage.getItem('atelier.brief') || '{}') || {};
 } catch {}
 const steps = [['type', 'existing', 'scope', 'audience'], ['budget', 'time'], ['name', 'email']];
 function inquiry() {
   const keys = steps[step];
-  return `<div class="flow"><aside>${['project', 'plan', 'contact', 'review'].map((k, i) => `<p class="${i === step ? 'current' : ''}">0${i + 1}　${t(k)}</p>`).join('')}</aside><form id="inquiry"><h2>${t(['project', 'plan', 'contact', 'review'][step])}</h2>${keys ? keys.map(k => `<label>${t(k)}${k === 'scope' ? `<textarea name="scope" required maxlength="2500">${esc(brief.scope)}</textarea>` : `<input name="${k}" type="${k === 'time' ? 'date' : k === 'email' ? 'email' : 'text'}" value="${esc(brief[k])}" maxlength="160" required>`}</label>`).join('') : `<dl>${steps.flat().map(k => `<dt>${t(k)}</dt><dd>${esc(brief[k])}</dd>`).join('')}</dl><p>${t('mailhint')}</p>`}<div class="actions">${step ? `<button type="button" id="back">${t('back')}</button>` : ''}<button class="solid">${t(keys ? 'next' : 'compose')} →</button></div></form></div>`;
+  return `<div class="flow"><aside aria-label="${t('review')}">${['project', 'plan', 'contact', 'review'].map((k, i) => `<p class="${i === step ? 'current' : ''}" ${i===step?'aria-current="step"':''}>0${i + 1}　${t(k)}</p>`).join('')}</aside><form id="inquiry"><h2 tabindex="-1">${t(['project', 'plan', 'contact', 'review'][step])}</h2>${keys ? keys.map(k => `<label>${t(k)}${k === 'scope' ? `<textarea name="scope" required maxlength="2500">${esc(brief.scope)}</textarea>` : `<input name="${k}" type="${k === 'time' ? 'date' : k === 'email' ? 'email' : 'text'}" value="${esc(brief[k])}" maxlength="160" required>`}</label>`).join('') : `<dl>${steps.flat().map(k => `<dt>${t(k)}</dt><dd>${esc(brief[k])}</dd>`).join('')}</dl><p>${t('mailhint')}</p>`}<p class="contact-status" role="status" aria-live="polite"></p><div class="actions">${step ? `<button type="button" id="back">${t('back')}</button>` : ''}<button class="solid">${t(keys ? 'next' : 'compose')} →</button></div></form></div>`;
 }
 let dispose;
 let scenePaused = reduced;
@@ -193,16 +199,33 @@ function render() {
       } catch {}
     }
     form.oninput = stash;
-    form.onsubmit = e => {
+    form.onsubmit = async e => {
       e.preventDefault();
       stash();
       if (step < 3) {
         step++;
         render();
-        $('#inquiry h2').scrollIntoView({
-          block: 'nearest'
-        });
-      } else location.href = 'mailto:' + encodeURIComponent(email) + '?subject=' + encodeURIComponent(brief.type) + '&body=' + encodeURIComponent(steps.flat().map(k => t(k) + ': ' + brief[k]).join('\n'));
+        const heading=$('#inquiry h2');
+        heading.scrollIntoView({block:'nearest'});
+        heading.focus({preventScroll:true});
+      } else {
+        const submit=form.querySelector('button[type="submit"],button:not([type])');
+        const status=form.querySelector('.contact-status');
+        submit.disabled=true;
+        form.setAttribute('aria-busy','true');
+        status.textContent=contactCopy[language].preparing;
+        try {
+          const response=await fetch('/api/contact',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify(brief)});
+          const result=await response.json();
+          if(!response.ok||typeof result.handoffUrl!=='string'||!result.handoffUrl.startsWith('mailto:'))throw new Error(result.error||'handoff unavailable');
+          location.href=result.handoffUrl;
+        } catch {
+          status.textContent=contactCopy[language].error;
+          submit.disabled=false;
+          form.removeAttribute('aria-busy');
+          submit.focus({preventScroll:true});
+        }
+      }
     };
     if ($('#back')) $('#back').onclick = () => {
       stash();
@@ -254,6 +277,15 @@ document.addEventListener('click', e => {
   if (e.target.closest('[data-menu]')) openPanel('menu');
   if (e.target.closest('[data-settings]')) openPanel('prefs');
   if (e.target.closest('[data-enter],[data-close]')) panel.close();
+});
+document.addEventListener('click',event=>{
+  const link=event.target.closest('a[href]');
+  if(!link||event.defaultPrevented||event.button!==0||event.metaKey||event.ctrlKey||event.shiftKey||event.altKey||link.target||link.hasAttribute('download'))return;
+  const destination=new URL(link.href,location.href);
+  if(destination.origin!==location.origin||destination.pathname===location.pathname&&destination.search===location.search)return;
+  document.documentElement.dataset.navigation='pending';
+  const live=document.querySelector('#route-status');
+  if(live)live.textContent=language==='id'?'Membuka halaman…':'Opening page…';
 });
 panel.addEventListener('close', () => {
   if (panel.className === 'prefs') save('visited', 'yes');
