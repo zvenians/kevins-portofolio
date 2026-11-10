@@ -1045,7 +1045,7 @@ jangan biarkan decision penting hanya berada di:
 
 - chat
 - commit message
-- Claude context
+- assistant conversations
 - developer memory
 
 source of truth harus berada di repository.
@@ -1142,7 +1142,7 @@ jika sebuah technique sangat experimental tetapi membuat codebase sulit dipeliha
 
 # 71. creative freedom rule
 
-Claude/OpenCode memiliki kebebasan untuk:
+Kontributor memiliki kebebasan untuk:
 
 - memilih implementation detail
 - membuat animation
@@ -1194,7 +1194,7 @@ technical novelty
 
 # 73. no silent deviation
 
-Claude tidak boleh secara diam-diam:
+Perubahan tidak boleh dilakukan tanpa dokumentasi dan persetujuan ketika mencakup:
 
 - mengganti Firebase
 - mengganti routing strategy

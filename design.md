@@ -86,13 +86,13 @@ website tetap terasa seperti milik seseorang, bukan perusahaan.
 
 # 4. anti generic rule
 
-hindari visual pattern portfolio AI-generated yang terlalu umum.
+hindari pola portofolio generik yang tidak memiliki karakter proyek.
 
 jangan menggunakan kombinasi berikut hanya karena sedang populer:
 
 - excessive glassmorphism
 - floating gradient blobs
-- purple-blue AI gradients
+- purple-blue gradients without a clear visual purpose
 - excessive rounded cards
 - infinite glowing borders
 - generic 3D spheres
