@@ -29,6 +29,8 @@ describe('Real project folio matches the diagonal motion reference', () => {
     expect(cycles[0].querySelectorAll('a.showpiece')).toHaveLength(6);
     const first = [...cycles[0].querySelectorAll<HTMLAnchorElement>('a')];
     expect(new Set(first.map(a => a.style.getPropertyValue('--folio-angle'))).size).toBe(6);
+    expect(new Set(first.map(a => a.style.getPropertyValue('--folio-top'))).size).toBe(6);
+    expect(new Set(first.map(a => a.style.getPropertyValue('--folio-left'))).size).toBeGreaterThanOrEqual(5);
     expect(first.every(a => a.getAttribute('tabindex') !== '-1')).toBe(true);
     expect(first[1].querySelector('img')?.getAttribute('src')).toBe('/project-shots/wedding-demo-live.png');
     for (const image of first.map(a => a.querySelector('img'))) {
@@ -47,10 +49,14 @@ describe('Real project folio matches the diagonal motion reference', () => {
     expect(css).toContain('rotate(var(--folio-angle))');
   });
 
-  it('has a readable reduced-motion layout without duplicated visible cards', () => {
-    expect(css).toContain('html[data-motion=reduced] .project-folio .folio-cycle:nth-child(2) {display:none;}');
+  it('keeps the same angled fan in reduced motion, with no nested scrollbar', () => {
     expect(css).toContain('@media(prefers-reduced-motion:reduce)');
-    expect(css).toContain('scroll-snap-type:y proximity');
+    expect(css).toContain('html[data-motion=reduced] .project-folio .folio-track {animation:none!important;will-change:auto;}');
+    expect(css).toContain('top:var(--folio-top)');
+    expect(css).toContain('left:var(--folio-left)');
+    expect(css).toContain('max-width:1120px');
+    expect(css).not.toContain('scroll-snap-type:y proximity');
+    expect(css).not.toContain('.project-folio .folio-cycle {height:auto;display:flex;flex-direction:column');
     expect(source).toContain('mountProjectFolio()');
   });
 });
