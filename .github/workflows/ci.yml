@@ -24,6 +24,10 @@ jobs:
         run: |
           npm ci
           npm ci --prefix apps-script
+      - name: Build source-backed public assets
+        run: |
+          node apps-script/build.mjs
+          node vercel-site/sync.mjs
       - name: Run unit and integration tests
         run: npm test
       - name: Check source code
