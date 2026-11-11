@@ -4,6 +4,16 @@ export const GAS_URL = 'https://script.google.com/macros/s/AKfycbzEszzwReW4V9uZC
 export type Project = { slug: string; name: string; title: string; summary: string; category: string; status: string; visibility: string; technologies: string[]; disciplines: string[]; evidence: string[]; visual: string; challenge: string; approach: string; implementation: string; outcome: string; tradeoff: string; featured?: boolean; order?: number; repositoryUrl?: string; liveUrl?: string; coverUrl?: string; mediaId?: string; revision?: string };
 export type Content = { projects: Project[]; resume: null | { name: string; uploadedAt: string }; settings: Record<string, string>; version?: string; contentSource?: 'live' | 'snapshot' };
 
+const editorialNames: Record<string,string> = {
+  'galilea-web-portal':'Sistem Informasi Ibadah & Jemaat',
+  'galilea-digital-archive':'Sistem Arsip Digital Jemaat',
+  'majelis-galilea':'Sistem Administrasi Majelis',
+  'naomi-rouli':'Pesan Interaktif untuk Pasangan',
+  'atlas-logistics-command-center':'Logistics Command Center',
+  'digital-wedding-invitation':'Undangan Pernikahan Digital'
+};
+const editorialProject = (p: Project): Project => editorialNames[p.slug] ? { ...p, name: editorialNames[p.slug] } : p;
+
 // Browser-local exhibits ship with the frontend even if the owner Sheet has
 // not been synchronized yet. A published owner record of the same slug wins.
 
@@ -15,7 +25,7 @@ function withBundledProjects(content: Content): Content {
   const bundledProjects = fallbackProjects.filter(
     p => p.visibility === 'public' && ['Interactive Demo', 'Portfolio Project'].includes(p.status) && !remoteSlugs.has(p.slug)
   );
-  return { ...content, projects: [...remoteProjects, ...bundledProjects].map(p => p.status === 'Interactive Demo' && ['wedding','manga','attendance','booking','commerce','archive'].includes(p.visual) ? { ...p, category: 'Websites' } : p).sort((a, b) => (Number(a.order) || 0) - (Number(b.order) || 0)) };
+  return { ...content, projects: [...remoteProjects, ...bundledProjects].map(p => p.status === 'Interactive Demo' && ['wedding','manga','attendance','booking','commerce','archive'].includes(p.visual) ? { ...p, category: 'Websites' } : p).map(editorialProject).sort((a, b) => (Number(a.order) || 0) - (Number(b.order) || 0)) };
 }
 
 let cached: Content | null = null;
@@ -40,7 +50,7 @@ async function refreshContent(): Promise<Content> {
     return cached;
   } catch {
     console.warn('Content service unavailable; serving cached or bundled public content.');
-    cached = { ...(cached || fallback as Content), contentSource: 'snapshot' };
+    cached = { ...withBundledProjects(cached || fallback as Content), contentSource: 'snapshot' };
     expiresAt = Date.now() + 15000;
     return cached;
   }
