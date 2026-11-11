@@ -13,7 +13,7 @@ function withBundledProjects(content: Content): Content {
   const remoteProjects = content.projects.filter(p => p.visibility === 'public').map(project => ({ ...fallbackBySlug.get(project.slug), ...project } as Project));
   const remoteSlugs = new Set(remoteProjects.map(p => p.slug));
   const bundledProjects = fallbackProjects.filter(
-    p => p.visibility === 'public' && p.status === 'Interactive Demo' && !remoteSlugs.has(p.slug)
+    p => p.visibility === 'public' && ['Interactive Demo', 'Portfolio Project'].includes(p.status) && !remoteSlugs.has(p.slug)
   );
   return { ...content, projects: [...remoteProjects, ...bundledProjects].map(p => p.status === 'Interactive Demo' && ['wedding','manga','attendance','booking','commerce','archive'].includes(p.visual) ? { ...p, category: 'Websites' } : p).sort((a, b) => (Number(a.order) || 0) - (Number(b.order) || 0)) };
 }
