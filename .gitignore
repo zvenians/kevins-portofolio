@@ -51,6 +51,7 @@ secrets/
 credentials/
 
 # testing
+/artifacts/
 coverage/
 .nyc_output/
 
@@ -100,5 +101,3 @@ sa-key.json
 *sa-key*.json
 *.json.secret
 fix_imports.js
-  
- 

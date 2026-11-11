@@ -256,93 +256,89 @@ html[data-motion=full] .missing-orbit {animation:missing-orbit 14s ease-in-out i
 @media(max-width:760px){.resume-page,.missing-page{min-height:calc(100svh - 110px);justify-content:flex-end;padding-bottom:70px}.missing-orbit{top:10%;right:12%;width:50vw}.resume-file{align-items:stretch}.resume-file button{width:100%}}
 @media(max-width:760px){.resume-current{box-shadow:7px 7px 0 #d9dcd0;margin-right:7px}.resume-file a.solid{width:100%;justify-content:center}}
 
-/* Reference folio: overlapping screenshots travel on one uninterrupted diagonal conveyor. */
-.folio-tools,.skill-tools { display:flex;align-items:center;justify-content:space-between;gap:18px;margin:0 0 22px; }
-.folio-tools p { max-width:52ch;color:var(--muted);line-height:1.5; }
-.folio-tools button,.skill-tools button,.demo-controls button { min-height:44px;padding:9px 14px;border:1px solid var(--line);border-radius:999px;color:inherit;white-space:nowrap; }
+/* Real project folio: a fixed fan deck and one measured group animation.
+   In reduced motion the same composition remains visible, but does not move. */
+.folio-tools,.skill-tools {display:flex;align-items:center;justify-content:space-between;gap:18px;margin:0 0 22px;}
+.folio-tools p {max-width:52ch;color:var(--muted);line-height:1.5;}
+.folio-tools button,.skill-tools button,.demo-controls button {min-height:44px;padding:9px 14px;border:1px solid var(--line);border-radius:999px;color:inherit;white-space:nowrap;}
 .showcase.project-folio {
- --folio-step:clamp(152px,16vw,218px);
- --folio-width:min(62%,690px);
- position:relative;
- display:block;
- height:clamp(760px,78vw,960px);
- padding:0;
- overflow:hidden;
- isolation:isolate;
- background:#d1d2d2;
- border:1px solid #b9babb;
+ --folio-width:min(58%,640px);
+ --folio-x:-32px;
+ --folio-y:-180px;
+ position:relative;display:block;
+ width:100%;max-width:1120px;height:clamp(700px,76vw,860px);
+ margin-inline:auto;padding:0;
+ overflow:hidden;isolation:isolate;
+ background:#d5d7d7;
+ border:1px solid #afb3b4;
 }
 .project-folio::before,.project-folio::after {
- content:"";position:absolute;left:0;right:0;z-index:30;pointer-events:none;height:9%;
+ content:"";position:absolute;left:0;right:0;height:5%;z-index:20;pointer-events:none;
 }
-.project-folio::before {top:0;background:linear-gradient(#d1d2d2a8,transparent);}
-.project-folio::after {bottom:0;background:linear-gradient(transparent,#d1d2d2b8);}
+.project-folio::before {top:0;background:linear-gradient(#d5d7d7dd,transparent);}
+.project-folio::after {bottom:0;background:linear-gradient(transparent,#d5d7d7dd);}
 .project-folio .folio-track {
- position:absolute;top:calc(var(--folio-step) * -1);left:0;width:100%;height:max-content;
- display:flex;flex-direction:column;will-change:transform;
+ position:absolute;inset:0;width:100%;height:100%;
+ transform-origin:50% 48%;will-change:transform;
 }
-.project-folio .folio-cycle {
- display:grid;grid-template-columns:1fr;
- grid-template-rows:repeat(var(--folio-count),var(--folio-step));
- width:100%;height:auto;
- flex:none;
-}
+.project-folio .folio-cycle {position:relative;width:100%;height:100%;}
 .showcase.project-folio .showpiece {
- position:relative;top:auto;left:calc(14% + var(--folio-shift));
+ position:absolute;top:var(--folio-top);left:var(--folio-left);
  z-index:calc(1 + var(--folio-index));
- display:block;
- width:var(--folio-width);height:auto;aspect-ratio:1.62;
- padding:6px;margin:0;overflow:hidden;
- border:1px solid #929493;border-radius:4px;
- background:#f6f6f3;color:#15191d;
- box-shadow:0 4px 7px #1c222638,0 17px 36px #15191f50;
- transform:rotate(-14deg);
+ display:block;width:var(--folio-width);height:auto;aspect-ratio:1.61;
+ margin:0;padding:4px;overflow:visible;
+ border:1px solid #b6babb;border-radius:3px;
+ background:#eff0ee;color:#f7f7f3;
+ box-shadow:0 6px 12px #12191d27,0 21px 37px #131a1f4d;
+ transform:rotate(var(--folio-angle));
  transform-origin:center;
- transition:filter .25s,box-shadow .25s;
+ transition:filter .24s ease,box-shadow .24s ease;
  text-decoration:none;
 }
-.project-folio .folio-cycle:nth-child(2) .showpiece {z-index:calc(11 + var(--folio-index));}
-.project-folio .showpiece:is(:hover,:focus-visible){
+.project-folio .showpiece:is(:hover,:focus-visible) {
  z-index:40;filter:brightness(1.04);
- box-shadow:0 7px 12px #16191e43,0 27px 54px #15191e75;
+ box-shadow:0 9px 18px #131a1f50,0 32px 60px #1118217a;
 }
-.project-folio .shot {position:absolute;inset:6px;display:block;width:auto;height:auto;aspect-ratio:auto;overflow:hidden;background:#202529;}
+.project-folio .showpiece:focus-visible {outline:3px solid #1b465b;outline-offset:5px;}
+.project-folio .shot {
+ position:absolute;inset:4px;width:auto;height:auto;display:block;
+ overflow:hidden;aspect-ratio:auto;background:#182431;
+}
 .project-folio .shot img {
- position:relative;display:block;width:100%;height:100%;object-fit:cover;object-position:center top;
+ position:relative;display:block;width:100%;height:100%;
+ object-fit:cover;object-position:top center;
  max-height:none;box-shadow:none;
+ transition:none;
 }
+.project-folio .showpiece:hover .shot img {transform:none;}
 .project-folio .shot-fallback {
- position:absolute;inset:0;display:grid;place-items:center;padding:30px;
- font:italic clamp(20px,3vw,38px)/1.04 Georgia,serif;
- text-align:center;color:#f4f0e7;background:#182432;
+ position:absolute;inset:0;display:grid;place-items:center;padding:24px;
+ font:italic clamp(18px,2.8vw,35px)/1.04 Georgia,serif;
+ color:#f1eee9;text-align:center;background:#172333;
 }
 .project-folio .shot.is-unavailable img {display:none;}
 .project-folio .folio-label {
- position:absolute;left:6px;right:6px;bottom:6px;
- display:flex;align-items:center;justify-content:space-between;gap:12px;
- min-height:42px;padding:9px 13px;
- color:#f4f4f1;background:linear-gradient(90deg,#111820ed,#111820bd);
- font:600 clamp(11px,1.05vw,14px)/1.3 ui-sans-serif,system-ui,sans-serif;
- letter-spacing:.015em;
+ position:absolute;left:4px;right:4px;top:4px;
+ display:flex;align-items:center;justify-content:space-between;gap:10px;
+ min-height:32px;padding:7px 11px;
+ background:#101922d9;color:#faf9f5;
+ font:600 clamp(10px,1.1vw,13px)/1.25 ui-sans-serif,system-ui,sans-serif;
+ letter-spacing:.005em;pointer-events:none;
 }
 .project-folio .folio-label b {font-weight:600;text-wrap:balance;}
-.project-folio .folio-label svg {width:18px;height:18px;flex:none;}
+.project-folio .folio-label svg {flex:none;width:17px;height:17px;}
 .project-folio .folio-counter {
- position:absolute;bottom:19px;right:18px;z-index:40;pointer-events:none;
- padding:7px 10px;background:#f3f2eece;color:#303b40;
- font:600 10px/1 ui-monospace,monospace;letter-spacing:.08em;
+ position:absolute;right:14px;bottom:12px;z-index:21;pointer-events:none;
+ padding:7px 9px;background:#eaebeaed;color:#2e373b;
+ font:600 10px/1 ui-monospace,monospace;letter-spacing:.06em;
 }
-@keyframes folio-conveyor {
- from {transform:translate3d(0,0,0);}
- to {transform:translate3d(0,-50%,0);}
+@keyframes folio-reference {
+ 0%,13.392857%,80.357143%,100% {transform:translate3d(0,0,0) rotate(0deg);}
+ 39.285714%,57.142857% {transform:translate3d(var(--folio-x),var(--folio-y),0) rotate(-15deg);}
 }
 html[data-motion=full] .project-folio .folio-track {
- animation:folio-conveyor 20s linear infinite;
+ animation:folio-reference 5.6s cubic-bezier(.45,0,.55,1) infinite;
 }
-@media(hover:hover) {
- .project-folio .showpiece:focus-visible {outline:3px solid #193d59;outline-offset:5px;}
-}
-/* Keep a keyboard-selected moving link stable without introducing a pause button. */
 html[data-motion=full] .project-folio:focus-within .folio-track {animation-play-state:paused;}
 
 /* Demo theatre: one active application, lateral transitions and six compact choices. */
@@ -382,18 +378,19 @@ html[data-motion=full] .skill-track { animation:skill-conveyor calc(52s + var(--
 @media(max-width:800px){
  .folio-tools {align-items:flex-start;flex-direction:column;}
  .showcase.project-folio {
-  --folio-step:clamp(132px,36vw,162px);
-  --folio-width:min(82%,410px);
-  height:clamp(590px,170vw,740px);
+  --folio-width:74%;
+  --folio-x:calc(-19 * 100vw / 384);
+  --folio-y:calc(-120 * 100vw / 384);
+  height:clamp(680px,198vw,820px);
   width:calc(100% + var(--pad) * 2);
-  margin-inline:calc(var(--pad) * -1);
+  max-width:none;margin-inline:calc(var(--pad) * -1);
   border-inline:0;
  }
- .showcase.project-folio .showpiece {left:calc(9% + var(--folio-shift));padding:5px;}
- .project-folio .folio-label {min-height:36px;padding:7px 10px;font-size:11px;}
- .project-folio .shot {inset:5px;}
+ .showcase.project-folio .showpiece {left:calc(var(--folio-left) - 5%);padding:3px;}
+ .project-folio .shot {inset:3px;}
+ .project-folio .folio-label {left:3px;right:3px;top:3px;min-height:28px;padding:5px 9px;font-size:11px;}
  .project-folio .folio-counter {bottom:12px;right:12px;}
- html[data-motion=full] .project-folio .folio-track {animation-duration:18s;}
+ .project-folio::before,.project-folio::after {height:3%;}
  .brands.product-gallery.demo-theatre { grid-template-columns:1fr; }
  .demo-theatre > .demo-tabs { display:grid;grid-template-columns:repeat(3,1fr);border-right:0;border-bottom:1px solid var(--line); }
  .demo-tabs button { display:flex;flex-direction:column;gap:3px;min-width:0;min-height:72px;padding:10px;border-right:1px solid var(--line); }
@@ -416,18 +413,14 @@ html[data-motion=reduced] .demo-panel,
 html[data-motion=reduced] .skill-track {animation:none!important;}
 html[data-motion=reduced] .skill-window {overflow-x:auto;mask-image:none;}
 html[data-motion=reduced] .skill-track ul[aria-hidden=true] {display:none;}
-@media(prefers-reduced-motion:reduce){
- .showcase.project-folio {overflow-y:auto;overscroll-behavior-y:contain;scroll-snap-type:y proximity;}
- .project-folio .folio-track {position:relative;top:0;will-change:auto;}
- .project-folio .folio-cycle {height:auto;display:flex;flex-direction:column;gap:16px;padding:20px 0;}
- .project-folio .folio-cycle:nth-child(2) {display:none;}
- .showcase.project-folio .showpiece {left:auto;top:auto;align-self:center;width:min(82%,620px);transform:none;scroll-snap-align:center;}
+/* Keeping the static fan is intentional: reduced motion must not create
+   a nested scrollbar, an unrelated grid, or unrotated card stack. */
+@media(prefers-reduced-motion:reduce) {
+ .project-folio .folio-track {animation:none!important;will-change:auto;}
+ .project-folio .showpiece {transition:none!important;}
 }
-html[data-motion=reduced] .showcase.project-folio {overflow-y:auto;overscroll-behavior-y:contain;scroll-snap-type:y proximity;}
-html[data-motion=reduced] .project-folio .folio-track {position:relative;top:0;will-change:auto;}
-html[data-motion=reduced] .project-folio .folio-cycle {height:auto;display:flex;flex-direction:column;gap:16px;padding:20px 0;}
-html[data-motion=reduced] .project-folio .folio-cycle:nth-child(2) {display:none;}
-html[data-motion=reduced] .showcase.project-folio .showpiece {left:auto;top:auto;align-self:center;width:min(82%,620px);transform:none;scroll-snap-align:center;}
+html[data-motion=reduced] .project-folio .folio-track {animation:none!important;will-change:auto;}
+html[data-motion=reduced] .project-folio .showpiece {transition:none!important;}
 
 /* Personal greeting follows the visitor's browser-local time without altering the hero layout. */
 .hero-text .visitor-greeting{display:block;margin-top:10px;color:var(--muted);font:600 12px/1.4 ui-monospace,monospace;letter-spacing:.06em;text-transform:uppercase}
