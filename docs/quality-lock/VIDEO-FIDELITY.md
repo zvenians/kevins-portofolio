@@ -29,3 +29,13 @@ This is measured conformance to the supplied motion tolerances, not a claim of p
 Anti-slop R-40 exception: no new pause/resume button, as explicitly requested by the owner. Keyboard focus pauses the parent; reduced motion presents a static scrollable list. The standalone Anti-slop and ui-main skill packages were unavailable; the explicit request and repository semantics guidance were followed.
 
 Reproduce with `node scripts/verify-folio.cjs <reference.mp4>` with Playwright resolvable through NODE_PATH and the public frontend running on port 3000. Evidence belongs to this local verification; CI results are checked separately on the PR.
+
+## Visual correction after the owner's desktop screenshot
+
+The owner-provided production screenshot showed an unrotated, centered list with an internal gray-stage scrollbar. This was not the intended fan: the previous `prefers-reduced-motion` and saved `data-motion=reduced` fallbacks changed the entire layout to a vertical scrolling list. That is a visual defect, independent of whether motion is enabled.
+
+This revision makes both modes share the **same diagonal six-card composition**. The normal mode animates only the parent through the previously calibrated 5.6-second choreography. Reduced motion disables animation but keeps every card's angle, offset, screenshot and link. The stage is clipped editorial artwork, not a separately scrolling region. Mobile cards have deliberate individual offsets and an increased width; desktop stage width is capped to avoid a huge empty gray canvas.
+
+CI now runs a real-browser screenshot check at 384×848, 390×844, 768×1024 and 1440×900 and uploads the latest **`real-project-visual-<run id>`** artifact with moving and reduced-motion screenshots. The screenshots previously committed under `artifacts/folio-fidelity/` were produced **before this geometry correction** and must not be treated as evidence for this revision. Check the latest CI artifact instead.
+
+Browser testing on real iOS/Android devices remains unverified. The older repository-wide release gate still applies.
