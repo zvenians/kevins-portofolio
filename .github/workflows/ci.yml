@@ -8,6 +8,10 @@ on:
 permissions:
   contents: read
 
+concurrency:
+  group: portfolio-ci-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
 jobs:
   test:
     name: Source and behavior tests
@@ -32,22 +36,17 @@ jobs:
         run: |
           node apps-script/build.mjs
           node vercel-site/sync.mjs
-      - name: Export generated changes for one-time source synchronization
+      - name: Verify generated assets match committed source
         run: |
-          node --input-type=module <<'NODE'
-          import { readFileSync } from 'node:fs';
-          import { gzipSync } from 'node:zlib';
-          import { execFileSync } from 'node:child_process';
-          const changes = execFileSync('git', ['status', '--porcelain', '-z', '--untracked-files=all'], { encoding: 'utf8' }).split('\0').filter(Boolean);
-          for (const change of changes) {
-            const status = change.slice(0,2), file = change.slice(3);
-            if (!/^(apps-script\/(?:Code\.gs|preview\/index\.html)|vercel-site\/generated\/(?:template\.ts|fallback\.json)|vercel-site\/public\/assets\/portfolio-[a-f0-9]{12}\.(?:js|css))$/.test(file)) continue;
-            if (status.includes('D')) { console.log('SYNC_DELETE:'+file); continue; }
-            const data = gzipSync(readFileSync(file), { level: 9 }).toString('base64');
-            const parts = data.match(/.{1,1500}/g) || [];
-            parts.forEach((part, i) => console.log('SYNC_BLOB:'+file+':'+(i+1)+'/'+parts.length+':'+part));
-          }
-          NODE
+          if ! git diff --quiet; then
+            echo "::error::Generated assets differ from the committed source. Run node apps-script/build.mjs and node vercel-site/sync.mjs, then commit their outputs."
+            git diff --name-only
+            exit 1
+          fi
+          if git status --porcelain --untracked-files=all | grep -E 'vercel-site/public/assets/portfolio-[a-f0-9]{12}\\.(css|js)' ; then
+            echo "::error::Untracked generated bundles detected. Commit the generated public assets."
+            exit 1
+          fi
       - name: Build the deployed Vercel frontend
         run: npm --prefix vercel-site run build
       - name: Run unit and integration tests
