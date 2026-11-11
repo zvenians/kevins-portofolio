@@ -278,8 +278,8 @@ html[data-motion=full] .project-folio .showpiece { animation:folio-breathe 10s e
 @media(hover:hover){html[data-motion=full] .project-folio .showpiece{transition:filter .25s,box-shadow .25s}html[data-motion=full] .project-folio .showpiece:is(:hover,:focus-visible){z-index:9;filter:saturate(1.08);box-shadow:0 4px #dedbd3,0 10px #727a78,0 34px 62px #0009}}
 
 /* Demo theatre: one active application, lateral transitions and six compact choices. */
-.brands.product-gallery.demo-theatre { display:grid;grid-template-columns:minmax(205px,.38fr) minmax(0,1.62fr);gap:0;border-block:1px solid var(--line);touch-action:pan-y; }
-.demo-tabs { display:flex;flex-direction:column;border-right:1px solid var(--line); }
+.brands.product-gallery.demo-theatre { display:grid;grid-template-columns:minmax(205px,.38fr) minmax(0,1.62fr);grid-auto-rows:auto;gap:0;border-block:1px solid var(--line);touch-action:pan-y; }
+.demo-tabs { grid-row:auto;display:flex;flex-direction:column;border-right:1px solid var(--line); }
 .demo-tabs button { display:grid;grid-template-columns:30px 1fr;gap:4px 10px;min-height:74px;padding:13px 15px;border-bottom:1px solid var(--line);text-align:left;color:var(--muted); }
 .demo-tabs button:last-child { border-bottom:0; }
 .demo-tabs button>span { grid-row:1/3;font:11px ui-monospace,monospace; }
@@ -287,14 +287,14 @@ html[data-motion=full] .project-folio .showpiece { animation:folio-breathe 10s e
 .demo-tabs button small { font-size:10px; }
 .demo-tabs button[aria-selected=true] { background:var(--fg);color:var(--bg); }
 .demo-tabs button[aria-selected=true] :is(strong,small) { color:var(--bg); }
-.demo-stage { min-width:0;padding:clamp(16px,3vw,42px);overflow:hidden; }
+.demo-stage { grid-column:auto;min-width:0;padding:clamp(16px,3vw,42px);overflow:hidden; }
 .demo-panel[hidden] { display:none; }
 .demo-stage .brand { min-height:clamp(350px,40vw,560px);height:auto; }
 .demo-stage .brand figure { min-height:250px; }
 .demo-controls { display:flex;align-items:center;gap:9px;margin-top:18px; }
 .demo-controls button { width:44px;padding:0; }
 .demo-controls output { min-width:62px;text-align:center;font:12px ui-monospace,monospace;color:var(--muted); }
-@keyframes demo-slide { from{opacity:.2;transform:translateX(42px) rotateY(-4deg)}to{opacity:1;transform:none} }
+@keyframes demo-slide { from{opacity:.2;transform:translateX(calc(var(--demo-direction,1) * 42px)) rotateY(calc(var(--demo-direction,1) * -4deg))}to{opacity:1;transform:none} }
 html[data-motion=full] .demo-panel:not([hidden]) { animation:demo-slide .5s cubic-bezier(.2,.75,.2,1) both; }
 .demo-panel .brief-case { margin-top:16px; }
 
@@ -342,6 +342,11 @@ html[data-motion=reduced] .skill-window{overflow-x:auto;mask-image:none}html[dat
 
 /* Project folio: depth and pointer parallax; demo theatre uses its own horizontal scene motion. */
 .showcase.project-folio{--folio-x:0deg;--folio-y:0deg;}
+.showcase.project-folio{--drag-y:0px;cursor:grab;transform:translate3d(0,var(--drag-y),0);transition:transform .35s cubic-bezier(.22,.8,.25,1);}
+.showcase.project-folio.is-dragging{cursor:grabbing;transition:none;}
+.project-folio.is-dragging .showpiece{pointer-events:none;animation-play-state:paused!important;}
+@keyframes folio-deck-flow{0%,100%{translate:0 18px}50%{translate:0 -58px}}
+@media(min-width:801px) and (prefers-reduced-motion:no-preference){html[data-motion=full] .showcase.project-folio:not(.is-dragging){animation:folio-deck-flow 13s ease-in-out infinite}}
 @media (hover:hover) and (prefers-reduced-motion:no-preference){
  html[data-motion=full] .project-folio .showpiece:is(:hover,:focus-visible){z-index:15;filter:brightness(1.045);box-shadow:0 8px #dad6cb,0 17px #6d7b84,0 45px 80px #000a;}
  .demo-stage{perspective:1200px;}
@@ -356,6 +361,13 @@ html[data-motion=reduced] .skill-window{overflow-x:auto;mask-image:none}html[dat
 @media(max-width:800px){.wedding-repo-preview{min-height:220px}.wedding-repo-preview>strong{font-size:clamp(25px,8vw,44px)}}
 @media(prefers-reduced-motion:reduce){.demo-stage .brand img,.wedding-repo-preview{animation:none!important;transform:none!important}}
 html[data-motion=reduced] .demo-stage .brand img{animation:none!important;transform:none!important}
+.demo-stage{cursor:grab;}
+.demo-stage.is-dragging{cursor:grabbing;}
+.demo-stage.is-dragging .demo-panel{transform:translate3d(var(--demo-drag,0px),0,0);transition:transform .1s linear;pointer-events:none;}
+@media(min-width:801px){.showcase.project-folio{overflow:hidden;min-height:clamp(790px,76vw,1080px);}.showcase.project-folio.is-dragging{user-select:none;}}
+@media(max-width:800px){.showcase.project-folio{cursor:auto;transform:none;animation:none!important;}}
+@media(prefers-reduced-motion:reduce){.showcase.project-folio{animation:none!important;transition:none!important}.demo-stage.is-dragging .demo-panel{transition:none}}
+html[data-motion=reduced] .showcase.project-folio{animation:none!important;transition:none!important}
 
 /* Preserve the wedding-demo capture's subject and typography in project cards. */
 .project-folio .showpiece[href*="digital-wedding-invitation"] .shot img{object-position:50% 25%}
