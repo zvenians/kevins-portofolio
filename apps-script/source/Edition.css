@@ -321,3 +321,36 @@ body.clean-ui .k-studio .journey-heading p{color:#b8c5d5}
 
 /* Time-sensitive greeting: editorial text, no extra control or animation. */
 .kinetic-hero .visitor-greeting{margin:clamp(12px,2vw,22px) 0 4px;font:600 12px/1.4 ui-monospace,monospace;letter-spacing:.09em;text-transform:uppercase;color:#4f6378}
+
+
+/* Wedding real-project art follows the wedding-demo repo's cocoa, gold and editorial identity. */
+.wedding-repo-preview{height:100%;min-height:230px;display:flex;flex-direction:column;align-items:center;justify-content:center;position:relative;isolation:isolate;overflow:hidden;padding:clamp(14px,2.3vw,34px);box-sizing:border-box;color:#ecd39f;background:radial-gradient(circle at 50% 48%,#674532 0,#3a251b 39%,#17120f 76%);text-align:center;font-family:Georgia,serif;}
+.wedding-repo-preview:before{content:"";position:absolute;inset:12% 23%;border:1px solid #cfa96b50;border-radius:50% 50% 38% 38%;transform:rotate(-7deg);pointer-events:none;}
+.wedding-repo-preview:after{content:"";position:absolute;inset:17% 29%;border:1px solid #cfa96b36;border-radius:50%;transform:rotate(10deg);pointer-events:none;}
+.wedding-repo-top{position:absolute;top:14px;left:17px;right:17px;display:flex;align-items:center;justify-content:space-between;gap:10px;border-bottom:1px solid #cfa96b60;padding-bottom:10px;font-size:14px;z-index:1;}
+.wedding-repo-top small{font:500 9px/1.3 ui-sans-serif,system-ui,sans-serif;letter-spacing:.08em;color:#e3d0af;}
+.wedding-repo-ornament{font-size:clamp(33px,6vw,68px);line-height:1;margin:0 0 12px;color:#cfa96b;}
+.wedding-repo-preview>small:not(.wedding-repo-proof){font:600 9px/1.4 ui-sans-serif,system-ui,sans-serif;letter-spacing:.2em;color:#e5c892;}
+.wedding-repo-preview>strong{display:block;max-width:100%;font:400 clamp(24px,4vw,58px)/.99 Georgia,serif;letter-spacing:-.055em;color:#f2e5ca;margin:10px 0 14px;white-space:normal;}
+.wedding-repo-preview>strong em{font-weight:400;color:#cfa96b;}
+.wedding-repo-preview>span{font:600 10px/1.35 ui-sans-serif,system-ui,sans-serif;letter-spacing:.13em;color:#e5cfac;}
+.wedding-repo-preview>p{margin:12px 0 0;font:italic 13px/1.5 Georgia,serif;color:#e1cdb2;}
+.wedding-repo-proof{position:absolute;bottom:12px;left:12px;right:12px;color:#d1af7b;font:600 9px/1.3 ui-sans-serif,system-ui,sans-serif;letter-spacing:.1em;}
+.case-shot .wedding-case-preview{min-height:clamp(320px,46vw,570px);max-width:1040px;margin:auto;}
+
+/* Project folio: depth and pointer parallax; demo theatre uses its own horizontal scene motion. */
+.showcase.project-folio{--folio-x:0deg;--folio-y:0deg;}
+@media (hover:hover) and (prefers-reduced-motion:no-preference){
+ html:not(.reduced) .project-folio .showpiece:is(:hover,:focus-visible){z-index:15;filter:brightness(1.045);box-shadow:0 8px #dad6cb,0 17px #6d7b84,0 45px 80px #000a;}
+ .demo-stage{perspective:1200px;}
+ .demo-stage .demo-panel:not([hidden]) .brand figure{transform:rotateX(var(--demo-rotate-x,0deg)) rotateY(var(--demo-rotate-y,0deg));transform-style:preserve-3d;transition:transform .2s ease-out;will-change:transform;}
+}
+@keyframes demo-hoverstage{0%,100%{transform:translate3d(0,4px,0) rotateY(-3deg) scale(.985)}50%{transform:translate3d(7px,-6px,16px) rotateY(2deg) scale(1.015)}}
+@keyframes demo-revealcopy{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+@media(prefers-reduced-motion:no-preference){
+ html:not(.reduced) .demo-panel:not([hidden]) .brand img{animation:demo-hoverstage 6.2s ease-in-out infinite;transform-origin:center;will-change:transform;}
+ html:not(.reduced) .demo-panel:not([hidden]) .brand>div{animation:demo-revealcopy .65s .08s both;}
+}
+@media(max-width:800px){.wedding-repo-preview{min-height:220px}.wedding-repo-preview>strong{font-size:clamp(25px,8vw,44px)}}
+@media(prefers-reduced-motion:reduce){.demo-stage .brand img,.wedding-repo-preview{animation:none!important;transform:none!important}}
+html.reduced .demo-stage .brand img{animation:none!important;transform:none!important}
