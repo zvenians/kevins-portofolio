@@ -95,16 +95,34 @@ function skillsSummary() {
 function mountProjectFolio() {
   const folio = document.querySelector('.showcase.project-folio');
   if (!folio) return () => {};
+  let dragging = false, startY = 0, moved = false;
+  const clamp = value => Math.max(-100, Math.min(100, value));
   const move = event => {
-    if (reduced || event.pointerType !== 'mouse' || !matchMedia('(hover:hover) and (prefers-reduced-motion: no-preference)').matches) return;
+    if (event.pointerType !== 'mouse') return;
+    if (dragging) {
+      moved ||= Math.abs(event.clientY - startY) > 6;
+      if (!moved) return;
+      if (!folio.hasPointerCapture(event.pointerId)) folio.setPointerCapture(event.pointerId);
+      folio.classList.add('is-dragging');
+      folio.style.setProperty('--drag-y', `${clamp(event.clientY - startY)}px`);
+      return;
+    }
+    if (reduced || !matchMedia('(hover:hover) and (prefers-reduced-motion: no-preference)').matches) return;
     const rect = folio.getBoundingClientRect();
     folio.style.setProperty('--folio-x', (((event.clientX - rect.left) / rect.width) - .5) * 12 + 'deg');
     folio.style.setProperty('--folio-y', (.5 - ((event.clientY - rect.top) / rect.height)) * 7 + 'deg');
   };
+  const down = event => { if (event.pointerType !== 'mouse' || event.button !== 0) return; dragging = true; moved = false; startY = event.clientY; };
+  const up = event => { if (!dragging) return; dragging = false; folio.classList.remove('is-dragging'); folio.style.setProperty('--drag-y', '0px'); if (folio.hasPointerCapture(event.pointerId)) folio.releasePointerCapture(event.pointerId); };
+  const click = event => { if (moved) { event.preventDefault(); moved = false; } };
   const reset = () => { folio.style.removeProperty('--folio-x'); folio.style.removeProperty('--folio-y'); };
+  folio.addEventListener('pointerdown', down);
   folio.addEventListener('pointermove', move);
+  folio.addEventListener('pointerup', up);
+  folio.addEventListener('pointercancel', up);
+  folio.addEventListener('click', click, true);
   folio.addEventListener('pointerleave', reset);
-  return () => { folio.removeEventListener('pointermove', move); folio.removeEventListener('pointerleave', reset); };
+  return () => { folio.removeEventListener('pointerdown', down); folio.removeEventListener('pointermove', move); folio.removeEventListener('pointerup', up); folio.removeEventListener('pointercancel', up); folio.removeEventListener('click', click, true); folio.removeEventListener('pointerleave', reset); };
 }
 function mountDemoTheatre() {
   const theatre = $('[data-demo-theatre]');
@@ -119,9 +137,10 @@ function mountDemoTheatre() {
   });
   stage?.addEventListener('pointerleave', () => { stage.style.removeProperty('--demo-rotate-y'); stage.style.removeProperty('--demo-rotate-x'); });
 
-  let timer, touchStart = 0;
+  let timer, touchStart = 0, pointerStart = null, pointerMoved = false;
   const stop = () => { clearTimeout(timer); timer = 0; };
   const show = (index, focus = false) => {
+    theatre.style.setProperty('--demo-direction', index < demoIndex ? '-1' : '1');
     demoIndex = (index + tabs.length) % tabs.length;
     tabs.forEach((tab, i) => {
       const active = i === demoIndex;
@@ -143,12 +162,24 @@ function mountDemoTheatre() {
   });
   $('[data-demo-prev]').onclick = () => { show(demoIndex - 1); schedule(); };
   $('[data-demo-next]').onclick = () => { show(demoIndex + 1); schedule(); };
-  theatre.onpointerdown = event => { if (event.pointerType !== 'mouse') touchStart = event.clientX; };
+  theatre.onpointerdown = event => {
+    if (event.pointerType === 'mouse' && event.button === 0 && stage.querySelector('.demo-panel:not([hidden])')?.contains(event.target)) { pointerStart = event.clientX; pointerMoved = false; }
+    else if (event.pointerType !== 'mouse') touchStart = event.clientX;
+  };
   theatre.onpointerup = event => {
+    if (event.pointerType === 'mouse' && pointerStart !== null) {
+      const distance = event.clientX - pointerStart; pointerStart = null; stage.classList.remove('is-dragging'); stage.style.removeProperty('--demo-drag');
+      if (stage.hasPointerCapture(event.pointerId)) stage.releasePointerCapture(event.pointerId);
+      if (Math.abs(distance) > 45) { pointerMoved = true; show(demoIndex + (distance < 0 ? 1 : -1)); schedule(); }
+      return;
+    }
     if (!touchStart) return;
     const distance = event.clientX - touchStart; touchStart = 0;
     if (Math.abs(distance) > 45) { show(demoIndex + (distance < 0 ? 1 : -1)); schedule(); }
   };
+  theatre.addEventListener('pointermove', event => { if (pointerStart === null || event.pointerType !== 'mouse') return; const distance = event.clientX - pointerStart; if (Math.abs(distance) <= 6) return; if (!stage.hasPointerCapture(event.pointerId)) stage.setPointerCapture(event.pointerId); stage.classList.add('is-dragging'); stage.style.setProperty('--demo-drag', `${Math.max(-80, Math.min(80, distance))}px`); });
+  theatre.addEventListener('pointercancel', () => { pointerStart = null; stage.classList.remove('is-dragging'); stage.style.removeProperty('--demo-drag'); });
+  theatre.addEventListener('click', event => { if (pointerMoved) { event.preventDefault(); pointerMoved = false; } }, true);
   schedule();
   return stop;
 }
