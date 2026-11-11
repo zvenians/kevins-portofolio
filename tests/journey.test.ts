@@ -32,9 +32,10 @@ test('short home presents six curated projects, a working demo theatre, visible 
  const skillRows=w.document.querySelectorAll('.skill-rail');
  expect(skillRows).toHaveLength(4);
  expect(w.document.querySelector('.skill-index')?.textContent).toContain('PostgreSQL');
- const skillMotion=w.document.querySelector<HTMLButtonElement>('#skill-motion')!;
- skillMotion.click();
- expect(skillMotion.getAttribute('aria-pressed')).toBe('true');
+ expect(w.document.querySelector('#skill-motion')).toBeNull();
+ expect(w.document.querySelector('#project-motion')).toBeNull();
+ expect(w.document.querySelector('#demo-motion')).toBeNull();
+ expect(w.document.querySelectorAll('.skill-rail')).toHaveLength(4);
  expect(w.document.querySelectorAll('.journey-services>a').length).toBe(4);
  expect(w.document.querySelector('.header nav')?.innerHTML).toContain('href="/studio"');
  const trigger=w.document.querySelector<HTMLButtonElement>('.quick-trigger')!;
