@@ -1,0 +1,53 @@
+name: Synchronize portfolio preview assets
+
+on:
+  push:
+    branches: [fix/remove-manual-motion-pauses-20261111]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  actions: write
+
+concurrency:
+  group: preview-sync-${{ github.ref_name }}
+  cancel-in-progress: false
+
+jobs:
+  sync:
+    if: github.repository == 'zvenians/kevins-portofolio'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          persist-credentials: true
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 24
+          cache: npm
+      - name: Install build dependencies
+        run: |
+          npm ci
+          npm ci --prefix apps-script
+      - name: Regenerate both public presentations
+        run: |
+          node apps-script/build.mjs
+          node vercel-site/sync.mjs
+      - name: Commit deterministic build artifacts
+        id: saved
+        run: |
+          git add apps-script/Code.gs apps-script/preview/index.html vercel-site/generated/template.ts vercel-site/generated/fallback.json vercel-site/public/assets
+          if git diff --cached --quiet; then
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+          else
+            git config user.name "github-actions[bot]"
+            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+            git commit -m "build: synchronize public portfolio from source"
+            git push origin "HEAD:${GITHUB_REF_NAME}"
+            echo "changed=true" >> "$GITHUB_OUTPUT"
+          fi
+      - name: Re-run the required quality gate on the generated commit
+        if: steps.saved.outputs.changed == 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh workflow run ci.yml --ref "${GITHUB_REF_NAME}"
