@@ -44,8 +44,8 @@ function projectFolio(p,index,total){
  return `<a class="project-folio" href="${projectHref(p.slug)}" style="--folio:${index}" data-folio="${index}"><div class="folio-head"><span>${String(index+1).padStart(2,'0')} / ${String(total).padStart(2,'0')}</span><span>${esc(p.status)}</span></div>${visual(p)}<div class="folio-copy"><small>${esc(p.category)}</small><h3>${esc(p.name)}</h3><p>${esc(p.summary)}</p><b>View project ↗</b></div></a>`;
 }
 function demoEntries(){
- const projects=['wedding-invitation-demo','koma-manga-reader','operations-decision-workbench'].map(slug=>data.projects.find(p=>p.slug===slug)).filter(Boolean).map(p=>({title:p.name,type:p.category,note:p.summary,href:projectHref(p.slug),project:p}));
- return [...serviceDemos.map(d=>({...d,href:editionRoot()+'/edisi/'+d.id+'.html'})),...projects];
+ const projects=['koma-manga-reader','wedding-invitation-demo','operations-decision-workbench'].map(slug=>data.projects.find(p=>p.slug===slug)).filter(Boolean).map(p=>({title:p.name,type:p.category,note:p.summary,href:projectHref(p.slug),project:p}));
+ return [...projects.slice(0,1),...serviceDemos.map(d=>({...d,href:editionRoot()+'/edisi/'+d.id+'.html'})),...projects.slice(1)];
 }
 function servicePreview(id){
  if(id==='resto')return '<div class="service-preview restaurant"><span>DAUN & BARA</span><b>Chef selection</b><i>Spice · drink · table</i></div>';
@@ -169,7 +169,7 @@ initImmersion=function(){
  if(window.INDEX_HOSTED)document.querySelectorAll('.header .identity,footer>a').forEach(a=>a.href='/');
  if(data.studioPage){document.body.classList.add('dedicated-studio');document.querySelectorAll('#home,#field,#services,#profile,#connect').forEach(e=>e.remove());const studio=$('#studio');if(studio&&!studio.dataset.intro){studio.dataset.intro='true';studio.querySelector('.gallery-section-head')?.insertAdjacentHTML('afterend',serviceShelf());studio.insertAdjacentHTML('afterbegin',`<a class="studio-return" href="/">← Kevin Simatupang / Home</a>`);}}
 };
-casePage=function(slug){previousCase(slug);const p=data.projects.find(x=>x.slug===slug);if(!p||p.status!=='Real Project')return;
+casePage=function(slug){previousCase(slug);const p=data.projects.find(x=>x.slug===slug);if(!p||!['Real Project','Portfolio Project'].includes(p.status))return;
  const page=$('.case-page'),hero=page.querySelector('.case-visual');
  const summary=document.createElement('dl');summary.className='case-facts';summary.innerHTML=[['Role','Development & interface design'],['Stack',p.technologies.slice(0,4).join(' · ')],['Scope',p.disciplines.join(' · ')]].map(([label,value])=>`<div><dt>${label}</dt><dd>${esc(value)}</dd></div>`).join('');page.querySelector('.case-links').after(summary);
  if(safeUrl(p.repositoryUrl))summary.insertAdjacentHTML('beforeend',`<div><dt>Timeline</dt><dd><a href="${esc(p.repositoryUrl)}/commits" target="_blank" rel="noopener">See project history ↗</a></dd></div>`);
