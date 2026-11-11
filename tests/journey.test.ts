@@ -23,7 +23,7 @@ test('short home presents six curated projects, a working demo theatre, visible 
  expect(folios[0].textContent).toContain('Logistics Command Center');
  expect(w.document.querySelector('.visitor-greeting')?.textContent).toMatch(/Good |Selamat |Bonjour|Buenos /);
  expect(folios[1].textContent).toContain('Undangan Pernikahan Digital');
- expect(folios[1].innerHTML).toContain('wedding-repo-preview');
+ expect(folios[1].innerHTML).toContain('wedding-demo-live.png');
  expect(folios[1].innerHTML).not.toContain('/demo-shots/classic.webp');
  expect(folios[0].getAttribute('href')).toContain('/work/atlas-logistics-command-center');
  const demoTabs=[...w.document.querySelectorAll<HTMLButtonElement>('[data-demo-index]')];
