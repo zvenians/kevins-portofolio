@@ -14,6 +14,7 @@ function projectHref(slug){return window.INDEX_HOSTED?'/work/'+encodeURIComponen
 function projectShareUrl(slug){return window.INDEX_HOSTED?location.origin+'/work/'+encodeURIComponent(slug):(data.appUrl||location.href.split('#')[0])+'?project='+encodeURIComponent(slug);}
 function homeHref(anchor='home'){return window.INDEX_HOSTED?'/#'+anchor:'#'+anchor;}
 function visual(p){
+  if(p.slug==='digital-wedding-invitation')return '<div class="visual real-project-shot wedding-identity"><div class="wedding-repo-preview" role="img" aria-label="Kevin and Naomi wedding-demo design preview"><div class="wedding-repo-top"><span>K / N</span><small>STORY　 EVENT　 RSVP</small></div><div class="wedding-repo-ornament" aria-hidden="true">✧</div><small>THE WEDDING OF</small><strong>Kevin <em>&amp;</em> Naomi</strong><span>MONDAY / 28 AUGUST 2028</span><p>A moment between tradition and tomorrow.</p><small class="wedding-repo-proof">PROJECT PREVIEW · WEDDING-DEMO</small></div></div>';
   const shotSlugs=['galilea-web-portal','galilea-digital-archive','majelis-galilea','naomi-rouli','atlas-logistics-command-center'];
   if(shotSlugs.includes(p.slug))return `<div class="visual real-project-shot"><img src="${window.INDEX_HOSTED?'':'https://portfolio-kevins.vercel.app'}/project-shots/${p.slug}.webp" alt="Project interface for ${esc(p.name)}" loading="lazy"></div>`;
   const previewIds={manga:'web-manga',wedding:'classic',attendance:'attendance',commerce:'web-commerce',booking:'web-booking',archive:'web-archive',morphslides:'corporate',logostudio:'geometric'};
