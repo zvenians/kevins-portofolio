@@ -51,6 +51,7 @@ secrets/
 credentials/
 
 # testing
+/artifacts/
 coverage/
 .nyc_output/
 
