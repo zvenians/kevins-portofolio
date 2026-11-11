@@ -318,7 +318,7 @@ html[data-motion=full] .missing-orbit {animation:missing-orbit 14s ease-in-out i
 }
 .project-folio .shot.is-unavailable img {display:none;}
 .project-folio .folio-label {
- position:absolute;left:4px;right:4px;bottom:4px;
+ position:absolute;left:4px;right:4px;top:4px;
  display:flex;align-items:center;justify-content:space-between;gap:10px;
  min-height:32px;padding:7px 11px;
  background:#101922d9;color:#faf9f5;
@@ -388,7 +388,7 @@ html[data-motion=full] .skill-track { animation:skill-conveyor calc(52s + var(--
  }
  .showcase.project-folio .showpiece {left:calc(var(--folio-left) - 5%);padding:3px;}
  .project-folio .shot {inset:3px;}
- .project-folio .folio-label {left:3px;right:3px;bottom:3px;min-height:28px;padding:5px 9px;font-size:11px;}
+ .project-folio .folio-label {left:3px;right:3px;top:3px;min-height:28px;padding:5px 9px;font-size:11px;}
  .project-folio .folio-counter {bottom:12px;right:12px;}
  .project-folio::before,.project-folio::after {height:3%;}
  .brands.product-gallery.demo-theatre { grid-template-columns:1fr; }
