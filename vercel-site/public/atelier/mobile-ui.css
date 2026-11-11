@@ -291,7 +291,7 @@ html[data-motion=full] .missing-orbit {animation:missing-orbit 14s ease-in-out i
  position:relative;top:auto;left:calc(14% + var(--folio-shift));
  z-index:calc(1 + var(--folio-index));
  display:block;
- width:var(--folio-width);height:max-content;aspect-ratio:1.62;
+ width:var(--folio-width);height:auto;aspect-ratio:1.62;
  padding:6px;margin:0;overflow:hidden;
  border:1px solid #929493;border-radius:4px;
  background:#f6f6f3;color:#15191d;
@@ -306,7 +306,7 @@ html[data-motion=full] .missing-orbit {animation:missing-orbit 14s ease-in-out i
  z-index:40;filter:brightness(1.04);
  box-shadow:0 7px 12px #16191e43,0 27px 54px #15191e75;
 }
-.project-folio .shot {position:relative;display:block;width:100%;height:100%;aspect-ratio:auto;overflow:hidden;background:#202529;}
+.project-folio .shot {position:absolute;inset:6px;display:block;width:auto;height:auto;aspect-ratio:auto;overflow:hidden;background:#202529;}
 .project-folio .shot img {
  position:relative;display:block;width:100%;height:100%;object-fit:cover;object-position:center top;
  max-height:none;box-shadow:none;
@@ -389,8 +389,9 @@ html[data-motion=full] .skill-track { animation:skill-conveyor calc(52s + var(--
   margin-inline:calc(var(--pad) * -1);
   border-inline:0;
  }
- .showcase.project-folio .showpiece {left:calc(8% + var(--folio-shift) * .48);padding:5px;}
+ .showcase.project-folio .showpiece {left:calc(9% + var(--folio-shift));padding:5px;}
  .project-folio .folio-label {min-height:36px;padding:7px 10px;font-size:11px;}
+ .project-folio .shot {inset:5px;}
  .project-folio .folio-counter {bottom:12px;right:12px;}
  html[data-motion=full] .project-folio .folio-track {animation-duration:18s;}
  .brands.product-gallery.demo-theatre { grid-template-columns:1fr; }
