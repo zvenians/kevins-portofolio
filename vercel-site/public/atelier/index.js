@@ -51,12 +51,12 @@ function visitorGreeting() {
 const categories = ['work', 'demos', 'capabilities', 'about', 'contact'];
 const nav = () => categories.map(id => `<a href="/${id}" ${section === id ? 'aria-current="page"' : ''}>${t(id)}</a>`).join('');
 const flagship = [
+  ['KOMA Manga Reader', 'creative', '/work/koma-manga-reader', 'web-manga'],
   ['Daun & Bara', 'restaurant', '/edisi/resto.html', 'showcase/dining'],
   ['Lintas Teluk', 'travel', '/edisi/travel.html', 'showcase/atlas'],
   ['Ruang Rawat', 'care', '/edisi/care.html', 'showcase/care'],
   ['NOVA Creative', 'nova', '/nova', 'showcase/nova'],
-  ['Undangan Digital', 'creative', '/work/wedding-invitation-demo', 'classic'],
-  ['KOMA Manga Reader', 'creative', '/work/koma-manga-reader', 'web-manga']
+  ['Undangan Digital', 'creative', '/work/wedding-invitation-demo', 'classic']
 ];
 const real = projects.filter(p => p.status === 'Real Project');
 const demos = projects.filter(p => p.status === 'Interactive Demo');
@@ -69,8 +69,11 @@ function projectRow(p, i) {
 function picks() {
   const slugs = ['atlas-logistics-command-center','digital-wedding-invitation','galilea-web-portal','galilea-digital-archive','majelis-galilea','naomi-rouli'];
   const selected = slugs.map(slug => projects.find(p => p.slug === slug)).filter(Boolean);
-  const cover = p => p.slug === 'digital-wedding-invitation' ? '/demo-shots/classic.webp' : `/project-shots/${encodeURIComponent(p.slug)}.webp`;
-  return `<div class="folio-shell"><div class="folio-tools"><p>${t('folioNote')}</p></div><div class="showcase project-folio">${selected.map((p, i) => `<a class="showpiece" style="--folio:${i}" href="/work/${encodeURIComponent(p.slug)}"><div class="folio-meta"><small>${String(i + 1).padStart(2, '0')} / ${String(selected.length).padStart(2, '0')}</small><strong>${esc(p.name)}</strong><small>${esc(p.status)}</small></div><div class="shot tone${i}"><img loading="lazy" src="${cover(p)}" alt="${esc(p.name)}"></div><div class="folio-copy"><small>${esc(p.category)} / ${esc((p.technologies || []).slice(0, 2).join(' + '))}</small><h3>${esc(p.name)} <span>${icon('outward')}</span></h3><p>${esc(p.summary)}</p></div></a>`).join('')}</div></div>`;
+  const cover = p => `/project-shots/${encodeURIComponent(p.slug)}.webp`;
+  // Recreate the public wedding-demo identity from its real source, not the old invitation demo screenshot.
+  const weddingPreview = () => `<div class="wedding-repo-preview" role="img" aria-label="Preview of the Kevin and Naomi wedding-demo experience"><div class="wedding-repo-top"><span>K / N</span><small>STORY　 EVENT　 RSVP</small></div><div class="wedding-repo-ornament" aria-hidden="true">✧</div><small>THE WEDDING OF</small><strong>Kevin <em>&amp;</em> Naomi</strong><span>MONDAY / 28 AUGUST 2028</span><p>A moment between tradition and tomorrow.</p><small class="wedding-repo-proof">PROJECT PREVIEW · WEDDING-DEMO</small></div>`;
+  const preview = p => p.slug === 'digital-wedding-invitation' ? weddingPreview() : `<img loading="lazy" src="${cover(p)}" alt="${esc(p.name)}" onerror="this.hidden=true;this.parentElement.classList.add('preview-unavailable')">`;
+  return `<div class="folio-shell"><div class="folio-tools"><p>${t('folioNote')}</p></div><div class="showcase project-folio">${selected.map((p, i) => `<a class="showpiece" style="--folio:${i}" href="/work/${encodeURIComponent(p.slug)}"><div class="folio-meta"><small>${String(i + 1).padStart(2, '0')} / ${String(selected.length).padStart(2, '0')}</small><strong>${esc(p.name)}</strong><small>${esc(p.status)}</small></div><div class="shot tone${i}">${preview(p)}</div><div class="folio-copy"><small>${esc(p.category)} / ${esc((p.technologies || []).slice(0, 2).join(' + '))}</small><h3>${esc(p.name)} <span>${icon('outward')}</span></h3><p>${esc(p.summary)}</p></div></a>`).join('')}</div></div>`;
 }
 function brands() {
   return `<div class="brands product-gallery demo-theatre" data-demo-theatre><div class="demo-tabs" role="tablist" aria-label="${t('demos')}">${flagship.map(([name,kind],i)=>`<button type="button" role="tab" id="demo-tab-${i}" aria-controls="demo-panel-${i}" aria-selected="${i===demoIndex}" tabindex="${i===demoIndex?0:-1}" data-demo-tab="${i}"><span>0${i+1}</span><strong>${name}</strong><small>${t(kind)}</small></button>`).join('')}</div><div class="demo-stage">${flagship.map(([name,kind,url,image],i)=>`<article class="demo-panel" role="tabpanel" tabindex="0" id="demo-panel-${i}" aria-labelledby="demo-tab-${i}" ${i===demoIndex?'':'hidden'}><a class="brand brand-${kind}" href="${url}"><figure><img loading="lazy" width="940" height="645" src="/demo-shots/${image}.webp" alt=""></figure><div><small>0${i+1} / ${t(kind)}</small><h3>${name}</h3><span>${t('open')} ${icon('outward')}</span></div></a></article>`).join('')}<div class="demo-controls"><button type="button" data-demo-prev aria-label="${t('previousDemo')}">←</button><output>${String(demoIndex+1).padStart(2,'0')} / ${String(flagship.length).padStart(2,'0')}</output><button type="button" data-demo-next aria-label="${t('nextDemo')}">→</button></div></div></div>`;
@@ -95,6 +98,15 @@ function mountDemoTheatre() {
   const theatre = $('[data-demo-theatre]');
   if (!theatre) return () => {};
   const tabs = [...theatre.querySelectorAll('[data-demo-tab]')], panels = [...theatre.querySelectorAll('.demo-panel')];
+  const stage = theatre.querySelector('.demo-stage');
+  stage?.addEventListener('pointermove', event => {
+    if (reduced || event.pointerType !== 'mouse' || !matchMedia('(hover:hover)').matches) return;
+    const rect = stage.getBoundingClientRect();
+    stage.style.setProperty('--demo-rotate-y', (((event.clientX - rect.left) / rect.width) - .5) * 7 + 'deg');
+    stage.style.setProperty('--demo-rotate-x', (.5 - ((event.clientY - rect.top) / rect.height)) * 5 + 'deg');
+  });
+  stage?.addEventListener('pointerleave', () => { stage.style.removeProperty('--demo-rotate-y'); stage.style.removeProperty('--demo-rotate-x'); });
+
   let timer, touchStart = 0;
   const stop = () => { clearTimeout(timer); timer = 0; };
   const show = (index, focus = false) => {
@@ -196,8 +208,8 @@ function render() {
   document.querySelectorAll('a[href="/edisi/skill.html"]').forEach(a => a.href = '/capabilities');
   if (section === 'demos') {
     document.querySelectorAll('.demo-panel').forEach((panel, i) => {
-      if (i > 3) return;
       const [name, kind, url] = flagship[i];
+      if (!['restaurant', 'travel', 'care'].includes(kind)) return;
       panel.insertAdjacentHTML('beforeend', `<details class="brief-case"><summary>${t('view')}</summary><h3>${name}</h3><h4>${t('flow')}</h4><p>${t(kind + 'Flow')}</p><h4>${t('logic')}</h4><p>${t(kind + 'Logic')}</p><a href="${url}">${t('open')} ${icon('outward')}</a></details>`);
     });
     $('#library').insertAdjacentHTML('beforebegin', `<aside class="academic-entry"><small>STUDENT / SUPPORT</small><h2>${t('academicSupport')}</h2><p>${t('academicLead')}</p><a class="solid" href="/academic-support">${t('academicCta')} ${icon('outward')}</a></aside>`);
@@ -210,12 +222,12 @@ function render() {
     const search = () => {
       const q = $('#search').value.toLowerCase();
       const types={appsGroup:['booking','commerce','commerceops','scopebuilder','fieldcompanion','attendance','archive','qualityroom'],excelData:['operations','dataprep','documents'],researchGroup:['researchtools'],creative:['morphslides','logostudio','wedding','manga']};
-      const rows = demos.filter(p => [p.name, ...p.technologies].join(' ').toLowerCase().includes(q) && (libraryGroup==='all'||types[libraryGroup]?.includes(p.visual)));
+      const rows = demos.filter(p => [p.name, ...p.technologies].join(' ').toLowerCase().includes(q) && (libraryGroup==='all'||types[libraryGroup]?.includes(p.visual))).sort((a,b)=>Number(b.slug==='koma-manga-reader')-Number(a.slug==='koma-manga-reader'));
       const groups=[
+        [t('creative'),types.creative],
         [t('appsGroup'),types.appsGroup],
         [t('excelData'),types.excelData],
-        [t('researchGroup'),types.researchGroup],
-        [t('creative'),types.creative]
+        [t('researchGroup'),types.researchGroup]
       ];
       $('#results').innerHTML = groups.map(([label,types])=>{
         const group=rows.filter(p=>types.includes(p.visual));
