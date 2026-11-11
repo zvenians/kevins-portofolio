@@ -335,3 +335,6 @@ html[data-motion=full] .skill-track { animation:skill-conveyor calc(52s + var(--
 @media(prefers-reduced-motion:reduce){.project-folio .showpiece,.demo-panel,.skill-track{animation:none!important}.skill-window{overflow-x:auto;mask-image:none}.skill-track ul[aria-hidden=true]{display:none}}
 html[data-motion=reduced] .project-folio .showpiece,html[data-motion=reduced] .demo-panel,html[data-motion=reduced] .skill-track{animation:none!important}
 html[data-motion=reduced] .skill-window{overflow-x:auto;mask-image:none}html[data-motion=reduced] .skill-track ul[aria-hidden=true]{display:none}
+
+/* Personal greeting follows the visitor's browser-local time without altering the hero layout. */
+.hero-text .visitor-greeting{display:block;margin-top:10px;color:var(--muted);font:600 12px/1.4 ui-monospace,monospace;letter-spacing:.06em;text-transform:uppercase}
