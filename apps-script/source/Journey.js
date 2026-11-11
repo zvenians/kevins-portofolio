@@ -22,7 +22,7 @@ const skillGroups={
 function skillIndex(){
  const ids={'C++':'cpp','C-Sharp':'csharp','GitHub-Actions':'githubactions'};
  const item=name=>`<li><img loading="lazy" width="28" height="28" alt="" src="${editionRoot()}/edisi/logos/${ids[name]||name.toLowerCase().replaceAll('.','')}.svg"><span>${name.replace('C-Sharp','C#').replace('GitHub-Actions','GitHub Actions')}</span></li>`;
- return `<div id="skills" class="skill-index"><div class="skill-heading"><div><span class="eyebrow">04 / SKILL SYSTEM</span><h2>Tools in motion.</h2><p>Languages, frameworks, databases, and delivery tools are kept visible and grouped by purpose.</p></div><button class="motion-toggle" type="button" id="skill-motion" aria-pressed="false"><span aria-hidden="true">Ⅱ</span> Pause motion</button></div><div class="skill-rails">${Object.entries(skillGroups).map(([group,names],index)=>{const content=names.split(' ').map(item).join('');return `<div class="skill-rail" style="--rail:${index}"><strong>${group}</strong><div class="skill-window"><div class="skill-track"><ul>${content}</ul><ul aria-hidden="true">${content}</ul></div></div></div>`}).join('')}</div><p class="skill-catalog"><a href="${editionRoot()}/edisi/skill.html">Explore the complete technology catalogue ↗</a></p></div>`;
+ return `<div id="skills" class="skill-index"><div class="skill-heading"><div><span class="eyebrow">04 / SKILL SYSTEM</span><h2>Tools in motion.</h2><p>Languages, frameworks, databases, and delivery tools are kept visible and grouped by purpose.</p></div></div><div class="skill-rails">${Object.entries(skillGroups).map(([group,names],index)=>{const content=names.split(' ').map(item).join('');return `<div class="skill-rail" style="--rail:${index}"><strong>${group}</strong><div class="skill-window"><div class="skill-track"><ul>${content}</ul><ul aria-hidden="true">${content}</ul></div></div></div>`}).join('')}</div><p class="skill-catalog"><a href="${editionRoot()}/edisi/skill.html">Explore the complete technology catalogue ↗</a></p></div>`;
 }
 function projectFolio(p,index,total){
  return `<a class="project-folio" href="${projectHref(p.slug)}" style="--folio:${index}" data-folio="${index}"><div class="folio-head"><span>${String(index+1).padStart(2,'0')} / ${String(total).padStart(2,'0')}</span><span>${esc(p.status)}</span></div>${visual(p)}<div class="folio-copy"><small>${esc(p.category)}</small><h3>${esc(p.name)}</h3><p>${esc(p.summary)}</p><b>View project ↗</b></div></a>`;
@@ -59,22 +59,13 @@ home=function(){
      <figcaption><span aria-live="polite"><small>01 / ${String(plates.length).padStart(2,'0')}</small><strong>${esc(plates[0].name)}</strong></span>${plates.length>1?'<div><button type="button" aria-label="Previous project">←</button><button type="button" aria-label="Next project">→</button></div>':''}</figcaption>
    </figure>` : ''}
  </section>
- <section id="field" class="journey-section k-work"><div class="journey-heading"><div><span class="eyebrow">02 / SELECTED WORK</span><h2>A moving folio.</h2><p>Six selected projects, layered like an editorial deck rather than compressed into a crowded grid.</p></div><button class="motion-toggle" type="button" id="project-motion" aria-pressed="false"><span aria-hidden="true">Ⅱ</span> Pause motion</button></div>
+ <section id="field" class="journey-section k-work"><div class="journey-heading"><div><span class="eyebrow">02 / SELECTED WORK</span><h2>A moving folio.</h2><p>Six selected projects, layered like an editorial deck rather than compressed into a crowded grid.</p></div></div>
  <div class="project-folio-stack">${showcase.map((p,i)=>projectFolio(p,i,showcase.length)).join('')}</div></section>
  <section id="studio-preview" class="journey-section k-studio"><div class="journey-heading"><div><span class="eyebrow">03 / INTERACTIVE DEMOS</span><h2>One stage.<br>Many systems.</h2><p>Choose a working experience. The stage changes laterally, deliberately different from the layered project folio.</p></div><a href="${studioUrl()}">Explore all demos ↗</a></div>
- <div class="demo-theatre"><div class="demo-tabs" role="tablist" aria-label="Interactive demo selection">${demos.map((entry,i)=>`<button role="tab" type="button" id="demo-tab-${i}" aria-controls="demo-panel-${i}" aria-selected="${i===0}" tabindex="${i===0?0:-1}" data-demo-index="${i}"><span>${String(i+1).padStart(2,'0')}</span><b>${esc(entry.title)}</b><small>${esc(entry.type)}</small></button>`).join('')}</div><div class="demo-stage">${demos.map(demoPanel).join('')}<div class="demo-stage-controls"><button type="button" id="demo-prev" aria-label="Previous demo">←</button><span id="demo-count" aria-live="polite">01 / ${String(demos.length).padStart(2,'0')}</span><button type="button" id="demo-next" aria-label="Next demo">→</button><button class="motion-toggle" type="button" id="demo-motion" aria-pressed="false"><span aria-hidden="true">Ⅱ</span> Pause</button></div></div></div></section>
+ <div class="demo-theatre"><div class="demo-tabs" role="tablist" aria-label="Interactive demo selection">${demos.map((entry,i)=>`<button role="tab" type="button" id="demo-tab-${i}" aria-controls="demo-panel-${i}" aria-selected="${i===0}" tabindex="${i===0?0:-1}" data-demo-index="${i}"><span>${String(i+1).padStart(2,'0')}</span><b>${esc(entry.title)}</b><small>${esc(entry.type)}</small></button>`).join('')}</div><div class="demo-stage">${demos.map(demoPanel).join('')}<div class="demo-stage-controls"><button type="button" id="demo-prev" aria-label="Previous demo">←</button><span id="demo-count" aria-live="polite">01 / ${String(demos.length).padStart(2,'0')}</span><button type="button" id="demo-next" aria-label="Next demo">→</button></div></div></div></section>
  <section id="services" class="journey-section">${skillIndex()}<span class="eyebrow">04 / CAPABILITIES</span><h2>What needs to work better?</h2><div class="journey-services">${[['Websites & systems','Responsive websites, internal tools, and API integrations.','sera-goods-commerce-demo'],['Data & automation','Reconciliation, reporting, spreadsheets, and recurring workflows.','operations-decision-workbench'],['Research support','Method review, data preparation, and understandable results.','research-practice-toolkit'],['Identity & presentations','Visual identities and clear, purposeful presentation systems.','morph-presentation-studio']].map(([name,copy,slug])=>`<a href="${projectHref(slug)}"><h3>${name} ↗</h3><p>${copy}</p><span>Explore an example</span></a>`).join('')}</div><p class="journey-note">Share the context → Agree the scope → Build & review → Hand over.</p></section><section id="profile" class="journey-section journey-profile"><span class="eyebrow">KEVIN / PROFILE</span><h2>Kevin Simatupang.</h2><p>I bring web development and operational data together to make complicated work easier to use. Based in Balikpapan, with a degree in Informatics Engineering and experience in IT support and asset workflows.</p><a href="${homeHref('resume')}">Experience & CV ↗</a></section><section id="connect" class="journey-section journey-contact"><span class="eyebrow">05 / START A CONVERSATION</span><h2>Tell me what<br>you have in mind.</h2><a class="solid-button" href="${projectHref('project-brief-scope-builder')}">Discuss your project ↗</a><div id="contact-links" class="connect-actions"></div></section>`;
  const motionReduced=()=>reduced||matchMedia('(prefers-reduced-motion: reduce)').matches;
- const motionButton=(button,container,className,pausedText='Resume motion')=>{
-   button.onclick=()=>{
-     const paused=!container.classList.contains(className);
-     container.classList.toggle(className,paused);
-     button.setAttribute('aria-pressed',String(paused));
-     button.lastChild.textContent=paused?' '+pausedText:' Pause motion';
-   };
- };
  const folioStack=document.querySelector('.project-folio-stack');
- motionButton(document.querySelector('#project-motion'),folioStack,'motion-paused');
  folioStack.onpointermove=event=>{
    if(event.pointerType!=='mouse'||motionReduced()||!matchMedia('(hover:hover)').matches)return;
    const box=folioStack.getBoundingClientRect();
@@ -85,7 +76,6 @@ home=function(){
  const demoTabs=[...document.querySelectorAll('[data-demo-index]')];
  const demoPanels=[...document.querySelectorAll('.demo-panel')];
  const demoTheatre=document.querySelector('.demo-theatre');
- const demoMotion=document.querySelector('#demo-motion');
  let activeDemo=0,demoTimer,demoPaused=motionReduced(),touchStart=0;
  const stopDemoTimer=()=>{clearTimeout(demoTimer);demoTimer=0;};
  const scheduleDemo=()=>{stopDemoTimer();if(!demoPaused)demoTimer=setTimeout(()=>{showDemo(activeDemo+1);scheduleDemo();},4800);};
@@ -101,12 +91,9 @@ home=function(){
  });
  document.querySelector('#demo-prev').onclick=()=>{showDemo(activeDemo-1);scheduleDemo();};
  document.querySelector('#demo-next').onclick=()=>{showDemo(activeDemo+1);scheduleDemo();};
- demoMotion.onclick=()=>{demoPaused=!demoPaused;demoTheatre.classList.toggle('motion-paused',demoPaused);demoMotion.setAttribute('aria-pressed',String(demoPaused));demoMotion.lastChild.textContent=demoPaused?' Resume':' Pause';scheduleDemo();};
  demoTheatre.onpointerdown=event=>{if(event.pointerType!=='mouse')touchStart=event.clientX;};
  demoTheatre.onpointerup=event=>{if(!touchStart)return;const distance=event.clientX-touchStart;touchStart=0;if(Math.abs(distance)>45){showDemo(activeDemo+(distance<0?1:-1));scheduleDemo();}};
- if(demoPaused){demoTheatre.classList.add('motion-paused');demoMotion.setAttribute('aria-pressed','true');demoMotion.lastChild.textContent=' Resume';}else scheduleDemo();
- const skillIndexElement=document.querySelector('.skill-index');
- motionButton(document.querySelector('#skill-motion'),skillIndexElement,'motion-paused');
+ if(!demoPaused) scheduleDemo();
  const profile = $('#profile');
  profile.querySelector('p').insertAdjacentHTML('afterend', `
    <dl class="k-dossier">
@@ -219,7 +206,7 @@ Object.assign(localeDictionary, {
 Object.assign(localeDictionary, {
  'A moving folio.':'Folio yang bergerak.','Six selected projects, layered like an editorial deck rather than compressed into a crowded grid.':'Enam proyek pilihan, disusun seperti dek editorial tanpa dipadatkan menjadi grid yang sesak.',
  '03 / INTERACTIVE DEMOS':'03 / DEMO INTERAKTIF','One stage.':'Satu panggung.','Many systems.':'Banyak sistem.','Choose a working experience. The stage changes laterally, deliberately different from the layered project folio.':'Pilih pengalaman yang dapat digunakan. Panggung bergerak menyamping, berbeda dari lapisan folio proyek.',
- 'Pause motion':'Jeda gerakan','Resume motion':'Lanjutkan gerakan','Previous demo':'Demo sebelumnya','Next demo':'Demo berikutnya',
+ 'Previous demo':'Demo sebelumnya','Next demo':'Demo berikutnya',
  '04 / SKILL SYSTEM':'04 / SISTEM KEAHLIAN','Tools in motion.':'Peralatan yang bergerak.','Languages, frameworks, databases, and delivery tools are kept visible and grouped by purpose.':'Bahasa, framework, database, dan alat delivery selalu terlihat dan dikelompokkan berdasarkan fungsi.',
  'Languages & foundations':'Bahasa & fondasi','Frameworks & runtime':'Framework & runtime','Data & storage':'Data & penyimpanan','Tools & delivery':'Peralatan & delivery','Explore the complete technology catalogue ↗':'Jelajahi seluruh katalog teknologi ↗'
 });
