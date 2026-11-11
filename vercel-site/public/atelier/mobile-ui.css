@@ -322,6 +322,8 @@ html[data-motion=full] .missing-orbit {animation:missing-orbit 14s ease-in-out i
  letter-spacing:.005em;pointer-events:none;
 }
 .project-folio .folio-label b {font-weight:600;text-wrap:balance;}
+.project-folio .showpiece:first-child .folio-label {left:18%;}
+.project-folio .showpiece:last-child .folio-label {left:24%;}
 .project-folio .folio-label svg {flex:none;width:17px;height:17px;}
 .project-folio .folio-counter {
  position:absolute;left:12px;bottom:12px;z-index:21;pointer-events:none;
@@ -336,7 +338,7 @@ html[data-motion=full] .missing-orbit {animation:missing-orbit 14s ease-in-out i
 html[data-motion=full] .project-folio .folio-track {
  animation:folio-reference 5.6s cubic-bezier(.45,0,.55,1) infinite;
 }
-html[data-motion=full] .project-folio:focus-within .folio-track {animation-play-state:paused;}
+html[data-motion=full] .project-folio:has(.showpiece:focus-visible) .folio-track {animation-play-state:paused;}
 
 /* Demo theatre: one active application, lateral transitions and six compact choices. */
 .brands.product-gallery.demo-theatre { display:grid;grid-template-columns:minmax(205px,.38fr) minmax(0,1.62fr);grid-auto-rows:auto;gap:0;border-block:1px solid var(--line);touch-action:pan-y; }
