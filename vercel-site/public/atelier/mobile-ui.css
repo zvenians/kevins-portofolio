@@ -284,7 +284,7 @@ html[data-motion=full] .missing-orbit {animation:missing-orbit 14s ease-in-out i
 .project-folio .folio-cycle {
  display:grid;grid-template-columns:1fr;
  grid-template-rows:repeat(var(--folio-count),var(--folio-step));
- width:100%;height:calc(var(--folio-count) * var(--folio-step));
+ width:100%;height:auto;
  flex:none;
 }
 .showcase.project-folio .showpiece {
