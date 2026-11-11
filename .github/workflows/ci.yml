@@ -82,6 +82,7 @@ jobs:
       - name: Install browser test runner
         run: |
           PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD=1 npm install --no-save --package-lock=false playwright@1.58.2
+          npx playwright install ffmpeg
           google-chrome --version
       - name: Capture and validate real project composition
         run: |
