@@ -81,8 +81,8 @@ jobs:
         run: npm --prefix vercel-site run build
       - name: Install browser test runner
         run: |
-          npm install --no-save --package-lock=false playwright@1.58.2
-          npx playwright install --with-deps chromium
+          PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD=1 npm install --no-save --package-lock=false playwright@1.58.2
+          google-chrome --version
       - name: Capture and validate real project composition
         run: |
           npm --prefix vercel-site run start > /tmp/portfolio-server.log 2>&1 &
