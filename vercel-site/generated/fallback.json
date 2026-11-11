@@ -817,6 +817,85 @@
         "Folder navigation",
         "Local sample preview"
       ]
+    },
+    {
+      "id": "atlas-logistics-command-center",
+      "slug": "atlas-logistics-command-center",
+      "title": "Fleet movement, made visible.",
+      "name": "ATLAS Logistics Command Center",
+      "summary": "An interactive logistics operations prototype for following fleets, shipments, and movement around Kariangau and Balikpapan.",
+      "category": "Digital Products",
+      "disciplines": [
+        "Web Engineering",
+        "3D Interaction",
+        "Geospatial UX"
+      ],
+      "technologies": [
+        "JavaScript",
+        "Three.js",
+        "MapLibre GL JS",
+        "CSS",
+        "Vercel"
+      ],
+      "status": "Portfolio Project",
+      "visual": "atlaslogistics",
+      "featured": true,
+      "order": 22,
+      "visibility": "public",
+      "updatedAt": "2026-11-11",
+      "coverUrl": "https://portfolio-kevins.vercel.app/project-shots/atlas-logistics-command-center.webp",
+      "liveUrl": "https://atlas-project-blond.vercel.app/",
+      "repositoryUrl": "https://github.com/zvenians/atlas-project",
+      "challenge": "Logistics teams need to understand movement, shipment activity, and location context without translating several disconnected views in their heads.",
+      "approach": "Bring operational status and geospatial movement into one command-center composition, then let the camera move between overview, free, follow, and chase perspectives.",
+      "implementation": "Three.js renders the moving fleet scene while MapLibre provides the geographic layer. Simulated vehicles, shipments, and metrics make the interaction inspectable without exposing operational records.",
+      "outcome": "The public prototype demonstrates a live 3D map, fleet-following camera modes, shipment activity, and a legacy operations workspace.",
+      "tradeoff": "This is a portfolio demonstration with simulated operations data, not a production fleet-management system or a source of live vehicle telemetry.",
+      "evidence": [
+        "Moving 3D fleet scene",
+        "MapLibre geographic context",
+        "Overview, free, follow, and chase cameras",
+        "Public repository and deployment"
+      ]
+    },
+    {
+      "id": "digital-wedding-invitation",
+      "slug": "digital-wedding-invitation",
+      "title": "An invitation that unfolds.",
+      "name": "Undangan Pernikahan Digital",
+      "summary": "A cinematic digital invitation shaped by warm typography, editorial pacing, and subtle Javanese visual references.",
+      "category": "Websites",
+      "disciplines": [
+        "Website Design",
+        "Interactive Development",
+        "Responsive UX"
+      ],
+      "technologies": [
+        "Next.js",
+        "React",
+        "TypeScript",
+        "Tailwind CSS",
+        "Motion"
+      ],
+      "status": "Portfolio Project",
+      "visual": "wedding",
+      "featured": true,
+      "order": 23,
+      "visibility": "public",
+      "updatedAt": "2026-11-11",
+      "liveUrl": "https://wedding-demo-kevins.vercel.app/",
+      "repositoryUrl": "https://github.com/zvenians/wedding-demo",
+      "challenge": "A digital invitation must feel personal and ceremonial while keeping essential event information easy to read on a phone.",
+      "approach": "Use editorial pacing, warm type, restrained motion, and cultural references to turn a practical invitation into a guided story.",
+      "implementation": "Next.js, React, TypeScript, Tailwind CSS, and Motion power the responsive scenes. Email entry, verification, RSVP, and wishes are clearly presented as simulated portfolio flows.",
+      "outcome": "The public demonstration moves from an opening moment through the couple's story, event information, gallery, and RSVP-style interactions.",
+      "tradeoff": "Guest access and RSVP data are not persisted. Production use would require secure identity, a database, delivery monitoring, and privacy controls.",
+      "evidence": [
+        "Responsive cinematic invitation",
+        "Editorial and Javanese-inspired visual system",
+        "Simulated email and RSVP flow",
+        "Public repository and deployment"
+      ]
     }
   ],
   "resume": null,

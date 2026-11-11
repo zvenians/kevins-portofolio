@@ -12,6 +12,7 @@ The existing capture set was documented on **27 October 2026**. Screenshots are 
 | `galilea-digital-archive.webp` | [Galilea Digital Archive](https://drive-galilea.vercel.app/) |
 | `majelis-galilea.webp` | [Majelis Galilea](https://majelis-galilea.vercel.app/) |
 | `naomi-rouli.webp` | [Naomi Rouli](https://naomirouli.web.app/) |
+| `atlas-logistics-command-center.webp` | [ATLAS Logistics Command Center](https://atlas-project-blond.vercel.app/) |
 
 ## Capture and publishing guidance
 
