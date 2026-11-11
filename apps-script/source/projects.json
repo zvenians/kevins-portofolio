@@ -2,7 +2,7 @@
   {
     "slug": "galilea-web-portal",
     "title": "A place to gather.",
-    "name": "GMAHK Galilea",
+    "name": "Sistem Informasi Ibadah & Jemaat",
     "summary": "Worship resources, community information, and presentation tools in one considered place.",
     "category": "Web Engineering",
     "disciplines": [
@@ -45,7 +45,7 @@
   {
     "slug": "galilea-digital-archive",
     "title": "Files, with a place.",
-    "name": "Galilea Digital Archive",
+    "name": "Sistem Arsip Digital Jemaat",
     "summary": "A cloud-connected archive that makes recurring records easier to find and manage.",
     "category": "Digital Products",
     "disciplines": [
@@ -86,7 +86,7 @@
   {
     "slug": "majelis-galilea",
     "title": "Less fragmentation.",
-    "name": "Majelis Galilea",
+    "name": "Sistem Administrasi Majelis",
     "summary": "Meetings, decisions, budgets, and documents connected through a shared administrative system.",
     "category": "Business Systems",
     "disciplines": [
@@ -127,7 +127,7 @@
   {
     "slug": "naomi-rouli",
     "title": "The pace of a story.",
-    "name": "Naomi Rouli",
+    "name": "Pesan Interaktif untuk Pasangan",
     "summary": "An editorial study in typography, quiet movement, and the space between chapters.",
     "category": "Creative Experiments",
     "disciplines": [
@@ -821,7 +821,7 @@
     "id": "atlas-logistics-command-center",
     "slug": "atlas-logistics-command-center",
     "title": "Fleet movement, made visible.",
-    "name": "ATLAS Logistics Command Center",
+    "name": "Logistics Command Center",
     "summary": "An interactive logistics operations prototype for following fleets, shipments, and movement around Kariangau and Balikpapan.",
     "category": "Digital Products",
     "disciplines": [

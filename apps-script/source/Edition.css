@@ -204,9 +204,7 @@ body.clean-ui .kinetic-hero .journey-actions a{color:#eff8ff}body.clean-ui .kine
 /* Selected work: an editorial folio deck inspired by the supplied motion reference. */
 .k-work .journey-heading{align-items:start;margin-bottom:clamp(30px,5vw,72px)}
 .k-work .journey-heading p,.k-studio .journey-heading p{max-width:56ch;color:#53606c;line-height:1.65}
-.motion-toggle{display:inline-flex;align-items:center;justify-content:center;gap:9px;min-height:44px;padding:9px 14px;border:1px solid currentColor;border-radius:999px;background:transparent;color:inherit;font:600 12px/1.1 ui-monospace,monospace;letter-spacing:.04em;cursor:pointer;white-space:nowrap}
-.motion-toggle span{font-size:14px}
-.motion-toggle:focus-visible,.project-folio:focus-visible,.demo-tabs button:focus-visible,.demo-stage-controls button:focus-visible,.skill-index a:focus-visible{outline:3px solid #719bff;outline-offset:4px}
+.project-folio:focus-visible,.demo-tabs button:focus-visible,.demo-stage-controls button:focus-visible,.skill-index a:focus-visible{outline:3px solid #719bff;outline-offset:4px}
 .project-folio-stack{--folio-x:0deg;--folio-y:0deg;position:relative;display:grid;min-height:clamp(760px,88vw,1140px);padding:clamp(12px,2vw,24px) 0 64px;perspective:1500px;isolation:isolate}
 .project-folio{--offset:calc(var(--folio) * clamp(82px,9.5vw,132px));--lean:calc((var(--folio) - 2.5) * .7deg);position:absolute;top:var(--offset);left:50%;width:min(920px,86%);display:grid;grid-template-columns:minmax(0,1.3fr) minmax(240px,.7fr);gap:clamp(18px,3vw,42px);padding:clamp(16px,2vw,28px);background:#f5f2e9;color:#171b20;border:1px solid #8e938e;border-radius:clamp(10px,1.5vw,22px);box-shadow:0 2px #d8d8d0,0 5px #8b8d89,0 22px 50px #0c16202c;text-decoration:none;transform-style:preserve-3d;transform:translateX(-50%) rotateX(var(--folio-y)) rotateY(var(--folio-x)) rotateZ(var(--lean));transform-origin:center top;will-change:transform}
 .project-folio:nth-child(even){background:#162638;color:#eef6f9;border-color:#597186}
@@ -219,7 +217,6 @@ body.clean-ui .kinetic-hero .journey-actions a{color:#eff8ff}body.clean-ui .kine
 .project-folio .folio-copy h3{margin:clamp(14px,2.5vw,30px) 0 12px;color:inherit!important;font:normal clamp(25px,3.2vw,47px)/.98 Georgia,serif;letter-spacing:-.04em}
 .project-folio .folio-copy p{margin:0;color:inherit!important;line-height:1.55;opacity:.82}
 .project-folio .folio-copy b{margin-top:auto;padding-top:24px;border-bottom:1px solid currentColor;font-size:13px}
-.project-folio-stack.motion-paused .project-folio{animation-play-state:paused!important}
 
 /* Demo theatre: lateral selection instead of the project stack's vertical layering. */
 body.clean-ui .k-studio .journey-heading p{color:#b8c5d5}
@@ -255,10 +252,8 @@ body.clean-ui .k-studio .journey-heading p{color:#b8c5d5}
 .service-preview.care::before{width:46%;aspect-ratio:1;right:-8%;top:12%;border-radius:48% 52% 62% 38%;background:#86b6a4;transform:rotate(18deg)}
 .service-preview.care::after{width:34%;aspect-ratio:1;right:8%;top:24%;border:1px solid #f4fbf5;border-radius:50%}
 .demo-stage-controls{display:flex;align-items:center;gap:10px;margin-top:24px}
-.demo-stage-controls>button:not(.motion-toggle){width:44px;height:44px;border:1px solid #7890aa;border-radius:50%;background:#172433;color:white;cursor:pointer}
+.demo-stage-controls>button{width:44px;height:44px;border:1px solid #7890aa;border-radius:50%;background:#172433;color:white;cursor:pointer}
 .demo-stage-controls>span{font:12px ui-monospace,monospace;color:#b3c3d5;min-width:58px;text-align:center}
-.demo-stage-controls .motion-toggle{margin-left:auto;color:#e9f2fc}
-.demo-theatre.motion-paused .demo-panel{animation-play-state:paused!important}
 
 /* Skills: visible grouped rails with a slow, pauseable right-to-left flow. */
 .skill-index{scroll-margin:95px;padding:0 0 clamp(62px,8vw,110px);border-bottom:1px solid var(--k-line);margin-bottom:clamp(62px,8vw,110px);overflow:hidden}
@@ -274,7 +269,6 @@ body.clean-ui .k-studio .journey-heading p{color:#b8c5d5}
 .skill-track img{width:24px;height:24px;object-fit:contain;filter:saturate(.82)}
 .skill-catalog{margin:28px 0 0;text-align:right}
 .skill-catalog a{color:#263e56;font-weight:650}
-.skill-index.motion-paused .skill-track{animation-play-state:paused!important}
 @keyframes folio-drift{0%,100%{transform:translateX(-50%) rotateX(var(--folio-y)) rotateY(var(--folio-x)) rotateZ(var(--lean)) translate3d(0,0,0)}50%{transform:translateX(-50%) rotateX(var(--folio-y)) rotateY(var(--folio-x)) rotateZ(calc(var(--lean) + .8deg)) translate3d(calc((var(--folio) - 2.5) * 2px),-8px,8px)}}
 @keyframes demo-enter{from{opacity:.2;transform:translateX(38px) rotateY(-4deg)}to{opacity:1;transform:none}}
 @keyframes skill-flow{to{transform:translateX(-50%)}}
@@ -285,7 +279,7 @@ body.clean-ui .k-studio .journey-heading p{color:#b8c5d5}
 }
 @media(hover:hover) and (prefers-reduced-motion:no-preference){
  html:not(.reduced) .project-folio{transition:filter .28s,box-shadow .28s}
- html:not(.reduced) .project-folio:is(:hover,:focus-visible){z-index:8;animation-play-state:paused;filter:saturate(1.08);box-shadow:0 3px #e5e3dc,0 8px #808783,0 34px 70px #07131f52}
+ html:not(.reduced) .project-folio:is(:hover,:focus-visible){z-index:8;filter:saturate(1.08);box-shadow:0 3px #e5e3dc,0 8px #808783,0 34px 70px #07131f52}
  html:not(.reduced) .demo-tabs button{transition:background .2s,color .2s,transform .2s}
  html:not(.reduced) .demo-tabs button:hover{transform:translateX(4px)}
 }
@@ -314,7 +308,6 @@ body.clean-ui .k-studio .journey-heading p{color:#b8c5d5}
 @media(max-width:480px){
  .demo-stage{padding:16px 0 22px}
  .demo-tabs button small{display:none}
- .demo-stage-controls .motion-toggle{padding-inline:11px}
  .project-folio .folio-copy p{font-size:14px}
  .skill-track li{padding:7px 13px;font-size:13px}
 }
@@ -325,3 +318,27 @@ body.clean-ui .k-studio .journey-heading p{color:#b8c5d5}
 }
 .reduced .project-folio,.reduced .demo-panel,.reduced .skill-track{animation:none!important}
 .reduced .skill-window{overflow-x:auto;mask-image:none}.reduced .skill-track ul[aria-hidden=true]{display:none}
+
+/* Time-sensitive greeting: editorial text, no extra control or animation. */
+.kinetic-hero .visitor-greeting{margin:clamp(12px,2vw,22px) 0 4px;font:600 12px/1.4 ui-monospace,monospace;letter-spacing:.09em;text-transform:uppercase;color:#4f6378}
+
+
+/* Project folio: depth and pointer parallax; demo theatre uses its own horizontal scene motion. */
+.showcase.project-folio{--folio-x:0deg;--folio-y:0deg;}
+@media (hover:hover) and (prefers-reduced-motion:no-preference){
+ html:not(.reduced) .project-folio .showpiece:is(:hover,:focus-visible){z-index:15;filter:brightness(1.045);box-shadow:0 8px #dad6cb,0 17px #6d7b84,0 45px 80px #000a;}
+ .demo-stage{perspective:1200px;}
+ .demo-stage .demo-panel:not([hidden]) .brand figure{transform:rotateX(var(--demo-rotate-x,0deg)) rotateY(var(--demo-rotate-y,0deg));transform-style:preserve-3d;transition:transform .2s ease-out;will-change:transform;}
+}
+@keyframes demo-hoverstage{0%,100%{transform:translate3d(0,4px,0) rotateY(-3deg) scale(.985)}50%{transform:translate3d(7px,-6px,16px) rotateY(2deg) scale(1.015)}}
+@keyframes demo-revealcopy{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+@media(prefers-reduced-motion:no-preference){
+ html:not(.reduced) .demo-panel:not([hidden]) .brand img{animation:demo-hoverstage 6.2s ease-in-out infinite;transform-origin:center;will-change:transform;}
+ html:not(.reduced) .demo-panel:not([hidden]) .brand>div{animation:demo-revealcopy .65s .08s both;}
+}
+@media(max-width:800px){.wedding-repo-preview{min-height:220px}.wedding-repo-preview>strong{font-size:clamp(25px,8vw,44px)}}
+@media(prefers-reduced-motion:reduce){.demo-stage .brand img,.wedding-repo-preview{animation:none!important;transform:none!important}}
+html.reduced .demo-stage .brand img{animation:none!important;transform:none!important}
+
+/* Keep the captured wedding-demo interface legible in the real project folio. */
+.project-folio[href*="digital-wedding-invitation"] .visual img{object-position:center 25%}

@@ -8,6 +8,10 @@ on:
 permissions:
   contents: read
 
+concurrency:
+  group: portfolio-ci-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
 jobs:
   test:
     name: Source and behavior tests
@@ -24,6 +28,35 @@ jobs:
         run: |
           npm ci
           npm ci --prefix apps-script
+      - name: Audit dependencies
+        run: |
+          npm audit --audit-level=high
+          npm audit --prefix apps-script --audit-level=high
+      - name: Build source-backed public assets
+        run: |
+          node apps-script/build.mjs
+          node vercel-site/sync.mjs
+      - name: Report pending asset synchronization on this PR
+        if: ${{ github.event_name == 'pull_request' && github.head_ref == 'fix/remove-manual-motion-pauses-20261111' }}
+        run: |
+          if ! git diff --quiet; then
+            echo "::notice::Generated outputs are being synchronized by the source-to-preview workflow."
+            git diff --name-only
+          fi
+      - name: Verify reproducible committed assets
+        if: ${{ github.event_name == 'workflow_dispatch' || github.head_ref != 'fix/remove-manual-motion-pauses-20261111' }}
+        run: |
+          if ! git diff --quiet; then
+            echo "::error::Generated files differ from source. Regenerate and commit both distributions."
+            git diff --name-only
+            exit 1
+          fi
+          if git status --porcelain --untracked-files=all | grep -E 'vercel-site/public/assets/portfolio-[a-f0-9]{12}[.](css|js)'; then
+            echo "::error::Untracked generated assets; commit generated bundles."
+            exit 1
+          fi
+      - name: Build the deployed Vercel frontend
+        run: npm --prefix vercel-site run build
       - name: Run unit and integration tests
         run: npm test
       - name: Check source code

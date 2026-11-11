@@ -1,4 +1,4 @@
-import { readFile, writeFile, mkdir } from 'node:fs/promises';
+import { readFile, writeFile, mkdir, readdir, unlink } from 'node:fs/promises';
 import { fileURLToPath } from 'node:url';
 import path from 'node:path';
 import { createHash } from 'node:crypto';
@@ -31,6 +31,11 @@ for (const [i, result] of compiled.entries()) {
   const filename = 'portfolio-' + createHash('sha256').update(result.code).digest('hex').slice(0, 12) + (i === 0 ? '.css' : '.js');
   await writeFile(path.join(bundleDir, filename), result.code);
   filenames.push(filename);
+}
+for (const filename of await readdir(bundleDir)) {
+  if (/^portfolio-[a-f0-9]{12}\.(?:css|js)$/.test(filename) && !filenames.includes(filename)) {
+    await unlink(path.join(bundleDir, filename));
+  }
 }
 const template = assets.html
   .replace('<style>/*STYLES*/</style>', `<link rel="stylesheet" href="/assets/${filenames[0]}">`)

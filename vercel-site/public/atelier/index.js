@@ -37,40 +37,50 @@ let language = read('language', 'en');
 if (!locales.includes(language)) language = 'en';
 let reduced = read('reduced', String(matchMedia('(prefers-reduced-motion: reduce)').matches)) === 'true';
 const t = key => translate(key, language);
+const greetings = {
+  en: ['Good morning', 'Good afternoon', 'Good evening', 'Good night'],
+  id: ['Selamat pagi', 'Selamat siang', 'Selamat sore', 'Selamat malam'],
+  fr: ['Bonjour', 'Bon après-midi', 'Bonsoir', 'Bonne soirée'],
+  es: ['Buenos días', 'Buenas tardes', 'Buenas tardes', 'Buenas noches']
+};
+function visitorGreeting() {
+  const hour = new Date().getHours(); // Browser-local time zone, not the server's clock.
+  const period = hour >= 5 && hour < 11 ? 0 : hour >= 11 && hour < 15 ? 1 : hour >= 15 && hour < 19 ? 2 : 3;
+  return greetings[language][period];
+}
 const categories = ['work', 'demos', 'capabilities', 'about', 'contact'];
 const nav = () => categories.map(id => `<a href="/${id}" ${section === id ? 'aria-current="page"' : ''}>${t(id)}</a>`).join('');
 const flagship = [
+  ['KOMA Manga Reader', 'creative', '/work/koma-manga-reader', 'web-manga'],
   ['Daun & Bara', 'restaurant', '/edisi/resto.html', 'showcase/dining'],
   ['Lintas Teluk', 'travel', '/edisi/travel.html', 'showcase/atlas'],
   ['Ruang Rawat', 'care', '/edisi/care.html', 'showcase/care'],
   ['NOVA Creative', 'nova', '/nova', 'showcase/nova'],
-  ['Undangan Digital', 'creative', '/work/wedding-invitation-demo', 'classic'],
-  ['KOMA Manga Reader', 'creative', '/work/koma-manga-reader', 'web-manga']
+  ['Undangan Digital', 'creative', '/work/wedding-invitation-demo', 'classic']
 ];
 const real = projects.filter(p => p.status === 'Real Project');
 const demos = projects.filter(p => p.status === 'Interactive Demo');
 const publicCV = '/resume/Kevin-Oloan-Simatupang-CV.pdf';
-let folioPaused = reduced;
 let demoPaused = reduced;
 let demoIndex = 0;
-let skillsPaused = reduced;
 function projectRow(p, i) {
   return `<a class="project-row" href="/work/${encodeURIComponent(p.slug)}"><small>${String(i + 1).padStart(2, '0')}</small><span><strong>${esc(p.name)}</strong><small>${(p.technologies || []).slice(0, 3).map(esc).join(' / ')}</small></span><b aria-hidden="true">${icon('outward')}</b></a>`;
 }
 function picks() {
   const slugs = ['atlas-logistics-command-center','digital-wedding-invitation','galilea-web-portal','galilea-digital-archive','majelis-galilea','naomi-rouli'];
   const selected = slugs.map(slug => projects.find(p => p.slug === slug)).filter(Boolean);
-  const cover = p => p.slug === 'digital-wedding-invitation' ? '/demo-shots/classic.webp' : `/project-shots/${encodeURIComponent(p.slug)}.webp`;
-  return `<div class="folio-shell ${folioPaused ? 'motion-paused' : ''}"><div class="folio-tools"><p>${t('folioNote')}</p><button type="button" data-folio-motion aria-pressed="${folioPaused}">${t(folioPaused ? 'playFolio' : 'pauseFolio')}</button></div><div class="showcase project-folio">${selected.map((p, i) => `<a class="showpiece" style="--folio:${i}" href="/work/${encodeURIComponent(p.slug)}"><div class="folio-meta"><small>${String(i + 1).padStart(2, '0')} / ${String(selected.length).padStart(2, '0')}</small><strong>${esc(p.name)}</strong><small>${esc(p.status)}</small></div><div class="shot tone${i}"><img loading="lazy" src="${cover(p)}" alt="${esc(p.name)}"></div><div class="folio-copy"><small>${esc(p.category)} / ${esc((p.technologies || []).slice(0, 2).join(' + '))}</small><h3>${esc(p.name)} <span>${icon('outward')}</span></h3><p>${esc(p.summary)}</p></div></a>`).join('')}</div></div>`;
+  const cover = p => p.slug === 'digital-wedding-invitation' ? '/project-shots/wedding-demo-live.png' : `/project-shots/${encodeURIComponent(p.slug)}.webp`;
+  const preview = p => `<img loading="lazy" src="${cover(p)}" alt="${esc(p.name)} — project preview">`;
+  return `<div class="folio-shell"><div class="folio-tools"><p>${t('folioNote')}</p></div><div class="showcase project-folio">${selected.map((p, i) => `<a class="showpiece" style="--folio:${i}" href="/work/${encodeURIComponent(p.slug)}"><div class="folio-meta"><small>${String(i + 1).padStart(2, '0')} / ${String(selected.length).padStart(2, '0')}</small><strong>${esc(p.name)}</strong><small>${esc(p.status)}</small></div><div class="shot tone${i}">${preview(p)}</div><div class="folio-copy"><small>${esc(p.category)} / ${esc((p.technologies || []).slice(0, 2).join(' + '))}</small><h3>${esc(p.name)} <span>${icon('outward')}</span></h3><p>${esc(p.summary)}</p></div></a>`).join('')}</div></div>`;
 }
 function brands() {
-  return `<div class="brands product-gallery demo-theatre ${demoPaused ? 'motion-paused' : ''}" data-demo-theatre><div class="demo-tabs" role="tablist" aria-label="${t('demos')}">${flagship.map(([name,kind],i)=>`<button type="button" role="tab" id="demo-tab-${i}" aria-controls="demo-panel-${i}" aria-selected="${i===demoIndex}" tabindex="${i===demoIndex?0:-1}" data-demo-tab="${i}"><span>0${i+1}</span><strong>${name}</strong><small>${t(kind)}</small></button>`).join('')}</div><div class="demo-stage">${flagship.map(([name,kind,url,image],i)=>`<article class="demo-panel" role="tabpanel" tabindex="0" id="demo-panel-${i}" aria-labelledby="demo-tab-${i}" ${i===demoIndex?'':'hidden'}><a class="brand brand-${kind}" href="${url}"><figure><img loading="lazy" width="940" height="645" src="/demo-shots/${image}.webp" alt=""></figure><div><small>0${i+1} / ${t(kind)}</small><h3>${name}</h3><span>${t('open')} ${icon('outward')}</span></div></a></article>`).join('')}<div class="demo-controls"><button type="button" data-demo-prev aria-label="${t('previousDemo')}">←</button><output>${String(demoIndex+1).padStart(2,'0')} / ${String(flagship.length).padStart(2,'0')}</output><button type="button" data-demo-next aria-label="${t('nextDemo')}">→</button><button type="button" data-demo-motion aria-pressed="${demoPaused}">${t(demoPaused ? 'playDemos' : 'pauseDemos')}</button></div></div></div>`;
+  return `<div class="brands product-gallery demo-theatre" data-demo-theatre><div class="demo-tabs" role="tablist" aria-label="${t('demos')}">${flagship.map(([name,kind],i)=>`<button type="button" role="tab" id="demo-tab-${i}" aria-controls="demo-panel-${i}" aria-selected="${i===demoIndex}" tabindex="${i===demoIndex?0:-1}" data-demo-tab="${i}"><span>0${i+1}</span><strong>${name}</strong><small>${t(kind)}</small></button>`).join('')}</div><div class="demo-stage">${flagship.map(([name,kind,url,image],i)=>`<article class="demo-panel" role="tabpanel" tabindex="0" id="demo-panel-${i}" aria-labelledby="demo-tab-${i}" ${i===demoIndex?'':'hidden'}><a class="brand brand-${kind}" href="${url}"><figure><img loading="lazy" width="940" height="645" src="/demo-shots/${image}.webp" alt=""></figure><div><small>0${i+1} / ${t(kind)}</small><h3>${name}</h3><span>${t('open')} ${icon('outward')}</span></div></a></article>`).join('')}<div class="demo-controls"><button type="button" data-demo-prev aria-label="${t('previousDemo')}">←</button><output>${String(demoIndex+1).padStart(2,'0')} / ${String(flagship.length).padStart(2,'0')}</output><button type="button" data-demo-next aria-label="${t('nextDemo')}">→</button></div></div></div>`;
 }
 function heading(id, num) {
   return `<div class="heading"><small>${num} / KS</small><h2>${t(id)}</h2></div>`;
 }
 function home() {
-  return `<section class="hero"><div class="scene"><canvas aria-hidden="true"></canvas><small>FIG. 01 &nbsp; / &nbsp; ${t('film')}</small></div><div class="hero-text"><small><i class="dot"></i> Kevin Oloan Simatupang</small><h1><em>Creative</em><br>DEVELOPER.</h1><p>${t('hero')}</p><div class="actions"><a class="solid" href="/work">${t('explore')} ${icon('outward')}</a><a href="/contact">${t('contact')} →</a></div></div></section><div class="axis"><small>KS / PORTFOLIO</small><small>${t('location')}</small></div><section class="block" id="work">${heading('work', '01')}${picks()}<a class="more" href="/work">${t('all')} →</a></section><section class="block" id="studio">${heading('demos', '02')}${brands()}<a class="more" href="/demos">${t('legacy')} →</a></section><section id="skills" class="block">${heading('capabilities', '03')}${skillsSummary()}</section>`;
+  return `<section class="hero"><div class="scene"><canvas aria-hidden="true"></canvas><small>FIG. 01 &nbsp; / &nbsp; ${t('film')}</small></div><div class="hero-text"><small><i class="dot"></i> Kevin Oloan Simatupang</small><small class="visitor-greeting">${visitorGreeting()}</small><h1><em>Creative</em><br>DEVELOPER.</h1><p>${t('hero')}</p><div class="actions"><a class="solid" href="/work">${t('explore')} ${icon('outward')}</a><a href="/contact">${t('contact')} →</a></div></div></section><div class="axis"><small>KS / PORTFOLIO</small><small>${t('location')}</small></div><section class="block" id="work">${heading('work', '01')}${picks()}<a class="more" href="/work">${t('all')} →</a></section><section class="block" id="studio">${heading('demos', '02')}${brands()}<a class="more" href="/demos">${t('legacy')} →</a></section><section id="skills" class="block">${heading('capabilities', '03')}${skillsSummary()}</section>`;
 }
 function skillsSummary() {
   const groups = [
@@ -80,28 +90,35 @@ function skillsSummary() {
     ['skillDelivery', [['HTML5','html5'],['CSS3','css3'],['Git','git'],['Docker','docker'],['Linux','linux'],['GitHub Actions','githubactions'],['Figma','figma'],['Bash','bash']]]
   ];
   const chip = ([name,logo]) => `<li><img loading="lazy" width="24" height="24" src="/edisi/logos/${logo}.svg" alt=""><span>${name}</span></li>`;
-  return `<div class="skill-intro"><div><small>${t('selectedStrengths')}</small><h3><em>${t('craft')}</em><br>${t('verifiable')}</h3><p>${t('skillMotionNote')}</p></div><div class="skill-lattice" aria-hidden="true"></div></div><div class="skill-tools"><button type="button" data-skill-motion aria-pressed="${skillsPaused}">${t(skillsPaused ? 'playSkills' : 'pauseSkills')}</button></div><div class="skill-rails ${skillsPaused ? 'motion-paused' : ''}">${groups.map(([label,items],i)=>{const content=items.map(chip).join('');return `<div class="skill-rail" style="--rail:${i}"><strong>${t(label)}</strong><div class="skill-window"><div class="skill-track"><ul>${content}</ul><ul aria-hidden="true">${content}</ul></div></div></div>`}).join('')}</div><a class="more" href="/capabilities">${t('catalog')} ${icon('outward')}</a>`;
+  return `<div class="skill-intro"><div><small>${t('selectedStrengths')}</small><h3><em>${t('craft')}</em><br>${t('verifiable')}</h3><p>${t('skillMotionNote')}</p></div><div class="skill-lattice" aria-hidden="true"></div></div><div class="skill-rails">${groups.map(([label,items],i)=>{const content=items.map(chip).join('');return `<div class="skill-rail" style="--rail:${i}"><strong>${t(label)}</strong><div class="skill-window"><div class="skill-track"><ul>${content}</ul><ul aria-hidden="true">${content}</ul></div></div></div>`}).join('')}</div><a class="more" href="/capabilities">${t('catalog')} ${icon('outward')}</a>`;
 }
-function mountSectionMotion() {
-  const folio = $('.folio-shell');
-  if (folio) $('[data-folio-motion]').onclick = event => {
-    folioPaused = !folioPaused;
-    folio.classList.toggle('motion-paused', folioPaused);
-    event.currentTarget.setAttribute('aria-pressed', String(folioPaused));
-    event.currentTarget.textContent = t(folioPaused ? 'playFolio' : 'pauseFolio');
+function mountProjectFolio() {
+  const folio = document.querySelector('.showcase.project-folio');
+  if (!folio) return () => {};
+  const move = event => {
+    if (reduced || event.pointerType !== 'mouse' || !matchMedia('(hover:hover) and (prefers-reduced-motion: no-preference)').matches) return;
+    const rect = folio.getBoundingClientRect();
+    folio.style.setProperty('--folio-x', (((event.clientX - rect.left) / rect.width) - .5) * 12 + 'deg');
+    folio.style.setProperty('--folio-y', (.5 - ((event.clientY - rect.top) / rect.height)) * 7 + 'deg');
   };
-  const skills = $('.skill-rails');
-  if (skills) $('[data-skill-motion]').onclick = event => {
-    skillsPaused = !skillsPaused;
-    skills.classList.toggle('motion-paused', skillsPaused);
-    event.currentTarget.setAttribute('aria-pressed', String(skillsPaused));
-    event.currentTarget.textContent = t(skillsPaused ? 'playSkills' : 'pauseSkills');
-  };
+  const reset = () => { folio.style.removeProperty('--folio-x'); folio.style.removeProperty('--folio-y'); };
+  folio.addEventListener('pointermove', move);
+  folio.addEventListener('pointerleave', reset);
+  return () => { folio.removeEventListener('pointermove', move); folio.removeEventListener('pointerleave', reset); };
 }
 function mountDemoTheatre() {
   const theatre = $('[data-demo-theatre]');
   if (!theatre) return () => {};
   const tabs = [...theatre.querySelectorAll('[data-demo-tab]')], panels = [...theatre.querySelectorAll('.demo-panel')];
+  const stage = theatre.querySelector('.demo-stage');
+  stage?.addEventListener('pointermove', event => {
+    if (reduced || event.pointerType !== 'mouse' || !matchMedia('(hover:hover)').matches) return;
+    const rect = stage.getBoundingClientRect();
+    stage.style.setProperty('--demo-rotate-y', (((event.clientX - rect.left) / rect.width) - .5) * 7 + 'deg');
+    stage.style.setProperty('--demo-rotate-x', (.5 - ((event.clientY - rect.top) / rect.height)) * 5 + 'deg');
+  });
+  stage?.addEventListener('pointerleave', () => { stage.style.removeProperty('--demo-rotate-y'); stage.style.removeProperty('--demo-rotate-x'); });
+
   let timer, touchStart = 0;
   const stop = () => { clearTimeout(timer); timer = 0; };
   const show = (index, focus = false) => {
@@ -126,13 +143,6 @@ function mountDemoTheatre() {
   });
   $('[data-demo-prev]').onclick = () => { show(demoIndex - 1); schedule(); };
   $('[data-demo-next]').onclick = () => { show(demoIndex + 1); schedule(); };
-  $('[data-demo-motion]').onclick = event => {
-    demoPaused = !demoPaused;
-    theatre.classList.toggle('motion-paused', demoPaused);
-    event.currentTarget.setAttribute('aria-pressed', String(demoPaused));
-    event.currentTarget.textContent = t(demoPaused ? 'playDemos' : 'pauseDemos');
-    schedule();
-  };
   theatre.onpointerdown = event => { if (event.pointerType !== 'mouse') touchStart = event.clientX; };
   theatre.onpointerup = event => {
     if (!touchStart) return;
@@ -154,7 +164,6 @@ function inquiry() {
   return `<div class="flow"><aside>${['project', 'plan', 'contact', 'review'].map((k, i) => `<p class="${i === step ? 'current' : ''}">0${i + 1}　${t(k)}</p>`).join('')}</aside><form id="inquiry"><h2>${t(['project', 'plan', 'contact', 'review'][step])}</h2>${keys ? keys.map(k => `<label>${t(k)}${k === 'scope' ? `<textarea name="scope" required maxlength="2500">${esc(brief.scope)}</textarea>` : `<input name="${k}" type="${k === 'time' ? 'date' : k === 'email' ? 'email' : 'text'}" value="${esc(brief[k])}" maxlength="160" required>`}</label>`).join('') : `<dl>${steps.flat().map(k => `<dt>${t(k)}</dt><dd>${esc(brief[k])}</dd>`).join('')}</dl><p>${t('mailhint')}</p>`}<div class="actions">${step ? `<button type="button" id="back">${t('back')}</button>` : ''}<button class="solid">${t(keys ? 'next' : 'compose')} →</button></div></form></div>`;
 }
 let dispose;
-let scenePaused = reduced;
 function render() {
   dispose?.();
   document.documentElement.lang = language;
@@ -203,29 +212,17 @@ function render() {
   if(!section) $('.closing').insertAdjacentHTML('beforeend',inquiry());
   if(section==='nova' || section.startsWith('nova/')) $('#bar nav').innerHTML=`<a href="/demos">← ${t('demos')}</a>`;
   if (section === 'about') $('.bio').insertAdjacentHTML('beforeend', `<div class="bio-facts"><strong>${t('currentWork')}</strong><p>PT Wulandari Bangun Laksana Tbk · ${t('currentPeriod')}</p><strong>${t('education')}</strong><p>${t('practice')}</p><a href="/resume">CV / PDF ${icon('outward')}</a></div>`);
-  const scene = $('.scene');
-  if (scene) {
-    const toggle = document.createElement('button');
-    toggle.className = 'scene-toggle';
-    toggle.textContent = t(scenePaused ? 'playScene' : 'pauseScene');
-    scene.append(toggle);
-    toggle.onclick = () => {
-      scenePaused = !scenePaused;
-      render();
-      $('.scene-toggle').focus({preventScroll:true});
-    };
-  }
-  const disposeScene = mountScene($('.scene canvas'), scenePaused);
+  const disposeScene = mountScene($('.scene canvas'), reduced);
   const disposeCamera = mountChoreography(reduced);
   const disposeAcademic = mountAcademic(language,email);
+  const disposeFolio = mountProjectFolio();
   const disposeDemos = mountDemoTheatre();
-  mountSectionMotion();
-  dispose = () => { disposeScene?.(); disposeCamera(); disposeAcademic?.(); disposeDemos(); };
+  dispose = () => { disposeScene?.(); disposeCamera(); disposeAcademic?.(); disposeDemos(); disposeFolio(); };
   document.querySelectorAll('a[href="/edisi/skill.html"]').forEach(a => a.href = '/capabilities');
   if (section === 'demos') {
     document.querySelectorAll('.demo-panel').forEach((panel, i) => {
-      if (i > 3) return;
       const [name, kind, url] = flagship[i];
+      if (!['restaurant', 'travel', 'care'].includes(kind)) return;
       panel.insertAdjacentHTML('beforeend', `<details class="brief-case"><summary>${t('view')}</summary><h3>${name}</h3><h4>${t('flow')}</h4><p>${t(kind + 'Flow')}</p><h4>${t('logic')}</h4><p>${t(kind + 'Logic')}</p><a href="${url}">${t('open')} ${icon('outward')}</a></details>`);
     });
     $('#library').insertAdjacentHTML('beforebegin', `<aside class="academic-entry"><small>STUDENT / SUPPORT</small><h2>${t('academicSupport')}</h2><p>${t('academicLead')}</p><a class="solid" href="/academic-support">${t('academicCta')} ${icon('outward')}</a></aside>`);
@@ -238,12 +235,12 @@ function render() {
     const search = () => {
       const q = $('#search').value.toLowerCase();
       const types={appsGroup:['booking','commerce','commerceops','scopebuilder','fieldcompanion','attendance','archive','qualityroom'],excelData:['operations','dataprep','documents'],researchGroup:['researchtools'],creative:['morphslides','logostudio','wedding','manga']};
-      const rows = demos.filter(p => [p.name, ...p.technologies].join(' ').toLowerCase().includes(q) && (libraryGroup==='all'||types[libraryGroup]?.includes(p.visual)));
+      const rows = demos.filter(p => [p.name, ...p.technologies].join(' ').toLowerCase().includes(q) && (libraryGroup==='all'||types[libraryGroup]?.includes(p.visual))).sort((a,b)=>Number(b.slug==='koma-manga-reader')-Number(a.slug==='koma-manga-reader'));
       const groups=[
+        [t('creative'),types.creative],
         [t('appsGroup'),types.appsGroup],
         [t('excelData'),types.excelData],
-        [t('researchGroup'),types.researchGroup],
-        [t('creative'),types.creative]
+        [t('researchGroup'),types.researchGroup]
       ];
       $('#results').innerHTML = groups.map(([label,types])=>{
         const group=rows.filter(p=>types.includes(p.visual));
@@ -319,10 +316,7 @@ function openPanel(mode) {
   };
   if ($('#motion')) $('#motion').onchange = e => {
     reduced = e.target.checked;
-    scenePaused = reduced;
-    folioPaused = reduced;
     demoPaused = reduced;
-    skillsPaused = reduced;
     save('reduced', String(reduced));
     render();
   };

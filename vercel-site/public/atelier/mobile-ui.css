@@ -129,7 +129,6 @@ html[data-motion=full] .artifact {transition:transform .35s ease;}
   .actions { gap:12px 18px; }
   .actions>a { display:inline-flex; align-items:center; min-height:44px; }
 }
-.scene-toggle { position:absolute; top:10px; right:12px; z-index:2; border:1px solid #56544c; border-radius:2rem; background:#191a17; color:#f5f1e8; font:inherit; font-size:.75rem; min-height:44px; padding:0 16px; cursor:pointer; }
 .hero .scene { z-index:0; }
 .hero .hero-text { position:relative; z-index:1; }
 .skill-wall,.skills:has(.skill-proof) { display:grid; grid-template-columns:repeat(auto-fit,minmax(min(100%,170px),1fr)); gap:14px; }
@@ -274,10 +273,9 @@ html[data-motion=full] .missing-orbit {animation:missing-orbit 14s ease-in-out i
 .project-folio .folio-copy small { color:inherit;opacity:.72; }
 .project-folio .folio-copy h3 { margin:20px 0 12px;color:inherit;font:italic clamp(27px,3.5vw,50px)/.98 Georgia,serif; }
 .project-folio .folio-copy p { color:inherit;opacity:.82;line-height:1.48; }
-.folio-shell.motion-paused .showpiece { animation-play-state:paused!important; }
 @keyframes folio-breathe { 0%,100%{transform:translateX(-50%) rotateX(var(--folio-y)) rotateY(var(--folio-x)) rotateZ(var(--lean)) translate3d(0,0,0)}50%{transform:translateX(-50%) rotateX(var(--folio-y)) rotateY(var(--folio-x)) rotateZ(calc(var(--lean) + .8deg)) translate3d(calc((var(--folio) - 2.5) * 2px),-7px,8px)} }
 html[data-motion=full] .project-folio .showpiece { animation:folio-breathe 10s ease-in-out infinite;animation-delay:calc(var(--folio) * -1.1s); }
-@media(hover:hover){html[data-motion=full] .project-folio .showpiece{transition:filter .25s,box-shadow .25s}html[data-motion=full] .project-folio .showpiece:is(:hover,:focus-visible){z-index:9;animation-play-state:paused;filter:saturate(1.08);box-shadow:0 4px #dedbd3,0 10px #727a78,0 34px 62px #0009}}
+@media(hover:hover){html[data-motion=full] .project-folio .showpiece{transition:filter .25s,box-shadow .25s}html[data-motion=full] .project-folio .showpiece:is(:hover,:focus-visible){z-index:9;filter:saturate(1.08);box-shadow:0 4px #dedbd3,0 10px #727a78,0 34px 62px #0009}}
 
 /* Demo theatre: one active application, lateral transitions and six compact choices. */
 .brands.product-gallery.demo-theatre { display:grid;grid-template-columns:minmax(205px,.38fr) minmax(0,1.62fr);gap:0;border-block:1px solid var(--line);touch-action:pan-y; }
@@ -294,12 +292,10 @@ html[data-motion=full] .project-folio .showpiece { animation:folio-breathe 10s e
 .demo-stage .brand { min-height:clamp(350px,40vw,560px);height:auto; }
 .demo-stage .brand figure { min-height:250px; }
 .demo-controls { display:flex;align-items:center;gap:9px;margin-top:18px; }
-.demo-controls button:not([data-demo-motion]) { width:44px;padding:0; }
+.demo-controls button { width:44px;padding:0; }
 .demo-controls output { min-width:62px;text-align:center;font:12px ui-monospace,monospace;color:var(--muted); }
-.demo-controls [data-demo-motion] { margin-left:auto; }
 @keyframes demo-slide { from{opacity:.2;transform:translateX(42px) rotateY(-4deg)}to{opacity:1;transform:none} }
 html[data-motion=full] .demo-panel:not([hidden]) { animation:demo-slide .5s cubic-bezier(.2,.75,.2,1) both; }
-.demo-theatre.motion-paused .demo-panel { animation-play-state:paused!important; }
 .demo-panel .brief-case { margin-top:16px; }
 
 /* Skills: all groups stay visible while the chips move slowly right to left. */
@@ -314,7 +310,6 @@ html[data-motion=full] .demo-panel:not([hidden]) { animation:demo-slide .5s cubi
 .skill-track img { width:23px;height:23px;object-fit:contain; }
 @keyframes skill-conveyor { to{transform:translateX(-50%)} }
 html[data-motion=full] .skill-track { animation:skill-conveyor calc(52s + var(--rail) * 7s) linear infinite; }
-.skill-rails.motion-paused .skill-track { animation-play-state:paused!important; }
 
 @media(max-width:800px){
  .folio-tools { align-items:flex-start;flex-direction:column; }
@@ -340,3 +335,28 @@ html[data-motion=full] .skill-track { animation:skill-conveyor calc(52s + var(--
 @media(prefers-reduced-motion:reduce){.project-folio .showpiece,.demo-panel,.skill-track{animation:none!important}.skill-window{overflow-x:auto;mask-image:none}.skill-track ul[aria-hidden=true]{display:none}}
 html[data-motion=reduced] .project-folio .showpiece,html[data-motion=reduced] .demo-panel,html[data-motion=reduced] .skill-track{animation:none!important}
 html[data-motion=reduced] .skill-window{overflow-x:auto;mask-image:none}html[data-motion=reduced] .skill-track ul[aria-hidden=true]{display:none}
+
+/* Personal greeting follows the visitor's browser-local time without altering the hero layout. */
+.hero-text .visitor-greeting{display:block;margin-top:10px;color:var(--muted);font:600 12px/1.4 ui-monospace,monospace;letter-spacing:.06em;text-transform:uppercase}
+
+
+/* Project folio: depth and pointer parallax; demo theatre uses its own horizontal scene motion. */
+.showcase.project-folio{--folio-x:0deg;--folio-y:0deg;}
+@media (hover:hover) and (prefers-reduced-motion:no-preference){
+ html[data-motion=full] .project-folio .showpiece:is(:hover,:focus-visible){z-index:15;filter:brightness(1.045);box-shadow:0 8px #dad6cb,0 17px #6d7b84,0 45px 80px #000a;}
+ .demo-stage{perspective:1200px;}
+ .demo-stage .demo-panel:not([hidden]) .brand figure{transform:rotateX(var(--demo-rotate-x,0deg)) rotateY(var(--demo-rotate-y,0deg));transform-style:preserve-3d;transition:transform .2s ease-out;will-change:transform;}
+}
+@keyframes demo-hoverstage{0%,100%{transform:translate3d(0,4px,0) rotateY(-3deg) scale(.985)}50%{transform:translate3d(7px,-6px,16px) rotateY(2deg) scale(1.015)}}
+@keyframes demo-revealcopy{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+@media(prefers-reduced-motion:no-preference){
+ html[data-motion=full] .demo-panel:not([hidden]) .brand img{animation:demo-hoverstage 6.2s ease-in-out infinite;transform-origin:center;will-change:transform;}
+ html[data-motion=full] .demo-panel:not([hidden]) .brand>div{animation:demo-revealcopy .65s .08s both;}
+}
+@media(max-width:800px){.wedding-repo-preview{min-height:220px}.wedding-repo-preview>strong{font-size:clamp(25px,8vw,44px)}}
+@media(prefers-reduced-motion:reduce){.demo-stage .brand img,.wedding-repo-preview{animation:none!important;transform:none!important}}
+html[data-motion=reduced] .demo-stage .brand img{animation:none!important;transform:none!important}
+
+/* Preserve the wedding-demo capture's subject and typography in project cards. */
+.project-folio .showpiece[href*="digital-wedding-invitation"] .shot img{object-position:50% 25%}
+.case-shot:has(img[src*="wedding-demo-live"]) img{object-position:50% 25%;width:100%;max-height:600px;object-fit:contain}
