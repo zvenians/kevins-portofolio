@@ -36,33 +36,23 @@ jobs:
         run: |
           node apps-script/build.mjs
           node vercel-site/sync.mjs
-      # On this PR, the sync workflow commits generated output and dispatches
-      # a second CI run against that new commit. A PR run should test source
-      # immediately but must not fail just because the sync job is still running.
-      - name: Report pending output synchronization
+      - name: Report pending asset synchronization on this PR
         if: ${{ github.event_name == 'pull_request' && github.head_ref == 'fix/remove-manual-motion-pauses-20261111' }}
         run: |
           if ! git diff --quiet; then
-            echo "::notice::Generated files are pending the preview-sync workflow; the dispatched quality gate will verify the committed output."
+            echo "::notice::Generated outputs are being synchronized by the source-to-preview workflow."
             git diff --name-only
           fi
-      - name: Verify generated assets match committed source
+      - name: Verify reproducible committed assets
         if: ${{ github.event_name == 'workflow_dispatch' || github.head_ref != 'fix/remove-manual-motion-pauses-20261111' }}
         run: |
           if ! git diff --quiet; then
-            echo "::error::Generated files differ from source. Build and sync both distributions and commit generated outputs."
+            echo "::error::Generated files differ from source. Regenerate and commit both distributions."
             git diff --name-only
             exit 1
           fi
-          if git status --porcelain --untracked-files=all | grep -E 'vercel-site/public/assets/portfolio-[a-f0-9]{12}[.](css|js)
-      - name: Build the deployed Vercel frontend
-        run: npm --prefix vercel-site run build
-      - name: Run unit and integration tests
-        run: npm test
-      - name: Check source code
-        run: npm run lint
- ; then
-            echo "::error::Generated assets are missing from the commit."
+          if git status --porcelain --untracked-files=all | grep -E 'vercel-site/public/assets/portfolio-[a-f0-9]{12}[.](css|js)'; then
+            echo "::error::Untracked generated assets; commit generated bundles."
             exit 1
           fi
       - name: Build the deployed Vercel frontend
