@@ -71,7 +71,8 @@ function picks() {
   const selected = slugs.map(slug => projects.find(p => p.slug === slug)).filter(Boolean);
   const cover = p => p.slug === 'digital-wedding-invitation' ? '/project-shots/wedding-demo-live.png' : `/project-shots/${encodeURIComponent(p.slug)}.webp`;
   const preview = p => `<img loading="lazy" src="${cover(p)}" alt="${esc(p.name)} — project preview">`;
-  return `<div class="folio-shell"><div class="folio-tools"><p>${t('folioNote')}</p></div><div class="showcase project-folio">${selected.map((p, i) => `<a class="showpiece" style="--folio:${i}" href="/work/${encodeURIComponent(p.slug)}"><div class="folio-meta"><small>${String(i + 1).padStart(2, '0')} / ${String(selected.length).padStart(2, '0')}</small><strong>${esc(p.name)}</strong><small>${esc(p.status)}</small></div><div class="shot tone${i}">${preview(p)}</div><div class="folio-copy"><small>${esc(p.category)} / ${esc((p.technologies || []).slice(0, 2).join(' + '))}</small><h3>${esc(p.name)} <span>${icon('outward')}</span></h3><p>${esc(p.summary)}</p></div></a>`).join('')}</div></div>`;
+  const cards = selected.map((p, i) => `<a class="showpiece" style="--folio:${i}" href="/work/${encodeURIComponent(p.slug)}" aria-label="${esc(p.name)}"><div class="shot">${preview(p)}</div><div class="folio-meta"><small>${String(i + 1).padStart(2, '0')} / ${String(selected.length).padStart(2, '0')}</small><strong>${esc(p.name)}</strong><small>${esc(p.status)}</small></div></a>`).join('');
+  return `<div class="folio-shell"><div class="folio-tools"><p>${t('folioNote')}</p></div><div class="showcase project-folio"><div class="folio-track">${cards}</div></div></div>`;
 }
 function brands() {
   return `<div class="brands product-gallery demo-theatre" data-demo-theatre><div class="demo-tabs" role="tablist" aria-label="${t('demos')}">${flagship.map(([name,kind],i)=>`<button type="button" role="tab" id="demo-tab-${i}" aria-controls="demo-panel-${i}" aria-selected="${i===demoIndex}" tabindex="${i===demoIndex?0:-1}" data-demo-tab="${i}"><span>0${i+1}</span><strong>${name}</strong><small>${t(kind)}</small></button>`).join('')}</div><div class="demo-stage">${flagship.map(([name,kind,url,image],i)=>`<article class="demo-panel" role="tabpanel" tabindex="0" id="demo-panel-${i}" aria-labelledby="demo-tab-${i}" ${i===demoIndex?'':'hidden'}><a class="brand brand-${kind}" href="${url}"><figure><img loading="lazy" width="940" height="645" src="/demo-shots/${image}.webp" alt=""></figure><div><small>0${i+1} / ${t(kind)}</small><h3>${name}</h3><span>${t('open')} ${icon('outward')}</span></div></a></article>`).join('')}<div class="demo-controls"><button type="button" data-demo-prev aria-label="${t('previousDemo')}">←</button><output>${String(demoIndex+1).padStart(2,'0')} / ${String(flagship.length).padStart(2,'0')}</output><button type="button" data-demo-next aria-label="${t('nextDemo')}">→</button></div></div></div>`;
@@ -95,34 +96,27 @@ function skillsSummary() {
 function mountProjectFolio() {
   const folio = document.querySelector('.showcase.project-folio');
   if (!folio) return () => {};
+  const track = folio.querySelector('.folio-track');
   let dragging = false, startY = 0, moved = false;
-  const clamp = value => Math.max(-100, Math.min(100, value));
+  const clamp = value => Math.max(-160, Math.min(160, value));
   const move = event => {
     if (event.pointerType !== 'mouse') return;
-    if (dragging) {
-      moved ||= Math.abs(event.clientY - startY) > 6;
-      if (!moved) return;
-      if (!folio.hasPointerCapture(event.pointerId)) folio.setPointerCapture(event.pointerId);
-      folio.classList.add('is-dragging');
-      folio.style.setProperty('--drag-y', `${clamp(event.clientY - startY)}px`);
-      return;
-    }
-    if (reduced || !matchMedia('(hover:hover) and (prefers-reduced-motion: no-preference)').matches) return;
-    const rect = folio.getBoundingClientRect();
-    folio.style.setProperty('--folio-x', (((event.clientX - rect.left) / rect.width) - .5) * 12 + 'deg');
-    folio.style.setProperty('--folio-y', (.5 - ((event.clientY - rect.top) / rect.height)) * 7 + 'deg');
+    if (!dragging) return;
+    moved ||= Math.abs(event.clientY - startY) > 6;
+    if (!moved) return;
+    if (!folio.hasPointerCapture(event.pointerId)) folio.setPointerCapture(event.pointerId);
+    folio.classList.add('is-dragging');
+    track.style.setProperty('--drag-y', `${clamp(event.clientY - startY)}px`);
   };
   const down = event => { if (event.pointerType !== 'mouse' || event.button !== 0) return; dragging = true; moved = false; startY = event.clientY; };
-  const up = event => { if (!dragging) return; dragging = false; folio.classList.remove('is-dragging'); folio.style.setProperty('--drag-y', '0px'); if (folio.hasPointerCapture(event.pointerId)) folio.releasePointerCapture(event.pointerId); };
+  const up = event => { if (!dragging) return; dragging = false; folio.classList.remove('is-dragging'); track.style.setProperty('--drag-y', '0px'); if (folio.hasPointerCapture(event.pointerId)) folio.releasePointerCapture(event.pointerId); };
   const click = event => { if (moved) { event.preventDefault(); moved = false; } };
-  const reset = () => { folio.style.removeProperty('--folio-x'); folio.style.removeProperty('--folio-y'); };
   folio.addEventListener('pointerdown', down);
   folio.addEventListener('pointermove', move);
   folio.addEventListener('pointerup', up);
   folio.addEventListener('pointercancel', up);
   folio.addEventListener('click', click, true);
-  folio.addEventListener('pointerleave', reset);
-  return () => { folio.removeEventListener('pointerdown', down); folio.removeEventListener('pointermove', move); folio.removeEventListener('pointerup', up); folio.removeEventListener('pointercancel', up); folio.removeEventListener('click', click, true); folio.removeEventListener('pointerleave', reset); };
+  return () => { folio.removeEventListener('pointerdown', down); folio.removeEventListener('pointermove', move); folio.removeEventListener('pointerup', up); folio.removeEventListener('pointercancel', up); folio.removeEventListener('click', click, true); };
 }
 function mountDemoTheatre() {
   const theatre = $('[data-demo-theatre]');
