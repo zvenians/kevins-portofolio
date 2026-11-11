@@ -50,10 +50,8 @@ const flagship = [
 const real = projects.filter(p => p.status === 'Real Project');
 const demos = projects.filter(p => p.status === 'Interactive Demo');
 const publicCV = '/resume/Kevin-Oloan-Simatupang-CV.pdf';
-let folioPaused = reduced;
 let demoPaused = reduced;
 let demoIndex = 0;
-let skillsPaused = reduced;
 function projectRow(p, i) {
   return `<a class="project-row" href="/work/${encodeURIComponent(p.slug)}"><small>${String(i + 1).padStart(2, '0')}</small><span><strong>${esc(p.name)}</strong><small>${(p.technologies || []).slice(0, 3).map(esc).join(' / ')}</small></span><b aria-hidden="true">${icon('outward')}</b></a>`;
 }
@@ -61,10 +59,10 @@ function picks() {
   const slugs = ['atlas-logistics-command-center','digital-wedding-invitation','galilea-web-portal','galilea-digital-archive','majelis-galilea','naomi-rouli'];
   const selected = slugs.map(slug => projects.find(p => p.slug === slug)).filter(Boolean);
   const cover = p => p.slug === 'digital-wedding-invitation' ? '/demo-shots/classic.webp' : `/project-shots/${encodeURIComponent(p.slug)}.webp`;
-  return `<div class="folio-shell ${folioPaused ? 'motion-paused' : ''}"><div class="folio-tools"><p>${t('folioNote')}</p><button type="button" data-folio-motion aria-pressed="${folioPaused}">${t(folioPaused ? 'playFolio' : 'pauseFolio')}</button></div><div class="showcase project-folio">${selected.map((p, i) => `<a class="showpiece" style="--folio:${i}" href="/work/${encodeURIComponent(p.slug)}"><div class="folio-meta"><small>${String(i + 1).padStart(2, '0')} / ${String(selected.length).padStart(2, '0')}</small><strong>${esc(p.name)}</strong><small>${esc(p.status)}</small></div><div class="shot tone${i}"><img loading="lazy" src="${cover(p)}" alt="${esc(p.name)}"></div><div class="folio-copy"><small>${esc(p.category)} / ${esc((p.technologies || []).slice(0, 2).join(' + '))}</small><h3>${esc(p.name)} <span>${icon('outward')}</span></h3><p>${esc(p.summary)}</p></div></a>`).join('')}</div></div>`;
+  return `<div class="folio-shell"><div class="folio-tools"><p>${t('folioNote')}</p></div><div class="showcase project-folio">${selected.map((p, i) => `<a class="showpiece" style="--folio:${i}" href="/work/${encodeURIComponent(p.slug)}"><div class="folio-meta"><small>${String(i + 1).padStart(2, '0')} / ${String(selected.length).padStart(2, '0')}</small><strong>${esc(p.name)}</strong><small>${esc(p.status)}</small></div><div class="shot tone${i}"><img loading="lazy" src="${cover(p)}" alt="${esc(p.name)}"></div><div class="folio-copy"><small>${esc(p.category)} / ${esc((p.technologies || []).slice(0, 2).join(' + '))}</small><h3>${esc(p.name)} <span>${icon('outward')}</span></h3><p>${esc(p.summary)}</p></div></a>`).join('')}</div></div>`;
 }
 function brands() {
-  return `<div class="brands product-gallery demo-theatre ${demoPaused ? 'motion-paused' : ''}" data-demo-theatre><div class="demo-tabs" role="tablist" aria-label="${t('demos')}">${flagship.map(([name,kind],i)=>`<button type="button" role="tab" id="demo-tab-${i}" aria-controls="demo-panel-${i}" aria-selected="${i===demoIndex}" tabindex="${i===demoIndex?0:-1}" data-demo-tab="${i}"><span>0${i+1}</span><strong>${name}</strong><small>${t(kind)}</small></button>`).join('')}</div><div class="demo-stage">${flagship.map(([name,kind,url,image],i)=>`<article class="demo-panel" role="tabpanel" tabindex="0" id="demo-panel-${i}" aria-labelledby="demo-tab-${i}" ${i===demoIndex?'':'hidden'}><a class="brand brand-${kind}" href="${url}"><figure><img loading="lazy" width="940" height="645" src="/demo-shots/${image}.webp" alt=""></figure><div><small>0${i+1} / ${t(kind)}</small><h3>${name}</h3><span>${t('open')} ${icon('outward')}</span></div></a></article>`).join('')}<div class="demo-controls"><button type="button" data-demo-prev aria-label="${t('previousDemo')}">←</button><output>${String(demoIndex+1).padStart(2,'0')} / ${String(flagship.length).padStart(2,'0')}</output><button type="button" data-demo-next aria-label="${t('nextDemo')}">→</button><button type="button" data-demo-motion aria-pressed="${demoPaused}">${t(demoPaused ? 'playDemos' : 'pauseDemos')}</button></div></div></div>`;
+  return `<div class="brands product-gallery demo-theatre" data-demo-theatre><div class="demo-tabs" role="tablist" aria-label="${t('demos')}">${flagship.map(([name,kind],i)=>`<button type="button" role="tab" id="demo-tab-${i}" aria-controls="demo-panel-${i}" aria-selected="${i===demoIndex}" tabindex="${i===demoIndex?0:-1}" data-demo-tab="${i}"><span>0${i+1}</span><strong>${name}</strong><small>${t(kind)}</small></button>`).join('')}</div><div class="demo-stage">${flagship.map(([name,kind,url,image],i)=>`<article class="demo-panel" role="tabpanel" tabindex="0" id="demo-panel-${i}" aria-labelledby="demo-tab-${i}" ${i===demoIndex?'':'hidden'}><a class="brand brand-${kind}" href="${url}"><figure><img loading="lazy" width="940" height="645" src="/demo-shots/${image}.webp" alt=""></figure><div><small>0${i+1} / ${t(kind)}</small><h3>${name}</h3><span>${t('open')} ${icon('outward')}</span></div></a></article>`).join('')}<div class="demo-controls"><button type="button" data-demo-prev aria-label="${t('previousDemo')}">←</button><output>${String(demoIndex+1).padStart(2,'0')} / ${String(flagship.length).padStart(2,'0')}</output><button type="button" data-demo-next aria-label="${t('nextDemo')}">→</button></div></div></div>`;
 }
 function heading(id, num) {
   return `<div class="heading"><small>${num} / KS</small><h2>${t(id)}</h2></div>`;
@@ -80,23 +78,7 @@ function skillsSummary() {
     ['skillDelivery', [['HTML5','html5'],['CSS3','css3'],['Git','git'],['Docker','docker'],['Linux','linux'],['GitHub Actions','githubactions'],['Figma','figma'],['Bash','bash']]]
   ];
   const chip = ([name,logo]) => `<li><img loading="lazy" width="24" height="24" src="/edisi/logos/${logo}.svg" alt=""><span>${name}</span></li>`;
-  return `<div class="skill-intro"><div><small>${t('selectedStrengths')}</small><h3><em>${t('craft')}</em><br>${t('verifiable')}</h3><p>${t('skillMotionNote')}</p></div><div class="skill-lattice" aria-hidden="true"></div></div><div class="skill-tools"><button type="button" data-skill-motion aria-pressed="${skillsPaused}">${t(skillsPaused ? 'playSkills' : 'pauseSkills')}</button></div><div class="skill-rails ${skillsPaused ? 'motion-paused' : ''}">${groups.map(([label,items],i)=>{const content=items.map(chip).join('');return `<div class="skill-rail" style="--rail:${i}"><strong>${t(label)}</strong><div class="skill-window"><div class="skill-track"><ul>${content}</ul><ul aria-hidden="true">${content}</ul></div></div></div>`}).join('')}</div><a class="more" href="/capabilities">${t('catalog')} ${icon('outward')}</a>`;
-}
-function mountSectionMotion() {
-  const folio = $('.folio-shell');
-  if (folio) $('[data-folio-motion]').onclick = event => {
-    folioPaused = !folioPaused;
-    folio.classList.toggle('motion-paused', folioPaused);
-    event.currentTarget.setAttribute('aria-pressed', String(folioPaused));
-    event.currentTarget.textContent = t(folioPaused ? 'playFolio' : 'pauseFolio');
-  };
-  const skills = $('.skill-rails');
-  if (skills) $('[data-skill-motion]').onclick = event => {
-    skillsPaused = !skillsPaused;
-    skills.classList.toggle('motion-paused', skillsPaused);
-    event.currentTarget.setAttribute('aria-pressed', String(skillsPaused));
-    event.currentTarget.textContent = t(skillsPaused ? 'playSkills' : 'pauseSkills');
-  };
+  return `<div class="skill-intro"><div><small>${t('selectedStrengths')}</small><h3><em>${t('craft')}</em><br>${t('verifiable')}</h3><p>${t('skillMotionNote')}</p></div><div class="skill-lattice" aria-hidden="true"></div></div><div class="skill-rails">${groups.map(([label,items],i)=>{const content=items.map(chip).join('');return `<div class="skill-rail" style="--rail:${i}"><strong>${t(label)}</strong><div class="skill-window"><div class="skill-track"><ul>${content}</ul><ul aria-hidden="true">${content}</ul></div></div></div>`}).join('')}</div><a class="more" href="/capabilities">${t('catalog')} ${icon('outward')}</a>`;
 }
 function mountDemoTheatre() {
   const theatre = $('[data-demo-theatre]');
@@ -126,13 +108,6 @@ function mountDemoTheatre() {
   });
   $('[data-demo-prev]').onclick = () => { show(demoIndex - 1); schedule(); };
   $('[data-demo-next]').onclick = () => { show(demoIndex + 1); schedule(); };
-  $('[data-demo-motion]').onclick = event => {
-    demoPaused = !demoPaused;
-    theatre.classList.toggle('motion-paused', demoPaused);
-    event.currentTarget.setAttribute('aria-pressed', String(demoPaused));
-    event.currentTarget.textContent = t(demoPaused ? 'playDemos' : 'pauseDemos');
-    schedule();
-  };
   theatre.onpointerdown = event => { if (event.pointerType !== 'mouse') touchStart = event.clientX; };
   theatre.onpointerup = event => {
     if (!touchStart) return;
@@ -154,7 +129,6 @@ function inquiry() {
   return `<div class="flow"><aside>${['project', 'plan', 'contact', 'review'].map((k, i) => `<p class="${i === step ? 'current' : ''}">0${i + 1}　${t(k)}</p>`).join('')}</aside><form id="inquiry"><h2>${t(['project', 'plan', 'contact', 'review'][step])}</h2>${keys ? keys.map(k => `<label>${t(k)}${k === 'scope' ? `<textarea name="scope" required maxlength="2500">${esc(brief.scope)}</textarea>` : `<input name="${k}" type="${k === 'time' ? 'date' : k === 'email' ? 'email' : 'text'}" value="${esc(brief[k])}" maxlength="160" required>`}</label>`).join('') : `<dl>${steps.flat().map(k => `<dt>${t(k)}</dt><dd>${esc(brief[k])}</dd>`).join('')}</dl><p>${t('mailhint')}</p>`}<div class="actions">${step ? `<button type="button" id="back">${t('back')}</button>` : ''}<button class="solid">${t(keys ? 'next' : 'compose')} →</button></div></form></div>`;
 }
 let dispose;
-let scenePaused = reduced;
 function render() {
   dispose?.();
   document.documentElement.lang = language;
@@ -203,23 +177,10 @@ function render() {
   if(!section) $('.closing').insertAdjacentHTML('beforeend',inquiry());
   if(section==='nova' || section.startsWith('nova/')) $('#bar nav').innerHTML=`<a href="/demos">← ${t('demos')}</a>`;
   if (section === 'about') $('.bio').insertAdjacentHTML('beforeend', `<div class="bio-facts"><strong>${t('currentWork')}</strong><p>PT Wulandari Bangun Laksana Tbk · ${t('currentPeriod')}</p><strong>${t('education')}</strong><p>${t('practice')}</p><a href="/resume">CV / PDF ${icon('outward')}</a></div>`);
-  const scene = $('.scene');
-  if (scene) {
-    const toggle = document.createElement('button');
-    toggle.className = 'scene-toggle';
-    toggle.textContent = t(scenePaused ? 'playScene' : 'pauseScene');
-    scene.append(toggle);
-    toggle.onclick = () => {
-      scenePaused = !scenePaused;
-      render();
-      $('.scene-toggle').focus({preventScroll:true});
-    };
-  }
-  const disposeScene = mountScene($('.scene canvas'), scenePaused);
+  const disposeScene = mountScene($('.scene canvas'), reduced);
   const disposeCamera = mountChoreography(reduced);
   const disposeAcademic = mountAcademic(language,email);
   const disposeDemos = mountDemoTheatre();
-  mountSectionMotion();
   dispose = () => { disposeScene?.(); disposeCamera(); disposeAcademic?.(); disposeDemos(); };
   document.querySelectorAll('a[href="/edisi/skill.html"]').forEach(a => a.href = '/capabilities');
   if (section === 'demos') {
@@ -319,10 +280,7 @@ function openPanel(mode) {
   };
   if ($('#motion')) $('#motion').onchange = e => {
     reduced = e.target.checked;
-    scenePaused = reduced;
-    folioPaused = reduced;
     demoPaused = reduced;
-    skillsPaused = reduced;
     save('reduced', String(reduced));
     render();
   };
