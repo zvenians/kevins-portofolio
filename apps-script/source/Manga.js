@@ -153,7 +153,7 @@ function mangaDemo(){
    if(!drag||drag.id!==e.pointerId)return;
    settle(drag.progress>=.42||(drag.progress>.10&&drag.velocity>.55&&e.timeStamp-drag.lastTime<100));
  };
- 
+
  root.querySelector('.manga-chapter').onchange=e=>{finish();go(e.target.value,false);};root.querySelector('.manga-progress').oninput=e=>{finish();go(e.target.value,false);};
  root.querySelector('.manga-zoom').onchange=e=>{finish();zoom=Number(e.target.value);render();};
  root.querySelector('.manga-mode').onchange=e=>{finish();mode=e.target.value;render();};root.querySelector('.manga-direction').onchange=e=>{finish();direction=e.target.value;render();};

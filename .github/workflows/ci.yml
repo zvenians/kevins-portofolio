@@ -24,10 +24,18 @@ jobs:
         run: |
           npm ci
           npm ci --prefix apps-script
+      - name: Audit dependencies
+        run: |
+          npm audit --audit-level=high
+          npm audit --prefix apps-script --audit-level=high
       - name: Build source-backed public assets
         run: |
           node apps-script/build.mjs
           node vercel-site/sync.mjs
+      - name: Verify generated assets are committed
+        run: git diff --exit-code
+      - name: Build the deployed Vercel frontend
+        run: npm --prefix vercel-site run build
       - name: Run unit and integration tests
         run: npm test
       - name: Check source code
