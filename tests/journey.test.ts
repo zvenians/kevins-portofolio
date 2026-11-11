@@ -23,11 +23,14 @@ test('short home presents six curated projects, a working demo theatre, visible 
  expect(folios[0].textContent).toContain('Logistics Command Center');
  expect(w.document.querySelector('.visitor-greeting')?.textContent).toMatch(/Good |Selamat |Bonjour|Buenos /);
  expect(folios[1].textContent).toContain('Undangan Pernikahan Digital');
+ expect(folios[1].innerHTML).toContain('wedding-repo-preview');
+ expect(folios[1].innerHTML).not.toContain('/demo-shots/classic.webp');
  expect(folios[0].getAttribute('href')).toContain('/work/atlas-logistics-command-center');
  const demoTabs=[...w.document.querySelectorAll<HTMLButtonElement>('[data-demo-index]')];
  expect(demoTabs).toHaveLength(6);
- demoTabs[4].click();
- expect(demoTabs[4].getAttribute('aria-selected')).toBe('true');
+ expect(demoTabs[0].textContent).toContain('KOMA');
+ demoTabs[0].click();
+ expect(demoTabs[0].getAttribute('aria-selected')).toBe('true');
  expect(w.document.querySelectorAll('.demo-panel:not([hidden])')).toHaveLength(1);
  expect(w.document.querySelector('.demo-panel:not([hidden])')?.textContent).toContain('KOMA');
  const skillRows=w.document.querySelectorAll('.skill-rail');
