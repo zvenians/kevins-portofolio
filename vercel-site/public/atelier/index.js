@@ -37,6 +37,17 @@ let language = read('language', 'en');
 if (!locales.includes(language)) language = 'en';
 let reduced = read('reduced', String(matchMedia('(prefers-reduced-motion: reduce)').matches)) === 'true';
 const t = key => translate(key, language);
+const greetings = {
+  en: ['Good morning', 'Good afternoon', 'Good evening', 'Good night'],
+  id: ['Selamat pagi', 'Selamat siang', 'Selamat sore', 'Selamat malam'],
+  fr: ['Bonjour', 'Bon après-midi', 'Bonsoir', 'Bonne soirée'],
+  es: ['Buenos días', 'Buenas tardes', 'Buenas tardes', 'Buenas noches']
+};
+function visitorGreeting() {
+  const hour = new Date().getHours(); // Browser-local time zone, not the server's clock.
+  const period = hour >= 5 && hour < 11 ? 0 : hour >= 11 && hour < 15 ? 1 : hour >= 15 && hour < 19 ? 2 : 3;
+  return greetings[language][period];
+}
 const categories = ['work', 'demos', 'capabilities', 'about', 'contact'];
 const nav = () => categories.map(id => `<a href="/${id}" ${section === id ? 'aria-current="page"' : ''}>${t(id)}</a>`).join('');
 const flagship = [
@@ -68,7 +79,7 @@ function heading(id, num) {
   return `<div class="heading"><small>${num} / KS</small><h2>${t(id)}</h2></div>`;
 }
 function home() {
-  return `<section class="hero"><div class="scene"><canvas aria-hidden="true"></canvas><small>FIG. 01 &nbsp; / &nbsp; ${t('film')}</small></div><div class="hero-text"><small><i class="dot"></i> Kevin Oloan Simatupang</small><h1><em>Creative</em><br>DEVELOPER.</h1><p>${t('hero')}</p><div class="actions"><a class="solid" href="/work">${t('explore')} ${icon('outward')}</a><a href="/contact">${t('contact')} →</a></div></div></section><div class="axis"><small>KS / PORTFOLIO</small><small>${t('location')}</small></div><section class="block" id="work">${heading('work', '01')}${picks()}<a class="more" href="/work">${t('all')} →</a></section><section class="block" id="studio">${heading('demos', '02')}${brands()}<a class="more" href="/demos">${t('legacy')} →</a></section><section id="skills" class="block">${heading('capabilities', '03')}${skillsSummary()}</section>`;
+  return `<section class="hero"><div class="scene"><canvas aria-hidden="true"></canvas><small>FIG. 01 &nbsp; / &nbsp; ${t('film')}</small></div><div class="hero-text"><small><i class="dot"></i> Kevin Oloan Simatupang</small><small class="visitor-greeting">${visitorGreeting()}</small><h1><em>Creative</em><br>DEVELOPER.</h1><p>${t('hero')}</p><div class="actions"><a class="solid" href="/work">${t('explore')} ${icon('outward')}</a><a href="/contact">${t('contact')} →</a></div></div></section><div class="axis"><small>KS / PORTFOLIO</small><small>${t('location')}</small></div><section class="block" id="work">${heading('work', '01')}${picks()}<a class="more" href="/work">${t('all')} →</a></section><section class="block" id="studio">${heading('demos', '02')}${brands()}<a class="more" href="/demos">${t('legacy')} →</a></section><section id="skills" class="block">${heading('capabilities', '03')}${skillsSummary()}</section>`;
 }
 function skillsSummary() {
   const groups = [
