@@ -69,10 +69,8 @@ function projectRow(p, i) {
 function picks() {
   const slugs = ['atlas-logistics-command-center','digital-wedding-invitation','galilea-web-portal','galilea-digital-archive','majelis-galilea','naomi-rouli'];
   const selected = slugs.map(slug => projects.find(p => p.slug === slug)).filter(Boolean);
-  const cover = p => `/project-shots/${encodeURIComponent(p.slug)}.webp`;
-  // Recreate the public wedding-demo identity from its real source, not the old invitation demo screenshot.
-  const weddingPreview = () => `<div class="wedding-repo-preview" role="img" aria-label="Preview of the Kevin and Naomi wedding-demo experience"><div class="wedding-repo-top"><span>K / N</span><small>STORY　 EVENT　 RSVP</small></div><div class="wedding-repo-ornament" aria-hidden="true">✧</div><small>THE WEDDING OF</small><strong>Kevin <em>&amp;</em> Naomi</strong><span>MONDAY / 28 AUGUST 2028</span><p>A moment between tradition and tomorrow.</p><small class="wedding-repo-proof">PROJECT PREVIEW · WEDDING-DEMO</small></div>`;
-  const preview = p => p.slug === 'digital-wedding-invitation' ? weddingPreview() : `<img loading="lazy" src="${cover(p)}" alt="${esc(p.name)}" onerror="this.hidden=true;this.parentElement.classList.add('preview-unavailable')">`;
+  const cover = p => p.slug === 'digital-wedding-invitation' ? '/project-shots/wedding-demo-live.png' : `/project-shots/${encodeURIComponent(p.slug)}.webp`;
+  const preview = p => `<img loading="lazy" src="${cover(p)}" alt="${esc(p.name)} — project preview">`;
   return `<div class="folio-shell"><div class="folio-tools"><p>${t('folioNote')}</p></div><div class="showcase project-folio">${selected.map((p, i) => `<a class="showpiece" style="--folio:${i}" href="/work/${encodeURIComponent(p.slug)}"><div class="folio-meta"><small>${String(i + 1).padStart(2, '0')} / ${String(selected.length).padStart(2, '0')}</small><strong>${esc(p.name)}</strong><small>${esc(p.status)}</small></div><div class="shot tone${i}">${preview(p)}</div><div class="folio-copy"><small>${esc(p.category)} / ${esc((p.technologies || []).slice(0, 2).join(' + '))}</small><h3>${esc(p.name)} <span>${icon('outward')}</span></h3><p>${esc(p.summary)}</p></div></a>`).join('')}</div></div>`;
 }
 function brands() {
