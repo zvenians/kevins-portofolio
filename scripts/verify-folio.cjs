@@ -6,7 +6,7 @@ const assert = require('node:assert/strict');
 const output = path.resolve('artifacts/folio-fidelity');
 (async () => {
   await fs.mkdir(output, {recursive:true});
-  const browser = await chromium.launch({channel:'chrome',headless:true});
+  const browser = await chromium.launch({channel:process.env.CI ? undefined : 'chrome',headless:true});
   const report = { viewports:[], errors:[], reference:process.argv[2] };
   try {
     if (process.argv[2]) {
@@ -55,9 +55,36 @@ const output = path.resolve('artifacts/folio-fidelity');
         await card.focus();assert.equal(await card.evaluate(c=>c===document.activeElement),true);
         const href=await card.getAttribute('href');assert.equal((await page.request.get('http://localhost:3000'+href)).status(),200);
       }
+      // Both system preference and saved UI preference must retain the fan
+      // without triggering the old nested vertical-scroll list.
       await page.emulateMedia({reducedMotion:'reduce'});
       assert.equal(await page.locator('.folio-track').evaluate(e=>getComputedStyle(e).animationName),'none');
-      report.viewports.push({width,height,overflow,frames,keyboard:'PASS',routes:'PASS',images:'PASS',reducedMotion:'PASS'});
+      const staticGeometry = await scene.evaluate(element => {
+        const computed = getComputedStyle(element);
+        const cards = [...element.querySelectorAll('.showpiece')];
+        const rotations = cards.map(card => {
+          const matrix = new DOMMatrix(getComputedStyle(card).transform);
+          return Math.atan2(matrix.b,matrix.a)*180/Math.PI;
+        });
+        return {
+          overflowY:computed.overflowY,
+          cardCount:cards.length,
+          rotations,
+          cardWidths:cards.map(card => card.getBoundingClientRect().width),
+          stageWidth:element.getBoundingClientRect().width
+        };
+      });
+      assert.equal(staticGeometry.overflowY,'hidden','Reduced motion created an internal scrollbar');
+      assert.equal(staticGeometry.cardCount,6);
+      assert.equal(new Set(staticGeometry.rotations.map(angle=>Math.round(angle))).size,6,
+        'Reduced motion flattened the diagonal card composition');
+      assert.ok(staticGeometry.cardWidths.every(w=>w>0 && w<staticGeometry.stageWidth));
+      await page.screenshot({path:path.join(output,`${width}-reduced.png`)});
+      await page.evaluate(()=>{document.documentElement.dataset.motion='reduced'});
+      assert.equal(await scene.evaluate(e=>getComputedStyle(e).overflowY),'hidden',
+        'Saved reduced-motion setting created an internal scrollbar');
+      assert.equal(await page.locator('.folio-track').evaluate(e=>getComputedStyle(e).animationName),'none');
+      report.viewports.push({width,height,overflow,frames,staticGeometry,keyboard:'PASS',routes:'PASS',images:'PASS',reducedMotion:'PASS'});
       await context.close();
       await page.video().saveAs(path.join(output,`${width}-cycle.webm`));
     }
