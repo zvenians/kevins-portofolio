@@ -69,10 +69,12 @@ function projectRow(p, i) {
 function picks() {
   const slugs = ['atlas-logistics-command-center','digital-wedding-invitation','galilea-web-portal','galilea-digital-archive','majelis-galilea','naomi-rouli'];
   const selected = slugs.map(slug => projects.find(p => p.slug === slug)).filter(Boolean);
-  const cover = p => p.slug === 'digital-wedding-invitation' ? '/project-shots/wedding-demo-live.png' : `/project-shots/${encodeURIComponent(p.slug)}.webp`;
-  const preview = p => `<img loading="lazy" src="${cover(p)}" alt="${esc(p.name)} — project preview">`;
-  const cards = selected.map((p, i) => `<a class="showpiece" style="--folio:${i}" href="/work/${encodeURIComponent(p.slug)}" aria-label="${esc(p.name)}"><div class="shot">${preview(p)}</div><div class="folio-meta"><small>${String(i + 1).padStart(2, '0')} / ${String(selected.length).padStart(2, '0')}</small><strong>${esc(p.name)}</strong><small>${esc(p.status)}</small></div></a>`).join('');
-  return `<div class="folio-shell"><div class="folio-tools"><p>${t('folioNote')}</p></div><div class="showcase project-folio"><div class="folio-track">${cards}</div></div></div>`;
+  const offset = [-24,28,-12,36,-30,14];
+  const cover = p => p.slug === 'digital-wedding-invitation'
+    ? '/project-shots/wedding-demo-live.png'
+    : `/project-shots/${encodeURIComponent(p.slug)}.webp`;
+  const cards = duplicate => selected.map((p, i) => `<a class="showpiece" style="--folio-index:${i};--folio-shift:${offset[i]}px" href="/work/${encodeURIComponent(p.slug)}" aria-label="${esc(p.name)}" ${duplicate ? 'tabindex="-1"' : ''}><div class="shot"><span class="shot-fallback">${esc(p.name)}</span><img src="${cover(p)}" alt="${esc(p.name)} — project interface" loading="eager" decoding="async"></div><span class="folio-label"><b>${esc(p.name)}</b><span aria-hidden="true">${icon('outward')}</span></span></a>`).join('');
+  return `<div class="folio-shell"><div class="folio-tools"><p>${t('folioNote')}</p></div><div class="showcase project-folio" aria-label="${t('work')} — ${selected.length} selected projects" style="--folio-count:${selected.length}"><div class="folio-track"><div class="folio-cycle">${cards(false)}</div><div class="folio-cycle" aria-hidden="true">${cards(true)}</div></div><div class="folio-counter" aria-hidden="true">KS / ${String(selected.length).padStart(2, '0')} PROJECTS</div></div></div>`;
 }
 function brands() {
   return `<div class="brands product-gallery demo-theatre" data-demo-theatre><div class="demo-tabs" role="tablist" aria-label="${t('demos')}">${flagship.map(([name,kind],i)=>`<button type="button" role="tab" id="demo-tab-${i}" aria-controls="demo-panel-${i}" aria-selected="${i===demoIndex}" tabindex="${i===demoIndex?0:-1}" data-demo-tab="${i}"><span>0${i+1}</span><strong>${name}</strong><small>${t(kind)}</small></button>`).join('')}</div><div class="demo-stage">${flagship.map(([name,kind,url,image],i)=>`<article class="demo-panel" role="tabpanel" tabindex="0" id="demo-panel-${i}" aria-labelledby="demo-tab-${i}" ${i===demoIndex?'':'hidden'}><a class="brand brand-${kind}" href="${url}"><figure><img loading="lazy" width="940" height="645" src="/demo-shots/${image}.webp" alt=""></figure><div><small>0${i+1} / ${t(kind)}</small><h3>${name}</h3><span>${t('open')} ${icon('outward')}</span></div></a></article>`).join('')}<div class="demo-controls"><button type="button" data-demo-prev aria-label="${t('previousDemo')}">←</button><output>${String(demoIndex+1).padStart(2,'0')} / ${String(flagship.length).padStart(2,'0')}</output><button type="button" data-demo-next aria-label="${t('nextDemo')}">→</button></div></div></div>`;
@@ -96,27 +98,13 @@ function skillsSummary() {
 function mountProjectFolio() {
   const folio = document.querySelector('.showcase.project-folio');
   if (!folio) return () => {};
-  const track = folio.querySelector('.folio-track');
-  let dragging = false, startY = 0, moved = false;
-  const clamp = value => Math.max(-160, Math.min(160, value));
-  const move = event => {
-    if (event.pointerType !== 'mouse') return;
-    if (!dragging) return;
-    moved ||= Math.abs(event.clientY - startY) > 6;
-    if (!moved) return;
-    if (!folio.hasPointerCapture(event.pointerId)) folio.setPointerCapture(event.pointerId);
-    folio.classList.add('is-dragging');
-    track.style.setProperty('--drag-y', `${clamp(event.clientY - startY)}px`);
+  const imageError = event => {
+    if (event.target instanceof HTMLImageElement && event.target.closest('.showpiece')) {
+      event.target.closest('.shot')?.classList.add('is-unavailable');
+    }
   };
-  const down = event => { if (event.pointerType !== 'mouse' || event.button !== 0) return; dragging = true; moved = false; startY = event.clientY; };
-  const up = event => { if (!dragging) return; dragging = false; folio.classList.remove('is-dragging'); track.style.setProperty('--drag-y', '0px'); if (folio.hasPointerCapture(event.pointerId)) folio.releasePointerCapture(event.pointerId); };
-  const click = event => { if (moved) { event.preventDefault(); moved = false; } };
-  folio.addEventListener('pointerdown', down);
-  folio.addEventListener('pointermove', move);
-  folio.addEventListener('pointerup', up);
-  folio.addEventListener('pointercancel', up);
-  folio.addEventListener('click', click, true);
-  return () => { folio.removeEventListener('pointerdown', down); folio.removeEventListener('pointermove', move); folio.removeEventListener('pointerup', up); folio.removeEventListener('pointercancel', up); folio.removeEventListener('click', click, true); };
+  folio.addEventListener('error', imageError, true);
+  return () => folio.removeEventListener('error', imageError, true);
 }
 function mountDemoTheatre() {
   const theatre = $('[data-demo-theatre]');
