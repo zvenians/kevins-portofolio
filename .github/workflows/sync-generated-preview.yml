@@ -33,10 +33,29 @@ jobs:
         run: |
           node apps-script/build.mjs
           node vercel-site/sync.mjs
+      - name: Capture the real wedding-demo preview when publicly available
+        shell: bash
+        run: |
+          set -euo pipefail
+          URL="https://wedding-demo-kevins.vercel.app/i/sample-invitation/experience"
+          if ! curl --max-time 20 --retry 2 --retry-delay 2 -fLsS "$URL" -o /tmp/wedding-demo.html; then
+            echo "Wedding demo is inaccessible; preserve the source-aligned CSS preview."
+          elif ! grep -qi 'Kevin' /tmp/wedding-demo.html; then
+            echo "Wedding demo response is not the expected application."
+          elif ! command -v google-chrome >/dev/null; then
+            echo "Chrome unavailable on runner; preserve the CSS preview."
+          else
+            google-chrome --headless=new --no-sandbox --disable-dev-shm-usage --hide-scrollbars --window-size=1365,768 --virtual-time-budget=2000 --screenshot="vercel-site/public/project-shots/wedding-demo-live.png" "$URL" >/dev/null 2>&1 || true
+            if test -s "vercel-site/public/project-shots/wedding-demo-live.png"; then
+              echo "Captured real wedding-demo project preview."
+            else
+              rm -f "vercel-site/public/project-shots/wedding-demo-live.png"
+            fi
+          fi
       - name: Commit deterministic build artifacts
         id: saved
         run: |
-          git add apps-script/Code.gs apps-script/preview/index.html vercel-site/generated/template.ts vercel-site/generated/fallback.json vercel-site/public/assets
+          git add apps-script/Code.gs apps-script/preview/index.html vercel-site/generated/template.ts vercel-site/generated/fallback.json vercel-site/public/assets vercel-site/public/project-shots/wedding-demo-live.png
           if git diff --cached --quiet; then
             echo "changed=false" >> "$GITHUB_OUTPUT"
           else
