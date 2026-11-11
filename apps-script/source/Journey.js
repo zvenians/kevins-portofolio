@@ -1,6 +1,22 @@
 // A short public entrance; the complete working collection has its own address.
 const fullStudioHome=home, previousImmersion=initImmersion, previousCase=casePage;
 const studioUrl=()=>window.INDEX_HOSTED?'/studio':'#studio';
+const editorialProjectNames = {
+ 'galilea-web-portal':'Sistem Informasi Ibadah & Jemaat',
+ 'galilea-digital-archive':'Sistem Arsip Digital Jemaat',
+ 'majelis-galilea':'Sistem Administrasi Majelis',
+ 'naomi-rouli':'Pesan Interaktif untuk Pasangan',
+ 'atlas-logistics-command-center':'Logistics Command Center',
+ 'digital-wedding-invitation':'Undangan Pernikahan Digital'
+};
+if(Array.isArray(data.projects))data.projects.forEach(project=>{if(editorialProjectNames[project.slug])project.name=editorialProjectNames[project.slug];});
+function visitorGreeting(){
+ const hour=new Date().getHours();
+ const period=hour>=5&&hour<11?0:hour>=11&&hour<15?1:hour>=15&&hour<19?2:3;
+ const lang=(document.documentElement.lang||navigator.language||'en').slice(0,2);
+ const copy={en:['Good morning','Good afternoon','Good evening','Good night'],id:['Selamat pagi','Selamat siang','Selamat sore','Selamat malam'],fr:['Bonjour','Bon après-midi','Bonsoir','Bonne soirée'],es:['Buenos días','Buenas tardes','Buenas tardes','Buenas noches']};
+ return (copy[lang]||copy.en)[period];
+}
 const originalHomeHref=homeHref;
 homeHref=function(anchor='home'){if(window.INDEX_HOSTED&&['studio','lab','research','research-intake','open-lab','experiments'].includes(anchor))return '/studio'+(anchor==='studio'?'':'#'+anchor);return originalHomeHref(anchor);};
 const shortCard=p=>`<a class="journey-card" href="${projectHref(p.slug)}">${visual(p)}<span>${esc(p.status)}</span><h3>${esc(p.name)} ↗</h3><p>${esc(p.summary)}</p></a>`;
@@ -51,6 +67,7 @@ home=function(){
  $('#main').innerHTML=`
  <section class="journey-hero kinetic-hero" id="home">
    <div class="k-meta"><span>KS / BALIKPAPAN</span><span>Portfolio / Selected works</span></div>
+   <p class="visitor-greeting">${visitorGreeting()}</p>
    <h1><span>Kevin</span> <em>Simatupang.</em></h1>
    <div class="k-intro"><p>Full-stack developer building websites,<br>data workflows, and everyday automation.</p>
    <div class="journey-actions"><a class="solid-button" href="${homeHref('field')}">Explore real projects ↗</a><a href="${homeHref('connect')}">Discuss a project</a><a href="${homeHref('resume')}">CV / PDF ↗</a></div></div>
