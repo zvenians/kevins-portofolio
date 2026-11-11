@@ -318,3 +318,6 @@ body.clean-ui .k-studio .journey-heading p{color:#b8c5d5}
 }
 .reduced .project-folio,.reduced .demo-panel,.reduced .skill-track{animation:none!important}
 .reduced .skill-window{overflow-x:auto;mask-image:none}.reduced .skill-track ul[aria-hidden=true]{display:none}
+
+/* Time-sensitive greeting: editorial text, no extra control or animation. */
+.kinetic-hero .visitor-greeting{margin:clamp(12px,2vw,22px) 0 4px;font:600 12px/1.4 ui-monospace,monospace;letter-spacing:.09em;text-transform:uppercase;color:#4f6378}
