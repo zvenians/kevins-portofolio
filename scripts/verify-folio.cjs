@@ -3,7 +3,8 @@ const { chromium } = require('playwright');
 const fs = require('node:fs/promises');
 const path = require('node:path');
 const assert = require('node:assert/strict');
-const output = path.resolve('artifacts/folio-fidelity');
+const baseUrl = process.env.FOLIO_BASE_URL || 'http://localhost:3000';
+const output = path.resolve(process.env.FOLIO_OUTPUT || 'artifacts/folio-fidelity');
 (async () => {
   await fs.mkdir(output, {recursive:true});
   const browser = await chromium.launch({channel:'chrome',headless:true});
@@ -21,13 +22,14 @@ const output = path.resolve('artifacts/folio-fidelity');
       }
       await page.close();
     }
-    for (const [width,height] of [[384,848],[390,844],[768,1024],[1440,900]]) {
+    for (const [width,height] of [[320,720],[384,848],[390,844],[768,1024],[1024,768],[1440,900],[1920,1080]]) {
       const context = await browser.newContext({viewport:{width,height},reducedMotion:'no-preference',recordVideo:{dir:output,size:{width,height}}});
       await context.addInitScript(()=>{localStorage.setItem('atelier.language','en');localStorage.setItem('atelier.reduced','false');});
       const page = await context.newPage();
       page.on('pageerror',e=>report.errors.push(String(e)));
-      await page.goto('http://localhost:3000/',{waitUntil:'networkidle'});
+      await page.goto(baseUrl+'/',{waitUntil:'domcontentloaded'});
       const scene = page.locator('.project-folio');
+      await scene.waitFor({state:'visible'});
       await scene.scrollIntoViewIfNeeded();
       await page.evaluate(()=>scrollTo(0,document.querySelector('.project-folio').getBoundingClientRect().top+scrollY));
       await page.locator('.project-folio img').evaluateAll(images=>Promise.all(images.map(i=>i.decode())));
@@ -53,7 +55,7 @@ const output = path.resolve('artifacts/folio-fidelity');
       await page.waitForTimeout(5800);
       for(const card of await scene.locator('a').all()) {
         await card.focus();assert.equal(await card.evaluate(c=>c===document.activeElement),true);
-        const href=await card.getAttribute('href');assert.equal((await page.request.get('http://localhost:3000'+href)).status(),200);
+        const href=await card.getAttribute('href');assert.equal((await page.request.get(baseUrl+href)).status(),200);
       }
       // Both system preference and saved UI preference must retain the fan
       // without triggering the old nested vertical-scroll list.
@@ -74,14 +76,14 @@ const output = path.resolve('artifacts/folio-fidelity');
           stageWidth:element.getBoundingClientRect().width
         };
       });
-      assert.equal(staticGeometry.overflowY,'hidden','Reduced motion created an internal scrollbar');
+      assert.equal(staticGeometry.overflowY,'clip','Reduced motion created an internal scrollbar');
       assert.equal(staticGeometry.cardCount,6);
       assert.equal(new Set(staticGeometry.rotations.map(angle=>Math.round(angle))).size,6,
         'Reduced motion flattened the diagonal card composition');
       assert.ok(staticGeometry.cardWidths.every(w=>w>0 && w<staticGeometry.stageWidth));
       await page.screenshot({path:path.join(output,`${width}-reduced.png`)});
       await page.evaluate(()=>{document.documentElement.dataset.motion='reduced'});
-      assert.equal(await scene.evaluate(e=>getComputedStyle(e).overflowY),'hidden',
+      assert.equal(await scene.evaluate(e=>getComputedStyle(e).overflowY),'clip',
         'Saved reduced-motion setting created an internal scrollbar');
       assert.equal(await page.locator('.folio-track').evaluate(e=>getComputedStyle(e).animationName),'none');
       report.viewports.push({width,height,overflow,frames,staticGeometry,keyboard:'PASS',routes:'PASS',images:'PASS',reducedMotion:'PASS'});

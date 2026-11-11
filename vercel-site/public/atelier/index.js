@@ -71,9 +71,9 @@ function picks() {
   const selected = slugs.map(slug => projects.find(p => p.slug === slug)).filter(Boolean);
   // Positions are part of the reference fan composition, not an auto-flow grid.
   // Keep cards rigid while the single parent follows the video choreography.
-  const left = [13,26,32,25,15,4];
-  const top = [-4,15,34,53,71,88];
-  const angles = [-26,-13,0,14,26,37];
+  const left = [0,9,13,9,0,-8];
+  const top = [7,22,37,52,67,82];
+  const angles = [-24,-14,-4,7,18,29];
   const cover = p => p.slug === 'digital-wedding-invitation'
     ? '/project-shots/wedding-demo-live.png'
     : `/project-shots/${encodeURIComponent(p.slug)}.webp`;
