@@ -55,7 +55,7 @@ jobs:
       - name: Commit deterministic build artifacts
         id: saved
         run: |
-          git add apps-script/Code.gs apps-script/preview/index.html vercel-site/generated/template.ts vercel-site/generated/fallback.json vercel-site/public/assets vercel-site/public/project-shots/wedding-demo-live.png
+          git add -A apps-script/Code.gs apps-script/preview/index.html vercel-site/generated/template.ts vercel-site/generated/fallback.json vercel-site/public/assets vercel-site/public/project-shots
           if git diff --cached --quiet; then
             echo "changed=false" >> "$GITHUB_OUTPUT"
           else
