@@ -15,22 +15,26 @@ function page(studioPage=false,slug=''){
  w.HTMLElement.prototype.scrollIntoView=()=>{};w.scrollTo=()=>{};w.eval(assets.client);
  return {dom,w,errors};
 }
-test('short home keeps real work, three demo entrances, services and valid studio navigation',async()=>{
+test('short home presents six curated projects, a working demo theatre, visible skill rails and valid studio navigation',async()=>{
  const {dom,w,errors}=page();await new Promise(r=>setTimeout(r,40));
  expect(w.document.querySelectorAll('#main>section').length).toBe(6);
- expect(w.document.querySelectorAll('#field .journey-card').length).toBe(4);
- const choices = [...w.document.querySelectorAll<HTMLButtonElement>('[data-project-index]')];
- choices[1].click();
- expect(choices.map(choice => choice.getAttribute('aria-pressed'))).toEqual(['false','true','false','false']);
- expect(w.document.querySelectorAll('.k-spot > div:not([hidden])')).toHaveLength(1);
- expect(w.document.querySelector('.k-spot > div:not([hidden]) a')?.getAttribute('href')).toContain('/work/galilea-digital-archive');
- const tempo = w.document.querySelector<HTMLInputElement>('#k-tempo')!;
- tempo.value = '120';
- tempo.dispatchEvent(new w.Event('input'));
- expect(w.document.querySelector('.k-controls output')?.textContent).toBe('120 ms');
- w.document.querySelector<HTMLButtonElement>('#k-play')!.click();
- expect(w.document.querySelector('.k-frames.playing')).toBeTruthy();
- expect(w.document.querySelectorAll('#studio-preview .journey-card').length).toBe(3);
+ const folios=[...w.document.querySelectorAll<HTMLAnchorElement>('#field .project-folio')];
+ expect(folios).toHaveLength(6);
+ expect(folios[0].textContent).toContain('ATLAS Logistics Command Center');
+ expect(folios[1].textContent).toContain('Undangan Pernikahan Digital');
+ expect(folios[0].getAttribute('href')).toContain('/work/atlas-logistics-command-center');
+ const demoTabs=[...w.document.querySelectorAll<HTMLButtonElement>('[data-demo-index]')];
+ expect(demoTabs).toHaveLength(6);
+ demoTabs[4].click();
+ expect(demoTabs[4].getAttribute('aria-selected')).toBe('true');
+ expect(w.document.querySelectorAll('.demo-panel:not([hidden])')).toHaveLength(1);
+ expect(w.document.querySelector('.demo-panel:not([hidden])')?.textContent).toContain('KOMA');
+ const skillRows=w.document.querySelectorAll('.skill-rail');
+ expect(skillRows).toHaveLength(4);
+ expect(w.document.querySelector('.skill-index')?.textContent).toContain('PostgreSQL');
+ const skillMotion=w.document.querySelector<HTMLButtonElement>('#skill-motion')!;
+ skillMotion.click();
+ expect(skillMotion.getAttribute('aria-pressed')).toBe('true');
  expect(w.document.querySelectorAll('.journey-services>a').length).toBe(4);
  expect(w.document.querySelector('.header nav')?.innerHTML).toContain('href="/studio"');
  const trigger=w.document.querySelector<HTMLButtonElement>('.quick-trigger')!;
