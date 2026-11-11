@@ -94,6 +94,20 @@ function skillsSummary() {
   const chip = ([name,logo]) => `<li><img loading="lazy" width="24" height="24" src="/edisi/logos/${logo}.svg" alt=""><span>${name}</span></li>`;
   return `<div class="skill-intro"><div><small>${t('selectedStrengths')}</small><h3><em>${t('craft')}</em><br>${t('verifiable')}</h3><p>${t('skillMotionNote')}</p></div><div class="skill-lattice" aria-hidden="true"></div></div><div class="skill-rails">${groups.map(([label,items],i)=>{const content=items.map(chip).join('');return `<div class="skill-rail" style="--rail:${i}"><strong>${t(label)}</strong><div class="skill-window"><div class="skill-track"><ul>${content}</ul><ul aria-hidden="true">${content}</ul></div></div></div>`}).join('')}</div><a class="more" href="/capabilities">${t('catalog')} ${icon('outward')}</a>`;
 }
+function mountProjectFolio() {
+  const folio = document.querySelector('.showcase.project-folio');
+  if (!folio) return () => {};
+  const move = event => {
+    if (reduced || event.pointerType !== 'mouse' || !matchMedia('(hover:hover) and (prefers-reduced-motion: no-preference)').matches) return;
+    const rect = folio.getBoundingClientRect();
+    folio.style.setProperty('--folio-x', (((event.clientX - rect.left) / rect.width) - .5) * 12 + 'deg');
+    folio.style.setProperty('--folio-y', (.5 - ((event.clientY - rect.top) / rect.height)) * 7 + 'deg');
+  };
+  const reset = () => { folio.style.removeProperty('--folio-x'); folio.style.removeProperty('--folio-y'); };
+  folio.addEventListener('pointermove', move);
+  folio.addEventListener('pointerleave', reset);
+  return () => { folio.removeEventListener('pointermove', move); folio.removeEventListener('pointerleave', reset); };
+}
 function mountDemoTheatre() {
   const theatre = $('[data-demo-theatre]');
   if (!theatre) return () => {};
@@ -203,8 +217,9 @@ function render() {
   const disposeScene = mountScene($('.scene canvas'), reduced);
   const disposeCamera = mountChoreography(reduced);
   const disposeAcademic = mountAcademic(language,email);
+  const disposeFolio = mountProjectFolio();
   const disposeDemos = mountDemoTheatre();
-  dispose = () => { disposeScene?.(); disposeCamera(); disposeAcademic?.(); disposeDemos(); };
+  dispose = () => { disposeScene?.(); disposeCamera(); disposeAcademic?.(); disposeDemos(); disposeFolio(); };
   document.querySelectorAll('a[href="/edisi/skill.html"]').forEach(a => a.href = '/capabilities');
   if (section === 'demos') {
     document.querySelectorAll('.demo-panel').forEach((panel, i) => {
