@@ -69,12 +69,15 @@ function projectRow(p, i) {
 function picks() {
   const slugs = ['atlas-logistics-command-center','digital-wedding-invitation','galilea-web-portal','galilea-digital-archive','majelis-galilea','naomi-rouli'];
   const selected = slugs.map(slug => projects.find(p => p.slug === slug)).filter(Boolean);
-  const offset = [-18,-4,0,-4,-18,-26];
-  const angles = [-28,-15,0,15,28,38];
+  // Positions are part of the reference fan composition, not an auto-flow grid.
+  // Keep cards rigid while the single parent follows the video choreography.
+  const left = [13,26,32,25,15,4];
+  const top = [-4,15,34,53,71,88];
+  const angles = [-26,-13,0,14,26,37];
   const cover = p => p.slug === 'digital-wedding-invitation'
     ? '/project-shots/wedding-demo-live.png'
     : `/project-shots/${encodeURIComponent(p.slug)}.webp`;
-  const cards = selected.map((p, i) => `<a class="showpiece" style="--folio-index:${i};--folio-shift:${offset[i]}%;--folio-angle:${angles[i]}deg" href="/work/${encodeURIComponent(p.slug)}" aria-label="${esc(p.name)}"><div class="shot"><span class="shot-fallback">${esc(p.name)}</span><img src="${cover(p)}" alt="${esc(p.name)} — project interface" loading="eager" decoding="async"></div><span class="folio-label"><b>${esc(p.name)}</b><span aria-hidden="true">${icon('outward')}</span></span></a>`).join('');
+  const cards = selected.map((p, i) => `<a class="showpiece" style="--folio-index:${i};--folio-left:${left[i]}%;--folio-top:${top[i]}%;--folio-angle:${angles[i]}deg" href="/work/${encodeURIComponent(p.slug)}" aria-label="${esc(p.name)}"><div class="shot"><span class="shot-fallback">${esc(p.name)}</span><img src="${cover(p)}" alt="${esc(p.name)} — project interface" loading="eager" decoding="async"></div><span class="folio-label"><b>${esc(p.name)}</b><span aria-hidden="true">${icon('outward')}</span></span></a>`).join('');
   return `<div class="folio-shell"><div class="folio-tools"><p>${t('folioNote')}</p></div><div class="showcase project-folio" aria-label="${t('work')} — ${selected.length} selected projects" style="--folio-count:${selected.length}"><div class="folio-track"><div class="folio-cycle">${cards}</div></div><div class="folio-counter" aria-hidden="true">KS / ${String(selected.length).padStart(2, '0')} PROJECTS</div></div></div>`;
 }
 function brands() {
