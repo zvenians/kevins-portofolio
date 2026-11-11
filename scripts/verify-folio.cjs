@@ -6,7 +6,7 @@ const assert = require('node:assert/strict');
 const output = path.resolve('artifacts/folio-fidelity');
 (async () => {
   await fs.mkdir(output, {recursive:true});
-  const browser = await chromium.launch({channel:process.env.CI ? undefined : 'chrome',headless:true});
+  const browser = await chromium.launch({channel:'chrome',headless:true});
   const report = { viewports:[], errors:[], reference:process.argv[2] };
   try {
     if (process.argv[2]) {
