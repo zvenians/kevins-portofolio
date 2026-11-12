@@ -50,6 +50,26 @@ function visitorGreeting() {
 }
 const categories = ['work', 'demos', 'capabilities', 'about', 'contact'];
 const nav = () => categories.map(id => `<a href="/${id}" ${section === id ? 'aria-current="page"' : ''}>${t(id)}</a>`).join('');
+const dockRoutes = [['home','/','⌂'],['work','/work','▣'],['demos','/demos','◫'],['capabilities','/capabilities','✳'],['about','/about','ⓘ'],['resume','/resume','▤'],['contact','/contact','✉']];
+function mountDock() {
+  let dock = document.querySelector('#site-dock');
+  if (!dock) { dock = document.createElement('aside'); dock.id = 'site-dock'; document.body.append(dock); }
+  dock.innerHTML = `<button class="dock-trigger" type="button" aria-label="${t('openNavigation')}" aria-expanded="false">☰</button><div class="dock-inner"><nav aria-label="${t('openNavigation')}">${dockRoutes.map(([key,url,glyph])=>`<a href="${url}" aria-label="${t(key)}" ${section === key || (!section && key === 'home') ? 'aria-current="page"' : ''}><span aria-hidden="true">${glyph}</span><b>${t(key)}</b></a>`).join('')}</nav><button class="dock-pin" type="button" aria-label="${t('pinNavigation')}" aria-pressed="false">⦿ <b>${t('pinNavigation')}</b></button><button class="dock-close" type="button" aria-label="${t('closeNavigation')}">×</button></div>`;
+  const trigger = dock.querySelector('.dock-trigger');
+  const setOpen = open => { dock.classList.toggle('is-open',open); trigger.setAttribute('aria-expanded',String(open)); document.body.classList.toggle('dock-open',open && matchMedia('(max-width:899px)').matches); if (open) dock.querySelector('nav a').focus(); else trigger.focus(); };
+  trigger.onclick = () => setOpen(!dock.classList.contains('is-open'));
+  dock.querySelector('.dock-close').onclick = () => setOpen(false);
+  dock.querySelector('.dock-pin').onclick = e => { const pinned=dock.classList.toggle('is-pinned'); e.currentTarget.setAttribute('aria-pressed',String(pinned)); };
+  dock.onkeydown = e => {
+    if (e.key === 'Escape') { dock.classList.remove('is-pinned'); setOpen(false); }
+    if (e.key === 'Tab' && dock.classList.contains('is-open')) {
+      const links = [...dock.querySelectorAll('.dock-inner a,.dock-inner button')].filter(el => getComputedStyle(el).display !== 'none');
+      const first = links[0], last = links.at(-1);
+      if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
+      else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
+    }
+  };
+}
 const flagship = [
   ['KOMA Manga Reader', 'creative', '/work/koma-manga-reader', 'web-manga'],
   ['Daun & Bara', 'restaurant', '/edisi/resto.html', 'showcase/dining'],
@@ -69,16 +89,11 @@ function projectRow(p, i) {
 function picks() {
   const slugs = ['atlas-logistics-command-center','digital-wedding-invitation','galilea-web-portal','galilea-digital-archive','majelis-galilea','naomi-rouli'];
   const selected = slugs.map(slug => projects.find(p => p.slug === slug)).filter(Boolean);
-  // Positions are part of the reference fan composition, not an auto-flow grid.
-  // Keep cards rigid while the single parent follows the video choreography.
-  const left = [0,9,13,9,0,-8];
-  const top = [7,22,37,52,67,82];
-  const angles = [-24,-14,-4,7,18,29];
   const cover = p => p.slug === 'digital-wedding-invitation'
     ? '/project-shots/wedding-demo-live.png'
     : `/project-shots/${encodeURIComponent(p.slug)}.webp`;
-  const cards = selected.map((p, i) => `<a class="showpiece" style="--folio-index:${i};--folio-left:${left[i]}%;--folio-top:${top[i]}%;--folio-angle:${angles[i]}deg" href="/work/${encodeURIComponent(p.slug)}" aria-label="${esc(p.name)}"><div class="shot"><span class="shot-fallback">${esc(p.name)}</span><img src="${cover(p)}" alt="${esc(p.name)} — project interface" loading="eager" decoding="async"></div><span class="folio-label"><b>${esc(p.name)}</b><span aria-hidden="true">${icon('outward')}</span></span></a>`).join('');
-  return `<div class="folio-shell"><div class="folio-tools"><p>${t('folioNote')}</p></div><div class="showcase project-folio" aria-label="${t('work')} — ${selected.length} selected projects" style="--folio-count:${selected.length}"><div class="folio-track"><div class="folio-cycle">${cards}</div></div><div class="folio-counter" aria-hidden="true">KS / ${String(selected.length).padStart(2, '0')} PROJECTS</div></div></div>`;
+  const cards = selected.map((p, i) => `<a class="showpiece" style="--folio-index:${i}" href="/work/${encodeURIComponent(p.slug)}" aria-label="${esc(p.name)}"><div class="shot"><span class="shot-fallback">${esc(p.name)}</span><img src="${cover(p)}" alt="${esc(p.name)} — project interface" loading="eager" decoding="async"></div><span class="folio-label"><b>${esc(p.name)}</b><span aria-hidden="true">${icon('outward')}</span></span></a>`).join('');
+  return `<div class="folio-shell"><div class="folio-tools"><p>${t('folioNote')}</p></div><div class="showcase project-folio" aria-label="${t('work')}"><div class="folio-track"><div class="folio-cycle">${cards}</div></div><div class="folio-controls"><button type="button" data-folio-prev aria-label="${t('previousProject')}">↑</button><output>01 / 06</output><button type="button" data-folio-next aria-label="${t('nextProject')}">↓</button></div></div></div>`;
 }
 function brands() {
   return `<div class="brands product-gallery demo-theatre" data-demo-theatre><div class="demo-tabs" role="tablist" aria-label="${t('demos')}">${flagship.map(([name,kind],i)=>`<button type="button" role="tab" id="demo-tab-${i}" aria-controls="demo-panel-${i}" aria-selected="${i===demoIndex}" tabindex="${i===demoIndex?0:-1}" data-demo-tab="${i}"><span>0${i+1}</span><strong>${name}</strong><small>${t(kind)}</small></button>`).join('')}</div><div class="demo-stage">${flagship.map(([name,kind,url,image],i)=>`<article class="demo-panel" role="tabpanel" tabindex="0" id="demo-panel-${i}" aria-labelledby="demo-tab-${i}" ${i===demoIndex?'':'hidden'}><a class="brand brand-${kind}" href="${url}"><figure><img loading="lazy" width="940" height="645" src="/demo-shots/${image}.webp" alt=""></figure><div><small>0${i+1} / ${t(kind)}</small><h3>${name}</h3><span>${t('open')} ${icon('outward')}</span></div></a></article>`).join('')}<div class="demo-controls"><button type="button" data-demo-prev aria-label="${t('previousDemo')}">←</button><output>${String(demoIndex+1).padStart(2,'0')} / ${String(flagship.length).padStart(2,'0')}</output><button type="button" data-demo-next aria-label="${t('nextDemo')}">→</button></div></div></div>`;
@@ -96,19 +111,68 @@ function skillsSummary() {
     ['skillData', [['PostgreSQL','postgresql'],['MySQL','mysql'],['MongoDB','mongodb'],['Redis','redis'],['SQLite','sqlite'],['Firebase','firebase']]],
     ['skillDelivery', [['HTML5','html5'],['CSS3','css3'],['Git','git'],['Docker','docker'],['Linux','linux'],['GitHub Actions','githubactions'],['Figma','figma'],['Bash','bash']]]
   ];
-  const chip = ([name,logo]) => `<li><img loading="lazy" width="24" height="24" src="/edisi/logos/${logo}.svg" alt=""><span>${name}</span></li>`;
-  return `<div class="skill-intro"><div><small>${t('selectedStrengths')}</small><h3><em>${t('craft')}</em><br>${t('verifiable')}</h3><p>${t('skillMotionNote')}</p></div><div class="skill-lattice" aria-hidden="true"></div></div><div class="skill-rails">${groups.map(([label,items],i)=>{const content=items.map(chip).join('');return `<div class="skill-rail" style="--rail:${i}"><strong>${t(label)}</strong><div class="skill-window"><div class="skill-track"><ul>${content}</ul><ul aria-hidden="true">${content}</ul></div></div></div>`}).join('')}</div><a class="more" href="/capabilities">${t('catalog')} ${icon('outward')}</a>`;
+  const chip = ([name,logo], category, duplicate = false) => `<li>${duplicate ? `<span class="skill-copy"><img loading="lazy" width="24" height="24" src="/edisi/logos/${logo}.svg" alt=""><span>${name}</span></span>` : `<button type="button" class="skill-chip" data-skill="${esc(name)}" data-category="${esc(t(category))}" aria-label="${esc(name)}: ${esc(t(category))}"><img loading="lazy" width="24" height="24" src="/edisi/logos/${logo}.svg" alt=""><span>${name}</span></button>`}</li>`;
+  return `<div class="skill-intro"><div><small>${t('selectedStrengths')}</small><h3><em>${t('craft')}</em><br>${t('verifiable')}</h3><p>${t('skillMotionNote')}</p></div><div class="skill-lattice" aria-hidden="true"></div></div><div class="skill-rails">${groups.map(([label,items],i)=>{const content=items.map(item=>chip(item,label)).join('');const copy=items.map(item=>chip(item,label,true)).join('');return `<div class="skill-rail" style="--rail:${i}"><strong>${t(label)}</strong><div class="skill-window"><div class="skill-track"><ul>${content}</ul><ul aria-hidden="true">${copy}</ul></div></div></div>`}).join('')}</div><div class="skill-popover" hidden role="dialog" aria-label="${t('skillDetails')}"><button type="button" class="skill-close" aria-label="${t('close')}">×</button><div class="skill-detail"></div></div><a class="more" href="/capabilities">${t('catalog')} ${icon('outward')}</a>`;
+}
+function mountSkills() {
+  const root = document.querySelector('#skills');
+  if (!root) return () => {};
+  const pop = root.querySelector('.skill-popover');
+  let selected;
+  const close = () => { pop.hidden=true; root.classList.remove('skill-reading'); selected?.focus(); };
+  root.querySelectorAll('.skill-chip').forEach(button => button.onclick = () => {
+    selected=button;
+    button.classList.remove('is-bouncing'); void button.offsetWidth; button.classList.add('is-bouncing');
+    const name=button.dataset.skill, category=button.dataset.category;
+    const matches=projects.filter(p => p.visibility !== 'draft' && (p.technologies || []).some(tech => tech.toLowerCase() === name.toLowerCase())).slice(0,3);
+    pop.querySelector('.skill-detail').innerHTML=`<small>${esc(category)}</small><h3>${esc(name)}</h3>${matches.length ? matches.map(p=>`<a href="/work/${encodeURIComponent(p.slug)}">${esc(p.name)} ${icon('outward')}</a>`).join('') : `<p>${t('noSkillProject')}</p>`}`;
+    pop.hidden=false; root.classList.add('skill-reading'); pop.querySelector('.skill-close').focus();
+  });
+  pop.querySelector('.skill-close').onclick=close;
+  const key = e => { if (e.key==='Escape' && !pop.hidden) close(); };
+  const outside = e => { if (!pop.hidden && !pop.contains(e.target) && !e.target.closest('.skill-chip')) close(); };
+  document.addEventListener('keydown',key); document.addEventListener('pointerdown',outside);
+  return () => { document.removeEventListener('keydown',key); document.removeEventListener('pointerdown',outside); };
 }
 function mountProjectFolio() {
   const folio = document.querySelector('.showcase.project-folio');
   if (!folio) return () => {};
+  const cards = [...folio.querySelectorAll('.showpiece')];
+  let active = 0, timer, start = null, dragged = false;
+  const show = index => {
+    active = (index + cards.length) % cards.length;
+    cards.forEach((card, i) => {
+      const offset = (i - active + cards.length) % cards.length;
+      card.style.setProperty('--stack-offset', offset);
+      card.style.zIndex = String(cards.length - offset);
+      card.dataset.active = String(offset === 0);
+    });
+    folio.querySelector('output').textContent = `${String(active + 1).padStart(2, '0')} / ${String(cards.length).padStart(2, '0')}`;
+  };
+  const pause = () => clearTimeout(timer);
+  const resume = () => { pause(); if (!reduced) timer = setTimeout(() => { show(active + 1); resume(); }, 6200); };
+  const down = e => { if (e.pointerType === 'mouse' && e.button !== 0) return; if (e.pointerType === 'touch' && !e.target.closest('.folio-label')) return; start = {y:e.clientY,time:performance.now()}; dragged = false; };
+  const move = e => { if (!start) return; const delta=e.clientY-start.y; if (Math.abs(delta)>8) { dragged=true; folio.style.setProperty('--gesture-y', `${Math.max(-100,Math.min(100,delta))}px`); if (e.pointerType === 'mouse' && !folio.hasPointerCapture(e.pointerId)) folio.setPointerCapture(e.pointerId); } };
+  const up = e => { if (!start) return; const delta=e.clientY-start.y; const elapsed=performance.now()-start.time; start=null; folio.style.setProperty('--gesture-y','0px'); if (folio.hasPointerCapture(e.pointerId)) folio.releasePointerCapture(e.pointerId); if (Math.abs(delta)>35 || (Math.abs(delta)>18 && elapsed<220)) show(active + (delta<0?1:-1)); resume(); };
+  show(0); resume();
+  folio.addEventListener('pointerenter', pause);
+  folio.addEventListener('pointerleave', resume);
+  folio.addEventListener('focusin', pause);
+  folio.addEventListener('focusout', resume);
+  folio.addEventListener('pointerdown', down);
+  folio.addEventListener('pointermove', move);
+  folio.addEventListener('pointerup', up);
+  folio.addEventListener('pointercancel', up);
+  folio.addEventListener('click', e => { if (dragged) { e.preventDefault(); dragged=false; } }, true);
+  folio.querySelector('[data-folio-prev]').onclick = () => { show(active-1); resume(); };
+  folio.querySelector('[data-folio-next]').onclick = () => { show(active+1); resume(); };
   const imageError = event => {
     if (event.target instanceof HTMLImageElement && event.target.closest('.showpiece')) {
       event.target.closest('.shot')?.classList.add('is-unavailable');
     }
   };
   folio.addEventListener('error', imageError, true);
-  return () => folio.removeEventListener('error', imageError, true);
+  return () => { pause(); folio.removeEventListener('error', imageError, true); };
 }
 function mountDemoTheatre() {
   const theatre = $('[data-demo-theatre]');
@@ -187,6 +251,7 @@ function render() {
   $('.skip').textContent = t('skip');
   document.documentElement.dataset.motion = reduced ? 'reduced' : 'full';
   $('#bar').innerHTML = `<a href="/" class="wordmark">ks<span>.</span></a><nav>${nav()}</nav><div><button data-settings>${language.toUpperCase()} ${icon('down')}</button><button data-menu>${t('menu')} ${icon('menu')}</button></div>`;
+  mountDock();
   $('#foot').innerHTML = `<a class="wordmark" href="/">ks<span>.</span></a><small>© 2026 Kevin Oloan Simatupang · Balikpapan</small><button data-settings>${t('prefs')}</button>`;
   let body;
   switch (section) {
@@ -233,8 +298,9 @@ function render() {
   const disposeCamera = mountChoreography(reduced);
   const disposeAcademic = mountAcademic(language,email);
   const disposeFolio = mountProjectFolio();
+  const disposeSkills = mountSkills();
   const disposeDemos = mountDemoTheatre();
-  dispose = () => { disposeScene?.(); disposeCamera(); disposeAcademic?.(); disposeDemos(); disposeFolio(); };
+  dispose = () => { disposeScene?.(); disposeCamera(); disposeAcademic?.(); disposeDemos(); disposeFolio(); disposeSkills(); };
   document.querySelectorAll('a[href="/edisi/skill.html"]').forEach(a => a.href = '/capabilities');
   if (section === 'demos') {
     document.querySelectorAll('.demo-panel').forEach((panel, i) => {

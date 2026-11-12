@@ -6,7 +6,7 @@ import { JSDOM } from 'jsdom';
 
 const read = (path: string) => readFileSync(resolve(process.cwd(), path), 'utf8');
 
-describe('Real project folio matches the diagonal motion reference', () => {
+describe('Real project folio uses straight, interactive screenshot cards', () => {
   const source = read('vercel-site/public/atelier/index.js');
   const css = read('vercel-site/public/atelier/mobile-ui.css');
   const projects = JSON.parse(read('vercel-site/generated/fallback.json')).projects;
@@ -14,7 +14,7 @@ describe('Real project folio matches the diagonal motion reference', () => {
   const start = source.indexOf('function picks() {');
   const finish = source.indexOf('\nfunction brands() {', start);
 
-  it('renders six distinct keyboard-accessible previews in one rigid fan', () => {
+  it('renders six distinct keyboard-accessible previews', () => {
     expect(start).toBeGreaterThanOrEqual(0);
     expect(finish).toBeGreaterThan(start);
     const markup = runInNewContext(source.slice(start, finish) + '\npicks();', {
@@ -28,9 +28,7 @@ describe('Real project folio matches the diagonal motion reference', () => {
     expect(cycles).toHaveLength(1);
     expect(cycles[0].querySelectorAll('a.showpiece')).toHaveLength(6);
     const first = [...cycles[0].querySelectorAll<HTMLAnchorElement>('a')];
-    expect(new Set(first.map(a => a.style.getPropertyValue('--folio-angle'))).size).toBe(6);
-    expect(new Set(first.map(a => a.style.getPropertyValue('--folio-top'))).size).toBe(6);
-    expect(new Set(first.map(a => a.style.getPropertyValue('--folio-left'))).size).toBeGreaterThan(1);
+    expect(first.map(a => a.style.getPropertyValue('--folio-index'))).toEqual(['0','1','2','3','4','5']);
     expect(first.every(a => a.getAttribute('tabindex') !== '-1')).toBe(true);
     expect(first[1].querySelector('img')?.getAttribute('src')).toBe('/project-shots/wedding-demo-live.png');
     for (const image of first.map(a => a.querySelector('img'))) {
@@ -39,24 +37,17 @@ describe('Real project folio matches the diagonal motion reference', () => {
     }
   });
 
-  it('uses the calibrated hold-rise-hold-return cycle without a conveyor', () => {
-    expect(css).not.toContain('folio-conveyor');
-    expect(css).toContain('folio-reference 5.6s');
-    expect(css).toContain('39.285714%,57.142857%');
-    expect(css).not.toContain('@keyframes folio-drift');
-    expect(css).not.toContain('@keyframes folio-breathe');
-    expect(source).not.toContain('data-folio-motion');
-    expect(css).toContain('rotate(var(--folio-angle))');
+  it('supports autoplay, pointer drag and accessible controls', () => {
+    expect(source).toContain('setTimeout(() => { show(active + 1); resume(); }, 6200)');
+    expect(source).toContain("folio.addEventListener('pointermove', move)");
+    expect(source).toContain("folio.querySelector('[data-folio-next]').onclick");
+    expect(css).toContain('calc(var(--stack-offset,0) * 82px + var(--gesture-y))');
+    expect(css).toContain('transition:transform .54s');
   });
 
-  it('keeps the same angled fan in reduced motion, with no nested scrollbar', () => {
+  it('stops autoplay and transitions in reduced motion', () => {
     expect(css).toContain('@media(prefers-reduced-motion:reduce)');
-    expect(css).toContain('html[data-motion=reduced] .project-folio .folio-track {animation:none!important;will-change:auto;}');
-    expect(css).toContain('top:var(--folio-top)');
-    expect(css).toContain('left:var(--folio-left)');
-    expect(css).toContain('background:transparent');
-    expect(css).not.toContain('scroll-snap-type:y proximity');
-    expect(css).not.toContain('.project-folio .folio-cycle {height:auto;display:flex;flex-direction:column');
-    expect(source).toContain('mountProjectFolio()');
+    expect(css).toContain('html[data-motion=reduced] .project-folio .showpiece{transition:none!important;}');
+    expect(source).toContain('if (!reduced) timer = setTimeout');
   });
 });

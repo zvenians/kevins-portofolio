@@ -19,6 +19,22 @@ const base=process.env.FOLIO_BASE_URL || 'http://localhost:3001';
     const geometry=await page.evaluate(()=>({overflow:document.documentElement.scrollWidth>innerWidth+1,background:getComputedStyle(document.documentElement).backgroundColor}));
     assert.equal(geometry.overflow,false,`${route} ${width} overflow`);
     assert.equal(geometry.background,'rgb(255, 255, 255)');
+    if(route==='/'){
+      assert.equal(await page.locator('.visitor-greeting').count(),1);
+      assert.equal(await page.locator('.skill-chip').count()>20,true);
+      await page.locator('.skill-chip').first().click({force:true});
+      assert.equal(await page.locator('.skill-popover').isVisible(),true);
+      await page.locator('.skill-close').click();
+      assert.equal(await page.locator('.skill-popover').isVisible(),false);
+      if(width===390){
+       await page.locator('.dock-trigger').click();
+       assert.equal(await page.locator('#site-dock nav a').first().isVisible(),true);
+       await page.keyboard.press('Shift+Tab');
+       assert.equal(await page.locator('.dock-close').evaluate(el=>el===document.activeElement),true);
+       await page.locator('.dock-close').click();
+      }
+      assert.equal(await page.locator('[data-folio-motion]').count(),0);
+    }
     await page.screenshot({path:`artifacts/white-release/${width}-${route.slice(1)||'home'}.png`,fullPage:true});
     report.pages.push({route,width,...geometry});
    }
