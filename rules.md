@@ -1045,7 +1045,7 @@ jangan biarkan decision penting hanya berada di:
 
 - chat
 - commit message
-- assistant conversations
+- percakapan kerja yang tidak terdokumentasi
 - developer memory
 
 source of truth harus berada di repository.

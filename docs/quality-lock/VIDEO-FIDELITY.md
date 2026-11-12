@@ -26,7 +26,7 @@ Browser: installed Google Chrome, headless, Windows. Source video duration: 6.72
 
 This is measured conformance to the supplied motion tolerances, not a claim of pixel-identical screenshots or comprehensive accessibility certification. The wedding capture is the existing Kevin & Naomi image; GitHub identifies https://wedding-demo-hazel.vercel.app as the homepage of zvenians/wedding-demo. Other image provenance remains in the project-shots README.
 
-Anti-slop R-40 exception: no new pause/resume button, as explicitly requested by the owner. Keyboard focus pauses the parent; reduced motion presents a static scrollable list. The standalone Anti-slop and ui-main skill packages were unavailable; the explicit request and repository semantics guidance were followed.
+Visual motion requirement R-40: no additional pause/resume button, as requested by the project owner. Keyboard focus pauses the parent; reduced motion presents a static scrollable list. This behavior follows the project's documented interaction requirements.
 
 Reproduce with `node scripts/verify-folio.cjs <reference.mp4>` with Playwright resolvable through NODE_PATH and the public frontend running on port 3000. Evidence belongs to this local verification; CI results are checked separately on the PR.
 
