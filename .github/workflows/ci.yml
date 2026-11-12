@@ -96,11 +96,14 @@ jobs:
             exit 1
           fi
           node scripts/verify-folio.cjs
+          FOLIO_BASE_URL=http://localhost:3000 node scripts/verify-white.cjs
       - name: Retain desktop, mobile, and reduced-motion visual evidence
         if: always()
         uses: actions/upload-artifact@v4
         with:
           name: real-project-visual-${{ github.run_id }}
-          path: artifacts/folio-fidelity/
+          path: |
+            artifacts/folio-fidelity/
+            artifacts/white-release/
           if-no-files-found: warn
           retention-days: 14
