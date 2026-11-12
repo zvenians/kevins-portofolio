@@ -50,18 +50,23 @@ function visitorGreeting() {
 }
 const categories = ['work', 'demos', 'capabilities', 'about', 'contact'];
 const nav = () => categories.map(id => `<a href="/${id}" ${section === id ? 'aria-current="page"' : ''}>${t(id)}</a>`).join('');
-const dockRoutes = [['home','/','⌂'],['work','/work','▣'],['demos','/demos','◫'],['capabilities','/capabilities','✳'],['about','/about','ⓘ'],['resume','/resume','▤'],['contact','/contact','✉']];
+const dockPrimary = [['home','/','home','ring-orange'],['work','/work','layers','ring-mint'],['demos','/demos','play','ring-yellow']];
+const dockMore = [['dataLab','/#data-lab','data','ring-violet'],['capabilities','/#skills','code','ring-cyan'],['academicSupport','/academic-support','academic','ring-champagne'],['contact','/contact','mail','ring-steel']];
 function mountDock() {
   let dock = document.querySelector('#site-dock');
   if (!dock) { dock = document.createElement('aside'); dock.id = 'site-dock'; document.body.append(dock); }
-  dock.innerHTML = `<button class="dock-trigger" type="button" aria-label="${t('openNavigation')}" aria-expanded="false">☰</button><div class="dock-inner"><nav aria-label="${t('openNavigation')}">${dockRoutes.map(([key,url,glyph])=>`<a href="${url}" aria-label="${t(key)}" ${section === key || (!section && key === 'home') ? 'aria-current="page"' : ''}><span aria-hidden="true">${glyph}</span><b>${t(key)}</b></a>`).join('')}</nav><button class="dock-pin" type="button" aria-label="${t('pinNavigation')}" aria-pressed="false">⦿ <b>${t('pinNavigation')}</b></button><button class="dock-close" type="button" aria-label="${t('closeNavigation')}">×</button></div>`;
+  const route = ([key,url,glyph,ring], secondary = false) => `<a class="dock-route ${secondary?'dock-secondary':''}" href="${url}" aria-label="${t(key)}" ${section === key || (!section && key === 'home') ? 'aria-current="page"' : ''}><span class="dock-ring ${ring}" aria-hidden="true">${icon(glyph)}</span><b>${t(key)}</b></a>`;
+  dock.innerHTML = `<button class="dock-trigger" type="button" aria-label="${t('openNavigation')}" aria-expanded="false"><span class="dock-trigger-rings" aria-hidden="true"><i class="ring-orange"></i><i class="ring-mint"></i><i class="ring-yellow"></i></span><b>${t('menu')}</b></button><div class="dock-inner"><button class="dock-pin" type="button" aria-label="${t('pinNavigation')}" aria-pressed="false">${icon('down')} <b>${t('pinNavigation')}</b></button><nav aria-label="${t('openNavigation')}">${dockPrimary.map(item=>route(item)).join('')}<span class="dock-more">${dockMore.map(item=>route(item,true)).join('')}</span></nav><button class="dock-settings" type="button" data-settings aria-label="${t('prefs')}"><span class="dock-ring ring-neutral" aria-hidden="true">${icon('settings')}</span><b>${t('prefs')}</b></button><button class="dock-close" type="button" aria-label="${t('closeNavigation')}">×</button></div>`;
   const trigger = dock.querySelector('.dock-trigger');
-  const setOpen = open => { dock.classList.toggle('is-open',open); trigger.setAttribute('aria-expanded',String(open)); document.body.classList.toggle('dock-open',open && matchMedia('(max-width:899px)').matches); if (open) dock.querySelector('nav a').focus(); else trigger.focus(); };
+  const mobile = () => matchMedia('(max-width:899px)').matches;
+  const setOpen = (open, restore = false) => { dock.classList.toggle('is-open',open); trigger.setAttribute('aria-expanded',String(open)); document.body.classList.toggle('dock-open',open && mobile()); if (open && mobile()) dock.querySelector('nav a').focus(); else if (!open && restore && mobile()) trigger.focus(); };
   trigger.onclick = () => setOpen(!dock.classList.contains('is-open'));
-  dock.querySelector('.dock-close').onclick = () => setOpen(false);
-  dock.querySelector('.dock-pin').onclick = e => { const pinned=dock.classList.toggle('is-pinned'); e.currentTarget.setAttribute('aria-pressed',String(pinned)); };
+  dock.querySelector('.dock-close').onclick = () => setOpen(false, true);
+  dock.querySelector('.dock-pin').onclick = e => { const pinned=dock.classList.toggle('is-pinned'); dock.classList.toggle('is-open',pinned || mobile()); e.currentTarget.setAttribute('aria-pressed',String(pinned)); };
+  const outside = event => { if (!dock.contains(event.target) && dock.classList.contains('is-pinned')) { dock.classList.remove('is-pinned','is-open'); dock.querySelector('.dock-pin').setAttribute('aria-pressed','false'); } };
+  document.addEventListener('pointerdown', outside);
   dock.onkeydown = e => {
-    if (e.key === 'Escape') { dock.classList.remove('is-pinned'); setOpen(false); }
+    if (e.key === 'Escape') { dock.classList.remove('is-pinned'); dock.querySelector('.dock-pin').setAttribute('aria-pressed','false'); setOpen(false, true); }
     if (e.key === 'Tab' && dock.classList.contains('is-open')) {
       const links = [...dock.querySelectorAll('.dock-inner a,.dock-inner button')].filter(el => getComputedStyle(el).display !== 'none');
       const first = links[0], last = links.at(-1);
@@ -69,6 +74,7 @@ function mountDock() {
       else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
     }
   };
+  return () => document.removeEventListener('pointerdown', outside);
 }
 const flagship = [
   ['KOMA Manga Reader', 'creative', '/work/koma-manga-reader', 'web-manga'],
@@ -92,8 +98,13 @@ function picks() {
   const cover = p => p.slug === 'digital-wedding-invitation'
     ? '/project-shots/wedding-demo-live.png'
     : `/project-shots/${encodeURIComponent(p.slug)}.webp`;
-  const cards = selected.map((p, i) => `<a class="showpiece" style="--folio-index:${i}" href="/work/${encodeURIComponent(p.slug)}" aria-label="${esc(p.name)}"><div class="shot"><span class="shot-fallback">${esc(p.name)}</span><img src="${cover(p)}" alt="${esc(p.name)} — project interface" loading="eager" decoding="async"></div><span class="folio-label"><b>${esc(p.name)}</b><span aria-hidden="true">${icon('outward')}</span></span></a>`).join('');
-  return `<div class="folio-shell"><div class="folio-tools"><p>${t('folioNote')}</p></div><div class="showcase project-folio" aria-label="${t('work')}"><div class="folio-track"><div class="folio-cycle">${cards}</div></div><div class="folio-controls"><button type="button" data-folio-prev aria-label="${t('previousProject')}">↑</button><output>01 / 06</output><button type="button" data-folio-next aria-label="${t('nextProject')}">↓</button></div></div></div>`;
+  const cards = selected.map((p, i) => `<a class="showpiece" style="--folio-index:${i}" href="/work/${encodeURIComponent(p.slug)}" aria-label="${esc(p.name)}" draggable="false"><div class="shot"><span class="shot-fallback">${esc(p.name)}</span><img src="${cover(p)}" alt="${esc(p.name)} project interface" width="1200" height="745" ${i?'loading="lazy"':'fetchpriority="high"'} decoding="async" draggable="false"></div><span class="folio-copy"><small>${esc(p.category || t('project'))}</small><b>${esc(p.name)}</b><span>${esc(p.summary || '')}</span><strong>${t('view')} ${icon('outward')}</strong></span></a>`).join('');
+  return `<div class="folio-shell"><div class="folio-tools"><p>${t('folioNote')}</p></div><div class="showcase project-folio" tabindex="0" aria-label="${t('work')}" aria-roledescription="carousel"><div class="folio-cycle">${cards}</div><div class="folio-status"><output aria-live="polite">01 / 06</output><span class="folio-progress" aria-hidden="true"><i></i></span><small>AUTO / DRAG</small></div></div></div>`;
+}
+const dataLabSlugs = ['operations-decision-workbench','research-data-preparation-studio','research-practice-toolkit','asset-field-companion','document-automation-studio','sera-commerce-operations-console'];
+function dataLab() {
+  const entries = dataLabSlugs.map(slug => projects.find(project => project.slug === slug)).filter(Boolean);
+  return `<div class="data-lab-intro"><h3>${t('dataLabTitle')}</h3><p>${t('dataLabNote')}</p></div><div class="data-lab-grid">${entries.map((project,index)=>`<a href="/work/${encodeURIComponent(project.slug)}?launch=1" class="data-lab-card"><small>${String(index+1).padStart(2,'0')} / ${esc(project.category)}</small><figure><img src="/demo-shots/${esc(project.visual)}.webp" width="720" height="430" loading="lazy" alt="${esc(project.name)} interface"></figure><strong>${esc(project.name)}</strong><span>${esc(project.summary)}</span></a>`).join('')}</div><a class="more" href="/demos">${t('legacy')}</a>`;
 }
 function brands() {
   return `<div class="brands product-gallery demo-theatre" data-demo-theatre><div class="demo-tabs" role="tablist" aria-label="${t('demos')}">${flagship.map(([name,kind],i)=>`<button type="button" role="tab" id="demo-tab-${i}" aria-controls="demo-panel-${i}" aria-selected="${i===demoIndex}" tabindex="${i===demoIndex?0:-1}" data-demo-tab="${i}"><span>0${i+1}</span><strong>${name}</strong><small>${t(kind)}</small></button>`).join('')}</div><div class="demo-stage">${flagship.map(([name,kind,url,image],i)=>`<article class="demo-panel" role="tabpanel" tabindex="0" id="demo-panel-${i}" aria-labelledby="demo-tab-${i}" ${i===demoIndex?'':'hidden'}><a class="brand brand-${kind}" href="${url}"><figure><img loading="lazy" width="940" height="645" src="/demo-shots/${image}.webp" alt=""></figure><div><small>0${i+1} / ${t(kind)}</small><h3>${name}</h3><span>${t('open')} ${icon('outward')}</span></div></a></article>`).join('')}<div class="demo-controls"><button type="button" data-demo-prev aria-label="${t('previousDemo')}">←</button><output>${String(demoIndex+1).padStart(2,'0')} / ${String(flagship.length).padStart(2,'0')}</output><button type="button" data-demo-next aria-label="${t('nextDemo')}">→</button></div></div></div>`;
@@ -102,7 +113,7 @@ function heading(id, num) {
   return `<div class="heading"><small>${num} / KS</small><h2>${t(id)}</h2></div>`;
 }
 function home() {
-  return `<section class="hero"><div class="scene"><canvas aria-hidden="true"></canvas><small>FIG. 01 &nbsp; / &nbsp; ${t('film')}</small></div><div class="hero-text"><small><i class="dot"></i> Kevin Oloan Simatupang</small><small class="visitor-greeting">${visitorGreeting()}</small><h1><em>Creative</em><br>DEVELOPER.</h1><p>${t('hero')}</p><div class="actions"><a class="solid" href="/work">${t('explore')} ${icon('outward')}</a><a href="/contact">${t('contact')} →</a></div></div></section><div class="axis"><small>KS / PORTFOLIO</small><small>${t('location')}</small></div><section class="block" id="work">${heading('work', '01')}${picks()}<a class="more" href="/work">${t('all')} →</a></section><section class="block" id="studio">${heading('demos', '02')}${brands()}<a class="more" href="/demos">${t('legacy')} →</a></section><section id="skills" class="block">${heading('capabilities', '03')}${skillsSummary()}</section>`;
+  return `<section class="hero"><div class="scene"><canvas aria-hidden="true"></canvas><small>FIG. 01 &nbsp; / &nbsp; ${t('film')}</small></div><div class="hero-text"><small>CODE / CRAFT / MOTION</small><small class="visitor-greeting">${visitorGreeting()}</small><h1>Kevin<br><em>Simatupang.</em></h1><strong class="hero-role">${t('creativeProgrammer')}</strong><p>${t('hero')}</p><div class="actions"><a class="solid" href="#work">${t('explore')}</a><a href="/demos">${t('demos')}</a></div><a class="hero-academic" href="/academic-support">${t('heroAcademic')}</a></div></section><div class="axis"><small>KS / PORTFOLIO</small><small>${t('location')}</small></div><section class="block" id="work">${heading('work', '01')}${picks()}<a class="more" href="/work">${t('all')}</a></section><section class="block" id="studio">${heading('demos', '02')}${brands()}<a class="more" href="/demos">${t('legacy')}</a></section><section class="block data-lab" id="data-lab">${heading('dataLab', '03')}${dataLab()}</section><section id="skills" class="block">${heading('capabilities', '04')}${skillsSummary()}</section>`;
 }
 function skillsSummary() {
   const groups = [
@@ -138,41 +149,67 @@ function mountProjectFolio() {
   const folio = document.querySelector('.showcase.project-folio');
   if (!folio) return () => {};
   const cards = [...folio.querySelectorAll('.showpiece')];
-  let active = 0, timer, start = null, dragged = false;
+  const progress = folio.querySelector('.folio-progress i');
+  let active = 0, timer, start = null, dragged = false, hovering = false, revealing = false;
   const show = index => {
     active = (index + cards.length) % cards.length;
     cards.forEach((card, i) => {
       const offset = (i - active + cards.length) % cards.length;
       card.style.setProperty('--stack-offset', offset);
+      card.style.setProperty('--stack-y', `${[0,68,126,176,218,252][offset]}px`);
+      card.style.setProperty('--stack-scale', [1,.98,.955,.93,.905,.88][offset]);
+      card.style.setProperty('--stack-opacity', [1,.94,.8,.64,.46,.28][offset]);
       card.style.zIndex = String(cards.length - offset);
-      card.dataset.active = String(offset === 0);
+      const current = offset === 0;
+      card.dataset.active = String(current);
+      card.classList.toggle('is-active', current);
+      card.setAttribute('aria-hidden', String(!current));
+      card.tabIndex = current ? 0 : -1;
     });
     folio.querySelector('output').textContent = `${String(active + 1).padStart(2, '0')} / ${String(cards.length).padStart(2, '0')}`;
+    progress.classList.remove('is-running');
+    void progress.offsetWidth;
+    if (!reduced && !hovering && !revealing && !document.hidden) progress.classList.add('is-running');
   };
   const pause = () => clearTimeout(timer);
-  const resume = () => { pause(); if (!reduced) timer = setTimeout(() => { show(active + 1); resume(); }, 6200); };
-  const down = e => { if (e.pointerType === 'mouse' && e.button !== 0) return; if (e.pointerType === 'touch' && !e.target.closest('.folio-label')) return; start = {y:e.clientY,time:performance.now()}; dragged = false; };
-  const move = e => { if (!start) return; const delta=e.clientY-start.y; if (Math.abs(delta)>8) { dragged=true; folio.style.setProperty('--gesture-y', `${Math.max(-100,Math.min(100,delta))}px`); if (e.pointerType === 'mouse' && !folio.hasPointerCapture(e.pointerId)) folio.setPointerCapture(e.pointerId); } };
-  const up = e => { if (!start) return; const delta=e.clientY-start.y; const elapsed=performance.now()-start.time; start=null; folio.style.setProperty('--gesture-y','0px'); if (folio.hasPointerCapture(e.pointerId)) folio.releasePointerCapture(e.pointerId); if (Math.abs(delta)>35 || (Math.abs(delta)>18 && elapsed<220)) show(active + (delta<0?1:-1)); resume(); };
+  const resume = () => { pause(); if (!reduced && !hovering && !revealing && !document.hidden) timer = setTimeout(() => { show(active + 1); resume(); }, 2200); };
+  const down = e => { if (start || (e.pointerType === 'mouse' && e.button !== 0) || (e.type === 'mousedown' && e.button !== 0)) return; start = {x:e.clientX,y:e.clientY,time:performance.now()}; dragged = false; pause(); progress.classList.remove('is-running'); folio.classList.add('is-dragging'); if (e.pointerId !== undefined) folio.setPointerCapture(e.pointerId); };
+  const move = e => { if (!start) return; const delta=e.clientX-start.x; if (Math.abs(delta)>8) { dragged=true; folio.style.setProperty('--gesture-x', `${Math.max(-110,Math.min(110,delta))}px`); if (e.pointerId !== undefined && !folio.hasPointerCapture(e.pointerId)) folio.setPointerCapture(e.pointerId); } };
+  const up = e => { if (!start) return; const delta=e.clientX-start.x; const elapsed=performance.now()-start.time; start=null; folio.classList.remove('is-dragging'); folio.style.setProperty('--gesture-x','0px'); if (e.pointerId !== undefined && folio.hasPointerCapture(e.pointerId)) folio.releasePointerCapture(e.pointerId); if (Math.abs(delta)>45 || (Math.abs(delta)>24 && elapsed<220)) show(active + (delta<0?1:-1)); resume(); };
+  const enter = () => { hovering = true; pause(); progress.classList.remove('is-running'); };
+  const leave = () => { hovering = false; resume(); };
+  const visibility = () => document.hidden ? pause() : resume();
+  const keydown = event => { if (!['ArrowLeft','ArrowRight'].includes(event.key)) return; event.preventDefault(); show(active + (event.key === 'ArrowRight' ? 1 : -1)); resume(); };
+  const activate = event => {
+    const card = event.target.closest('.showpiece.is-active');
+    if (!card || event.defaultPrevented || dragged || reduced || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
+    event.preventDefault(); revealing = true; pause(); folio.classList.add('is-revealing');
+    setTimeout(() => location.assign(card.href), 520);
+  };
   show(0); resume();
-  folio.addEventListener('pointerenter', pause);
-  folio.addEventListener('pointerleave', resume);
-  folio.addEventListener('focusin', pause);
-  folio.addEventListener('focusout', resume);
+  folio.addEventListener('pointerenter', enter);
+  folio.addEventListener('pointerleave', leave);
+  folio.addEventListener('focusin', enter);
+  folio.addEventListener('focusout', leave);
   folio.addEventListener('pointerdown', down);
   folio.addEventListener('pointermove', move);
   folio.addEventListener('pointerup', up);
   folio.addEventListener('pointercancel', up);
+  folio.addEventListener('mousedown', down);
+  folio.addEventListener('mousemove', move);
+  folio.addEventListener('mouseup', up);
+  folio.addEventListener('dragstart', event => event.preventDefault());
+  folio.addEventListener('keydown', keydown);
+  folio.addEventListener('click', activate);
+  document.addEventListener('visibilitychange', visibility);
   folio.addEventListener('click', e => { if (dragged) { e.preventDefault(); dragged=false; } }, true);
-  folio.querySelector('[data-folio-prev]').onclick = () => { show(active-1); resume(); };
-  folio.querySelector('[data-folio-next]').onclick = () => { show(active+1); resume(); };
   const imageError = event => {
     if (event.target instanceof HTMLImageElement && event.target.closest('.showpiece')) {
       event.target.closest('.shot')?.classList.add('is-unavailable');
     }
   };
   folio.addEventListener('error', imageError, true);
-  return () => { pause(); folio.removeEventListener('error', imageError, true); };
+  return () => { pause(); document.removeEventListener('visibilitychange', visibility); folio.removeEventListener('error', imageError, true); };
 }
 function mountDemoTheatre() {
   const theatre = $('[data-demo-theatre]');
@@ -251,7 +288,7 @@ function render() {
   $('.skip').textContent = t('skip');
   document.documentElement.dataset.motion = reduced ? 'reduced' : 'full';
   $('#bar').innerHTML = `<a href="/" class="wordmark">ks<span>.</span></a><nav>${nav()}</nav><div><button data-settings>${language.toUpperCase()} ${icon('down')}</button><button data-menu>${t('menu')} ${icon('menu')}</button></div>`;
-  mountDock();
+  const disposeDock = mountDock();
   $('#foot').innerHTML = `<a class="wordmark" href="/">ks<span>.</span></a><small>© 2026 Kevin Oloan Simatupang · Balikpapan</small><button data-settings>${t('prefs')}</button>`;
   let body;
   switch (section) {
@@ -288,9 +325,9 @@ function render() {
   $('#content').innerHTML = categories.includes(section) ? `<section class="block sub"><small>Kevin Simatupang / ${t('edition')}</small><h1>${t(section)}</h1>${body}</section>` : body;
   if (!section || section === 'about') {
     const notes = t('processNotes').split(' · ');
-    $('#content').insertAdjacentHTML('beforeend', `<section class="block process">${heading('process', '04')}<ol>${t('phases').split(' · ').map((phase, i) => `<li><small>0${i + 1}</small><h3>${phase}</h3><p>${notes[i]}</p></li>`).join('')}</ol></section><section class="block closing"><small>${t('edition')} / Balikpapan</small><h2>${t('contact')}</h2><div class="actions"><a class="solid" href="/contact">${t('contact')} ${icon('outward')}</a><a href="/about">${t('about')} →</a></div></section>`);
+    $('#content').insertAdjacentHTML('beforeend', `<section class="block process">${heading('process', '05')}<ol>${t('phases').split(' · ').map((phase, i) => `<li><small>0${i + 1}</small><h3>${phase}</h3><p>${notes[i]}</p></li>`).join('')}</ol></section><section class="block closing"><small>${t('edition')} / Balikpapan</small><h2>${t('contact')}</h2><div class="actions"><a class="solid" href="/contact">${t('contact')}</a><a href="/about">${t('about')}</a></div></section>`);
   }
-  if(!section) $('.closing').insertAdjacentHTML('beforebegin', `<section class="block bio-chapter">${heading('about','05')}<p>${t('profile')}</p><a class="more" href="/about">${t('about')} ${icon('outward')}</a></section>`);
+  if(!section) $('.closing').insertAdjacentHTML('beforebegin', `<section class="block bio-chapter">${heading('about','06')}<p>${t('profile')}</p><a class="more" href="/about">${t('about')}</a></section>`);
   if(!section) $('.closing').insertAdjacentHTML('beforeend',inquiry());
   if(section==='nova' || section.startsWith('nova/')) $('#bar nav').innerHTML=`<a href="/demos">← ${t('demos')}</a>`;
   if (section === 'about') $('.bio').insertAdjacentHTML('beforeend', `<div class="bio-facts"><strong>${t('currentWork')}</strong><p>PT Wulandari Bangun Laksana Tbk · ${t('currentPeriod')}</p><strong>${t('education')}</strong><p>${t('practice')}</p><a href="/resume">CV / PDF ${icon('outward')}</a></div>`);
@@ -300,7 +337,7 @@ function render() {
   const disposeFolio = mountProjectFolio();
   const disposeSkills = mountSkills();
   const disposeDemos = mountDemoTheatre();
-  dispose = () => { disposeScene?.(); disposeCamera(); disposeAcademic?.(); disposeDemos(); disposeFolio(); disposeSkills(); };
+  dispose = () => { disposeScene?.(); disposeCamera(); disposeAcademic?.(); disposeDemos(); disposeFolio(); disposeSkills(); disposeDock(); };
   document.querySelectorAll('a[href="/edisi/skill.html"]').forEach(a => a.href = '/capabilities');
   if (section === 'demos') {
     document.querySelectorAll('.demo-panel').forEach((panel, i) => {
