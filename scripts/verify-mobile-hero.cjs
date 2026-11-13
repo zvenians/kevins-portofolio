@@ -53,6 +53,25 @@ const output=process.env.MOBILE_HERO_OUTPUT||'artifacts/mobile-hero';
     await page.goto(base+'/contact',{waitUntil:'domcontentloaded'});
     await page.locator('#inquiry input[name=type]').focus();
     assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth>innerWidth+1),false);
+    // Exercise all four steps on a mobile viewport and verify server-side
+    // fallback without losing the filled brief or remounting the whole app.
+    await page.locator('#inquiry input[name=type]').fill('Website');
+    await page.locator('#inquiry input[name=existing]').fill('No');
+    await page.locator('#inquiry textarea[name=scope]').fill('Interactive portfolio and dashboard');
+    await page.locator('#inquiry input[name=audience]').fill('Clients');
+    await page.locator('#inquiry button[type=submit]').click();
+    await page.locator('#inquiry input[name=budget]').fill('Discuss');
+    await page.locator('#inquiry input[name=time]').fill('2027-01-01');
+    await page.locator('#inquiry button[type=submit]').click();
+    await page.locator('#inquiry input[name=name]').fill('Android Visitor');
+    await page.locator('#inquiry input[name=email]').fill('test@example.com');
+    await page.locator('#inquiry button[type=submit]').click();
+    assert.ok((await page.locator('#inquiry').innerText()).includes('Android Visitor'));
+    await page.locator('#inquiry button[type=submit]').click();
+    await page.waitForFunction(()=>document.querySelector('#inquiry-result')?.textContent?.trim(),null,{timeout:9000});
+    const feedback=await page.locator('#inquiry-result').innerText();
+    assert.ok(feedback.length>20,'missing inquiry success/fallback feedback');
+    assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth>innerWidth+1),false);
    }
    assert.deepEqual(errors,[]);
    results.push({width,standard,enlarged,status:'pass'});
