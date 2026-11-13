@@ -20,7 +20,7 @@ The active project must be centered within its available content area at every v
 
 Hero is the primary cinematic moment. Work reveals form the secondary highlight. The Demo Theatre uses distinct lateral transitions. Forms are calmer, with explicit field state, labels and real submit behavior. Keep section spacing varied but intentional.
 
-Navigation is a small fixed monochrome dock: about 56px collapsed, 202px expanded, 16px icons inside 32px neutral frames. Touch uses a compact tab and a navigable mobile drawer. Expanded and collapsed states must not cover content unexpectedly.
+Navigation is a small fixed monochrome dock: approximately 44px collapsed, 196px expanded, 16px icons in neutral circular frames. The dock attaches to the viewport edge with external reverse fillets and expands on hover or keyboard focus; mobile uses a compact tab and accessible drawer. The retired pin mode and colored icon rings must not return. Expanded and collapsed states must not cover content unexpectedly.
 
 ## Motion
 
