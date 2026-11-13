@@ -85,7 +85,8 @@ function qualityProfile() {
   const constrained=cores<=4||memory<=4;
   return {
     rows: coarse?(constrained?14:18):(constrained?24:30),
-    dpr: coarse?(constrained?1.25:1.5):(constrained?1.5:1.75)
+    dpr: coarse?(constrained?1.25:1.5):(constrained?1.5:1.75),
+    maxFps: coarse?(constrained?30:45):(constrained?45:60)
   };
 }
 
@@ -226,6 +227,7 @@ export function mountScene(canvas) {
   function draw(now) {
     frame=0;
     if(!visible||document.hidden||contextLost||!resources) return;
+    if(last && now-last<1000/profile.maxFps){frame=requestAnimationFrame(draw);return;}
     const width=Math.max(1,canvas.clientWidth);
     const height=Math.max(1,canvas.clientHeight);
     const dpr=Math.min(profile.dpr,devicePixelRatio||1);
@@ -340,6 +342,7 @@ function softwareScene(canvas) {
   function draw(now) {
     frame=0;
     if(!visible||document.hidden) return;
+    if(last && now-last<1000/profile.maxFps){frame=requestAnimationFrame(draw);return;}
     const width=canvas.clientWidth,height=canvas.clientHeight,radius=Math.min(width,height)*.32,dpr=Math.min(profile.dpr,devicePixelRatio||1);
     if(canvas.width!==Math.round(width*dpr)||canvas.height!==Math.round(height*dpr)) {
       canvas.width=Math.round(width*dpr);
