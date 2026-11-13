@@ -4,7 +4,7 @@
 **Target:** `portfolio-kevins.vercel.app`
 **State:** UNDER VERIFICATION. A successful commit or preview deployment is not evidence of full production acceptance.
 
-The current direction is in [design.md](../../design.md); desktop and mobile acceptance is in [the wireframe](CINEMATIC_LIQUID_GLASS_WIREFRAME.md).
+The current direction is in [design.md](../../design.md); desktop and mobile acceptance is in [the wireframe](SHOWCASE_VIDEO_LOCK.md).
 
 ## Required automated checks
 
@@ -20,7 +20,7 @@ npm run lint
 
 The CI workflow must show passing source and browser checks against the **latest commit**, not only earlier merged work.
 
-Browser checks: 320, 390, 768, 1440 and 1920px; project center error < 4px; active card right bound within viewport; no document-level horizontal overflow; six valid work routes, loaded real preview images, autoplay and manual keyboard/drag controls, reduced motion, functional demo tabs, responsive form interaction, and visible dock navigation.
+Browser checks: 320, 390, 768, 1440 and 1920px; project center error < 4px; active card right bound within viewport; no document-level horizontal overflow; six valid work routes, loaded real preview images, autoplay from initial render (even before scrolling), hover/focus continuity, manual keyboard/drag controls, no retired motion-mode checkbox, functional demo tabs, responsive form interaction, and visible dock navigation.
 
 ## Active visual contract
 
@@ -30,7 +30,7 @@ Browser checks: 320, 390, 768, 1440 and 1920px; project center error < 4px; acti
 - Work autoplay is 1,100ms; demo autoplay is 2,400ms; skill track remains purposefully slow.
 - Desktop collapsible dock and touch drawer must both work.
 - First-visit preferences dialogue must remain accessible, responsive and dismissible.
-- `prefers-reduced-motion` and the user motion control must suppress nonessential loops.
+- No retired on-site motion checkbox/storage/alternate-state rules. Showcase starts at mount; no intersection/hover/focus pause gate. Keep visual pacing non-flashing and keyboard interactions usable.
 
 ## Manual checks that automation cannot certify
 
