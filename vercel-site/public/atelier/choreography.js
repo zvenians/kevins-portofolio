@@ -1,6 +1,5 @@
 // Short camera moves join the six home chapters without pinning the page.
-export function mountChoreography(reduced) {
-  if (reduced) return () => {};
+export function mountChoreography() {
   const stages = [...document.querySelectorAll('.hero, #work, #studio, #skills, .process, .bio-chapter, .closing')];
   if (!stages.length) return () => {};
   const mobile = matchMedia('(max-width: 800px)');
