@@ -37,16 +37,20 @@ describe('Cinematic v4.4 liquid-glass project stack', () => {
     expect(source).toContain('setTimeout(() => { show(active + 1); resume(); }, 1100)');
     expect(source).toContain("folio.addEventListener('pointermove', move)");
     expect(source).toContain("folio.addEventListener('keydown', keydown)");
-    expect(css).toContain('transition:transform .42s');
+    expect(css).toContain('transition:transform .61s');
     expect(css).toContain('animation-duration:1.1s');
     expect(css).toContain('left:50%!important');
-    expect(css).toContain('translate3d(calc(-50% + var(--gesture-x,0px)),var(--stack-y,0px),0) scale(var(--stack-scale,1))');
+    expect(css).toContain('perspective(1100px) translate3d(-50%,calc(var(--stack-y)');
   });
 
-  it('stops autoplay and transitions for reduced motion', () => {
-    expect(css).toContain('@media(prefers-reduced-motion:reduce)');
-    expect(css).toContain('transition:none!important');
-    expect(source).toContain('if (!reduced && visible && !hovering && !revealing && !document.hidden)');
-    expect(source).toContain('observer.observe(folio)');
+  it('starts autoplay at mount without viewport/hover gates and retires the motion checkbox', () => {
+    const folio = source.slice(source.indexOf('function mountProjectFolio()'), source.indexOf('function mountDemoTheatre()'));
+    expect(folio).toContain('show(0);\n  resume();');
+    expect(folio).not.toContain('IntersectionObserver');
+    expect(folio).not.toContain('pointerenter');
+    expect(folio).not.toContain('focusin');
+    expect(folio).not.toContain('document.hidden');
+    expect(source).not.toContain('id="motion"');
+    expect(css).not.toContain('data-motion=reduced');
   });
 });

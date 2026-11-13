@@ -35,7 +35,6 @@ function save(key, value) {
 }
 let language = read('language', 'en');
 if (!locales.includes(language)) language = 'en';
-let reduced = read('reduced', String(matchMedia('(prefers-reduced-motion: reduce)').matches)) === 'true';
 const t = key => translate(key, language);
 const greetings = {
   en: ['Good morning', 'Good afternoon', 'Good evening', 'Good night'],
@@ -68,14 +67,14 @@ function mountDock() {
     return location.hash ? targetLocation === currentLocation : !target.hash && target.pathname === location.pathname;
   });
   currentRoute?.setAttribute('aria-current', 'page');
-  if (currentRoute && !reduced) {
+  if (currentRoute) {
     currentRoute.classList.add('is-arriving');
     currentRoute.addEventListener('animationend', () => currentRoute.classList.remove('is-arriving'), {once:true});
   }
   routes.forEach(route => route.addEventListener('click', event => {
     if (event.defaultPrevented || event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
     const target = new URL(route.href, location.href);
-    if (target.origin !== location.origin || reduced) return;
+    if (target.origin !== location.origin) return;
     event.preventDefault();
     routes.forEach(item => item.removeAttribute('aria-current'));
     route.setAttribute('aria-current', 'page');
@@ -111,7 +110,6 @@ const flagship = [
 const real = projects.filter(p => p.status === 'Real Project');
 const demos = projects.filter(p => p.status === 'Interactive Demo');
 const publicCV = '/resume/Kevin-Oloan-Simatupang-CV.pdf';
-let demoPaused = reduced;
 let demoIndex = 0;
 function projectRow(p, i) {
   return `<a class="project-row" href="/work/${encodeURIComponent(p.slug)}"><small>${String(i + 1).padStart(2, '0')}</small><span><strong>${esc(p.name)}</strong><small>${(p.technologies || []).slice(0, 3).map(esc).join(' / ')}</small></span><b aria-hidden="true">${icon('outward')}</b></a>`;
@@ -174,10 +172,10 @@ function mountProjectFolio() {
   if (!folio) return () => {};
   const cards = [...folio.querySelectorAll('.showpiece')];
   const progress = folio.querySelector('.folio-progress i');
-  let active = 0, timer, start = null, dragged = false, hovering = false, revealing = false, visible = false;
+  let active = 0, timer, start = null, dragged = false, revealing = false;
   const show = index => {
     const next = (index + cards.length) % cards.length;
-    if (next !== active && !reduced) {
+    if (next !== active) {
       const incoming = cards[next];
       incoming.style.setProperty('transition', 'none', 'important');
       incoming.style.setProperty('--stack-y', `${folio.clientHeight * .64}px`);
@@ -206,35 +204,23 @@ function mountProjectFolio() {
     folio.querySelector('output').textContent = `${String(active + 1).padStart(2, '0')} / ${String(cards.length).padStart(2, '0')}`;
     progress.classList.remove('is-running');
     void progress.offsetWidth;
-    if (!reduced && visible && !hovering && !revealing && !document.hidden) progress.classList.add('is-running');
+    progress.classList.add('is-running');
   };
   const pause = () => clearTimeout(timer);
-  const resume = () => { pause(); if (!reduced && visible && !hovering && !revealing && !document.hidden) timer = setTimeout(() => { show(active + 1); resume(); }, 1100); };
-  const down = e => { if (start || (e.pointerType === 'mouse' && e.button !== 0) || (e.type === 'mousedown' && e.button !== 0)) return; start = {x:e.clientX,y:e.clientY,time:performance.now()}; dragged = false; pause(); progress.classList.remove('is-running'); folio.classList.add('is-dragging'); if (e.pointerId !== undefined) folio.setPointerCapture(e.pointerId); };
+  const resume = () => { pause(); timer = setTimeout(() => { show(active + 1); resume(); }, 1100); };
+  const down = e => { if (start || (e.pointerType === 'mouse' && e.button !== 0) || (e.type === 'mousedown' && e.button !== 0)) return; start = {x:e.clientX,y:e.clientY,time:performance.now()}; dragged = false; folio.classList.add('is-dragging'); if (e.pointerId !== undefined) folio.setPointerCapture(e.pointerId); };
   const move = e => { if (!start) return; const delta=e.clientY-start.y; if (Math.abs(delta)>8) { dragged=true; if (e.pointerType !== 'touch') folio.style.setProperty('--gesture-y', `${Math.max(-35,Math.min(35,delta))}px`); } };
   const up = e => { if (!start) return; const delta=e.clientY-start.y, horizontal=e.clientX-start.x; start=null; folio.classList.remove('is-dragging'); folio.style.setProperty('--gesture-y','0px'); if (e.pointerId !== undefined && folio.hasPointerCapture(e.pointerId)) folio.releasePointerCapture(e.pointerId); if (e.type !== 'pointercancel' && Math.abs(delta)>45 && Math.abs(delta)>Math.abs(horizontal)) show(active + (delta<0?1:-1)); resume(); };
-  const enter = () => { hovering = true; pause(); progress.classList.remove('is-running'); };
-  const leave = () => { hovering = false; resume(); };
-  const visibility = () => document.hidden ? pause() : resume();
-  const keydown = event => { if (!['ArrowLeft','ArrowRight','ArrowUp','ArrowDown'].includes(event.key)) return; event.preventDefault(); show(active + (['ArrowRight','ArrowUp'].includes(event.key) ? 1 : -1)); resume(); };
+    const keydown = event => { if (!['ArrowLeft','ArrowRight','ArrowUp','ArrowDown'].includes(event.key)) return; event.preventDefault(); show(active + (['ArrowRight','ArrowUp'].includes(event.key) ? 1 : -1)); resume(); };
   const activate = event => {
     const card = event.target.closest('.showpiece.is-active');
-    if (!card || event.defaultPrevented || dragged || reduced || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
-    event.preventDefault(); revealing = true; pause(); folio.classList.add('is-revealing');
+    if (!card || event.defaultPrevented || dragged || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
+    event.preventDefault(); revealing = true; folio.classList.add('is-revealing');
     setTimeout(() => location.assign(card.href), 260);
   };
-  const observer = new IntersectionObserver(entries => {
-    visible = entries.some(entry => entry.isIntersecting && entry.intersectionRatio > .18);
-    if (visible) resume();
-    else { pause(); progress.classList.remove('is-running'); }
-  }, {threshold:[0,.18,.5]});
-  observer.observe(folio);
   show(0);
-  folio.addEventListener('pointerenter', enter);
-  folio.addEventListener('pointerleave', leave);
-  folio.addEventListener('focusin', enter);
-  folio.addEventListener('focusout', leave);
-  folio.addEventListener('pointerdown', down);
+  resume();
+    folio.addEventListener('pointerdown', down);
   folio.addEventListener('pointermove', move);
   folio.addEventListener('pointerup', up);
   folio.addEventListener('pointercancel', up);
@@ -244,8 +230,7 @@ function mountProjectFolio() {
   folio.addEventListener('dragstart', event => event.preventDefault());
   folio.addEventListener('keydown', keydown);
   folio.addEventListener('click', activate);
-  document.addEventListener('visibilitychange', visibility);
-  folio.addEventListener('click', e => { if (dragged) { e.preventDefault(); dragged=false; } }, true);
+    folio.addEventListener('click', e => { if (dragged) { e.preventDefault(); dragged=false; } }, true);
   const imageError = event => {
     if (event.target instanceof HTMLImageElement && event.target.closest('.showpiece')) {
       event.target.closest('.shot')?.classList.add('is-unavailable');
@@ -254,7 +239,7 @@ function mountProjectFolio() {
   folio.addEventListener('error', imageError, true);
   const resize = () => show(active);
   window.addEventListener('resize', resize);
-  return () => { pause(); observer.disconnect(); window.removeEventListener('resize', resize); document.removeEventListener('visibilitychange', visibility); folio.removeEventListener('error', imageError, true); };
+  return () => { pause(); window.removeEventListener('resize', resize); folio.removeEventListener('error', imageError, true); };
 }
 function mountDemoTheatre() {
   const theatre = $('[data-demo-theatre]');
@@ -262,7 +247,7 @@ function mountDemoTheatre() {
   const tabs = [...theatre.querySelectorAll('[data-demo-tab]')], panels = [...theatre.querySelectorAll('.demo-panel')];
   const stage = theatre.querySelector('.demo-stage');
   stage?.addEventListener('pointermove', event => {
-    if (reduced || event.pointerType !== 'mouse' || !matchMedia('(hover:hover)').matches) return;
+    if (event.pointerType !== 'mouse' || !matchMedia('(hover:hover)').matches) return;
     const rect = stage.getBoundingClientRect();
     stage.style.setProperty('--demo-rotate-y', (((event.clientX - rect.left) / rect.width) - .5) * 4 + 'deg');
     stage.style.setProperty('--demo-rotate-x', (.5 - ((event.clientY - rect.top) / rect.height)) * 3 + 'deg');
@@ -283,7 +268,7 @@ function mountDemoTheatre() {
     panels.forEach((panel, i) => panel.hidden = i !== demoIndex);
     theatre.querySelector('output').textContent = `${String(demoIndex + 1).padStart(2,'0')} / ${String(tabs.length).padStart(2,'0')}`;
   };
-  const schedule = () => { stop(); if (!demoPaused && visible && !document.hidden) timer = setTimeout(() => { show(demoIndex + 1); schedule(); }, 2400); };
+  const schedule = () => { stop(); if (visible && !document.hidden) timer = setTimeout(() => { show(demoIndex + 1); schedule(); }, 2400); };
   tabs.forEach((tab, i) => {
     tab.onclick = () => { show(i); schedule(); };
     tab.onkeydown = event => {
@@ -335,7 +320,7 @@ function render() {
   dispose?.();
   document.documentElement.lang = language;
   $('.skip').textContent = t('skip');
-  document.documentElement.dataset.motion = reduced ? 'reduced' : 'full';
+  
   $('#bar').innerHTML = `<a href="/" class="wordmark">ks<span>.</span></a><nav>${nav()}</nav><div><button data-settings>${language.toUpperCase()} ${icon('down')}</button><button data-menu>${t('menu')} ${icon('menu')}</button></div>`;
   const disposeDock = mountDock();
   $('#foot').innerHTML = `<a class="wordmark" href="/">ks<span>.</span></a><small>© 2026 Kevin Oloan Simatupang · Balikpapan</small><button data-settings>${t('prefs')}</button>`;
@@ -380,8 +365,8 @@ function render() {
   if(!section) $('.closing').insertAdjacentHTML('beforeend',inquiry());
   if(section==='nova' || section.startsWith('nova/')) $('#bar nav').innerHTML=`<a href="/demos">← ${t('demos')}</a>`;
   if (section === 'about') $('.bio').insertAdjacentHTML('beforeend', `<div class="bio-facts"><strong>${t('currentWork')}</strong><p>PT Wulandari Bangun Laksana Tbk · ${t('currentPeriod')}</p><strong>${t('education')}</strong><p>${t('practice')}</p><a href="/resume">CV / PDF ${icon('outward')}</a></div>`);
-  const disposeScene = mountScene($('.scene canvas'), reduced);
-  const disposeCamera = mountChoreography(reduced);
+  const disposeScene = mountScene($('.scene canvas'), false);
+  const disposeCamera = mountChoreography(false);
   const disposeAcademic = mountAcademic(language,email);
   const disposeFolio = mountProjectFolio();
   const disposeSkills = mountSkills();
@@ -454,7 +439,7 @@ function render() {
 const panel = $('#panel');
 function openPanel(mode) {
   panel.className = mode;
-  panel.innerHTML = mode === 'menu' ? `<button data-close>${t('close')} ×</button><nav>${nav()}</nav><button data-settings>${t('prefs')}</button>` : `<div class="portal-art" aria-hidden="true"><i></i><i></i><i></i></div><small>KS / PORTFOLIO</small><h2>${t('welcome')}</h2><p>${t('intro')}</p><label>${t('lang')}<select id="locale">${locales.map((l, i) => `<option value="${l}" ${l === language ? 'selected' : ''}>${names[i]}</option>`).join('')}</select></label><label class="check"><input id="motion" type="checkbox" ${reduced ? 'checked' : ''}>${t('motion')}</label><button class="solid" data-enter>${t('enter')} →</button>`;
+  panel.innerHTML = mode === 'menu' ? `<button data-close>${t('close')} ×</button><nav>${nav()}</nav><button data-settings>${t('prefs')}</button>` : `<div class="portal-art" aria-hidden="true"><i></i><i></i><i></i></div><small>KS / PORTFOLIO</small><h2>${t('welcome')}</h2><p>${t('intro')}</p><label>${t('lang')}<select id="locale">${locales.map((l, i) => `<option value="${l}" ${l === language ? 'selected' : ''}>${names[i]}</option>`).join('')}</select></label><button class="solid" data-enter>${t('enter')} →</button>`;
   panel.setAttribute('aria-label', t(mode === 'menu' ? 'menu' : 'prefs'));
   if (mode === 'menu') {
     const visual = document.createElement('figure');
@@ -470,7 +455,6 @@ function openPanel(mode) {
     update(0);
   } else {
     panel.onpointermove = e => {
-      if (reduced) return;
       const rect = panel.getBoundingClientRect();
       panel.style.setProperty('--yaw', ((e.clientX - rect.left) / rect.width - .5) * 20 + 'deg');
     };
@@ -482,12 +466,6 @@ function openPanel(mode) {
     render();
     openPanel('prefs');
     $('#locale').focus();
-  };
-  if ($('#motion')) $('#motion').onchange = e => {
-    reduced = e.target.checked;
-    demoPaused = reduced;
-    save('reduced', String(reduced));
-    render();
   };
 }
 document.addEventListener('click', e => {

@@ -4,7 +4,7 @@
 **Effective:** 13 November 2026
 **Runtime:** `vercel-site/`, using the public Atelier shell.
 **Implementation:** `vercel-site/public/atelier/experience.css`
-**Wireframes:** `docs/quality-lock/CINEMATIC_LIQUID_GLASS_WIREFRAME.md`
+**Wireframes:** `docs/quality-lock/SHOWCASE_VIDEO_LOCK.md`
 
 ## Identity
 
@@ -26,15 +26,15 @@ Navigation is a small fixed monochrome dock: about 56px collapsed, 202px expande
 
 The direction is **responsive and refined**, never aggressively animated. Motion has one focal point per viewport and uses transform/opacity where possible.
 
-- Work autoplay: 1,100ms per project; 420ms transition.
+- Work autoplay: 1,100ms per project, starting at component mount before any scroll; ~610ms depth traversal. Video reference takes precedence over former horizontal mockups.
 - Demo autoplay: 2,400ms per demo; approximately 260ms lateral reveal.
 - Case opening: approximately 260ms.
 - Button feedback: approximately 160ms.
-- Navigation expansion: approximately 440ms.
+- Navigation: charcoal edge-attached outer fillets; ~44px collapsed, ~196px expanded, small monochrome icons and isolated bubble zoom.
 - Skill rail: deliberately slow and right-to-left, keeping the previously approved rhythm (52–73 seconds per loop).
 - Avoid perpetual float/glow on product imagery, form fields, and multiple simultaneous sections.
 
-Honor the visitor's reduced-motion preference and the site's own control. Stop autoplay when not visible and while the user is focusing or exploring the active work; manual keyboard and touch interactions remain available.
+There is no in-site reduced-motion checkbox or saved motion mode. Showcase autoplay continues independently of hover, focus, offscreen position and modal visibility; background-tab timer scheduling remains browser-controlled. Preserve keyboard focus, readable content and non-flashing transitions.
 
 ## Engineering boundary
 
@@ -51,7 +51,7 @@ The separately existing Next/Firebase application is not the deployed public por
 3. Both swipe/drag and keyboard state changes work; no click event opens a project after a drag.
 4. Navigation is usable by mouse, keyboard and touch with visible focus and at least 44px touch targets.
 5. Forms have real labels, clear error and success behavior, and readable contrast.
-6. Reduced-motion visitors get a stable composition without essential information hidden.
+6. Motion never hides essential content, traps focus, flashes rapidly or prevents regular page scrolling.
 7. Existing unit, integration, accessibility and browser tests pass. Physical-device coverage and performance must be reported accurately.
 8. Changes to runtime behavior require a branch, reviewed diff and passing checks before deployment.
 

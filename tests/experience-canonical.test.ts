@@ -35,9 +35,10 @@ describe('public portfolio visual source of truth', () => {
   it('keeps selected work centered and free of opaque navy chrome', () => {
     expect(visual).toContain('left:50%!important');
     expect(visual).toContain('width:min(100%,1120px)!important');
-    expect(visual).toContain('backdrop-filter:blur(18px)');
-    expect(visual).toContain('grid-template-columns:minmax(0,1.16fr) minmax(0,.84fr)');
-    expect(visual).not.toContain('background:#182431!important');
+    expect(visual).toContain('background:transparent!important');
+    expect(visual).toContain('transform:perspective(1100px) translate3d(-50%');
+    expect(visual).not.toContain('background:linear-gradient(180deg,#e9e6e1,#d7d2cc)');
+    expect(visual).not.toContain('conic-gradient(var(--ring-color)');
     expect(visual).toContain('#site-dock .dock-pin{display:none!important}');
   });
 
@@ -46,8 +47,14 @@ describe('public portfolio visual source of truth', () => {
     expect(interaction).toContain('setTimeout(() => { show(demoIndex + 1); schedule(); }, 2400)');
     expect(visual).toContain('animation-duration:1.1s');
     expect(responsive).toContain('52s + var(--rail) * 7s');
-    expect(visual).toContain('@media(prefers-reduced-motion:reduce)');
-    expect(visual).toContain('html[data-motion=reduced]');
+    expect(interaction).toContain('show(0);\n  resume();');
+    const folio = interaction.slice(interaction.indexOf('function mountProjectFolio()'), interaction.indexOf('function mountDemoTheatre()'));
+    expect(folio).not.toContain('IntersectionObserver');
+    expect(folio).not.toContain('hovering');
+    expect(folio).not.toContain('document.hidden');
+    expect(interaction).not.toContain('id="motion"');
+    expect(interaction).not.toContain("read('reduced'");
+    expect(visual).not.toContain('data-motion=reduced');
   });
 
   it('keeps first-visit preferences and one current design brief', () => {
@@ -55,7 +62,7 @@ describe('public portfolio visual source of truth', () => {
     expect(direction).toContain('Cinematic Liquid Glass Editorial');
     expect(direction).toContain('experience.css');
     expect(visual).toContain('#panel.prefs');
-    expect(existsSync(resolve(process.cwd(), 'docs/quality-lock/CINEMATIC_LIQUID_GLASS_WIREFRAME.md'))).toBe(true);
+    expect(existsSync(resolve(process.cwd(), 'docs/quality-lock/SHOWCASE_VIDEO_LOCK.md'))).toBe(true);
     expect(existsSync(resolve(process.cwd(), 'docs/quality-lock/RELEASE.md'))).toBe(true);
   });
 });

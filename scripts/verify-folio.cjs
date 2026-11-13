@@ -12,10 +12,14 @@ const authHeaders=process.env.VERCEL_OIDC_TOKEN?{'x-vercel-trusted-oidc-idp-toke
   try{
     for(const [width,height] of [[320,720],[390,844],[768,1024],[1440,900],[1920,1080]]){
       const context=await browser.newContext({viewport:{width,height},reducedMotion:'no-preference',extraHTTPHeaders:authHeaders,recordVideo:width===390?{dir:output,size:{width,height}}:undefined});
-      await context.addInitScript(()=>{localStorage.setItem('atelier.language','en');localStorage.setItem('atelier.reduced','false');localStorage.setItem('atelier.visited','yes');});
+      await context.addInitScript(()=>{localStorage.setItem('atelier.language','en');localStorage.setItem('atelier.reduced','true');localStorage.setItem('atelier.visited','yes');});
       const page=await context.newPage();const errors=[];page.on('pageerror',e=>errors.push(String(e)));
       assert.equal((await page.goto(base,{waitUntil:'networkidle'})).status(),200);
-      const stage=page.locator('.project-folio');await stage.scrollIntoViewIfNeeded();
+      const stage=page.locator('.project-folio');
+      const offscreenStart=await stage.locator('output').innerText();
+      await page.waitForTimeout(1330);
+      assert.notEqual(await stage.locator('output').innerText(),offscreenStart,`${width}: autoplay did not start before scrolling`);
+      await stage.scrollIntoViewIfNeeded();
       const cards=stage.locator('.showpiece');assert.equal(await cards.count(),6);
       assert.equal(await stage.locator('[data-folio-next], [data-folio-prev], [data-folio-motion]').count(),0);
       await cards.locator('img').evaluateAll(images=>Promise.all(images.map(image=>image.decode())));
@@ -26,8 +30,8 @@ const authHeaders=process.env.VERCEL_OIDC_TOKEN?{'x-vercel-trusted-oidc-idp-toke
       await stage.press('ArrowRight');const keyboard=await stage.locator('output').innerText();assert.notEqual(keyboard,autoplay,`${width}: keyboard did not advance`);
       if(width===390){await page.waitForTimeout(850);const box=await stage.locator('.is-active').boundingBox();await page.mouse.move(box.x+box.width/2,box.y+box.height/2);await page.mouse.down();await page.mouse.move(box.x+box.width/2,box.y+box.height/2-80,{steps:12});await page.mouse.up();assert.notEqual(await stage.locator('output').innerText(),keyboard,'vertical drag did not advance');}
       for(const card of await cards.all()){const href=await card.getAttribute('href');assert.equal((await page.request.get(base+href)).status(),200);}
-      await page.evaluate(()=>document.documentElement.dataset.motion='reduced');assert.equal(await cards.first().evaluate(el=>getComputedStyle(el).transitionDuration),'0s');assert.deepEqual(errors,[]);
-      results.push({width,height,...geometry,autoplay:'pass',drag:width===390?'pass':'sampled on mobile',keyboard:'pass',routes:'pass',reducedMotion:'pass'});await context.close();
+      assert.equal(await page.locator('#motion').count(),0,'retired preferences checkbox remains');assert.deepEqual(errors,[]);
+      results.push({width,height,...geometry,autoplay:'pass',drag:width===390?'pass':'sampled on mobile',keyboard:'pass',routes:'pass',oldStoredPreferenceIgnored:'pass'});await context.close();
     }
     await fs.writeFile(path.join(output,'measurements.json'),JSON.stringify(results,null,2));console.log(JSON.stringify(results));
   }finally{await browser.close();}

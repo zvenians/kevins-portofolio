@@ -98,7 +98,7 @@ jobs:
           node scripts/verify-folio.cjs
           node scripts/verify-video-lock.cjs
           FOLIO_BASE_URL=http://localhost:3000 node scripts/verify-white.cjs
-      - name: Retain desktop, mobile, and reduced-motion visual evidence
+      - name: Retain desktop, mobile, and continuous-autoplay visual evidence
         if: always()
         uses: actions/upload-artifact@v4
         with:
