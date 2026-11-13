@@ -1,4 +1,3 @@
-import { NextRequest } from 'next/server';
 import fallback from '../../../generated/fallback.json';
 
 const names = new Set(['project_open', 'demo_start', 'style_change', 'cv_open', 'cv_download', 'contact_click', 'studio_open']);
@@ -6,9 +5,9 @@ const projects = new Set(fallback.projects.map(project => project.slug));
 
 // Anonymous interaction counts are available in Vercel runtime logs. No cookies,
 // visitor identifiers, form content, full URLs, or contact details are recorded.
-export async function POST(request: NextRequest) {
+export async function POST(request: Request) {
   const origin = request.headers.get('origin');
-  if (!origin || origin !== request.nextUrl.origin) return new Response(null, { status: 403 });
+  if (!origin || origin !== new URL(request.url).origin) return new Response(null, { status: 403 });
   if (Number(request.headers.get('content-length') || 0) > 512) return new Response(null, { status: 413 });
   const raw = await request.text();
   if (raw.length > 512) return new Response(null, { status: 413 });

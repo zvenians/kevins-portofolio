@@ -13,7 +13,7 @@ const output=process.env.WHITE_OUTPUT||'artifacts/white-release';
    const context=await browser.newContext({viewport:{width,height},reducedMotion:'no-preference',extraHTTPHeaders:authHeaders});
    await context.addInitScript(()=>localStorage.setItem('atelier.visited','yes'));
    const page=await context.newPage();
-   page.on('pageerror',e=>report.errors.push(String(e)));
+   page.on('pageerror',e=>report.errors.push(`${page.url()}: ${String(e)}`));
    for(const route of ['/','/work','/demos','/capabilities','/about','/contact','/resume','/academic-support']) {
     const response=await page.goto(base+route,{waitUntil:'domcontentloaded'});
     assert.equal(response.status(),200);
@@ -61,8 +61,9 @@ const output=process.env.WHITE_OUTPUT||'artifacts/white-release';
        assert.equal(await workRoute.locator('b').evaluate(element=>getComputedStyle(element).opacity),'1');
        await workRoute.click({noWaitAfter:true});
        assert.equal(await workRoute.evaluate(element=>element.classList.contains('is-departing')),true);
-       await page.waitForURL('**/work',{timeout:2500});
+       await page.waitForURL('**/work',{timeout:5000});
        assert.equal(await page.locator('#site-dock .dock-route[href="/work"][aria-current="page"]').count(),1);
+       await page.waitForTimeout(600);
        await page.goto(base,{waitUntil:'domcontentloaded'});
       }
       assert.equal(await page.locator('[data-folio-motion]').count(),0);

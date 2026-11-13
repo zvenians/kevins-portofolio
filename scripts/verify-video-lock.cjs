@@ -25,6 +25,9 @@ const out=process.env.FOLIO_OUTPUT||'artifacts/video-lock';
    const visible=[...document.querySelectorAll('.project-folio .showpiece')].filter(card=>+getComputedStyle(card).opacity>.1).sort((a,b)=>a.getBoundingClientRect().y-b.getBoundingClientRect().y);
    return visible.length===5&&visible.at(-1)?.classList.contains('is-active');
   },null,{timeout:2500,polling:50});
+  // Sample a settled frame deterministically between autoplay cycles.
+  await stage.press('ArrowRight');
+  await page.waitForTimeout(700);
   const geometry=await stage.evaluate(el=>{
    const rect=el.getBoundingClientRect();const cards=[...el.querySelectorAll('.showpiece')].map(c=>({active:c.classList.contains('is-active'),opacity:+getComputedStyle(c).opacity,rect:c.getBoundingClientRect().toJSON()})).filter(c=>c.opacity>.1).sort((a,b)=>a.rect.y-b.rect.y);
    return {overflow:document.documentElement.scrollWidth>innerWidth,stage:rect.toJSON(),cards};
