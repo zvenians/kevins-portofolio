@@ -62,7 +62,7 @@ describe('public portfolio visual source of truth', () => {
     expect(direction).toContain('Cinematic Liquid Glass Editorial');
     expect(direction).toContain('experience.css');
     expect(visual).toContain('#panel.prefs');
-    expect(existsSync(resolve(process.cwd(), 'docs/quality-lock/CINEMATIC_LIQUID_GLASS_WIREFRAME.md'))).toBe(true);
+    expect(existsSync(resolve(process.cwd(), 'docs/quality-lock/SHOWCASE_VIDEO_LOCK.md'))).toBe(true);
     expect(existsSync(resolve(process.cwd(), 'docs/quality-lock/RELEASE.md'))).toBe(true);
   });
 });
