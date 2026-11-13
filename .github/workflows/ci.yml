@@ -99,6 +99,7 @@ jobs:
           node scripts/verify-video-lock.cjs
           FOLIO_BASE_URL=http://localhost:3000 node scripts/verify-white.cjs
           FOLIO_BASE_URL=http://localhost:3000 node scripts/verify-mobile-hero.cjs
+          FOLIO_BASE_URL=http://localhost:3000 node scripts/verify-data-lab.cjs
       - name: Retain desktop, mobile, and continuous-autoplay visual evidence
         if: always()
         uses: actions/upload-artifact@v4
@@ -109,5 +110,6 @@ jobs:
             artifacts/video-lock/
             artifacts/white-release/
             artifacts/mobile-hero/
+            artifacts/data-lab-fidelity/
           if-no-files-found: warn
           retention-days: 14
