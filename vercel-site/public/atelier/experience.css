@@ -53,6 +53,47 @@ body{background:var(--bg);overflow-x:clip}#bar{display:none!important}#content{m
  .data-lab-card{grid-template-columns:100px 1fr}
 }
 
+/* P0: the surname must fit Android's usable inline width. The older 1.23em
+   <em> font shorthand is deliberately reset rather than covered by clipping. */
+#content .hero{overflow-x:clip;overflow-y:visible}
+#content .hero h1{line-height:1.035;letter-spacing:-.055em;text-wrap:pretty}
+#content .hero h1 em{
+ font:inherit;font-style:normal;letter-spacing:inherit;line-height:inherit;
+ white-space:nowrap;max-width:100%
+}
+@media(max-width:899px){
+ #content .hero-text{width:100%;max-width:100%;min-width:0;container-type:inline-size}
+ #content .hero h1{
+  font-size:clamp(34px,15cqw,84px);letter-spacing:-.055em;line-height:1.08;
+  max-width:100%;margin:18px 0 18px
+ }
+ #content .hero h1 em{font-size:1em;line-height:inherit;letter-spacing:inherit}
+}
+@media(max-width:345px){
+ #content .hero h1{font-size:clamp(32px,14cqw,48px)}
+}
+/* Atmospheric lighting changes only paint, never geometry or information. */
+:root{--ambient-lens:rgba(218,223,220,.64);--ambient-glow:rgba(154,134,104,.11)}
+:root[data-atmosphere="morning"]{--ambient-lens:rgba(232,220,201,.58);--ambient-glow:rgba(190,150,96,.12)}
+:root[data-atmosphere="dusk"]{--ambient-lens:rgba(208,200,186,.6);--ambient-glow:rgba(163,126,111,.15)}
+:root[data-atmosphere="night"]{--ambient-lens:rgba(190,198,197,.48);--ambient-glow:rgba(109,122,130,.14)}
+#content .hero{
+ background:radial-gradient(ellipse 55% 70% at 79% 48%,var(--ambient-lens),transparent 80%),
+ linear-gradient(155deg,#f8f8f6 25%,#f0f1ed 100%)
+}
+#content .hero:after{
+ content:"";position:absolute;z-index:-1;pointer-events:none;inset:12% 0 4% 34%;
+ background:radial-gradient(ellipse at 50% 48%,var(--ambient-glow),transparent 65%);
+ opacity:.7
+}
+/* Progressive enhancement: full-document navigation inherits a quiet dissolve
+   on browsers that support same-origin cross-document view transitions. */
+@view-transition{navigation:auto}
+::view-transition-old(root){animation:ks-page-exit .24s ease both}
+::view-transition-new(root){animation:ks-page-enter .34s cubic-bezier(.22,1,.36,1) both}
+@keyframes ks-page-exit{to{opacity:.7;filter:blur(3px)}}
+@keyframes ks-page-enter{from{opacity:.65;filter:blur(4px)}to{opacity:1;filter:none}}
+
 /* Shared motion tokens. */
 :root{
  --glass-ease:cubic-bezier(.22,1,.36,1);
