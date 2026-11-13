@@ -59,6 +59,20 @@ function mountDock() {
   const trigger = dock.querySelector('.dock-trigger');
   trigger.innerHTML = icon('menu');
   const routes = [...dock.querySelectorAll('.dock-route')];
+  const dockInner = dock.querySelector('.dock-inner');
+  const motion = window.Motion;
+  const setDesktopDock = expanded => {
+    if (mobile() || !motion?.animate) return;
+    motion.animate(dockInner, {width: expanded ? '196px' : '44px'}, {duration:.48,ease:[.22,1,.36,1]});
+  };
+  const bubbleStops = routes.concat(dock.querySelector('.dock-settings')).filter(Boolean).map(item => {
+    const ring = item.querySelector('.dock-ring');
+    const enter = () => motion?.animate?.(ring,{scale:1.17},{duration:.28,ease:[.22,1,.36,1]});
+    const leave = () => motion?.animate?.(ring,{scale:1},{duration:.24,ease:'easeOut'});
+    item.addEventListener('pointerenter',enter); item.addEventListener('pointerleave',leave);
+    item.addEventListener('focus',enter); item.addEventListener('blur',leave);
+    return () => { item.removeEventListener('pointerenter',enter); item.removeEventListener('pointerleave',leave); item.removeEventListener('focus',enter); item.removeEventListener('blur',leave); };
+  });
   const currentLocation = `${location.pathname}${location.hash}`;
   routes.forEach(route => route.removeAttribute('aria-current'));
   const currentRoute = routes.find(route => {
@@ -82,6 +96,10 @@ function mountDock() {
     setTimeout(() => location.assign(target.href), 300);
   }));
   const mobile = () => matchMedia('(max-width:899px)').matches;
+  dock.addEventListener('pointerenter',()=>setDesktopDock(true));
+  dock.addEventListener('pointerleave',()=>{ if(!dock.classList.contains('is-pinned')) setDesktopDock(false); });
+  dock.addEventListener('focusin',()=>setDesktopDock(true));
+  dock.addEventListener('focusout',event=>{ if(!dock.contains(event.relatedTarget) && !dock.classList.contains('is-pinned')) setDesktopDock(false); });
   const setOpen = (open, restore = false) => { dock.classList.toggle('is-open',open); trigger.setAttribute('aria-expanded',String(open)); document.body.classList.toggle('dock-open',open && mobile()); if (open && mobile()) dock.querySelector('nav a').focus(); else if (!open && restore && mobile()) trigger.focus(); };
   trigger.onclick = () => setOpen(!dock.classList.contains('is-open'));
   dock.querySelector('.dock-close').onclick = () => setOpen(false, true);
@@ -97,7 +115,7 @@ function mountDock() {
       else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
     }
   };
-  return () => document.removeEventListener('pointerdown', outside);
+  return () => { document.removeEventListener('pointerdown', outside); bubbleStops.forEach(stop=>stop()); };
 }
 const flagship = [
   ['KOMA Manga Reader', 'creative', '/work/koma-manga-reader', 'web-manga'],
@@ -173,6 +191,7 @@ function mountProjectFolio() {
   const cards = [...folio.querySelectorAll('.showpiece')];
   const progress = folio.querySelector('.folio-progress i');
   let active = 0, timer, start = null, dragged = false, revealing = false;
+  const motion = window.Motion;
   const show = index => {
     const next = (index + cards.length) % cards.length;
     if (next !== active) {
@@ -189,11 +208,15 @@ function mountProjectFolio() {
     cards.forEach((card, i) => {
       const offset = (active - i + cards.length) % cards.length;
       card.style.setProperty('--stack-offset', offset);
-      card.style.setProperty('--stack-y', `${folio.clientHeight * [.50,.385,.285,.19,.105,.045][offset]}px`);
-      card.style.setProperty('--stack-scale', [1,.92,.85,.79,.73,.53][offset]);
-      card.style.setProperty('--stack-opacity', [1,1,1,1,1,0][offset]);
-      card.style.setProperty('--stack-tilt', `${Math.min(offset * .7, 2.8)}deg`);
-      card.style.setProperty('--stack-brightness', String(Math.max(1 - offset * .085, .66)));
+      const values = {
+        '--stack-y': `${folio.clientHeight * [.50,.385,.285,.19,.105,.045][offset]}px`,
+        '--stack-scale': [1,.92,.85,.79,.73,.53][offset],
+        '--stack-tilt': `${Math.min(offset * .7, 2.8)}deg`,
+        '--stack-brightness': Math.max(1 - offset * .085, .66)
+      };
+      card.style.setProperty('--stack-opacity', offset === cards.length - 1 ? '0' : '1');
+      if (motion?.animate) motion.animate(card, values, {duration:.61,ease:[.22,1,.36,1]});
+      else Object.entries(values).forEach(([name,value])=>card.style.setProperty(name,String(value)));
       card.style.zIndex = String(cards.length - offset);
       const current = offset === 0;
       card.dataset.active = String(current);
@@ -240,6 +263,19 @@ function mountProjectFolio() {
   const resize = () => show(active);
   window.addEventListener('resize', resize);
   return () => { pause(); window.removeEventListener('resize', resize); folio.removeEventListener('error', imageError, true); };
+}
+function mountEditorialReveals() {
+  const gsap = window.gsap;
+  const ScrollTrigger = window.ScrollTrigger;
+  if (!gsap || !ScrollTrigger) return () => {};
+  gsap.registerPlugin(ScrollTrigger);
+  const contexts = [];
+  document.querySelectorAll('.block').forEach(section => {
+    const targets = section.querySelectorAll(':scope > .heading, :scope > .data-lab-intro, :scope > ol > li, :scope > .bio-chapter, :scope > .flow');
+    if (!targets.length) return;
+    contexts.push(gsap.fromTo(targets,{autoAlpha:0,y:34},{autoAlpha:1,y:0,duration:.82,stagger:.08,ease:'power3.out',scrollTrigger:{trigger:section,start:'top 84%',once:true}}));
+  });
+  return () => contexts.forEach(animation => { animation.scrollTrigger?.kill(); animation.kill(); });
 }
 function mountDemoTheatre() {
   const theatre = $('[data-demo-theatre]');
@@ -371,7 +407,8 @@ function render() {
   const disposeFolio = mountProjectFolio();
   const disposeSkills = mountSkills();
   const disposeDemos = mountDemoTheatre();
-  dispose = () => { disposeScene?.(); disposeCamera(); disposeAcademic?.(); disposeDemos(); disposeFolio(); disposeSkills(); disposeDock(); };
+  const disposeReveals = mountEditorialReveals();
+  dispose = () => { disposeScene?.(); disposeCamera(); disposeAcademic?.(); disposeDemos(); disposeFolio(); disposeSkills(); disposeDock(); disposeReveals(); };
   document.querySelectorAll('a[href="/edisi/skill.html"]').forEach(a => a.href = '/capabilities');
   if (section === 'demos') {
     document.querySelectorAll('.demo-panel').forEach((panel, i) => {

@@ -47,7 +47,7 @@ describe('public portfolio visual source of truth', () => {
     expect(interaction).toContain('setTimeout(() => { show(demoIndex + 1); schedule(); }, 2400)');
     expect(visual).toContain('animation-duration:1.1s');
     expect(responsive).toContain('52s + var(--rail) * 7s');
-    expect(interaction).toContain('show(0);\n  resume();');
+    expect(interaction).toMatch(/show\(0\);\r?\n  resume\(\);/);
     const folio = interaction.slice(interaction.indexOf('function mountProjectFolio()'), interaction.indexOf('function mountDemoTheatre()'));
     expect(folio).not.toContain('IntersectionObserver');
     expect(folio).not.toContain('hovering');

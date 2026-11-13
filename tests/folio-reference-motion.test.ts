@@ -45,7 +45,7 @@ describe('Cinematic v4.4 liquid-glass project stack', () => {
 
   it('starts autoplay at mount without viewport/hover gates and retires the motion checkbox', () => {
     const folio = source.slice(source.indexOf('function mountProjectFolio()'), source.indexOf('function mountDemoTheatre()'));
-    expect(folio).toContain('show(0);\n  resume();');
+    expect(folio).toMatch(/show\(0\);\r?\n  resume\(\);/);
     expect(folio).not.toContain('IntersectionObserver');
     expect(folio).not.toContain('pointerenter');
     expect(folio).not.toContain('focusin');

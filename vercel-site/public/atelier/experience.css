@@ -259,7 +259,7 @@ body{background:var(--bg);overflow-x:clip}#bar{display:none!important}#content{m
  box-shadow:12px 20px 34px rgba(11,14,15,.22);
  transition:width .48s var(--glass-ease),border-radius .48s var(--glass-ease),background .3s ease;
 }
-#site-dock:is(:hover,:focus-within,.is-pinned) .dock-inner{width:196px;border-radius:0 26px 26px 0;background:#222425!important;}
+#site-dock:is(:hover,:focus-within,.is-pinned) .dock-inner{border-radius:0 26px 26px 0;background:#222425!important;}
 #site-dock .dock-inner:before,#site-dock .dock-inner:after {content:"";position:absolute;left:0;width:42px;height:42px;background:#222425;pointer-events:none;}
 #site-dock .dock-inner:before {bottom:calc(100% - 1px);clip-path:path('M0 0 C0 28 14 42 42 42 L0 42 Z');}
 #site-dock .dock-inner:after {top:calc(100% - 1px);clip-path:path('M0 0 L42 0 C14 0 0 14 0 42 Z');}
@@ -280,11 +280,46 @@ body{background:var(--bg);overflow-x:clip}#bar{display:none!important}#content{m
 #site-dock .dock-ring .ui-icon{width:16px;height:16px;stroke-width:1.7}
 #site-dock .dock-route:hover .dock-ring,#site-dock .dock-route:focus-visible .dock-ring,
 #site-dock .dock-settings:hover .dock-ring{
- transform:scale(1.17);border-color:#ecefea;background:#282e2e
+ border-color:#ecefea;background:#282e2e
 }
 #site-dock .dock-route[aria-current=page]{background:rgba(255,255,255,.07)}
 #site-dock .dock-route[aria-current=page] .dock-ring{
  background:#f1f2ec;color:#171a1a;border-color:#f1f2ec
+}
+
+/* Cinematic engineering gallery: one composed field, not a uniform card grid. */
+#data-lab .data-lab-grid{grid-template-columns:repeat(12,minmax(0,1fr));grid-auto-flow:dense;align-items:start;gap:clamp(12px,1.6vw,24px)}
+#data-lab .data-lab-card{grid-column:span 5;min-height:clamp(270px,28vw,430px);padding:clamp(15px,2vw,24px)}
+#data-lab .data-lab-card:nth-child(1){grid-column:1/span 7;grid-row:span 2}
+#data-lab .data-lab-card:nth-child(2){grid-column:9/span 4;margin-top:clamp(55px,8vw,126px)}
+#data-lab .data-lab-card:nth-child(3){grid-column:8/span 5}
+#data-lab .data-lab-card:nth-child(4){grid-column:2/span 4;margin-top:clamp(-54px,-4vw,-24px)}
+#data-lab .data-lab-card:nth-child(5){grid-column:7/span 6}
+#data-lab .data-lab-card:nth-child(6){grid-column:3/span 5;margin-top:clamp(16px,4vw,58px)}
+#data-lab .data-lab-card:nth-child(1) figure{aspect-ratio:1.35}
+#data-lab .data-lab-card :is(strong,span,small){position:relative;z-index:1}
+
+/* The workflow reads as an editorial sequence with deliberate shifts in scale. */
+#content .process ol{position:relative;display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:clamp(16px,2.2vw,34px);padding-top:clamp(24px,5vw,68px)}
+#content .process ol:before{content:"";position:absolute;left:0;right:0;top:0;height:1px;background:linear-gradient(90deg,#1d2525 0 42%,transparent 42%)}
+#content .process li{grid-column:span 3;min-height:230px;padding:clamp(18px,2vw,28px);border-top:1px solid #aeb6b2;background:linear-gradient(155deg,rgba(255,255,255,.74),rgba(239,241,237,.38))}
+#content .process li:nth-child(even){margin-top:clamp(54px,7vw,110px)}
+#content .process li h3{font:400 clamp(25px,2.5vw,40px)/1.05 Georgia,serif;letter-spacing:-.035em}
+#content .process li p{max-width:29ch;color:#59635f;line-height:1.62}
+
+#content .closing{position:relative;overflow:hidden;padding-block:clamp(70px,11vw,170px)}
+#content .closing:before{content:"";position:absolute;inset:8% -12% auto 43%;height:min(52vw,620px);border:1px solid rgba(79,91,87,.2);border-radius:50%;transform:rotate(-13deg);pointer-events:none}
+#content .closing>.flow{position:relative;z-index:1;margin-top:clamp(38px,7vw,100px);background:rgba(255,255,255,.62);border:1px solid rgba(157,168,163,.54);box-shadow:0 30px 80px rgba(31,39,40,.08);backdrop-filter:blur(18px)}
+
+@media(max-width:899px){
+ #data-lab .data-lab-card,#data-lab .data-lab-card:nth-child(n){grid-column:span 6;margin-top:0;min-height:300px}
+ #content .process li{grid-column:span 6;margin-top:0!important;min-height:210px}
+}
+@media(max-width:600px){
+ #data-lab .data-lab-grid{display:grid;grid-template-columns:1fr}
+ #data-lab .data-lab-card,#data-lab .data-lab-card:nth-child(n){grid-column:1;display:grid;min-height:0}
+ #content .process ol{grid-template-columns:1fr}
+ #content .process li{grid-column:1;min-height:0}
 }
 @media(max-width:740px){
  #work .showcase.project-folio {height:490px!important;}
