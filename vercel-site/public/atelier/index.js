@@ -49,15 +49,14 @@ function visitorGreeting() {
 }
 const categories = ['work', 'demos', 'capabilities', 'about', 'contact'];
 const nav = () => categories.map(id => `<a href="/${id}" ${section === id ? 'aria-current="page"' : ''}>${t(id)}</a>`).join('');
-const dockPrimary = [['home','/','home','ring-orange'],['work','/work','layers','ring-mint'],['demos','/demos','play','ring-yellow']];
-const dockMore = [['dataLab','/#data-lab','data','ring-violet'],['capabilities','/#skills','code','ring-cyan'],['academicSupport','/academic-support','academic','ring-champagne'],['contact','/contact','mail','ring-steel']];
+const dockPrimary = [['home','/','home'],['work','/work','layers'],['demos','/demos','play']];
+const dockMore = [['dataLab','/#data-lab','data'],['capabilities','/#skills','code'],['academicSupport','/academic-support','academic'],['contact','/contact','mail']];
 function mountDock() {
   let dock = document.querySelector('#site-dock');
   if (!dock) { dock = document.createElement('aside'); dock.id = 'site-dock'; document.body.append(dock); }
-  const route = ([key,url,glyph,ring], secondary = false) => `<a class="dock-route ${secondary?'dock-secondary':''}" href="${url}" aria-label="${t(key)}" ${section === key || (!section && key === 'home') ? 'aria-current="page"' : ''}><span class="dock-ring ${ring}" aria-hidden="true">${icon(glyph)}</span><b>${t(key)}</b></a>`;
-  dock.innerHTML = `<button class="dock-trigger" type="button" aria-label="${t('openNavigation')}" aria-expanded="false"><span class="dock-trigger-rings" aria-hidden="true"><i class="ring-orange"></i><i class="ring-mint"></i><i class="ring-yellow"></i></span><b>${t('menu')}</b></button><div class="dock-inner"><button class="dock-pin" type="button" aria-label="${t('pinNavigation')}" aria-pressed="false">${icon('down')} <b>${t('pinNavigation')}</b></button><nav aria-label="${t('openNavigation')}">${dockPrimary.map(item=>route(item)).join('')}<span class="dock-more">${dockMore.map(item=>route(item,true)).join('')}</span></nav><button class="dock-settings" type="button" data-settings aria-label="${t('prefs')}"><span class="dock-ring ring-neutral" aria-hidden="true">${icon('settings')}</span><b>${t('prefs')}</b></button><button class="dock-close" type="button" aria-label="${t('closeNavigation')}">×</button></div>`;
+  const route = ([key,url,glyph], secondary = false) => `<a class="dock-route ${secondary?'dock-secondary':''}" href="${url}" aria-label="${t(key)}" ${section === key || (!section && key === 'home') ? 'aria-current="page"' : ''}><span class="dock-ring" aria-hidden="true">${icon(glyph)}</span><b>${t(key)}</b></a>`;
+  dock.innerHTML = `<button class="dock-trigger" type="button" aria-label="${t('openNavigation')}" aria-expanded="false">${icon('menu')}</button><div class="dock-inner"><nav aria-label="${t('openNavigation')}">${dockPrimary.map(item=>route(item)).join('')}<span class="dock-more">${dockMore.map(item=>route(item,true)).join('')}</span></nav><button class="dock-settings" type="button" data-settings aria-label="${t('prefs')}"><span class="dock-ring" aria-hidden="true">${icon('settings')}</span><b>${t('prefs')}</b></button><button class="dock-close" type="button" aria-label="${t('closeNavigation')}">×</button></div>`;
   const trigger = dock.querySelector('.dock-trigger');
-  trigger.innerHTML = icon('menu');
   const routes = [...dock.querySelectorAll('.dock-route')];
   const dockInner = dock.querySelector('.dock-inner');
   const motion = window.Motion;
@@ -96,18 +95,18 @@ function mountDock() {
     setTimeout(() => location.assign(target.href), 300);
   }));
   const mobile = () => matchMedia('(max-width:899px)').matches;
-  dock.addEventListener('pointerenter',()=>setDesktopDock(true));
-  dock.addEventListener('pointerleave',()=>{ if(!dock.classList.contains('is-pinned')) setDesktopDock(false); });
-  dock.addEventListener('focusin',()=>setDesktopDock(true));
-  dock.addEventListener('focusout',event=>{ if(!dock.contains(event.relatedTarget) && !dock.classList.contains('is-pinned')) setDesktopDock(false); });
+  const expandDock = () => setDesktopDock(true);
+  const collapseDock = () => setDesktopDock(false);
+  const collapseOnBlur = event => { if (!dock.contains(event.relatedTarget)) collapseDock(); };
+  dock.addEventListener('pointerenter', expandDock);
+  dock.addEventListener('pointerleave', collapseDock);
+  dock.addEventListener('focusin', expandDock);
+  dock.addEventListener('focusout', collapseOnBlur);
   const setOpen = (open, restore = false) => { dock.classList.toggle('is-open',open); trigger.setAttribute('aria-expanded',String(open)); document.body.classList.toggle('dock-open',open && mobile()); if (open && mobile()) dock.querySelector('nav a').focus(); else if (!open && restore && mobile()) trigger.focus(); };
   trigger.onclick = () => setOpen(!dock.classList.contains('is-open'));
   dock.querySelector('.dock-close').onclick = () => setOpen(false, true);
-  dock.querySelector('.dock-pin').onclick = e => { const pinned=dock.classList.toggle('is-pinned'); dock.classList.toggle('is-open',pinned || mobile()); e.currentTarget.setAttribute('aria-pressed',String(pinned)); };
-  const outside = event => { if (!dock.contains(event.target) && dock.classList.contains('is-pinned')) { dock.classList.remove('is-pinned','is-open'); dock.querySelector('.dock-pin').setAttribute('aria-pressed','false'); } };
-  document.addEventListener('pointerdown', outside);
   dock.onkeydown = e => {
-    if (e.key === 'Escape') { dock.classList.remove('is-pinned'); dock.querySelector('.dock-pin').setAttribute('aria-pressed','false'); setOpen(false, true); }
+    if (e.key === 'Escape') setOpen(false, true);
     if (e.key === 'Tab' && dock.classList.contains('is-open')) {
       const links = [...dock.querySelectorAll('.dock-inner a,.dock-inner button')].filter(el => getComputedStyle(el).display !== 'none');
       const first = links[0], last = links.at(-1);
@@ -115,7 +114,13 @@ function mountDock() {
       else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
     }
   };
-  return () => { document.removeEventListener('pointerdown', outside); bubbleStops.forEach(stop=>stop()); };
+  return () => {
+    dock.removeEventListener('pointerenter', expandDock);
+    dock.removeEventListener('pointerleave', collapseDock);
+    dock.removeEventListener('focusin', expandDock);
+    dock.removeEventListener('focusout', collapseOnBlur);
+    bubbleStops.forEach(stop => stop());
+  };
 }
 const flagship = [
   ['KOMA Manga Reader', 'creative', '/work/koma-manga-reader', 'web-manga'],
