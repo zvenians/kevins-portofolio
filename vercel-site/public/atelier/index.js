@@ -367,7 +367,8 @@ try {
 const steps = [['type', 'existing', 'scope', 'audience'], ['budget', 'time'], ['name', 'email']];
 function inquiry() {
   const keys = steps[step];
-  return `<div class="flow"><aside>${['project', 'plan', 'contact', 'review'].map((k, i) => `<p class="${i === step ? 'current' : ''}">0${i + 1}　${t(k)}</p>`).join('')}</aside><form id="inquiry"><h2>${t(['project', 'plan', 'contact', 'review'][step])}</h2>${keys ? keys.map(k => `<label>${t(k)}${k === 'scope' ? `<textarea name="scope" required maxlength="2500">${esc(brief.scope)}</textarea>` : `<input name="${k}" type="${k === 'time' ? 'date' : k === 'email' ? 'email' : 'text'}" value="${esc(brief[k])}" maxlength="160" required>`}</label>`).join('') : `<dl>${steps.flat().map(k => `<dt>${t(k)}</dt><dd>${esc(brief[k])}</dd>`).join('')}</dl><p>${t('mailhint')}</p>`}<div class="actions">${step ? `<button type="button" id="back">${t('back')}</button>` : ''}<button class="solid">${t(keys ? 'next' : 'compose')} →</button></div></form></div>`;
+  const progress = `<div class="brief-progress" aria-hidden="true">${Array.from({length:4},(_,i)=>`<i class="${i<=step?'is-complete':''}"></i>`).join('')}</div>`;
+  return `<div class="flow"><aside>${['project', 'plan', 'contact', 'review'].map((k, i) => `<p class="${i === step ? 'current' : ''}">0${i + 1}　${t(k)}</p>`).join('')}</aside><form id="inquiry">${progress}<small class="brief-edition">CREATIVE BRIEF / 0${step+1} — 04</small><h2>${t(['project', 'plan', 'contact', 'review'][step])}</h2>${keys ? keys.map(k => `<label>${t(k)}${k === 'scope' ? `<textarea name="scope" required maxlength="2500">${esc(brief.scope)}</textarea>` : `<input name="${k}" type="${k === 'time' ? 'date' : k === 'email' ? 'email' : 'text'}" value="${esc(brief[k])}" maxlength="160" required>`}</label>`).join('') : `<dl>${steps.flat().map(k => `<dt>${t(k)}</dt><dd>${esc(brief[k])}</dd>`).join('')}</dl><p>${t('mailhint')}</p>`}${!keys ? `<p class="brief-privacy">${t('formPrivacy')}</p><label class="brief-honeypot" aria-hidden="true">Company website<input type="text" name="website" tabindex="-1" autocomplete="off"></label><p class="brief-result" id="inquiry-result" role="status" aria-live="polite"></p><a id="email-backup" href="#" hidden>${t('mailFallback')} ↗</a>` : ''}<div class="actions">${step ? `<button type="button" id="back">${t('back')}</button>` : ''}<button class="solid" type="submit">${t(keys ? 'next' : 'sendInquiry')} →</button></div></form></div>`;
 }
 let dispose;
 function render() {
@@ -473,16 +474,38 @@ function render() {
       } catch {}
     }
     form.oninput = stash;
-    form.onsubmit = e => {
+    form.onsubmit = async e => {
       e.preventDefault();
       stash();
       if (step < 3) {
         step++;
         render();
-        $('#inquiry h2').scrollIntoView({
-          block: 'nearest'
-        });
-      } else location.href = 'mailto:' + encodeURIComponent(email) + '?subject=' + encodeURIComponent(brief.type) + '&body=' + encodeURIComponent(steps.flat().map(k => t(k) + ': ' + brief[k]).join('\n'));
+        $('#inquiry h2').scrollIntoView({block:'nearest'});
+        return;
+      }
+      const submit=form.querySelector('button[type=submit]');
+      const status=form.querySelector('#inquiry-result');
+      const backup=form.querySelector('#email-backup');
+      const draft='mailto:'+encodeURIComponent(email)+'?subject='+encodeURIComponent(brief.type || 'Project request')+'&body='+encodeURIComponent(steps.flat().map(k=>t(k)+': '+(brief[k]||'')).join('\n'));
+      submit.disabled=true;
+      submit.textContent=t('sendingInquiry');
+      backup.hidden=true;
+      try {
+        const response=await fetch('/api/inquiry',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(brief)});
+        const result=await response.json().catch(()=>({}));
+        if(!response.ok || !result.ok) throw new Error(result.code || 'DELIVERY_UNAVAILABLE');
+        status.textContent=t('sentInquiry');
+        try {sessionStorage.removeItem('atelier.brief');} catch {}
+        brief={};step=0;
+        submit.hidden=true;
+      } catch {
+        status.textContent=t('failedInquiry');
+        backup.href=draft;
+        backup.hidden=false;
+      } finally {
+        submit.disabled=false;
+        if(!submit.hidden) submit.textContent=t('sendInquiry')+' →';
+      }
     };
     if ($('#back')) $('#back').onclick = () => {
       stash();
