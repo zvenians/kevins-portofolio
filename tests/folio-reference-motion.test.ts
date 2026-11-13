@@ -8,7 +8,7 @@ const read = (path: string) => readFileSync(resolve(process.cwd(), path), 'utf8'
 
 describe('Cinematic v4.4 liquid-glass project stack', () => {
   const source = read('vercel-site/public/atelier/index.js');
-  const css = read('vercel-site/public/atelier/v44.css');
+  const css = read('vercel-site/public/atelier/experience.css');
   const projects = JSON.parse(read('vercel-site/generated/fallback.json')).projects;
   const start = source.indexOf('function picks() {');
   const finish = source.indexOf('\nfunction brands() {', start);
