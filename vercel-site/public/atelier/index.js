@@ -156,9 +156,9 @@ function mountProjectFolio() {
     cards.forEach((card, i) => {
       const offset = (i - active + cards.length) % cards.length;
       card.style.setProperty('--stack-offset', offset);
-      card.style.setProperty('--stack-y', `${[0,68,126,176,218,252][offset]}px`);
-      card.style.setProperty('--stack-scale', [1,.98,.955,.93,.905,.88][offset]);
-      card.style.setProperty('--stack-opacity', [1,.94,.8,.64,.46,.28][offset]);
+      card.style.setProperty('--stack-y', `${[0,32,62,90,116,140][offset]}px`);
+      card.style.setProperty('--stack-scale', [1,.965,.93,.895,.86,.825][offset]);
+      card.style.setProperty('--stack-opacity', [1,.75,.56,.41,.29,.20][offset]);
       card.style.zIndex = String(cards.length - offset);
       const current = offset === 0;
       card.dataset.active = String(current);
@@ -172,7 +172,7 @@ function mountProjectFolio() {
     if (!reduced && !hovering && !revealing && !document.hidden) progress.classList.add('is-running');
   };
   const pause = () => clearTimeout(timer);
-  const resume = () => { pause(); if (!reduced && !hovering && !revealing && !document.hidden) timer = setTimeout(() => { show(active + 1); resume(); }, 2200); };
+  const resume = () => { pause(); if (!reduced && !hovering && !revealing && !document.hidden) timer = setTimeout(() => { show(active + 1); resume(); }, 1100); };
   const down = e => { if (start || (e.pointerType === 'mouse' && e.button !== 0) || (e.type === 'mousedown' && e.button !== 0)) return; start = {x:e.clientX,y:e.clientY,time:performance.now()}; dragged = false; pause(); progress.classList.remove('is-running'); folio.classList.add('is-dragging'); if (e.pointerId !== undefined) folio.setPointerCapture(e.pointerId); };
   const move = e => { if (!start) return; const delta=e.clientX-start.x; if (Math.abs(delta)>8) { dragged=true; folio.style.setProperty('--gesture-x', `${Math.max(-110,Math.min(110,delta))}px`); if (e.pointerId !== undefined && !folio.hasPointerCapture(e.pointerId)) folio.setPointerCapture(e.pointerId); } };
   const up = e => { if (!start) return; const delta=e.clientX-start.x; const elapsed=performance.now()-start.time; start=null; folio.classList.remove('is-dragging'); folio.style.setProperty('--gesture-x','0px'); if (e.pointerId !== undefined && folio.hasPointerCapture(e.pointerId)) folio.releasePointerCapture(e.pointerId); if (Math.abs(delta)>45 || (Math.abs(delta)>24 && elapsed<220)) show(active + (delta<0?1:-1)); resume(); };
@@ -184,7 +184,7 @@ function mountProjectFolio() {
     const card = event.target.closest('.showpiece.is-active');
     if (!card || event.defaultPrevented || dragged || reduced || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
     event.preventDefault(); revealing = true; pause(); folio.classList.add('is-revealing');
-    setTimeout(() => location.assign(card.href), 520);
+    setTimeout(() => location.assign(card.href), 260);
   };
   show(0); resume();
   folio.addEventListener('pointerenter', enter);
@@ -219,8 +219,8 @@ function mountDemoTheatre() {
   stage?.addEventListener('pointermove', event => {
     if (reduced || event.pointerType !== 'mouse' || !matchMedia('(hover:hover)').matches) return;
     const rect = stage.getBoundingClientRect();
-    stage.style.setProperty('--demo-rotate-y', (((event.clientX - rect.left) / rect.width) - .5) * 7 + 'deg');
-    stage.style.setProperty('--demo-rotate-x', (.5 - ((event.clientY - rect.top) / rect.height)) * 5 + 'deg');
+    stage.style.setProperty('--demo-rotate-y', (((event.clientX - rect.left) / rect.width) - .5) * 4 + 'deg');
+    stage.style.setProperty('--demo-rotate-x', (.5 - ((event.clientY - rect.top) / rect.height)) * 3 + 'deg');
   });
   stage?.addEventListener('pointerleave', () => { stage.style.removeProperty('--demo-rotate-y'); stage.style.removeProperty('--demo-rotate-x'); });
 
@@ -238,7 +238,7 @@ function mountDemoTheatre() {
     panels.forEach((panel, i) => panel.hidden = i !== demoIndex);
     theatre.querySelector('output').textContent = `${String(demoIndex + 1).padStart(2,'0')} / ${String(tabs.length).padStart(2,'0')}`;
   };
-  const schedule = () => { stop(); if (!demoPaused) timer = setTimeout(() => { show(demoIndex + 1); schedule(); }, 4800); };
+  const schedule = () => { stop(); if (!demoPaused) timer = setTimeout(() => { show(demoIndex + 1); schedule(); }, 2400); };
   tabs.forEach((tab, i) => {
     tab.onclick = () => { show(i); schedule(); };
     tab.onkeydown = event => {
