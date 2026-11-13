@@ -151,7 +151,7 @@ html .skill-mark,html .catalogue i { animation:skill-float 3s ease-in-out var(--
 .hero h1 em { font:italic 1.23em/.98 Georgia,serif; }
 .hero .scene { background:transparent; isolation:isolate; }
 .scene canvas { position:relative; z-index:1; touch-action:pan-y; }
-.scene canvas.marble-ready { -webkit-box-reflect:below -35% linear-gradient(transparent 51%,#fff3 93%); }
+/* Avoid duplicating the animated WebGL surface through -webkit-box-reflect. */
 .scene:before { display:none; }
 .scene:not(:has(.marble-ready)):after { content:""; position:absolute; top:48%; left:50%; width:min(30vw,34vh); aspect-ratio:1; transform:translate(-50%,-50%); border-radius:50%; background:url(/atelier/marble-reference.png) 94.8% 57%/320% auto; }
 .scene small { z-index:2; }
