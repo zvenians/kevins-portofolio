@@ -1,7 +1,7 @@
 # Portfolio visual direction
 
 **Current public direction:** Cinematic Liquid Glass Editorial
-**Effective:** 13 November 2026
+**Effective:** 14 November 2026
 **Runtime:** `vercel-site/`, using the public Atelier shell.
 **Implementation:** `vercel-site/public/atelier/experience.css`
 **Wireframes:** `docs/quality-lock/SHOWCASE_VIDEO_LOCK.md`
@@ -52,12 +52,21 @@ Exactly one engine owns each moving property:
 
 - **Dock expansion/width and edge fillets:** CSS transitions and CSS geometry in `experience.css`. JavaScript must not animate dock width separately.
 - **Dock icon hover bubbles:** Motion for JavaScript in `index.js`, without competing CSS transform-on-hover.
-- **Showcase stack:** Motion changes the stack's CSS custom properties while `experience.css` defines perspective and visual composition; one scheduler starts autoplay at mount.
+- **Showcase stack:** JavaScript updates stack custom properties; a single CSS transform transition in `experience.css` interpolates them. Do not also animate the same variables through Motion. The 1,100ms scheduler starts at mount; mobile horizontal swipe must preserve vertical native page scrolling.
 - **Editorial section entrances / How I Work items:** GSAP + ScrollTrigger. Do not add camera transform to those same list items.
 - **Ambient hero camera:** `choreography.js` and `scene.js` only; their former unused reduced-motion function parameters and branch paths have been retired.
 - **Demo and slow Skills rails:** their established independent animation paths. Do not replace the demo with the showcase's vertical stack.
 
 The repository intentionally also contains a separate Apps Script workspace, independently interactive demos, and a separate Next/Firebase application. Similar names or apparently repeated styles across those **different runtimes** do not prove a duplicate; do not delete their source or vendor licensing without usage verification.
+
+## Android hero, live forms and deliberate atmosphere
+
+- The Hero surname must be visibly inside its text container at 320, 360, 375, 390, 393, 412, 430 and 768px, including large base-font checks. Reset the older italic `1.23em` shorthand through the single public visual system; never hide clipped glyphs with `overflow:hidden`.
+- The local time sets subtle ambient lighting without a weather API, reflow or fabricated data. Cross-document View Transitions are progressive enhancement, not a requirement for navigation to function.
+- Data Lab diagrams are decorative technical traces; their labels only use actual project technologies. They are not fabricated analytics or live business KPIs.
+- The How I Work connector advances from ScrollTrigger progress without adding a second transform to its cards. Hero reveal and restrained section transitions must not hide content without JavaScript.
+- The four-stage contact form tries `POST /api/inquiry` first, and offers a visitor-initiated email draft if direct delivery fails. The endpoint requires server-side `RESEND_API_KEY`, `INQUIRY_FROM_EMAIL`, and `INQUIRY_TO_EMAIL`. No key in client code. Do not call the form 'live' until the verified sending domain and environment variables are deployed.
+- Android touch-emulation tests are automated, but Samsung Internet / Chrome Android physical hardware, browser text enlargement, on-device keyboard and Core Web Vitals remain separate verification gates. The Linux CI runner's software-rendered FPS is only a regression signal, not a phone performance certificate.
 
 ## Quality gates
 
