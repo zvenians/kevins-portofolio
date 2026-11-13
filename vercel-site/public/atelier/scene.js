@@ -161,10 +161,10 @@ function interaction(canvas) {
   };
 }
 
-export function mountScene(canvas,reduced) {
+export function mountScene(canvas) {
   if(!canvas) return undefined;
   const gl=canvas.getContext('webgl',{alpha:true,antialias:true,powerPreference:'high-performance'});
-  if(!gl) return softwareScene(canvas,reduced);
+  if(!gl) return softwareScene(canvas);
   const profile=qualityProfile();
   const input=interaction(canvas);
   const reportFrame=frameReporter(canvas);
@@ -237,8 +237,8 @@ export function mountScene(canvas,reduced) {
     const dt=Math.min(.033,Math.max(0,milliseconds/1000));
     last=now;
     reportFrame(milliseconds);
-    if(!reduced) time+=dt;
-    const motionScale=reduced?0:.26;
+    time+=dt;
+    const motionScale=.26;
     springStep(orientationX,input.target.x*motionScale,dt,6.5,.92,2.2);
     springStep(orientationY,-input.target.y*motionScale*.72,dt,6.5,.92,2.2);
     springStep(followX,input.target.x*.022,dt,7.5,1,1.1);
@@ -259,7 +259,7 @@ export function mountScene(canvas,reduced) {
     gl.uniform2f(resources.uniforms.follow,followX.value,followY.value);
     gl.drawArrays(gl.TRIANGLES,0,resources.data.length/6);
     canvas.classList.add('marble-ready');
-    if(!reduced) frame=requestAnimationFrame(draw);
+    frame=requestAnimationFrame(draw);
   }
 
   const wake=()=>{if(!frame&&!contextLost) frame=requestAnimationFrame(draw);};
@@ -282,7 +282,7 @@ export function mountScene(canvas,reduced) {
   resources=createResources();
   if(!resources) {
     input.destroy();
-    return softwareScene(canvas,reduced);
+    return softwareScene(canvas);
   }
   observer.observe(canvas);
   resizeObserver.observe(canvas);
@@ -302,7 +302,7 @@ export function mountScene(canvas,reduced) {
   };
 }
 
-function softwareScene(canvas,reduced) {
+function softwareScene(canvas) {
   const context=canvas.getContext('2d');
   if(!context) return undefined;
   const input=interaction(canvas);
@@ -349,8 +349,8 @@ function softwareScene(canvas,reduced) {
     const dt=Math.min(.04,milliseconds/1000);
     last=now;
     reportFrame(milliseconds);
-    if(!reduced) time+=dt;
-    const motionScale=reduced?0:.18;
+    time+=dt;
+    const motionScale=.18;
     springStep(yaw,input.target.x*motionScale,dt,6.5,.95,1.8);
     springStep(pitch,-input.target.y*motionScale*.65,dt,6.5,.95,1.8);
     springStep(followX,input.target.x*10,dt,7.5,1,70);
@@ -367,7 +367,7 @@ function softwareScene(canvas,reduced) {
     context.drawImage(texture,-radius,-radius,radius*2,radius*2);
     context.restore();
     canvas.classList.add('marble-ready');
-    if(!reduced) frame=requestAnimationFrame(draw);
+    frame=requestAnimationFrame(draw);
   }
   const wake=()=>{if(!frame) frame=requestAnimationFrame(draw);};
   const observer=new IntersectionObserver(([entry])=>{visible=entry.isIntersecting;wake();});
