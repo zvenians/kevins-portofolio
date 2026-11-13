@@ -45,7 +45,12 @@ describe('public portfolio visual source of truth', () => {
     expect(interaction).not.toContain('dock-pin');
     expect(interaction).not.toContain('ring-orange');
     expect(interaction).not.toContain('dock-trigger-rings');
-    expect(interaction).toContain("dock.removeEventListener('pointerenter', expandDock)");
+    expect(interaction).not.toContain('setDesktopDock');
+    expect(interaction).toContain('CSS owns dock expansion');
+    expect(visual).toContain('transition:width .48s');
+    expect(interaction).not.toContain("folio.addEventListener('mousedown'");
+    expect(interaction).not.toContain("folio.addEventListener('mousemove'");
+    expect(interaction).not.toContain("folio.addEventListener('mouseup'");
     expect(interaction).toContain("mountScene($('.scene canvas'))");
     expect(interaction).toContain('mountChoreography()');
   });
