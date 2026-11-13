@@ -282,18 +282,9 @@ body{background:var(--bg);overflow-x:clip}#bar{display:none!important}#content{m
   #work .showcase.project-folio .showpiece {height:276px!important;}
   #work .project-folio .folio-copy>span {display:none;}
 }
-@media(prefers-reduced-motion:reduce) {
-  #work .showcase.project-folio .showpiece,
-  #content .data-lab-card,#content .data-lab-card img,
-  #content .hero .actions a,#studio .demo-tabs button,
-  #site-dock .dock-inner,#content input,#content textarea,#content select {transition:none!important;animation:none!important;}
-  #work .project-folio .showpiece:not(.is-active) {visibility:hidden!important;}
-}
-html[data-motion=reduced] #work .showcase.project-folio .showpiece,
-html[data-motion=reduced] #content .data-lab-card,
-html[data-motion=reduced] #studio .demo-tabs button,
-html[data-motion=reduced] #site-dock .dock-inner {transition:none!important;animation:none!important;}
-html[data-motion=reduced] #work .project-folio .showpiece:not(.is-active) {visibility:hidden!important;}
+
+
+
 
 
 /* First-visit preferences form: a light-catching modal, not a rigid full-height poster. */
@@ -314,13 +305,12 @@ html[data-motion=reduced] #work .project-folio .showpiece:not(.is-active) {visib
 #panel.prefs p{margin:0 0 26px;max-width:31ch;font-size:16px;line-height:1.55;color:#4c5854}
 #panel.prefs label:not(.check){display:grid;gap:9px;color:#2b3838;font-size:12px;font-weight:650}
 #panel.prefs select{width:100%;min-height:52px;padding:12px 16px;border:1px solid rgba(132,144,138,.68);border-radius:12px;background:rgba(255,255,255,.72);font-size:16px;color:#202828}
-#panel.prefs .check{display:flex;align-items:center;gap:12px;padding:18px 0;margin-top:8px;min-height:54px;font-size:14px}
-#panel.prefs .check input{width:19px;height:19px;accent-color:#57625e}
+
 #panel.prefs [data-enter]{width:100%;min-height:55px;margin-top:6px;background:#262f2e;color:#fff;border-radius:13px;font-weight:600;transition:background .16s,transform .16s}
 #panel.prefs [data-enter]:hover{background:#43504c;transform:translateY(-1px)}
 #panel.prefs [data-enter]:active{transform:none}
 #panel.prefs :focus-visible{outline:2px solid #707f76;outline-offset:3px}
-@media(min-width:740px) and (prefers-reduced-motion:no-preference){
+@media(min-width:740px){
  #panel.prefs[open]{animation:glass-arrive .32s cubic-bezier(.22,1,.36,1) both}
  @keyframes glass-arrive{from{opacity:.2;transform:translateY(18px) scale(.985)}to{opacity:1;transform:none}}
 }
@@ -329,8 +319,8 @@ html[data-motion=reduced] #work .project-folio .showpiece:not(.is-active) {visib
  #panel.prefs h2{font-size:clamp(39px,10vw,55px)}
  #panel.prefs p{font-size:15px}
 }
-@media(prefers-reduced-motion:reduce){#panel.prefs *{animation:none!important;transition:none!important}}
-html[data-motion=reduced] #panel.prefs *{animation:none!important;transition:none!important}
+
+
 
 /* The pin action is desktop-only; the mobile drawer starts with its first route. */
 @media(max-width:899px){#site-dock .dock-pin{display:none!important}}
@@ -403,8 +393,8 @@ html[data-motion=reduced] #panel.prefs *{animation:none!important;transition:non
  #site-dock .dock-trigger:after {top:100%;clip-path:path('M0 0 L24 0 C7 0 0 7 0 24 Z');}
  #site-dock.is-open .dock-inner {border-radius:0 30px 30px 0;background:#222425!important;}
 }
-@media(prefers-reduced-motion:reduce){#work .showcase.project-folio .showpiece,#site-dock .dock-inner,#site-dock .dock-ring,#site-dock .dock-pin{transition:none!important;}}
-html[data-motion=reduced] #work .showcase.project-folio .showpiece,html[data-motion=reduced] #site-dock .dock-inner,html[data-motion=reduced] #site-dock .dock-ring,html[data-motion=reduced] #site-dock .dock-pin{transition:none!important;}
+
+
 
 /* Desktop uses the reference's compact instrument rail. Labels reveal one at a time. */
 @media(min-width:900px){
@@ -449,8 +439,8 @@ html[data-motion=reduced] #work .showcase.project-folio .showpiece,html[data-mot
 }
 #site-dock .dock-route.is-departing .dock-ring {animation:dock-route-depart .3s cubic-bezier(.3,.8,.35,1) both;}
 #site-dock .dock-route.is-arriving .dock-ring {animation:dock-route-arrive .52s cubic-bezier(.22,1,.36,1) both;}
-@media(prefers-reduced-motion:reduce){#site-dock .dock-route .dock-ring{animation:none!important;}}
-html[data-motion=reduced] #site-dock .dock-route .dock-ring{animation:none!important;}
+
+
 
 /* Monochrome instrument faces keep the rail quiet against the portfolio. */
 #site-dock .dock-route .dock-ring,#site-dock .dock-settings .dock-ring {
@@ -495,7 +485,7 @@ html[data-motion=reduced] #site-dock .dock-route .dock-ring{animation:none!impor
  from {opacity:.08;transform:translate3d(0,26px,0) scale(.975) rotateX(2deg);}
  to {opacity:1;transform:none;}
 }
-html[data-motion=full] #studio .demo-panel:not([hidden]) {animation:demo-cinematic-enter .62s var(--glass-ease) both;}
+html #studio .demo-panel:not([hidden]) {animation:demo-cinematic-enter .62s var(--glass-ease) both;}
 
 @media(max-width:800px){
  #studio .demo-theatre {grid-template-columns:1fr;grid-template-rows:auto 1fr;min-height:0;border-radius:20px;}
@@ -513,5 +503,5 @@ html[data-motion=full] #studio .demo-panel:not([hidden]) {animation:demo-cinemat
  #studio .demo-stage .brand>div h3 {font-size:clamp(29px,9vw,42px);}
 }
 
-@media(prefers-reduced-motion:reduce){#studio .demo-panel,#studio .brand img,#studio .demo-tabs button{animation:none!important;transition:none!important;transform:none!important;}}
-html[data-motion=reduced] #studio .demo-panel,html[data-motion=reduced] #studio .brand img,html[data-motion=reduced] #studio .demo-tabs button{animation:none!important;transition:none!important;transform:none!important;}
+
+
