@@ -58,12 +58,8 @@ function mountDock() {
   dock.innerHTML = `<button class="dock-trigger" type="button" aria-label="${t('openNavigation')}" aria-expanded="false">${icon('menu')}</button><div class="dock-inner"><nav aria-label="${t('openNavigation')}">${dockPrimary.map(item=>route(item)).join('')}<span class="dock-more">${dockMore.map(item=>route(item,true)).join('')}</span></nav><button class="dock-settings" type="button" data-settings aria-label="${t('prefs')}"><span class="dock-ring" aria-hidden="true">${icon('settings')}</span><b>${t('prefs')}</b></button><button class="dock-close" type="button" aria-label="${t('closeNavigation')}">×</button></div>`;
   const trigger = dock.querySelector('.dock-trigger');
   const routes = [...dock.querySelectorAll('.dock-route')];
-  const dockInner = dock.querySelector('.dock-inner');
+  // CSS owns dock expansion; Motion only owns per-icon micro-interactions.
   const motion = window.Motion;
-  const setDesktopDock = expanded => {
-    if (mobile() || !motion?.animate) return;
-    motion.animate(dockInner, {width: expanded ? '196px' : '44px'}, {duration:.48,ease:[.22,1,.36,1]});
-  };
   const bubbleStops = routes.concat(dock.querySelector('.dock-settings')).filter(Boolean).map(item => {
     const ring = item.querySelector('.dock-ring');
     const enter = () => motion?.animate?.(ring,{scale:1.17},{duration:.28,ease:[.22,1,.36,1]});
@@ -95,13 +91,6 @@ function mountDock() {
     setTimeout(() => location.assign(target.href), 300);
   }));
   const mobile = () => matchMedia('(max-width:899px)').matches;
-  const expandDock = () => setDesktopDock(true);
-  const collapseDock = () => setDesktopDock(false);
-  const collapseOnBlur = event => { if (!dock.contains(event.relatedTarget)) collapseDock(); };
-  dock.addEventListener('pointerenter', expandDock);
-  dock.addEventListener('pointerleave', collapseDock);
-  dock.addEventListener('focusin', expandDock);
-  dock.addEventListener('focusout', collapseOnBlur);
   const setOpen = (open, restore = false) => { dock.classList.toggle('is-open',open); trigger.setAttribute('aria-expanded',String(open)); document.body.classList.toggle('dock-open',open && mobile()); if (open && mobile()) dock.querySelector('nav a').focus(); else if (!open && restore && mobile()) trigger.focus(); };
   trigger.onclick = () => setOpen(!dock.classList.contains('is-open'));
   dock.querySelector('.dock-close').onclick = () => setOpen(false, true);
@@ -115,10 +104,6 @@ function mountDock() {
     }
   };
   return () => {
-    dock.removeEventListener('pointerenter', expandDock);
-    dock.removeEventListener('pointerleave', collapseDock);
-    dock.removeEventListener('focusin', expandDock);
-    dock.removeEventListener('focusout', collapseOnBlur);
     bubbleStops.forEach(stop => stop());
   };
 }
@@ -195,7 +180,7 @@ function mountProjectFolio() {
   if (!folio) return () => {};
   const cards = [...folio.querySelectorAll('.showpiece')];
   const progress = folio.querySelector('.folio-progress i');
-  let active = 0, timer, start = null, dragged = false, revealing = false;
+  let active = 0, timer, start = null, dragged = false;
   const motion = window.Motion;
   const show = index => {
     const next = (index + cards.length) % cards.length;
@@ -236,14 +221,14 @@ function mountProjectFolio() {
   };
   const pause = () => clearTimeout(timer);
   const resume = () => { pause(); timer = setTimeout(() => { show(active + 1); resume(); }, 1100); };
-  const down = e => { if (start || (e.pointerType === 'mouse' && e.button !== 0) || (e.type === 'mousedown' && e.button !== 0)) return; start = {x:e.clientX,y:e.clientY,time:performance.now()}; dragged = false; folio.classList.add('is-dragging'); if (e.pointerId !== undefined) folio.setPointerCapture(e.pointerId); };
+  const down = e => { if (start || (e.pointerType === 'mouse' && e.button !== 0) || (e.type === 'mousedown' && e.button !== 0)) return; start = {x:e.clientX,y:e.clientY}; dragged = false; folio.classList.add('is-dragging'); if (e.pointerId !== undefined) folio.setPointerCapture(e.pointerId); };
   const move = e => { if (!start) return; const delta=e.clientY-start.y; if (Math.abs(delta)>8) { dragged=true; if (e.pointerType !== 'touch') folio.style.setProperty('--gesture-y', `${Math.max(-35,Math.min(35,delta))}px`); } };
   const up = e => { if (!start) return; const delta=e.clientY-start.y, horizontal=e.clientX-start.x; start=null; folio.classList.remove('is-dragging'); folio.style.setProperty('--gesture-y','0px'); if (e.pointerId !== undefined && folio.hasPointerCapture(e.pointerId)) folio.releasePointerCapture(e.pointerId); if (e.type !== 'pointercancel' && Math.abs(delta)>45 && Math.abs(delta)>Math.abs(horizontal)) show(active + (delta<0?1:-1)); resume(); };
     const keydown = event => { if (!['ArrowLeft','ArrowRight','ArrowUp','ArrowDown'].includes(event.key)) return; event.preventDefault(); show(active + (['ArrowRight','ArrowUp'].includes(event.key) ? 1 : -1)); resume(); };
   const activate = event => {
     const card = event.target.closest('.showpiece.is-active');
     if (!card || event.defaultPrevented || dragged || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
-    event.preventDefault(); revealing = true; folio.classList.add('is-revealing');
+    event.preventDefault(); folio.classList.add('is-revealing');
     setTimeout(() => location.assign(card.href), 260);
   };
   show(0);
@@ -252,9 +237,6 @@ function mountProjectFolio() {
   folio.addEventListener('pointermove', move);
   folio.addEventListener('pointerup', up);
   folio.addEventListener('pointercancel', up);
-  folio.addEventListener('mousedown', down);
-  folio.addEventListener('mousemove', move);
-  folio.addEventListener('mouseup', up);
   folio.addEventListener('dragstart', event => event.preventDefault());
   folio.addEventListener('keydown', keydown);
   folio.addEventListener('click', activate);
