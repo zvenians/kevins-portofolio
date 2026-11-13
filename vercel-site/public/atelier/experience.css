@@ -94,6 +94,12 @@ body{background:var(--bg);overflow-x:clip}#bar{display:none!important}#content{m
 @view-transition{navigation:auto}
 ::view-transition-old(root){animation:ks-page-exit .24s ease both}
 ::view-transition-new(root){animation:ks-page-enter .34s cubic-bezier(.22,1,.36,1) both}
+/* One shared preview links an active showcase frame to the real case image.
+   Browsers without cross-document View Transitions keep normal links. */
+#work .project-folio .showpiece.is-active .shot img,
+.study[data-case] .case-shot img{view-transition-name:ks-project-preview}
+::view-transition-old(ks-project-preview),
+::view-transition-new(ks-project-preview){animation-duration:.48s;animation-timing-function:cubic-bezier(.22,1,.36,1)}
 @keyframes ks-page-exit{to{opacity:.7;filter:blur(3px)}}
 @keyframes ks-page-enter{from{opacity:.65;filter:blur(4px)}to{opacity:1;filter:none}}
 
