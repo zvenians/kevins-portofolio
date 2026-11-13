@@ -20,7 +20,7 @@ The active project must be centered within its available content area at every v
 
 Hero is the primary cinematic moment. Work reveals form the secondary highlight. The Demo Theatre uses distinct lateral transitions. Forms are calmer, with explicit field state, labels and real submit behavior. Keep section spacing varied but intentional.
 
-Navigation is a small fixed monochrome dock: about 56px collapsed, 202px expanded, 16px icons inside 32px neutral frames. Touch uses a compact tab and a navigable mobile drawer. Expanded and collapsed states must not cover content unexpectedly.
+Navigation is a small fixed monochrome dock: approximately 44px collapsed, 196px expanded, 16px icons in neutral circular frames. The dock attaches to the viewport edge with external reverse fillets and expands on hover or keyboard focus; mobile uses a compact tab and accessible drawer. The retired pin mode and colored icon rings must not return. Expanded and collapsed states must not cover content unexpectedly.
 
 ## Motion
 
@@ -43,6 +43,21 @@ The public design is authored only in `vercel-site/public/atelier/experience.css
 `apps-script/source/` remains the canonical source for the separate Apps Script presentation and demo engines. A new public shell design must not be implemented by editing generated `apps-script/Code.gs`, `vercel-site/generated/template.ts`, or hashed bundle artifacts directly. Those are rebuilt through the repository scripts when their own source changes.
 
 The separately existing Next/Firebase application is not the deployed public portfolio. Do not use its superseded product specs to override the Atelier UI.
+
+## Motion and style ownership
+
+The public Atelier shell loads three stylesheets in this order: `index.css` (functional baseline), `mobile-ui.css` (feature layout and responsive behavior), and `experience.css` (single current visual system). Never append a new versioned global override, revive retired colored-ring/pin navigation, or edit generated bundles directly. Prefer changing the owning declaration, and remove superseded selectors when a later rule fully replaces them.
+
+Exactly one engine owns each moving property:
+
+- **Dock expansion/width and edge fillets:** CSS transitions and CSS geometry in `experience.css`. JavaScript must not animate dock width separately.
+- **Dock icon hover bubbles:** Motion for JavaScript in `index.js`, without competing CSS transform-on-hover.
+- **Showcase stack:** Motion changes the stack's CSS custom properties while `experience.css` defines perspective and visual composition; one scheduler starts autoplay at mount.
+- **Editorial section entrances / How I Work items:** GSAP + ScrollTrigger. Do not add camera transform to those same list items.
+- **Ambient hero camera:** `choreography.js` and `scene.js` only; their former unused reduced-motion function parameters and branch paths have been retired.
+- **Demo and slow Skills rails:** their established independent animation paths. Do not replace the demo with the showcase's vertical stack.
+
+The repository intentionally also contains a separate Apps Script workspace, independently interactive demos, and a separate Next/Firebase application. Similar names or apparently repeated styles across those **different runtimes** do not prove a duplicate; do not delete their source or vendor licensing without usage verification.
 
 ## Quality gates
 

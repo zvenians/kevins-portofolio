@@ -196,7 +196,6 @@ html .skill-mark,html .catalogue i { animation:skill-float 3s ease-in-out var(--
 html .hero .scene {transform:translate3d(0,var(--camera-y,0px),0) scale(var(--camera-scale,1));transform-origin:50% 52%;}
 html :is(#work,#studio) .showpiece .shot,html #studio .brand,html #skills .skill-plate,html .bio-chapter p {transform:translate3d(0,var(--camera-y,0px),0);}
 html :is(#work,#studio) .showpiece:nth-child(even) .shot,html #studio>div .brand:nth-child(even) {transform:translate3d(0,var(--camera-y-reverse,0px),0);}
-html .process li {transform:translate3d(0,var(--camera-y,0px),0);}
 @media(max-width:800px){html #studio .brand{transform:translate3d(0,var(--camera-y,0px),0);}}
 #skills .skill-intro {display:grid;grid-template-columns:1fr minmax(180px,35%);gap:24px;align-items:center;min-height:220px;margin:0 0 24px;overflow:hidden;}
 #skills .skill-intro h3 {font-size:clamp(38px,5vw,72px);line-height:.99;margin:8px 0 18px;}

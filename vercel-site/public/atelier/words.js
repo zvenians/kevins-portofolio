@@ -26,7 +26,6 @@ const lines = {
   nextProject: 'Next project|Proyek berikutnya|Projet suivant|Proyecto siguiente',
   openNavigation: 'Open navigation|Buka navigasi|Ouvrir la navigation|Abrir navegación',
   closeNavigation: 'Close navigation|Tutup navigasi|Fermer la navigation|Cerrar navegación',
-  pinNavigation: 'Pin navigation|Sematkan navigasi|Épingler la navigation|Fijar navegación',
   skillDetails: 'Skill details|Detail keahlian|Détails de compétence|Detalles de habilidad',
   noSkillProject: 'No verified project is listed for this technology.|Belum ada proyek terverifikasi untuk teknologi ini.|Aucun projet vérifié pour cette technologie.|No hay un proyecto verificado para esta tecnología.',
   previousDemo: 'Previous demo|Demo sebelumnya|Démo précédente|Demo anterior',

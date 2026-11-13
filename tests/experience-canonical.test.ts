@@ -39,7 +39,20 @@ describe('public portfolio visual source of truth', () => {
     expect(visual).toContain('transform:perspective(1100px) translate3d(-50%');
     expect(visual).not.toContain('background:linear-gradient(180deg,#e9e6e1,#d7d2cc)');
     expect(visual).not.toContain('conic-gradient(var(--ring-color)');
-    expect(visual).toContain('#site-dock .dock-pin{display:none!important}');
+    expect(visual).not.toContain('dock-pin');
+    expect(visual).not.toContain('dock-trigger-rings');
+    expect(visual).not.toContain('is-pinned');
+    expect(interaction).not.toContain('dock-pin');
+    expect(interaction).not.toContain('ring-orange');
+    expect(interaction).not.toContain('dock-trigger-rings');
+    expect(interaction).not.toContain('setDesktopDock');
+    expect(interaction).toContain('CSS owns dock expansion');
+    expect(visual).toContain('transition:width .48s');
+    expect(interaction).not.toContain("folio.addEventListener('mousedown'");
+    expect(interaction).not.toContain("folio.addEventListener('mousemove'");
+    expect(interaction).not.toContain("folio.addEventListener('mouseup'");
+    expect(interaction).toContain("mountScene($('.scene canvas'))");
+    expect(interaction).toContain('mountChoreography()');
   });
 
   it('uses fast but accessible motion without accelerating the skill conveyor', () => {
@@ -55,6 +68,22 @@ describe('public portfolio visual source of truth', () => {
     expect(interaction).not.toContain('id="motion"');
     expect(interaction).not.toContain("read('reduced'");
     expect(visual).not.toContain('data-motion=reduced');
+  });
+
+  it('retains one active dock state and no unreachable motion-mode branches', () => {
+    const words = file('vercel-site/public/atelier/words.js');
+    const scene = file('vercel-site/public/atelier/scene.js');
+    const choreography = file('vercel-site/public/atelier/choreography.js');
+    const direction = file('design.md');
+    expect(words).not.toContain('pinNavigation:');
+    expect(scene).toContain('export function mountScene(canvas) {');
+    expect(choreography).toContain('export function mountChoreography() {');
+    expect(scene).not.toMatch(/\breduced\b/);
+    expect(choreography).not.toMatch(/\breduced\b/);
+    expect(direction).toContain('44px collapsed, 196px expanded');
+    for (const oldToken of ['--glass-ink','--glass-paper','--glass-warm','--glass-border','--silver','--steel']) {
+      expect(visual).not.toContain(oldToken);
+    }
   });
 
   it('keeps first-visit preferences and one current design brief', () => {

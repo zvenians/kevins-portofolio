@@ -49,22 +49,17 @@ function visitorGreeting() {
 }
 const categories = ['work', 'demos', 'capabilities', 'about', 'contact'];
 const nav = () => categories.map(id => `<a href="/${id}" ${section === id ? 'aria-current="page"' : ''}>${t(id)}</a>`).join('');
-const dockPrimary = [['home','/','home','ring-orange'],['work','/work','layers','ring-mint'],['demos','/demos','play','ring-yellow']];
-const dockMore = [['dataLab','/#data-lab','data','ring-violet'],['capabilities','/#skills','code','ring-cyan'],['academicSupport','/academic-support','academic','ring-champagne'],['contact','/contact','mail','ring-steel']];
+const dockPrimary = [['home','/','home'],['work','/work','layers'],['demos','/demos','play']];
+const dockMore = [['dataLab','/#data-lab','data'],['capabilities','/#skills','code'],['academicSupport','/academic-support','academic'],['contact','/contact','mail']];
 function mountDock() {
   let dock = document.querySelector('#site-dock');
   if (!dock) { dock = document.createElement('aside'); dock.id = 'site-dock'; document.body.append(dock); }
-  const route = ([key,url,glyph,ring], secondary = false) => `<a class="dock-route ${secondary?'dock-secondary':''}" href="${url}" aria-label="${t(key)}" ${section === key || (!section && key === 'home') ? 'aria-current="page"' : ''}><span class="dock-ring ${ring}" aria-hidden="true">${icon(glyph)}</span><b>${t(key)}</b></a>`;
-  dock.innerHTML = `<button class="dock-trigger" type="button" aria-label="${t('openNavigation')}" aria-expanded="false"><span class="dock-trigger-rings" aria-hidden="true"><i class="ring-orange"></i><i class="ring-mint"></i><i class="ring-yellow"></i></span><b>${t('menu')}</b></button><div class="dock-inner"><button class="dock-pin" type="button" aria-label="${t('pinNavigation')}" aria-pressed="false">${icon('down')} <b>${t('pinNavigation')}</b></button><nav aria-label="${t('openNavigation')}">${dockPrimary.map(item=>route(item)).join('')}<span class="dock-more">${dockMore.map(item=>route(item,true)).join('')}</span></nav><button class="dock-settings" type="button" data-settings aria-label="${t('prefs')}"><span class="dock-ring ring-neutral" aria-hidden="true">${icon('settings')}</span><b>${t('prefs')}</b></button><button class="dock-close" type="button" aria-label="${t('closeNavigation')}">×</button></div>`;
+  const route = ([key,url,glyph], secondary = false) => `<a class="dock-route ${secondary?'dock-secondary':''}" href="${url}" aria-label="${t(key)}" ${section === key || (!section && key === 'home') ? 'aria-current="page"' : ''}><span class="dock-ring" aria-hidden="true">${icon(glyph)}</span><b>${t(key)}</b></a>`;
+  dock.innerHTML = `<button class="dock-trigger" type="button" aria-label="${t('openNavigation')}" aria-expanded="false">${icon('menu')}</button><div class="dock-inner"><nav aria-label="${t('openNavigation')}">${dockPrimary.map(item=>route(item)).join('')}<span class="dock-more">${dockMore.map(item=>route(item,true)).join('')}</span></nav><button class="dock-settings" type="button" data-settings aria-label="${t('prefs')}"><span class="dock-ring" aria-hidden="true">${icon('settings')}</span><b>${t('prefs')}</b></button><button class="dock-close" type="button" aria-label="${t('closeNavigation')}">×</button></div>`;
   const trigger = dock.querySelector('.dock-trigger');
-  trigger.innerHTML = icon('menu');
   const routes = [...dock.querySelectorAll('.dock-route')];
-  const dockInner = dock.querySelector('.dock-inner');
+  // CSS owns dock expansion; Motion only owns per-icon micro-interactions.
   const motion = window.Motion;
-  const setDesktopDock = expanded => {
-    if (mobile() || !motion?.animate) return;
-    motion.animate(dockInner, {width: expanded ? '196px' : '44px'}, {duration:.48,ease:[.22,1,.36,1]});
-  };
   const bubbleStops = routes.concat(dock.querySelector('.dock-settings')).filter(Boolean).map(item => {
     const ring = item.querySelector('.dock-ring');
     const enter = () => motion?.animate?.(ring,{scale:1.17},{duration:.28,ease:[.22,1,.36,1]});
@@ -96,18 +91,11 @@ function mountDock() {
     setTimeout(() => location.assign(target.href), 300);
   }));
   const mobile = () => matchMedia('(max-width:899px)').matches;
-  dock.addEventListener('pointerenter',()=>setDesktopDock(true));
-  dock.addEventListener('pointerleave',()=>{ if(!dock.classList.contains('is-pinned')) setDesktopDock(false); });
-  dock.addEventListener('focusin',()=>setDesktopDock(true));
-  dock.addEventListener('focusout',event=>{ if(!dock.contains(event.relatedTarget) && !dock.classList.contains('is-pinned')) setDesktopDock(false); });
   const setOpen = (open, restore = false) => { dock.classList.toggle('is-open',open); trigger.setAttribute('aria-expanded',String(open)); document.body.classList.toggle('dock-open',open && mobile()); if (open && mobile()) dock.querySelector('nav a').focus(); else if (!open && restore && mobile()) trigger.focus(); };
   trigger.onclick = () => setOpen(!dock.classList.contains('is-open'));
   dock.querySelector('.dock-close').onclick = () => setOpen(false, true);
-  dock.querySelector('.dock-pin').onclick = e => { const pinned=dock.classList.toggle('is-pinned'); dock.classList.toggle('is-open',pinned || mobile()); e.currentTarget.setAttribute('aria-pressed',String(pinned)); };
-  const outside = event => { if (!dock.contains(event.target) && dock.classList.contains('is-pinned')) { dock.classList.remove('is-pinned','is-open'); dock.querySelector('.dock-pin').setAttribute('aria-pressed','false'); } };
-  document.addEventListener('pointerdown', outside);
   dock.onkeydown = e => {
-    if (e.key === 'Escape') { dock.classList.remove('is-pinned'); dock.querySelector('.dock-pin').setAttribute('aria-pressed','false'); setOpen(false, true); }
+    if (e.key === 'Escape') setOpen(false, true);
     if (e.key === 'Tab' && dock.classList.contains('is-open')) {
       const links = [...dock.querySelectorAll('.dock-inner a,.dock-inner button')].filter(el => getComputedStyle(el).display !== 'none');
       const first = links[0], last = links.at(-1);
@@ -115,7 +103,9 @@ function mountDock() {
       else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
     }
   };
-  return () => { document.removeEventListener('pointerdown', outside); bubbleStops.forEach(stop=>stop()); };
+  return () => {
+    bubbleStops.forEach(stop => stop());
+  };
 }
 const flagship = [
   ['KOMA Manga Reader', 'creative', '/work/koma-manga-reader', 'web-manga'],
@@ -190,7 +180,7 @@ function mountProjectFolio() {
   if (!folio) return () => {};
   const cards = [...folio.querySelectorAll('.showpiece')];
   const progress = folio.querySelector('.folio-progress i');
-  let active = 0, timer, start = null, dragged = false, revealing = false;
+  let active = 0, timer, start = null, dragged = false;
   const motion = window.Motion;
   const show = index => {
     const next = (index + cards.length) % cards.length;
@@ -231,14 +221,14 @@ function mountProjectFolio() {
   };
   const pause = () => clearTimeout(timer);
   const resume = () => { pause(); timer = setTimeout(() => { show(active + 1); resume(); }, 1100); };
-  const down = e => { if (start || (e.pointerType === 'mouse' && e.button !== 0) || (e.type === 'mousedown' && e.button !== 0)) return; start = {x:e.clientX,y:e.clientY,time:performance.now()}; dragged = false; folio.classList.add('is-dragging'); if (e.pointerId !== undefined) folio.setPointerCapture(e.pointerId); };
+  const down = e => { if (start || (e.pointerType === 'mouse' && e.button !== 0) || (e.type === 'mousedown' && e.button !== 0)) return; start = {x:e.clientX,y:e.clientY}; dragged = false; folio.classList.add('is-dragging'); if (e.pointerId !== undefined) folio.setPointerCapture(e.pointerId); };
   const move = e => { if (!start) return; const delta=e.clientY-start.y; if (Math.abs(delta)>8) { dragged=true; if (e.pointerType !== 'touch') folio.style.setProperty('--gesture-y', `${Math.max(-35,Math.min(35,delta))}px`); } };
   const up = e => { if (!start) return; const delta=e.clientY-start.y, horizontal=e.clientX-start.x; start=null; folio.classList.remove('is-dragging'); folio.style.setProperty('--gesture-y','0px'); if (e.pointerId !== undefined && folio.hasPointerCapture(e.pointerId)) folio.releasePointerCapture(e.pointerId); if (e.type !== 'pointercancel' && Math.abs(delta)>45 && Math.abs(delta)>Math.abs(horizontal)) show(active + (delta<0?1:-1)); resume(); };
     const keydown = event => { if (!['ArrowLeft','ArrowRight','ArrowUp','ArrowDown'].includes(event.key)) return; event.preventDefault(); show(active + (['ArrowRight','ArrowUp'].includes(event.key) ? 1 : -1)); resume(); };
   const activate = event => {
     const card = event.target.closest('.showpiece.is-active');
     if (!card || event.defaultPrevented || dragged || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
-    event.preventDefault(); revealing = true; folio.classList.add('is-revealing');
+    event.preventDefault(); folio.classList.add('is-revealing');
     setTimeout(() => location.assign(card.href), 260);
   };
   show(0);
@@ -247,9 +237,6 @@ function mountProjectFolio() {
   folio.addEventListener('pointermove', move);
   folio.addEventListener('pointerup', up);
   folio.addEventListener('pointercancel', up);
-  folio.addEventListener('mousedown', down);
-  folio.addEventListener('mousemove', move);
-  folio.addEventListener('mouseup', up);
   folio.addEventListener('dragstart', event => event.preventDefault());
   folio.addEventListener('keydown', keydown);
   folio.addEventListener('click', activate);
@@ -401,8 +388,8 @@ function render() {
   if(!section) $('.closing').insertAdjacentHTML('beforeend',inquiry());
   if(section==='nova' || section.startsWith('nova/')) $('#bar nav').innerHTML=`<a href="/demos">← ${t('demos')}</a>`;
   if (section === 'about') $('.bio').insertAdjacentHTML('beforeend', `<div class="bio-facts"><strong>${t('currentWork')}</strong><p>PT Wulandari Bangun Laksana Tbk · ${t('currentPeriod')}</p><strong>${t('education')}</strong><p>${t('practice')}</p><a href="/resume">CV / PDF ${icon('outward')}</a></div>`);
-  const disposeScene = mountScene($('.scene canvas'), false);
-  const disposeCamera = mountChoreography(false);
+  const disposeScene = mountScene($('.scene canvas'));
+  const disposeCamera = mountChoreography();
   const disposeAcademic = mountAcademic(language,email);
   const disposeFolio = mountProjectFolio();
   const disposeSkills = mountSkills();

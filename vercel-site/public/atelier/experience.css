@@ -1,5 +1,5 @@
 /* Active public visual system. Legacy revisions have been retired. */
-:root{--bg:#f8f8f6;--fg:#121416;--muted:#596367;--line:#c8cecc;--surface:rgba(238,241,240,.63);--accent:#9a8668;--silver:#c8cecc;--steel:#7a8287;color-scheme:light;background:var(--bg)}
+:root{--bg:#f8f8f6;--fg:#121416;--muted:#596367;--line:#c8cecc;--surface:rgba(238,241,240,.63);--accent:#9a8668;color-scheme:light;background:var(--bg)}
 body{background:var(--bg);overflow-x:clip}#bar{display:none!important}#content{min-height:100svh}.block{padding-block:clamp(62px,8vw,124px)}.block+.block{border-color:#d8dbd9}.heading{align-items:flex-end}.heading h2,.sub>h1{font-family:Georgia,serif;font-weight:400}.solid{border-radius:999px}.more{font-weight:700}.more:hover{text-decoration:underline;text-underline-offset:6px}
 .hero{min-height:min(820px,90svh);padding-top:clamp(76px,9vw,135px);padding-bottom:clamp(76px,9vw,135px)}.hero-text{max-width:56%;position:relative;z-index:2}.hero-text>small:first-child{font-weight:700;letter-spacing:.18em}.hero-text .visitor-greeting{margin-top:14px}.hero h1{margin:24px 0 18px;font:400 clamp(62px,8vw,136px)/.82 Georgia,serif;letter-spacing:-.075em}.hero h1 em{font-style:normal}.hero-role{display:block;margin-bottom:20px;font:700 clamp(12px,1.2vw,17px)/1.4 Arial,sans-serif;letter-spacing:.18em;text-transform:uppercase}.hero p{font-size:clamp(17px,1.45vw,24px);max-width:34ch}.hero .scene{width:56%}.hero .actions{margin-top:30px}.hero .actions>a:not(.solid){min-height:44px;display:inline-flex;align-items:center;padding:0 12px}.hero-academic{display:inline-flex;margin-top:22px;min-height:44px;align-items:center;color:#4d595d;font-size:13px;text-decoration:underline;text-underline-offset:6px}.hero-academic:hover{color:#121416}.axis{background:#f8f8f6cc}
 .data-lab-intro{display:grid;grid-template-columns:minmax(0,1fr) minmax(260px,.42fr);gap:28px;align-items:end;margin-bottom:30px}.data-lab-intro h3{font:400 clamp(38px,5vw,70px)/1 Georgia,serif}.data-lab-intro p{color:var(--muted);line-height:1.6}.data-lab-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:15px}.data-lab-card{display:flex;flex-direction:column;min-width:0;padding:17px;border:1px solid #d2d6d4;border-radius:24px;background:linear-gradient(145deg,#f8f9f7,#e9ecea);transition:transform .28s cubic-bezier(.22,1,.36,1),border-color .2s}.data-lab-card:hover{transform:translateY(-4px);border-color:#899295}.data-lab-card figure{margin:14px 0 20px;border-radius:15px;overflow:hidden;background:#172329;aspect-ratio:1.65}.data-lab-card img{display:block;width:100%;height:100%;object-fit:cover}.data-lab-card strong{font-size:17px}.data-lab-card>span{margin-top:7px;color:#687174;font-size:12px;line-height:1.48;display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:2;overflow:hidden}
@@ -8,13 +8,12 @@ body{background:var(--bg);overflow-x:clip}#bar{display:none!important}#content{m
 
 /* Navigation structure, independent of color and width treatment. */
 #site-dock{position:fixed;z-index:120;top:50%;transform:translateY(-50%);color:#f8f8f6}
-#site-dock .dock-inner{display:flex;flex-direction:column;max-height:min(86vh,680px);overflow:hidden}
-#site-dock :is(.dock-route,.dock-pin,.dock-settings){display:flex;align-items:center;width:100%;text-align:left;color:#f8f8f6;white-space:nowrap}
-#site-dock :is(.dock-route b,.dock-pin b,.dock-settings b){opacity:0;transform:translateX(-5px);transition:opacity .16s,transform .28s}
-#site-dock:is(:hover,:focus-within,.is-pinned) :is(.dock-route b,.dock-pin b,.dock-settings b){opacity:1;transform:none}
+#site-dock .dock-inner{display:flex;flex-direction:column;max-height:min(86vh,680px)}
+#site-dock :is(.dock-route,.dock-settings){display:flex;align-items:center;width:100%;text-align:left;color:#f8f8f6;white-space:nowrap}
+#site-dock :is(.dock-route b,.dock-settings b){opacity:0;transform:translateX(-5px);transition:opacity .16s,transform .28s}
+#site-dock:is(:hover,:focus-within) :is(.dock-route b,.dock-settings b){opacity:1;transform:none}
 #site-dock .dock-more{display:grid;max-height:0;opacity:0;overflow:hidden}
-#site-dock:is(:hover,:focus-within,.is-pinned) .dock-more{max-height:260px;opacity:1}
-#site-dock .dock-pin{order:-1}
+#site-dock:is(:hover,:focus-within) .dock-more{max-height:260px;opacity:1}
 #site-dock .dock-settings{border-top:1px solid rgba(255,255,255,.1)}
 #site-dock :is(.dock-trigger,.dock-close){display:none}
 @media(max-width:1050px){
@@ -25,12 +24,11 @@ body{background:var(--bg);overflow-x:clip}#bar{display:none!important}#content{m
  #site-dock{left:0}
  #site-dock .dock-inner{display:none!important}
  #site-dock .dock-trigger{display:flex;align-items:center}
- #site-dock.is-open{top:0;bottom:0;width:min(86vw,330px);transform:none}
+ #site-dock.is-open{width:min(86vw,330px)}
  #site-dock.is-open .dock-trigger{display:none}
  #site-dock.is-open .dock-inner{display:flex!important;flex-direction:column;max-height:none;width:100%;height:100dvh;padding:58px 14px 18px;overflow:auto}
  #site-dock.is-open .dock-more{max-height:300px;opacity:1}
- #site-dock.is-open :is(.dock-route b,.dock-settings b){opacity:1;transform:none}
- #site-dock .dock-close{display:block;position:absolute;top:10px;right:14px;width:44px;height:44px;color:white;font-size:27px}
+  #site-dock .dock-close{display:block;position:absolute;top:10px;right:14px;width:44px;height:44px;color:white;font-size:27px}
  .dock-open:after{content:"";position:fixed;inset:0;z-index:110;background:rgba(10,16,17,.44)}
  body.dock-open{overflow:hidden}
  .hero{min-height:0}
@@ -55,16 +53,10 @@ body{background:var(--bg);overflow-x:clip}#bar{display:none!important}#content{m
  .data-lab-card{grid-template-columns:100px 1fr}
 }
 
-/* Cinematic liquid-glass edition. Source of truth for the v4.4 public experience. */
-:root {
-  --glass-ink: #232a2d;
-  --glass-paper: #f8f8f6;
-  --glass-warm: #e9e6df;
-  --glass-border: rgba(255,255,255,.85);
-  --glass-ease: cubic-bezier(.22,1,.36,1);
-  --glass-fast: .16s;
-  --glass-standard: .32s;
-  --glass-scene: .44s;
+/* Shared motion tokens. */
+:root{
+ --glass-ease:cubic-bezier(.22,1,.36,1);
+ --glass-fast:.16s;--glass-standard:.32s;--glass-scene:.44s
 }
 #content { position:relative; min-width:0; }
 #content > section, #content > article { min-width:0; }
@@ -79,13 +71,12 @@ body{background:var(--bg);overflow-x:clip}#bar{display:none!important}#content{m
 
 /* Shared navigation primitives. Final shape is defined once in the edge-dock section. */
 #site-dock nav{display:grid;gap:2px}
-#site-dock .dock-route,#site-dock .dock-pin,#site-dock .dock-settings{
- min-height:44px;padding:4px;gap:10px;border-radius:13px;
+#site-dock .dock-route,#site-dock .dock-settings{
+ min-height:44px;padding:4px;gap:10px;
  transition:background .18s ease,transform .28s var(--glass-ease)
 }
 #site-dock .dock-ring{display:grid;place-items:center;flex:none}
-#site-dock .dock-ring .ui-icon{width:16px;height:16px}
-#site-dock .dock-route b,#site-dock .dock-settings b,#site-dock .dock-pin b{font-weight:500;letter-spacing:.005em}
+#site-dock .dock-route b,#site-dock .dock-settings b{font-weight:500;letter-spacing:.005em}
 #site-dock :is(button,a):focus-visible{outline:2px solid #f4f1e8;outline-offset:2px}
 #site-dock .dock-more{transition:max-height .32s var(--glass-ease),opacity .24s ease}
 /* Hero: one cinematic focal point, a luminous medium rather than an opaque panel. */
@@ -109,7 +100,7 @@ body{background:var(--bg);overflow-x:clip}#bar{display:none!important}#content{m
 #content .hero .actions .solid {box-shadow:0 9px 24px rgba(17,23,26,.10);}
 #content .hero .scene {filter:saturate(.82);}
 
-/* Centered vertical real-project stage. Final perspective choreography is below. */
+/* Selected work: shared structure. Perspective choreography is defined below. */
 #work{overflow:clip}
 #work .folio-shell{width:100%;margin-inline:auto}
 #work .folio-tools{display:flex;justify-content:center;text-align:center;margin-bottom:0}
@@ -125,7 +116,7 @@ body{background:var(--bg);overflow-x:clip}#bar{display:none!important}#content{m
 }
 #work .showcase.project-folio .showpiece{
  position:absolute!important;left:50%!important;display:grid!important;
- grid-template-columns:1fr;align-items:stretch;min-height:0!important;
+ align-items:stretch;min-height:0!important;
  padding:0!important;margin:0!important;gap:0!important;aspect-ratio:auto!important;
  opacity:var(--stack-opacity,1)!important;overflow:hidden!important;
  pointer-events:none!important
@@ -178,13 +169,11 @@ body{background:var(--bg);overflow-x:clip}#bar{display:none!important}#content{m
 /* Narrow screens center the stage and keep touch targets generous. */
 @media(max-width:899px) {
   #site-dock .dock-trigger {
-    width:43px;min-height:80px;padding:10px 4px;gap:6px;
+    width:43px;padding:10px 4px;gap:6px;
     background:rgba(46,48,48,.76);border:1px solid rgba(255,255,255,.24);
     border-left:0;border-radius:0 18px 18px 0;box-shadow:0 8px 24px rgba(25,29,31,.13);
     backdrop-filter:blur(18px);
   }
-  #site-dock .dock-trigger-rings {gap:7px;justify-items:center;}
-  #site-dock .dock-trigger-rings i {width:22px;height:3px;border:0!important;border-radius:3px;background:rgba(250,250,248,.8);box-shadow:none;}
   #site-dock.is-open .dock-inner {background:rgba(38,40,41,.94);width:100%;border-radius:0 23px 23px 0;}
   #site-dock.is-open .dock-route .dock-ring {width:32px;height:32px;}
   #content .hero-text {max-width:100%;}
@@ -226,10 +215,7 @@ body{background:var(--bg);overflow-x:clip}#bar{display:none!important}#content{m
 
 
 
-/* The pin action is desktop-only; the mobile drawer starts with its first route. */
-@media(max-width:899px){#site-dock .dock-pin{display:none!important}}
-
-/* Video reference: single-axis depth stack. One canonical geometry/timing definition. */
+/* Video-locked perspective stage: single-axis depth stack. */
 #work .showcase.project-folio{height:clamp(480px,55vw,650px)!important;background:transparent!important;border-radius:0!important;}
 #work .showcase.project-folio .showpiece {
  top:0!important;width:min(76%,460px)!important;height:238px!important;
@@ -259,16 +245,10 @@ body{background:var(--bg);overflow-x:clip}#bar{display:none!important}#content{m
  box-shadow:12px 20px 34px rgba(11,14,15,.22);
  transition:width .48s var(--glass-ease),border-radius .48s var(--glass-ease),background .3s ease;
 }
-#site-dock:is(:hover,:focus-within,.is-pinned) .dock-inner{border-radius:0 26px 26px 0;background:#222425!important;}
+#site-dock:is(:hover,:focus-within) .dock-inner{border-radius:0 26px 26px 0;background:#222425!important;}
 #site-dock .dock-inner:before,#site-dock .dock-inner:after {content:"";position:absolute;left:0;width:42px;height:42px;background:#222425;pointer-events:none;}
 #site-dock .dock-inner:before {bottom:calc(100% - 1px);clip-path:path('M0 0 C0 28 14 42 42 42 L0 42 Z');}
 #site-dock .dock-inner:after {top:calc(100% - 1px);clip-path:path('M0 0 L42 0 C14 0 0 14 0 42 Z');}
-#site-dock .dock-pin {
- min-height:0!important;max-height:0;padding-block:0!important;opacity:0;visibility:hidden;overflow:hidden;
- transition:max-height .38s var(--glass-ease),opacity .18s ease,padding .38s var(--glass-ease)!important;
-}
-#site-dock:is(:hover,:focus-within,.is-pinned) .dock-pin {min-height:44px!important;max-height:44px;padding-block:5px!important;opacity:1;visibility:visible;}
-#site-dock .dock-route,#site-dock .dock-settings {border-radius:18px;}
 /* Uniform monochrome instruments: no colored progress rings or neon highlights. */
 #site-dock .dock-route .dock-ring,#site-dock .dock-settings .dock-ring{
  width:34px;height:34px;flex-basis:34px;border:1px solid #646b69;
@@ -341,10 +321,9 @@ body{background:var(--bg);overflow-x:clip}#bar{display:none!important}#content{m
 /* Desktop dock: visually compact at rest, smoothly reveals labels on intent. */
 @media(min-width:900px){
  #site-dock .dock-inner{width:44px;border-radius:0 24px 24px 0}
- #site-dock:is(:hover,:focus-within,.is-pinned) .dock-inner{width:196px}
- #site-dock .dock-pin{display:none!important}
+ #site-dock:is(:hover,:focus-within) .dock-inner{width:196px}
  #site-dock nav{display:grid;gap:1px;overflow:visible}
- #site-dock .dock-more,#site-dock:is(:hover,:focus-within,.is-pinned) .dock-more{
+ #site-dock .dock-more{
   display:grid;max-height:none;opacity:1;overflow:visible;gap:1px
  }
  #site-dock .dock-route,#site-dock .dock-settings{
@@ -357,16 +336,13 @@ body{background:var(--bg);overflow-x:clip}#bar{display:none!important}#content{m
   transform:translateX(-7px);transition:max-width .38s var(--glass-ease),
    opacity .18s ease,transform .32s var(--glass-ease),visibility .2s
  }
- #site-dock:is(:hover,:focus-within,.is-pinned) :is(.dock-route b,.dock-settings b){
+ #site-dock:is(:hover,:focus-within) :is(.dock-route b,.dock-settings b){
   max-width:130px;opacity:1;visibility:visible;transform:none
- }
- #site-dock:not(:hover):not(:focus-within):not(.is-pinned) :is(.dock-route,.dock-settings):is(:hover,:focus-visible) .dock-ring{
-  transform:scale(1.17)
  }
 }
 @media(max-width:899px){
  #site-dock.is-open {top:50%;bottom:auto;height:auto;max-height:calc(100dvh - 24px);transform:translateY(-50%)}
- #site-dock.is-open .dock-inner,#site-dock.is-open:is(:hover,:focus-within,.is-pinned) .dock-inner{width:100%!important}
+ #site-dock.is-open .dock-inner,#site-dock.is-open:is(:hover,:focus-within) .dock-inner{width:100%!important}
  #site-dock.is-open .dock-inner{height:auto;max-height:calc(100dvh - 24px);padding:54px 14px 16px;overflow:auto}
  #site-dock.is-open :is(.dock-route,.dock-settings){justify-content:flex-start;border-radius:14px}
  #site-dock.is-open :is(.dock-route b,.dock-settings b){position:static;opacity:1;visibility:visible;transform:none}
@@ -387,7 +363,6 @@ body{background:var(--bg);overflow-x:clip}#bar{display:none!important}#content{m
 
 
 
-/* The rail face is defined by the single monochrome instrument rule above. */
 /* Demo Studio is one continuous cinematic stage, not a grid with inherited spans. */
 #studio .demo-theatre {
  display:grid;grid-template-columns:minmax(230px,280px) minmax(0,1fr);grid-template-rows:1fr;
