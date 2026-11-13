@@ -38,6 +38,7 @@ describe('public portfolio visual source of truth', () => {
     expect(visual).toContain('backdrop-filter:blur(18px)');
     expect(visual).toContain('grid-template-columns:minmax(0,1.16fr) minmax(0,.84fr)');
     expect(visual).not.toContain('background:#182431!important');
+    expect(visual).toContain('#site-dock .dock-pin{display:none!important}');
   });
 
   it('uses fast but accessible motion without accelerating the skill conveyor', () => {
