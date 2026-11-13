@@ -192,12 +192,14 @@ body{background:var(--bg);overflow-x:clip}#bar{display:none!important}#content{m
  border-color:#475d53;background:rgba(232,238,231,.57);color:#24352f
 }
 #content .flow #inquiry{
+ animation:ks-brief-arrive .35s cubic-bezier(.22,1,.36,1) both;
  position:relative;min-width:0;padding:clamp(24px,4vw,54px);
  border:1px solid rgba(132,148,139,.3);border-radius:24px;
  background:linear-gradient(135deg,rgba(255,255,255,.9),rgba(239,242,236,.72));
  box-shadow:0 28px 65px rgba(24,34,31,.075),inset 0 1px rgba(255,255,255,.9);
  backdrop-filter:blur(12px)
 }
+@keyframes ks-brief-arrive{from{opacity:.75;transform:translateY(12px)}to{opacity:1;transform:none}}
 #content #inquiry .brief-edition{
  display:block;margin:22px 0 10px;color:#68796f;
  font:600 11px/1.5 ui-monospace,monospace;letter-spacing:.12em
