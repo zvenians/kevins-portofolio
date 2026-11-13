@@ -465,7 +465,11 @@ function render() {
     });
     search();
   }
-  if ($('#inquiry')) {
+  mountInquiry();
+}
+function mountInquiry() {
+  if (!$('#inquiry')) return;
+  {
     const form = $('#inquiry');
     function stash() {
       Object.assign(brief, Object.fromEntries(new FormData(form)));
@@ -479,7 +483,9 @@ function render() {
       stash();
       if (step < 3) {
         step++;
-        render();
+        const flow=form.closest('.flow');
+        flow.outerHTML=inquiry();
+        mountInquiry();
         $('#inquiry h2').scrollIntoView({block:'nearest'});
         return;
       }
@@ -510,7 +516,10 @@ function render() {
     if ($('#back')) $('#back').onclick = () => {
       stash();
       step--;
-      render();
+      const flow=form.closest('.flow');
+      flow.outerHTML=inquiry();
+      mountInquiry();
+      $('#inquiry h2').scrollIntoView({block:'nearest'});
     };
   }
 }
