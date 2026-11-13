@@ -4,7 +4,7 @@
 
 The public portfolio is a Vercel-hosted interface generated from a Google Apps Script source workspace. Visitors can explore projects and browser-based demonstrations without signing in. An owner-managed content feed supplies published records; a bundled fallback snapshot supports limited rendering when that feed cannot be reached.
 
-[Visit portfolio](https://portfolio-kevins.vercel.app) · [Demo Studio](https://portfolio-kevins.vercel.app/studio) · [Source](https://github.com/zvenians/kevins-portofolio)
+[Visit portfolio](https://portfolio-kevins.vercel.app) · [Demo Studio](https://portfolio-kevins.vercel.app/demos) · [Source](https://github.com/zvenians/kevins-portofolio)
 
 [![Workspace checks](https://github.com/zvenians/kevins-portofolio/actions/workflows/ci.yml/badge.svg)](https://github.com/zvenians/kevins-portofolio/actions/workflows/ci.yml)
 
@@ -96,7 +96,7 @@ The root `src/app/` tree is an alternative Next.js/Firebase implementation. Runn
 │   └── README.md                       Public target documentation
 ├── src/                                Separate Next.js / Firebase application
 ├── tests/                              Unit and interaction tests
-├── docs/                               Architecture decisions and QA notes
+├── docs/                               Current visual wireframe and release gates
 ├── .env.example                        Configuration for the separate app
 └── package.json                        Root test and lint tooling
 ```
@@ -166,13 +166,15 @@ npm run lint
 
 The repository's GitHub Actions workflow installs dependencies, runs the Vitest/Node test suites, and checks source linting. Tests cover project content rendering, navigation, editor behavior, studio interactions, gallery states, basic security rules, and selected demo workflows.
 
-Relevant documentation:
+Current documentation:
 
 - [Public Vercel target](vercel-site/README.md)
 - [Apps Script owner workspace](apps-script/README.md)
-- [Visitor journey and interaction event boundaries](docs/qa/visitor-journey.md)
-- [Demo Studio QA notes](docs/qa/demo-studio-2026-10-27.md)
-- [Architecture decision history](docs/decisions/0001-hosting-and-rendering.md)
+- [Canonical design direction](design.md)
+- [Cinematic liquid-glass wireframe and motion contract](docs/quality-lock/CINEMATIC_LIQUID_GLASS_WIREFRAME.md)
+- [Release gates and verification status](docs/quality-lock/RELEASE.md)
+
+The public design is implemented in `vercel-site/public/atelier/experience.css`. No historical `v43.css`, `v44.css`, or earlier `Design lock v2` should be reintroduced. The current work showcase is centered, uses the real source screenshots, and advances every 1.1 seconds; Demo Theatre advances every 2.4 seconds. Its skill marquee intentionally stays slow.
 
 ## Privacy and content
 
@@ -186,8 +188,8 @@ Relevant documentation:
 
 For approved changes to the public portfolio:
 
-1. Edit `apps-script/source/`; do not hand-edit generated bundle strings.
-2. Run the Apps Script builder and Vercel sync process.
+1. For public Atelier layout and motion, edit `vercel-site/public/atelier/` and the canonical [design direction](design.md). For Apps Script presentation or demo engines, edit `apps-script/source/`. Never hand-edit generated bundle strings.
+2. When Apps Script source changes, run its builder and Vercel sync process; review the generated diffs. Atelier-only CSS/JS changes do not need generated-source rewrites.
 3. Execute tests and lint; build inside `vercel-site/`.
 4. Review content privacy, project links, demo behavior, and mobile navigation.
 5. Deploy the **correct Vercel project root** only after approval.
