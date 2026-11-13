@@ -334,3 +334,47 @@ html[data-motion=reduced] #panel.prefs *{animation:none!important;transition:non
 
 /* The pin action is desktop-only; the mobile drawer starts with its first route. */
 @media(max-width:899px){#site-dock .dock-pin{display:none!important}}
+
+/* Video lock: the front sheet enters below, then recedes upward on one axis. */
+#work .showcase.project-folio {height:650px!important;background:linear-gradient(180deg,#e9e6e1,#d7d2cc)!important;border-radius:24px;}
+#work .showcase.project-folio .showpiece {
+ top:0!important;width:min(76%,460px)!important;height:238px!important;
+ grid-template-columns:1fr!important;grid-template-rows:40px 1fr!important;
+ transform:translate3d(-50%,calc(var(--stack-y) + var(--gesture-y,0px)),0) scale(var(--stack-scale))!important;
+ transform-origin:50% 0!important;transition:transform .61s var(--glass-ease),opacity .49s ease!important;
+ border-radius:16px!important;background:#343337!important;backdrop-filter:none;
+ border:1px solid #ffffff35!important;box-shadow:0 18px 30px #211c242b!important;
+}
+#work .project-folio .shot {grid-row:2!important;grid-column:1!important;margin:0 10px 10px!important;border-radius:9px!important;}
+#work .project-folio .folio-copy {grid-row:1!important;grid-column:1!important;padding:0 14px!important;justify-content:center!important;opacity:1!important;}
+#work .project-folio .folio-copy b {font:500 12px/1.2 Arial,sans-serif!important;color:#f8f6f2!important;margin:0!important;}
+#work .project-folio .folio-copy :is(small,strong,span),#work .project-folio .folio-copy:before {display:none!important;}
+#work .project-folio .showpiece:not(.is-active) .folio-copy {opacity:1!important;}
+#work .folio-status {position:absolute!important;top:auto!important;bottom:20px!important;left:50%!important;transform:translateX(-50%)!important;display:flex!important;justify-content:center;gap:16px;width:80%;}
+#work .project-folio .shot-fallback {display:none!important;}
+#work .project-folio .shot.is-unavailable .shot-fallback {display:grid!important;}
+#work .project-folio .shot img {position:absolute!important;inset:0!important;}
+#work .project-folio.is-revealing .showpiece.is-active {transform:translate3d(-50%,var(--stack-y),0) scale(1.025)!important;}
+/* The reverse fillets belong to the viewport connection, outside the rail body. */
+#site-dock {left:0!important;}
+#site-dock .dock-inner {border-left:0;border-radius:0 22px 22px 0;overflow:visible;position:relative;background:#292a2b!important;}
+#site-dock .dock-inner:before,#site-dock .dock-inner:after {content:"";position:absolute;left:0;width:32px;height:32px;background:#292a2b;pointer-events:none;}
+#site-dock .dock-inner:before {bottom:100%;clip-path:path('M0 0 C0 22 10 32 32 32 L0 32 Z');}
+#site-dock .dock-inner:after {top:100%;clip-path:path('M0 0 L32 0 C10 0 0 10 0 32 Z');}
+#site-dock .dock-route .dock-ring,#site-dock .dock-settings .dock-ring {border-radius:50%;background:#111314;border:1px solid #818582;box-shadow:inset 0 0 0 3px #292c2b;}
+#site-dock .dock-ring .ui-icon {width:18px;height:18px;}
+@media(max-width:740px){
+ #work .showcase.project-folio {height:490px!important;}
+ #work .showcase.project-folio .showpiece {height:190px!important;width:82%!important;grid-template-rows:36px 1fr!important;}
+ #work .project-folio .folio-copy {padding:0 10px!important;}
+ #work .project-folio .folio-copy b {font-size:10px!important;}
+}
+@media(max-width:899px){
+ #site-dock .dock-trigger {position:relative;background:#292a2b;min-width:44px;}
+ #site-dock .dock-trigger b {display:none!important;}
+ #site-dock .dock-trigger:before,#site-dock .dock-trigger:after {content:"";position:absolute;left:0;width:24px;height:24px;background:#292a2b;pointer-events:none;}
+ #site-dock .dock-trigger:before {bottom:100%;clip-path:path('M0 0 C0 17 7 24 24 24 L0 24 Z');}
+ #site-dock .dock-trigger:after {top:100%;clip-path:path('M0 0 L24 0 C7 0 0 7 0 24 Z');}
+}
+@media(prefers-reduced-motion:reduce){#work .showcase.project-folio .showpiece{transition:none!important;}}
+html[data-motion=reduced] #work .showcase.project-folio .showpiece{transition:none!important;}
