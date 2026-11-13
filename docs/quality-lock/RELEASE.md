@@ -1,24 +1,41 @@
-# Release decision
+# Public portfolio release gate
 
-Date: 2026-11-09
+**Current work:** Cinematic Liquid Glass Editorial, 13 November 2026
+**Target:** `portfolio-kevins.vercel.app`
+**State:** UNDER VERIFICATION. A successful commit or preview deployment is not evidence of full production acceptance.
 
-## BLOCKED FOR PRODUCTION
+The current direction is in [design.md](../../design.md); desktop and mobile acceptance is in [the wireframe](CINEMATIC_LIQUID_GLASS_WIREFRAME.md).
 
-The implementation may be used for a feature-branch preview only. Unit/integration/build gates pass, but production promotion remains blocked by missing retained multi-viewport screenshots, physical iOS/Android touch tests, real-device WebGL/performance measurements, manual keyboard/contrast evidence, and reopening a generated XLSX in a desktop spreadsheet reader.
+## Required automated checks
 
-Do not merge to `main`, promote a Vercel production build or assign the production domain until these gates are documented as passed.
+```bash
+npm ci
+npm ci --prefix apps-script
+node apps-script/build.mjs
+node vercel-site/sync.mjs
+npm --prefix vercel-site run build
+npm test
+npm run lint
+```
 
-## PR #16 verification update — 2026-11-11
+The CI workflow must show passing source and browser checks against the **latest commit**, not only earlier merged work.
 
-- GitHub Actions `Source and behavior tests`: **PASS** on commit `23d59b8`.
-- Vercel preview build: **PASS**.
-- Generated Apps Script and Vercel assets: **PASS**, reproducible with no diff.
-- Unit/integration tests: **PASS** (94 Vitest tests and 24 Apps Script tests).
-- Lint and public frontend production build: **PASS**.
-- Chromium 384×848, 390×844, 768×1024 and 1440×900: **PASS** for overflow, project routes, image loading, browser keyboard focus, reduced motion and page errors. Retained evidence is documented in `VIDEO-FIDELITY.md`.
-- Physical iOS Safari and Android touch testing: **NOT TESTED**.
-- Real-device WebGL and performance measurements: **NOT TESTED**.
-- Manual contrast evidence: **NOT TESTED**.
-- Generated XLSX reopened in a desktop spreadsheet reader: **NOT TESTED**.
+Browser checks: 320, 390, 768, 1440 and 1920px; project center error < 4px; active card right bound within viewport; no document-level horizontal overflow; six valid work routes, loaded real preview images, autoplay and manual keyboard/drag controls, reduced motion, functional demo tabs, responsive form interaction, and visible dock navigation.
 
-The production decision remains **BLOCKED**. Passing automated checks and the Vercel preview does not override the outstanding physical-device and manual release gates.
+## Active visual contract
+
+- Only `vercel-site/public/atelier/experience.css` defines the public cinematic visual edition. `index.css` and `mobile-ui.css` remain functional foundations; other CSS files are limited to their distinct application features.
+- No legacy v43/v44 stylesheet import, legacy design-lock fan, or previous colored icon dock.
+- Active work cards are geometrically centered. Liquid glass surfaces cannot obscure screenshots or text.
+- Work autoplay is 1,100ms; demo autoplay is 2,400ms; skill track remains purposefully slow.
+- Desktop collapsible dock and touch drawer must both work.
+- First-visit preferences dialogue must remain accessible, responsive and dismissible.
+- `prefers-reduced-motion` and the user motion control must suppress nonessential loops.
+
+## Manual checks that automation cannot certify
+
+Real iOS Safari and Android Chrome touch behavior, cross-browser GPU variation, visual readability of screenshots, mouse-pointer handoff after drag and accessibility keyboard traversal must be recorded before claiming broad production acceptance. All untested checks remain **NOT TESTED** rather than silently marked green.
+
+## Publication policy
+
+Changes are proposed through a branch and pull request; merge/deployment only after the required enabled checks pass. No production status is implied by this document. GitHub history retains old iterations; old runtime overrides and obsolete direction files must not be restored.
