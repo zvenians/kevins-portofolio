@@ -26,6 +26,19 @@ const output=process.env.WHITE_OUTPUT||'artifacts/white-release';
       assert.equal(await page.locator('.data-lab-card').count(),6);
       assert.equal(await page.locator('.project-folio .showpiece').count(),6);
       assert.equal(await page.locator('.skill-chip').count()>20,true);
+      const theatreGeometry=await page.evaluate(()=>{
+       const tabs=document.querySelector('#studio .demo-tabs').getBoundingClientRect();
+       const stage=document.querySelector('#studio .demo-stage').getBoundingClientRect();
+       const theatre=document.querySelector('#studio .demo-theatre').getBoundingClientRect();
+       return {tabs:{x:tabs.x,y:tabs.y,width:tabs.width,height:tabs.height,bottom:tabs.bottom},stage:{x:stage.x,y:stage.y,width:stage.width,height:stage.height},theatreHeight:theatre.height};
+      });
+      if(width>=900){
+       assert.ok(Math.abs(theatreGeometry.tabs.y-theatreGeometry.stage.y)<2,`desktop theatre rows split at ${width}`);
+       assert.ok(theatreGeometry.theatreHeight<760,`desktop theatre too tall at ${width}`);
+      }else{
+       assert.ok(theatreGeometry.stage.y>=theatreGeometry.tabs.bottom-2,`mobile stage overlaps tabs at ${width}`);
+       assert.ok(theatreGeometry.theatreHeight<760,`mobile theatre too tall at ${width}`);
+      }
       await page.locator('.skill-chip').first().click({force:true});
       assert.equal(await page.locator('.skill-popover').isVisible(),true);
       await page.locator('.skill-close').click();
@@ -38,6 +51,19 @@ const output=process.env.WHITE_OUTPUT||'artifacts/white-release';
        const active=await page.evaluate(()=>({isClose:document.activeElement?.classList.contains('dock-close'),markup:document.activeElement?.outerHTML}));
        assert.equal(active.isClose,true,active.markup);
        await page.locator('.dock-close').click();
+      }
+      if(width===1440){
+       const dockWidth=await page.locator('#site-dock .dock-inner').evaluate(element=>element.getBoundingClientRect().width);
+       assert.ok(dockWidth<=70,`desktop dock expanded to ${dockWidth}px`);
+       const workRoute=page.locator('#site-dock .dock-route[href="/work"]');
+       await workRoute.hover();
+       await page.waitForTimeout(300);
+       assert.equal(await workRoute.locator('b').evaluate(element=>getComputedStyle(element).opacity),'1');
+       await workRoute.click({noWaitAfter:true});
+       assert.equal(await workRoute.evaluate(element=>element.classList.contains('is-departing')),true);
+       await page.waitForURL('**/work',{timeout:2500});
+       assert.equal(await page.locator('#site-dock .dock-route[href="/work"][aria-current="page"]').count(),1);
+       await page.goto(base,{waitUntil:'domcontentloaded'});
       }
       assert.equal(await page.locator('[data-folio-motion]').count(),0);
     }
