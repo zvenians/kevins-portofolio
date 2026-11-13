@@ -36,6 +36,9 @@ function save(key, value) {
 let language = read('language', 'en');
 if (!locales.includes(language)) language = 'en';
 const t = key => translate(key, language);
+// Ambient lighting follows browser-local time; no network calls or reflow.
+const hour = new Date().getHours();
+document.documentElement.dataset.atmosphere = hour < 11 && hour >= 5 ? 'morning' : hour >= 16 && hour < 19 ? 'dusk' : hour >= 19 || hour < 5 ? 'night' : 'day';
 const greetings = {
   en: ['Good morning', 'Good afternoon', 'Good evening', 'Good night'],
   id: ['Selamat pagi', 'Selamat siang', 'Selamat sore', 'Selamat malam'],
@@ -129,7 +132,7 @@ function picks() {
     ? '/project-shots/wedding-demo-live.png'
     : `/project-shots/${encodeURIComponent(p.slug)}.webp`;
   const cards = selected.map((p, i) => `<a class="showpiece" style="--folio-index:${i}" href="/work/${encodeURIComponent(p.slug)}" aria-label="${esc(p.name)}" draggable="false"><div class="shot"><span class="shot-fallback">${esc(p.name)}</span><img src="${cover(p)}" alt="${esc(p.name)} project interface" width="1200" height="745" ${i?'loading="lazy"':'fetchpriority="high"'} decoding="async" draggable="false"></div><span class="folio-copy"><small>${esc(p.category || t('project'))}</small><b>${esc(p.name)}</b><span>${esc(p.summary || '')}</span><strong>${t('view')} ${icon('outward')}</strong></span></a>`).join('');
-  return `<div class="folio-shell"><div class="folio-tools"><p>${t('folioNote')}</p></div><div class="showcase project-folio" tabindex="0" aria-label="${t('work')}" aria-roledescription="carousel"><div class="folio-cycle">${cards}</div><div class="folio-status"><output aria-live="polite">01 / 06</output><span class="folio-progress" aria-hidden="true"><i></i></span><small>AUTO / DRAG</small></div></div></div>`;
+  return `<div class="folio-shell"><div class="folio-tools"><p>${t('folioNote')}</p></div><div class="showcase project-folio" tabindex="0" aria-label="${t('work')}" aria-roledescription="carousel"><div class="folio-cycle">${cards}</div><div class="folio-status"><output aria-live="off" aria-label="Project position">01 / 06</output><span class="folio-progress" aria-hidden="true"><i></i></span><small>AUTO / DRAG</small></div></div></div>`;
 }
 const dataLabSlugs = ['operations-decision-workbench','research-data-preparation-studio','research-practice-toolkit','asset-field-companion','document-automation-studio','sera-commerce-operations-console'];
 function dataLab() {
@@ -181,7 +184,7 @@ function mountProjectFolio() {
   const cards = [...folio.querySelectorAll('.showpiece')];
   const progress = folio.querySelector('.folio-progress i');
   let active = 0, timer, start = null, dragged = false;
-  const motion = window.Motion;
+  // Only CSS interpolates the stack transform; Motion does not also animate the variables.
   const show = index => {
     const next = (index + cards.length) % cards.length;
     if (next !== active) {
@@ -205,8 +208,7 @@ function mountProjectFolio() {
         '--stack-brightness': Math.max(1 - offset * .085, .66)
       };
       card.style.setProperty('--stack-opacity', offset === cards.length - 1 ? '0' : '1');
-      if (motion?.animate) motion.animate(card, values, {duration:.61,ease:[.22,1,.36,1]});
-      else Object.entries(values).forEach(([name,value])=>card.style.setProperty(name,String(value)));
+      Object.entries(values).forEach(([name,value]) => card.style.setProperty(name,String(value)));
       card.style.zIndex = String(cards.length - offset);
       const current = offset === 0;
       card.dataset.active = String(current);
@@ -221,7 +223,7 @@ function mountProjectFolio() {
   };
   const pause = () => clearTimeout(timer);
   const resume = () => { pause(); timer = setTimeout(() => { show(active + 1); resume(); }, 1100); };
-  const down = e => { if (start || (e.pointerType === 'mouse' && e.button !== 0) || (e.type === 'mousedown' && e.button !== 0)) return; start = {x:e.clientX,y:e.clientY}; dragged = false; folio.classList.add('is-dragging'); if (e.pointerId !== undefined) folio.setPointerCapture(e.pointerId); };
+  const down = e => { if (start || (e.pointerType === 'mouse' && e.button !== 0)) return; start = {x:e.clientX,y:e.clientY}; dragged = false; folio.classList.add('is-dragging'); if (e.pointerId !== undefined && e.pointerType !== 'touch') folio.setPointerCapture(e.pointerId); };
   const move = e => { if (!start) return; const delta=e.clientY-start.y; if (Math.abs(delta)>8) { dragged=true; if (e.pointerType !== 'touch') folio.style.setProperty('--gesture-y', `${Math.max(-35,Math.min(35,delta))}px`); } };
   const up = e => { if (!start) return; const delta=e.clientY-start.y, horizontal=e.clientX-start.x; start=null; folio.classList.remove('is-dragging'); folio.style.setProperty('--gesture-y','0px'); if (e.pointerId !== undefined && folio.hasPointerCapture(e.pointerId)) folio.releasePointerCapture(e.pointerId); if (e.type !== 'pointercancel' && Math.abs(delta)>45 && Math.abs(delta)>Math.abs(horizontal)) show(active + (delta<0?1:-1)); resume(); };
     const keydown = event => { if (!['ArrowLeft','ArrowRight','ArrowUp','ArrowDown'].includes(event.key)) return; event.preventDefault(); show(active + (['ArrowRight','ArrowUp'].includes(event.key) ? 1 : -1)); resume(); };
@@ -231,12 +233,25 @@ function mountProjectFolio() {
     event.preventDefault(); folio.classList.add('is-revealing');
     setTimeout(() => location.assign(card.href), 260);
   };
+  // On Android, horizontal swipe changes cards; vertical gestures remain native page scrolling.
+  let touchOrigin = null;
+  const touchStart = e => { const touch=e.touches[0]; if(touch) touchOrigin={x:touch.clientX,y:touch.clientY}; };
+  const touchEnd = e => {
+    if(!touchOrigin) return;
+    const touch=e.changedTouches[0]; if(!touch){touchOrigin=null;return;}
+    const dx=touch.clientX-touchOrigin.x, dy=touch.clientY-touchOrigin.y;
+    touchOrigin=null;
+    if(Math.abs(dx)>48 && Math.abs(dx)>Math.abs(dy)*1.3){show(active+(dx<0?1:-1));resume();}
+  };
   show(0);
   resume();
     folio.addEventListener('pointerdown', down);
   folio.addEventListener('pointermove', move);
   folio.addEventListener('pointerup', up);
   folio.addEventListener('pointercancel', up);
+  folio.addEventListener('touchstart', touchStart, {passive:true});
+  folio.addEventListener('touchend', touchEnd, {passive:true});
+  folio.addEventListener('touchcancel', () => {touchOrigin=null;}, {passive:true});
   folio.addEventListener('dragstart', event => event.preventDefault());
   folio.addEventListener('keydown', keydown);
   folio.addEventListener('click', activate);
@@ -249,7 +264,7 @@ function mountProjectFolio() {
   folio.addEventListener('error', imageError, true);
   const resize = () => show(active);
   window.addEventListener('resize', resize);
-  return () => { pause(); window.removeEventListener('resize', resize); folio.removeEventListener('error', imageError, true); };
+  return () => { pause(); window.removeEventListener('resize', resize); folio.removeEventListener('error', imageError, true); folio.removeEventListener('touchstart',touchStart); folio.removeEventListener('touchend',touchEnd); };
 }
 function mountEditorialReveals() {
   const gsap = window.gsap;
