@@ -36,6 +36,8 @@ describe('2026 cinematic completion contract',()=>{
   expect(js).toContain('lab-signal');
   expect(js).toContain('project.technologies || []');
   expect(css).toContain('.lab-trace');
+  expect(css).toContain('grid-auto-flow:row');
+  expect(css).not.toContain('grid-auto-flow:dense');
  });
  it('adds contextual atmospheric light, page transition and scroll-driven workflow progress',()=>{
   expect(js).toContain('dataset.atmosphere');
