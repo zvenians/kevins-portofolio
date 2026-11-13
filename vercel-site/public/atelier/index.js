@@ -492,7 +492,8 @@ function mountInquiry() {
       const submit=form.querySelector('button[type=submit]');
       const status=form.querySelector('#inquiry-result');
       const backup=form.querySelector('#email-backup');
-      const draft='mailto:'+encodeURIComponent(email)+'?subject='+encodeURIComponent(brief.type || 'Project request')+'&body='+encodeURIComponent(steps.flat().map(k=>t(k)+': '+(brief[k]||'')).join('\n'));
+      const recipient=String(email||'').trim().replace(/[^A-Za-z0-9._%+@-]/g,'');
+      const draft='mailto:'+recipient+'?subject='+encodeURIComponent(brief.type || 'Project request')+'&body='+encodeURIComponent(steps.flat().map(k=>t(k)+': '+(brief[k]||'')).join('\n'));
       submit.disabled=true;
       submit.textContent=t('sendingInquiry');
       backup.hidden=true;
