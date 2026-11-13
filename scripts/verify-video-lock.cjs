@@ -13,7 +13,10 @@ const out=process.env.FOLIO_OUTPUT||'artifacts/video-lock';
   await context.addInitScript(()=>localStorage.setItem('atelier.visited','yes'));
   const page=await context.newPage();const errors=[];page.on('pageerror',e=>errors.push(e.message));
   await page.goto(base,{waitUntil:'networkidle'});
-  const stage=page.locator('.project-folio');await stage.scrollIntoViewIfNeeded();
+  const stage=page.locator('.project-folio');
+  const firstOffscreen=await stage.locator('output').innerText();await page.waitForTimeout(1320);
+  assert.notEqual(await stage.locator('output').innerText(),firstOffscreen,`${width}: initial autoplay must begin offscreen`);
+  await stage.scrollIntoViewIfNeeded();
   await stage.locator('img').evaluateAll(images=>Promise.all(images.map(i=>i.decode())));
   await stage.focus();await page.waitForTimeout(750);
   const geometry=await stage.evaluate(el=>{
@@ -37,10 +40,11 @@ const out=process.env.FOLIO_OUTPUT||'artifacts/video-lock';
   await page.waitForTimeout(550);await page.screenshot({path:`${out}/${width}-dock.png`});
   await page.keyboard.press('Escape');
   await page.emulateMedia({reducedMotion:'reduce'});await page.reload({waitUntil:'networkidle'});
-  await stage.scrollIntoViewIfNeeded();const still=await stage.locator('output').innerText();await page.waitForTimeout(1400);assert.equal(await stage.locator('output').innerText(),still);
-  await stage.press('ArrowUp');assert.notEqual(await stage.locator('output').innerText(),still);
-  await stage.screenshot({path:`${out}/${width}-reduced.png`});assert.deepEqual(errors,[]);
-  results.push({width,height,geometry,drag:'real mouse passed',autoplay:'passed',reduced:'passed',dockX:0});await context.close();
+  const continued=await stage.locator('output').innerText();await page.waitForTimeout(1320);
+  assert.notEqual(await stage.locator('output').innerText(),continued,'no retired OS-based animation pause');
+  await stage.press('ArrowUp');assert.equal(await page.locator('#motion').count(),0);
+  await stage.screenshot({path:`${out}/${width}-loop.png`});assert.deepEqual(errors,[]);
+  results.push({width,height,geometry,drag:'real mouse passed',autoplay:'passed',oldMotionToggleRemoved:'passed',dockX:0});await context.close();
  }
  await fs.writeFile(`${out}/results.json`,JSON.stringify(results,null,2));console.log(JSON.stringify(results));
  }finally{await browser.close();}
