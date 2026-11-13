@@ -331,3 +331,6 @@ html[data-motion=reduced] #work .project-folio .showpiece:not(.is-active) {visib
 }
 @media(prefers-reduced-motion:reduce){#panel.prefs *{animation:none!important;transition:none!important}}
 html[data-motion=reduced] #panel.prefs *{animation:none!important;transition:none!important}
+
+/* The pin action is desktop-only; the mobile drawer starts with its first route. */
+@media(max-width:899px){#site-dock .dock-pin{display:none!important}}
