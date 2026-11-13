@@ -11,8 +11,10 @@ const out=process.env.FOLIO_OUTPUT||'artifacts/video-lock';
   const height=width===320?720:width===390?844:width===768?1024:width===1440?900:1080;
   const context=await browser.newContext({viewport:{width,height},recordVideo:{dir:out,size:{width,height}}});
   await context.addInitScript(()=>localStorage.setItem('atelier.visited','yes'));
-  const page=await context.newPage();const errors=[];page.on('pageerror',e=>errors.push(e.message));
+  const page=await context.newPage();const errors=[];page.on('pageerror',e=>errors.push(e.message));page.on('console',message=>{if(message.type()==='error')errors.push(`${message.text()} ${message.location().url}`.trim())});
   await page.goto(base,{waitUntil:'networkidle'});
+  const runtime=await page.evaluate(()=>({motion:Boolean(window.Motion?.animate),gsap:Boolean(window.gsap),scrollTrigger:Boolean(window.ScrollTrigger),hero:Boolean(document.querySelector('.scene canvas'))}));
+  assert.deepEqual(runtime,{motion:true,gsap:true,scrollTrigger:true,hero:true});
   const stage=page.locator('.project-folio');
   const firstOffscreen=await stage.locator('output').innerText();await page.waitForTimeout(1320);
   assert.notEqual(await stage.locator('output').innerText(),firstOffscreen,`${width}: initial autoplay must begin offscreen`);
@@ -44,7 +46,7 @@ const out=process.env.FOLIO_OUTPUT||'artifacts/video-lock';
   assert.notEqual(await stage.locator('output').innerText(),continued,'no retired OS-based animation pause');
   await stage.press('ArrowUp');assert.equal(await page.locator('#motion').count(),0);
   await stage.screenshot({path:`${out}/${width}-loop.png`});assert.deepEqual(errors,[]);
-  results.push({width,height,geometry,drag:'real mouse passed',autoplay:'passed',oldMotionToggleRemoved:'passed',dockX:0});await context.close();
+  results.push({width,height,geometry,runtime,drag:'real mouse passed',autoplay:'passed',oldMotionToggleRemoved:'passed',dockX:0});await context.close();
  }
  await fs.writeFile(`${out}/results.json`,JSON.stringify(results,null,2));console.log(JSON.stringify(results));
  }finally{await browser.close();}
