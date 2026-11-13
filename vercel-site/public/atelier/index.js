@@ -58,6 +58,30 @@ function mountDock() {
   const route = ([key,url,glyph,ring], secondary = false) => `<a class="dock-route ${secondary?'dock-secondary':''}" href="${url}" aria-label="${t(key)}" ${section === key || (!section && key === 'home') ? 'aria-current="page"' : ''}><span class="dock-ring ${ring}" aria-hidden="true">${icon(glyph)}</span><b>${t(key)}</b></a>`;
   dock.innerHTML = `<button class="dock-trigger" type="button" aria-label="${t('openNavigation')}" aria-expanded="false"><span class="dock-trigger-rings" aria-hidden="true"><i class="ring-orange"></i><i class="ring-mint"></i><i class="ring-yellow"></i></span><b>${t('menu')}</b></button><div class="dock-inner"><button class="dock-pin" type="button" aria-label="${t('pinNavigation')}" aria-pressed="false">${icon('down')} <b>${t('pinNavigation')}</b></button><nav aria-label="${t('openNavigation')}">${dockPrimary.map(item=>route(item)).join('')}<span class="dock-more">${dockMore.map(item=>route(item,true)).join('')}</span></nav><button class="dock-settings" type="button" data-settings aria-label="${t('prefs')}"><span class="dock-ring ring-neutral" aria-hidden="true">${icon('settings')}</span><b>${t('prefs')}</b></button><button class="dock-close" type="button" aria-label="${t('closeNavigation')}">×</button></div>`;
   const trigger = dock.querySelector('.dock-trigger');
+  trigger.innerHTML = icon('menu');
+  const routes = [...dock.querySelectorAll('.dock-route')];
+  const currentLocation = `${location.pathname}${location.hash}`;
+  routes.forEach(route => route.removeAttribute('aria-current'));
+  const currentRoute = routes.find(route => {
+    const target = new URL(route.href, location.href);
+    const targetLocation = `${target.pathname}${target.hash}`;
+    return location.hash ? targetLocation === currentLocation : !target.hash && target.pathname === location.pathname;
+  });
+  currentRoute?.setAttribute('aria-current', 'page');
+  if (currentRoute && !reduced) {
+    currentRoute.classList.add('is-arriving');
+    currentRoute.addEventListener('animationend', () => currentRoute.classList.remove('is-arriving'), {once:true});
+  }
+  routes.forEach(route => route.addEventListener('click', event => {
+    if (event.defaultPrevented || event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
+    const target = new URL(route.href, location.href);
+    if (target.origin !== location.origin || reduced) return;
+    event.preventDefault();
+    routes.forEach(item => item.removeAttribute('aria-current'));
+    route.setAttribute('aria-current', 'page');
+    route.classList.add('is-departing');
+    setTimeout(() => location.assign(target.href), 300);
+  }));
   const mobile = () => matchMedia('(max-width:899px)').matches;
   const setOpen = (open, restore = false) => { dock.classList.toggle('is-open',open); trigger.setAttribute('aria-expanded',String(open)); document.body.classList.toggle('dock-open',open && mobile()); if (open && mobile()) dock.querySelector('nav a').focus(); else if (!open && restore && mobile()) trigger.focus(); };
   trigger.onclick = () => setOpen(!dock.classList.contains('is-open'));
@@ -150,15 +174,28 @@ function mountProjectFolio() {
   if (!folio) return () => {};
   const cards = [...folio.querySelectorAll('.showpiece')];
   const progress = folio.querySelector('.folio-progress i');
-  let active = 0, timer, start = null, dragged = false, hovering = false, revealing = false;
+  let active = 0, timer, start = null, dragged = false, hovering = false, revealing = false, visible = false;
   const show = index => {
+    const next = (index + cards.length) % cards.length;
+    if (next !== active && !reduced) {
+      const incoming = cards[next];
+      incoming.style.setProperty('transition', 'none', 'important');
+      incoming.style.setProperty('--stack-y', `${folio.clientHeight * .64}px`);
+      incoming.style.setProperty('--stack-scale', '1.06');
+      incoming.style.setProperty('--stack-opacity', '0');
+      incoming.style.setProperty('--stack-tilt', '-2deg');
+      void incoming.offsetHeight;
+      incoming.style.removeProperty('transition');
+    }
     active = (index + cards.length) % cards.length;
     cards.forEach((card, i) => {
-      const offset = (i - active + cards.length) % cards.length;
+      const offset = (active - i + cards.length) % cards.length;
       card.style.setProperty('--stack-offset', offset);
-      card.style.setProperty('--stack-y', `${[0,32,62,90,116,140][offset]}px`);
-      card.style.setProperty('--stack-scale', [1,.965,.93,.895,.86,.825][offset]);
-      card.style.setProperty('--stack-opacity', [1,.75,.56,.41,.29,.20][offset]);
+      card.style.setProperty('--stack-y', `${folio.clientHeight * [.50,.385,.285,.19,.105,.045][offset]}px`);
+      card.style.setProperty('--stack-scale', [1,.92,.85,.79,.73,.53][offset]);
+      card.style.setProperty('--stack-opacity', [1,1,1,1,1,0][offset]);
+      card.style.setProperty('--stack-tilt', `${Math.min(offset * .7, 2.8)}deg`);
+      card.style.setProperty('--stack-brightness', String(Math.max(1 - offset * .085, .66)));
       card.style.zIndex = String(cards.length - offset);
       const current = offset === 0;
       card.dataset.active = String(current);
@@ -169,24 +206,30 @@ function mountProjectFolio() {
     folio.querySelector('output').textContent = `${String(active + 1).padStart(2, '0')} / ${String(cards.length).padStart(2, '0')}`;
     progress.classList.remove('is-running');
     void progress.offsetWidth;
-    if (!reduced && !hovering && !revealing && !document.hidden) progress.classList.add('is-running');
+    if (!reduced && visible && !hovering && !revealing && !document.hidden) progress.classList.add('is-running');
   };
   const pause = () => clearTimeout(timer);
-  const resume = () => { pause(); if (!reduced && !hovering && !revealing && !document.hidden) timer = setTimeout(() => { show(active + 1); resume(); }, 1100); };
+  const resume = () => { pause(); if (!reduced && visible && !hovering && !revealing && !document.hidden) timer = setTimeout(() => { show(active + 1); resume(); }, 1100); };
   const down = e => { if (start || (e.pointerType === 'mouse' && e.button !== 0) || (e.type === 'mousedown' && e.button !== 0)) return; start = {x:e.clientX,y:e.clientY,time:performance.now()}; dragged = false; pause(); progress.classList.remove('is-running'); folio.classList.add('is-dragging'); if (e.pointerId !== undefined) folio.setPointerCapture(e.pointerId); };
-  const move = e => { if (!start) return; const delta=e.clientX-start.x; if (Math.abs(delta)>8) { dragged=true; folio.style.setProperty('--gesture-x', `${Math.max(-110,Math.min(110,delta))}px`); if (e.pointerId !== undefined && !folio.hasPointerCapture(e.pointerId)) folio.setPointerCapture(e.pointerId); } };
-  const up = e => { if (!start) return; const delta=e.clientX-start.x; const elapsed=performance.now()-start.time; start=null; folio.classList.remove('is-dragging'); folio.style.setProperty('--gesture-x','0px'); if (e.pointerId !== undefined && folio.hasPointerCapture(e.pointerId)) folio.releasePointerCapture(e.pointerId); if (Math.abs(delta)>45 || (Math.abs(delta)>24 && elapsed<220)) show(active + (delta<0?1:-1)); resume(); };
+  const move = e => { if (!start) return; const delta=e.clientY-start.y; if (Math.abs(delta)>8) { dragged=true; if (e.pointerType !== 'touch') folio.style.setProperty('--gesture-y', `${Math.max(-35,Math.min(35,delta))}px`); } };
+  const up = e => { if (!start) return; const delta=e.clientY-start.y, horizontal=e.clientX-start.x; start=null; folio.classList.remove('is-dragging'); folio.style.setProperty('--gesture-y','0px'); if (e.pointerId !== undefined && folio.hasPointerCapture(e.pointerId)) folio.releasePointerCapture(e.pointerId); if (e.type !== 'pointercancel' && Math.abs(delta)>45 && Math.abs(delta)>Math.abs(horizontal)) show(active + (delta<0?1:-1)); resume(); };
   const enter = () => { hovering = true; pause(); progress.classList.remove('is-running'); };
   const leave = () => { hovering = false; resume(); };
   const visibility = () => document.hidden ? pause() : resume();
-  const keydown = event => { if (!['ArrowLeft','ArrowRight'].includes(event.key)) return; event.preventDefault(); show(active + (event.key === 'ArrowRight' ? 1 : -1)); resume(); };
+  const keydown = event => { if (!['ArrowLeft','ArrowRight','ArrowUp','ArrowDown'].includes(event.key)) return; event.preventDefault(); show(active + (['ArrowRight','ArrowUp'].includes(event.key) ? 1 : -1)); resume(); };
   const activate = event => {
     const card = event.target.closest('.showpiece.is-active');
     if (!card || event.defaultPrevented || dragged || reduced || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
     event.preventDefault(); revealing = true; pause(); folio.classList.add('is-revealing');
     setTimeout(() => location.assign(card.href), 260);
   };
-  show(0); resume();
+  const observer = new IntersectionObserver(entries => {
+    visible = entries.some(entry => entry.isIntersecting && entry.intersectionRatio > .18);
+    if (visible) resume();
+    else { pause(); progress.classList.remove('is-running'); }
+  }, {threshold:[0,.18,.5]});
+  observer.observe(folio);
+  show(0);
   folio.addEventListener('pointerenter', enter);
   folio.addEventListener('pointerleave', leave);
   folio.addEventListener('focusin', enter);
@@ -209,7 +252,9 @@ function mountProjectFolio() {
     }
   };
   folio.addEventListener('error', imageError, true);
-  return () => { pause(); document.removeEventListener('visibilitychange', visibility); folio.removeEventListener('error', imageError, true); };
+  const resize = () => show(active);
+  window.addEventListener('resize', resize);
+  return () => { pause(); observer.disconnect(); window.removeEventListener('resize', resize); document.removeEventListener('visibilitychange', visibility); folio.removeEventListener('error', imageError, true); };
 }
 function mountDemoTheatre() {
   const theatre = $('[data-demo-theatre]');
@@ -224,7 +269,7 @@ function mountDemoTheatre() {
   });
   stage?.addEventListener('pointerleave', () => { stage.style.removeProperty('--demo-rotate-y'); stage.style.removeProperty('--demo-rotate-x'); });
 
-  let timer, touchStart = 0, pointerStart = null, pointerMoved = false;
+  let timer, touchStart = 0, pointerStart = null, pointerMoved = false, visible = false;
   const stop = () => { clearTimeout(timer); timer = 0; };
   const show = (index, focus = false) => {
     theatre.style.setProperty('--demo-direction', index < demoIndex ? '-1' : '1');
@@ -238,7 +283,7 @@ function mountDemoTheatre() {
     panels.forEach((panel, i) => panel.hidden = i !== demoIndex);
     theatre.querySelector('output').textContent = `${String(demoIndex + 1).padStart(2,'0')} / ${String(tabs.length).padStart(2,'0')}`;
   };
-  const schedule = () => { stop(); if (!demoPaused) timer = setTimeout(() => { show(demoIndex + 1); schedule(); }, 2400); };
+  const schedule = () => { stop(); if (!demoPaused && visible && !document.hidden) timer = setTimeout(() => { show(demoIndex + 1); schedule(); }, 2400); };
   tabs.forEach((tab, i) => {
     tab.onclick = () => { show(i); schedule(); };
     tab.onkeydown = event => {
@@ -267,8 +312,12 @@ function mountDemoTheatre() {
   theatre.addEventListener('pointermove', event => { if (pointerStart === null || event.pointerType !== 'mouse') return; const distance = event.clientX - pointerStart; if (Math.abs(distance) <= 6) return; if (!stage.hasPointerCapture(event.pointerId)) stage.setPointerCapture(event.pointerId); stage.classList.add('is-dragging'); stage.style.setProperty('--demo-drag', `${Math.max(-80, Math.min(80, distance))}px`); });
   theatre.addEventListener('pointercancel', () => { pointerStart = null; stage.classList.remove('is-dragging'); stage.style.removeProperty('--demo-drag'); });
   theatre.addEventListener('click', event => { if (pointerMoved) { event.preventDefault(); pointerMoved = false; } }, true);
-  schedule();
-  return stop;
+  const observer = new IntersectionObserver(entries => {
+    visible = entries.some(entry => entry.isIntersecting && entry.intersectionRatio > .18);
+    visible ? schedule() : stop();
+  }, {threshold:[0,.18,.5]});
+  observer.observe(theatre);
+  return () => { stop(); observer.disconnect(); };
 }
 let step = 0,
   brief = {};
