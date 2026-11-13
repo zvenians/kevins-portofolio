@@ -46,6 +46,7 @@ describe('Cinematic v4.4 liquid-glass project stack', () => {
   it('stops autoplay and transitions for reduced motion', () => {
     expect(css).toContain('@media(prefers-reduced-motion:reduce)');
     expect(css).toContain('transition:none!important');
-    expect(source).toContain('if (!reduced && !hovering && !revealing && !document.hidden)');
+    expect(source).toContain('if (!reduced && visible && !hovering && !revealing && !document.hidden)');
+    expect(source).toContain('observer.observe(folio)');
   });
 });
