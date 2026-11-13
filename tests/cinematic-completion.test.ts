@@ -25,7 +25,7 @@ describe('2026 cinematic completion contract',()=>{
  });
  it('uses a single showcase interpolation path, offscreen autoplay and touch without scroll hijacking',()=>{
   const folio=js.slice(js.indexOf('function mountProjectFolio()'),js.indexOf('function mountEditorialReveals()'));
-  expect(folio).toContain('show(0);\n  resume();');
+  expect(folio).toMatch(/show\(0\);\r?\n  resume\(\);/);
   expect(folio).not.toContain('motion.animate(card, values');
   expect(folio).toContain("folio.addEventListener('touchstart', touchStart, {passive:true})");
   expect(folio).toContain("folio.addEventListener('touchend', touchEnd, {passive:true})");

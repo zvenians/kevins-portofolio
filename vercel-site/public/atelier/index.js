@@ -131,8 +131,12 @@ function picks() {
   const cover = p => p.slug === 'digital-wedding-invitation'
     ? '/project-shots/wedding-demo-live.png'
     : `/project-shots/${encodeURIComponent(p.slug)}.webp`;
-  const cards = selected.map((p, i) => `<a class="showpiece" style="--folio-index:${i}" href="/work/${encodeURIComponent(p.slug)}" aria-label="${esc(p.name)}" draggable="false"><div class="shot"><span class="shot-fallback">${esc(p.name)}</span><img src="${cover(p)}" alt="${esc(p.name)} project interface" width="1200" height="745" ${i?'loading="lazy"':'fetchpriority="high"'} decoding="async" draggable="false"></div><span class="folio-copy"><small>${esc(p.category || t('project'))}</small><b>${esc(p.name)}</b><span>${esc(p.summary || '')}</span><strong>${t('view')} ${icon('outward')}</strong></span></a>`).join('');
-  return `<div class="folio-shell"><div class="folio-tools"><p>${t('folioNote')}</p></div><div class="showcase project-folio" tabindex="0" aria-label="${t('work')}" aria-roledescription="carousel"><div class="folio-cycle">${cards}</div><div class="folio-status"><output aria-live="off" aria-label="Project position">01 / 06</output><span class="folio-progress" aria-hidden="true"><i></i></span><small>AUTO / DRAG</small></div></div></div>`;
+  const cards = selected.map((p, i) => {
+    const technologies=(p.technologies || []).slice(0,2).join(' · ');
+    return `<a class="showpiece" style="--folio-index:${i}" href="/work/${encodeURIComponent(p.slug)}" aria-label="${esc(p.name)}" data-name="${esc(p.name)}" data-category="${esc(p.category || t('project'))}" data-tech="${esc(technologies)}" draggable="false"><div class="shot"><span class="shot-fallback">${esc(p.name)}</span><img src="${cover(p)}" alt="${esc(p.name)} project interface" width="1200" height="745" ${i?'loading="lazy"':'fetchpriority="high"'} decoding="async" draggable="false"></div><span class="folio-copy"><small>${esc(p.category || t('project'))}</small><b>${esc(p.name)}</b><span>${esc(p.summary || '')}</span><strong>${t('view')} ${icon('outward')}</strong></span></a>`;
+  }).join('');
+  const first=selected[0];
+  return `<div class="folio-shell"><div class="folio-tools"><p>${t('folioNote')}</p></div><div class="showcase project-folio" tabindex="0" aria-label="${t('work')}" aria-roledescription="carousel"><div class="folio-cycle">${cards}</div><div class="folio-status"><span class="folio-identity"><small>${esc(first?.category || t('project'))}</small><strong>${esc(first?.name || '')}</strong><span>${esc((first?.technologies || []).slice(0,2).join(' · '))}</span></span><span class="folio-meter"><output aria-live="off" aria-label="Project position">01 / 06</output><span class="folio-progress" aria-hidden="true"><i></i></span><small>AUTO / DRAG</small></span></div></div></div>`;
 }
 const dataLabSlugs = ['operations-decision-workbench','research-data-preparation-studio','research-practice-toolkit','asset-field-companion','document-automation-studio','sera-commerce-operations-console'];
 function dataLab() {
@@ -183,14 +187,28 @@ function mountProjectFolio() {
   if (!folio) return () => {};
   const cards = [...folio.querySelectorAll('.showpiece')];
   const progress = folio.querySelector('.folio-progress i');
+  const identity = folio.querySelector('.folio-identity');
   let active = 0, timer, start = null, dragged = false;
   // Only CSS interpolates the stack transform; Motion does not also animate the variables.
   const show = index => {
     const next = (index + cards.length) % cards.length;
+    const stageHeight=folio.clientHeight;
+    const cardHeight=cards[0].offsetHeight;
+    const status=folio.querySelector('.folio-status');
+    const style=getComputedStyle(folio);
+    const footerBottom=parseFloat(style.getPropertyValue('--folio-footer-bottom')) || 18;
+    const statusGap=parseFloat(style.getPropertyValue('--folio-status-gap')) || 24;
+    // Keep the measured gap above its visual minimum after sub-pixel transforms
+    // and borders are rounded by the browser at responsive breakpoints.
+    const geometryBuffer=2;
+    const activeY=Math.max(42,stageHeight-footerBottom-status.offsetHeight-statusGap-cardHeight-geometryBuffer);
+    const rearY=Math.max(24,activeY-cardHeight*.9);
+    const depthStep=(activeY-rearY)/4;
+    const positions=[activeY,activeY-depthStep,activeY-depthStep*2,activeY-depthStep*3,rearY,Math.max(0,rearY-depthStep)];
     if (next !== active) {
       const incoming = cards[next];
       incoming.style.setProperty('transition', 'none', 'important');
-      incoming.style.setProperty('--stack-y', `${folio.clientHeight * .64}px`);
+      incoming.style.setProperty('--stack-y', `${Math.min(stageHeight-cardHeight,activeY+cardHeight*.5)}px`);
       incoming.style.setProperty('--stack-scale', '1.06');
       incoming.style.setProperty('--stack-opacity', '0');
       incoming.style.setProperty('--stack-tilt', '-2deg');
@@ -202,10 +220,12 @@ function mountProjectFolio() {
       const offset = (active - i + cards.length) % cards.length;
       card.style.setProperty('--stack-offset', offset);
       const values = {
-        '--stack-y': `${folio.clientHeight * [.50,.385,.285,.19,.105,.045][offset]}px`,
-        '--stack-scale': [1,.92,.85,.79,.73,.53][offset],
+        '--stack-y': `${positions[offset]}px`,
+        '--stack-scale': [1,.91,.83,.76,.70,.52][offset],
         '--stack-tilt': `${Math.min(offset * .7, 2.8)}deg`,
-        '--stack-brightness': Math.max(1 - offset * .085, .66)
+        '--stack-brightness': [1,.94,.87,.80,.73,.64][offset],
+        '--stack-shadow-y': `${Math.max(14,32-offset*4)}px`,
+        '--stack-shadow-alpha': Math.max(.08,.2-offset*.026)
       };
       card.style.setProperty('--stack-opacity', offset === cards.length - 1 ? '0' : '1');
       Object.entries(values).forEach(([name,value]) => card.style.setProperty(name,String(value)));
@@ -216,6 +236,10 @@ function mountProjectFolio() {
       card.setAttribute('aria-hidden', String(!current));
       card.tabIndex = current ? 0 : -1;
     });
+    const current=cards[active];
+    identity.querySelector('small').textContent=current.dataset.category;
+    identity.querySelector('strong').textContent=current.dataset.name;
+    identity.querySelector('span').textContent=current.dataset.tech;
     folio.querySelector('output').textContent = `${String(active + 1).padStart(2, '0')} / ${String(cards.length).padStart(2, '0')}`;
     progress.classList.remove('is-running');
     void progress.offsetWidth;
@@ -282,10 +306,10 @@ function mountEditorialReveals() {
     const timeline=ScrollTrigger.create({trigger:process,start:'top 86%',end:'bottom 30%',onUpdate:self=>process.style.setProperty('--process-progress',self.progress.toFixed(3))});
     contexts.push({kill:()=>timeline.kill()});
   }
-  document.querySelectorAll('.block').forEach(section => {
+  document.querySelectorAll('.block').forEach((section,index) => {
     const targets = section.querySelectorAll(':scope > .heading, :scope > .data-lab-intro, :scope > ol > li, :scope > .bio-chapter, :scope > .flow');
     if (!targets.length) return;
-    contexts.push(gsap.fromTo(targets,{autoAlpha:0,y:26},{autoAlpha:1,y:0,duration:.7,stagger:.075,ease:'power3.out',clearProps:'transform,opacity,visibility',scrollTrigger:{trigger:section,start:'top 84%',once:true}}));
+    contexts.push(gsap.fromTo(targets,{autoAlpha:0,y:30,x:index%2?10:-10},{autoAlpha:1,y:0,x:0,duration:.78,stagger:.085,ease:'power3.out',clearProps:'transform,opacity,visibility',scrollTrigger:{trigger:section,start:'top 86%',once:true}}));
   });
   return () => contexts.forEach(animation => { animation.scrollTrigger?.kill(); animation.kill(); });
 }
