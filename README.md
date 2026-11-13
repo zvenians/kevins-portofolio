@@ -171,7 +171,7 @@ Current documentation:
 - [Public Vercel target](vercel-site/README.md)
 - [Apps Script owner workspace](apps-script/README.md)
 - [Canonical design direction](design.md)
-- [Cinematic liquid-glass wireframe and motion contract](docs/quality-lock/CINEMATIC_LIQUID_GLASS_WIREFRAME.md)
+- [Video-led cinematic showcase and navigation contract](docs/quality-lock/SHOWCASE_VIDEO_LOCK.md)
 - [Release gates and verification status](docs/quality-lock/RELEASE.md)
 
 The public design is implemented in `vercel-site/public/atelier/experience.css`. No historical `v43.css`, `v44.css`, or earlier `Design lock v2` should be reintroduced. The current work showcase is centered, uses the real source screenshots, and advances every 1.1 seconds; Demo Theatre advances every 2.4 seconds. Its skill marquee intentionally stays slow.
