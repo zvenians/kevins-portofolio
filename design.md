@@ -44,6 +44,21 @@ The public design is authored only in `vercel-site/public/atelier/experience.css
 
 The separately existing Next/Firebase application is not the deployed public portfolio. Do not use its superseded product specs to override the Atelier UI.
 
+## Motion and style ownership
+
+The public Atelier shell loads three stylesheets in this order: `index.css` (functional baseline), `mobile-ui.css` (feature layout and responsive behavior), and `experience.css` (single current visual system). Never append a new versioned global override, revive retired colored-ring/pin navigation, or edit generated bundles directly. Prefer changing the owning declaration, and remove superseded selectors when a later rule fully replaces them.
+
+Exactly one engine owns each moving property:
+
+- **Dock expansion/width and edge fillets:** CSS transitions and CSS geometry in `experience.css`. JavaScript must not animate dock width separately.
+- **Dock icon hover bubbles:** Motion for JavaScript in `index.js`, without competing CSS transform-on-hover.
+- **Showcase stack:** Motion changes the stack's CSS custom properties while `experience.css` defines perspective and visual composition; one scheduler starts autoplay at mount.
+- **Editorial section entrances / How I Work items:** GSAP + ScrollTrigger. Do not add camera transform to those same list items.
+- **Ambient hero camera:** `choreography.js` and `scene.js` only; their former unused reduced-motion function parameters and branch paths have been retired.
+- **Demo and slow Skills rails:** their established independent animation paths. Do not replace the demo with the showcase's vertical stack.
+
+The repository intentionally also contains a separate Apps Script workspace, independently interactive demos, and a separate Next/Firebase application. Similar names or apparently repeated styles across those **different runtimes** do not prove a duplicate; do not delete their source or vendor licensing without usage verification.
+
 ## Quality gates
 
 1. No active project clipping, off-center focal cards, horizontal page overflow, or hidden focusable routes at 320, 390, 768, 1440 and 1920px.
