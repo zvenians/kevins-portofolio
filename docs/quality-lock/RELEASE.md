@@ -1,6 +1,6 @@
 # Public portfolio release gate
 
-**Current work:** Cinematic Liquid Glass Editorial, 13 November 2026
+**Current work:** Cinematic Liquid Glass Editorial, 14 November 2026
 **Target:** `portfolio-kevins.vercel.app`
 **State:** UNDER VERIFICATION. A successful commit or preview deployment is not evidence of full production acceptance.
 
@@ -20,7 +20,7 @@ npm run lint
 
 The CI workflow must show passing source and browser checks against the **latest commit**, not only earlier merged work.
 
-Browser checks: 320, 390, 768, 1440 and 1920px; project center error < 4px; active card right bound within viewport; no document-level horizontal overflow; six valid work routes, loaded real preview images, autoplay from initial render (even before scrolling), hover/focus continuity, manual keyboard/drag controls, no retired motion-mode checkbox, functional demo tabs, responsive form interaction, and visible dock navigation.
+Browser checks: 320, 360, 375, 390, 393, 412, 430, 768, 1440 and 1920px; project center error < 4px; active card right bound within viewport; no document-level horizontal overflow; six valid work routes, loaded real preview images, autoplay from initial render (even before scrolling), hover/focus continuity, manual keyboard/drag controls, no retired motion-mode checkbox, functional demo tabs, responsive form interaction, and visible dock navigation.
 
 ## Active visual contract
 
@@ -31,6 +31,12 @@ Browser checks: 320, 390, 768, 1440 and 1920px; project center error < 4px; acti
 - Desktop collapsible dock and touch drawer must both work.
 - First-visit preferences dialogue must remain accessible, responsive and dismissible.
 - No retired on-site motion checkbox/storage/alternate-state rules. Showcase starts at mount; no intersection/hover/focus pause gate. Keep visual pacing non-flashing and keyboard interactions usable.
+
+## Contact delivery configuration
+
+Set `RESEND_API_KEY`, `INQUIRY_FROM_EMAIL` (verified sending domain), and `INQUIRY_TO_EMAIL` **only in Vercel server environment variables**. The `/api/inquiry` route validates same-origin, email, required brief fields, payload length and a honeypot. Test a real delivered inquiry, reply-to address and provider errors in staging before calling delivery operational. Without the variables the public form preserves input and offers an explicit mailto fallback.
+
+The mobile browser test `scripts/verify-mobile-hero.cjs` asserts actual surname glyph bounds and uses touch-emulated input; CI also guards severe regression in a 6-second software-rendered frame sample. Target on-device Core Web Vitals: LCP <= 2.5s, CLS <= .1, INP <= 200ms (75th percentile), with smooth interactions close to 60 FPS where hardware permits.
 
 ## Manual checks that automation cannot certify
 

@@ -36,6 +36,9 @@ function save(key, value) {
 let language = read('language', 'en');
 if (!locales.includes(language)) language = 'en';
 const t = key => translate(key, language);
+// Ambient lighting follows browser-local time; no network calls or reflow.
+const hour = new Date().getHours();
+document.documentElement.dataset.atmosphere = hour < 11 && hour >= 5 ? 'morning' : hour >= 16 && hour < 19 ? 'dusk' : hour >= 19 || hour < 5 ? 'night' : 'day';
 const greetings = {
   en: ['Good morning', 'Good afternoon', 'Good evening', 'Good night'],
   id: ['Selamat pagi', 'Selamat siang', 'Selamat sore', 'Selamat malam'],
@@ -129,12 +132,12 @@ function picks() {
     ? '/project-shots/wedding-demo-live.png'
     : `/project-shots/${encodeURIComponent(p.slug)}.webp`;
   const cards = selected.map((p, i) => `<a class="showpiece" style="--folio-index:${i}" href="/work/${encodeURIComponent(p.slug)}" aria-label="${esc(p.name)}" draggable="false"><div class="shot"><span class="shot-fallback">${esc(p.name)}</span><img src="${cover(p)}" alt="${esc(p.name)} project interface" width="1200" height="745" ${i?'loading="lazy"':'fetchpriority="high"'} decoding="async" draggable="false"></div><span class="folio-copy"><small>${esc(p.category || t('project'))}</small><b>${esc(p.name)}</b><span>${esc(p.summary || '')}</span><strong>${t('view')} ${icon('outward')}</strong></span></a>`).join('');
-  return `<div class="folio-shell"><div class="folio-tools"><p>${t('folioNote')}</p></div><div class="showcase project-folio" tabindex="0" aria-label="${t('work')}" aria-roledescription="carousel"><div class="folio-cycle">${cards}</div><div class="folio-status"><output aria-live="polite">01 / 06</output><span class="folio-progress" aria-hidden="true"><i></i></span><small>AUTO / DRAG</small></div></div></div>`;
+  return `<div class="folio-shell"><div class="folio-tools"><p>${t('folioNote')}</p></div><div class="showcase project-folio" tabindex="0" aria-label="${t('work')}" aria-roledescription="carousel"><div class="folio-cycle">${cards}</div><div class="folio-status"><output aria-live="off" aria-label="Project position">01 / 06</output><span class="folio-progress" aria-hidden="true"><i></i></span><small>AUTO / DRAG</small></div></div></div>`;
 }
 const dataLabSlugs = ['operations-decision-workbench','research-data-preparation-studio','research-practice-toolkit','asset-field-companion','document-automation-studio','sera-commerce-operations-console'];
 function dataLab() {
   const entries = dataLabSlugs.map(slug => projects.find(project => project.slug === slug)).filter(Boolean);
-  return `<div class="data-lab-intro"><h3>${t('dataLabTitle')}</h3><p>${t('dataLabNote')}</p></div><div class="data-lab-grid">${entries.map((project,index)=>`<a href="/work/${encodeURIComponent(project.slug)}?launch=1" class="data-lab-card"><small>${String(index+1).padStart(2,'0')} / ${esc(project.category)}</small><figure><img src="/demo-shots/${esc(project.visual)}.webp" width="720" height="430" loading="lazy" alt="${esc(project.name)} interface"></figure><strong>${esc(project.name)}</strong><span>${esc(project.summary)}</span></a>`).join('')}</div><a class="more" href="/demos">${t('legacy')}</a>`;
+  return `<div class="data-lab-intro"><h3>${t('dataLabTitle')}</h3><p>${t('dataLabNote')}</p></div><div class="data-lab-grid">${entries.map((project,index)=>`<a href="/work/${encodeURIComponent(project.slug)}?launch=1" class="data-lab-card"><small>${String(index+1).padStart(2,'0')} / ${esc(project.category)}</small><figure><img src="/demo-shots/${esc(project.visual)}.webp" width="720" height="430" loading="lazy" alt="${esc(project.name)} interface"></figure><strong>${esc(project.name)}</strong><span>${esc(project.summary)}</span><div class="lab-signal" aria-hidden="true"><svg viewBox="0 0 180 48" preserveAspectRatio="none"><path class="lab-baseline" d="M0 45 H180"/><path class="lab-trace" d="${['M2 37 L30 29 L48 34 L67 13 L92 20 L111 11 L142 17 L178 5','M2 35 L27 30 L49 13 L67 22 L84 16 L101 25 L125 10 L178 8','M2 38 L27 36 L50 24 L70 31 L98 13 L117 17 L153 7 L178 12','M2 36 L31 20 L57 27 L88 15 L116 26 L146 11 L178 8','M2 29 L30 25 L54 16 L77 28 L97 18 L129 12 L151 16 L178 5','M2 39 L36 31 L60 28 L81 15 L110 19 L135 8 L157 11 L178 5'][index]}"/></svg><span class="lab-metadata">MODULE / 0${index+1} <i>${esc((project.technologies || []).slice(0,2).join(' · '))}</i></span></div></a>`).join('')}</div><a class="more" href="/demos">${t('legacy')}</a>`;
 }
 function brands() {
   return `<div class="brands product-gallery demo-theatre" data-demo-theatre><div class="demo-tabs" role="tablist" aria-label="${t('demos')}">${flagship.map(([name,kind],i)=>`<button type="button" role="tab" id="demo-tab-${i}" aria-controls="demo-panel-${i}" aria-selected="${i===demoIndex}" tabindex="${i===demoIndex?0:-1}" data-demo-tab="${i}"><span>0${i+1}</span><strong>${name}</strong><small>${t(kind)}</small></button>`).join('')}</div><div class="demo-stage">${flagship.map(([name,kind,url,image],i)=>`<article class="demo-panel" role="tabpanel" tabindex="0" id="demo-panel-${i}" aria-labelledby="demo-tab-${i}" ${i===demoIndex?'':'hidden'}><a class="brand brand-${kind}" href="${url}"><figure><img loading="lazy" width="940" height="645" src="/demo-shots/${image}.webp" alt=""></figure><div><small>0${i+1} / ${t(kind)}</small><h3>${name}</h3><span>${t('open')} ${icon('outward')}</span></div></a></article>`).join('')}<div class="demo-controls"><button type="button" data-demo-prev aria-label="${t('previousDemo')}">←</button><output>${String(demoIndex+1).padStart(2,'0')} / ${String(flagship.length).padStart(2,'0')}</output><button type="button" data-demo-next aria-label="${t('nextDemo')}">→</button></div></div></div>`;
@@ -181,7 +184,7 @@ function mountProjectFolio() {
   const cards = [...folio.querySelectorAll('.showpiece')];
   const progress = folio.querySelector('.folio-progress i');
   let active = 0, timer, start = null, dragged = false;
-  const motion = window.Motion;
+  // Only CSS interpolates the stack transform; Motion does not also animate the variables.
   const show = index => {
     const next = (index + cards.length) % cards.length;
     if (next !== active) {
@@ -205,8 +208,7 @@ function mountProjectFolio() {
         '--stack-brightness': Math.max(1 - offset * .085, .66)
       };
       card.style.setProperty('--stack-opacity', offset === cards.length - 1 ? '0' : '1');
-      if (motion?.animate) motion.animate(card, values, {duration:.61,ease:[.22,1,.36,1]});
-      else Object.entries(values).forEach(([name,value])=>card.style.setProperty(name,String(value)));
+      Object.entries(values).forEach(([name,value]) => card.style.setProperty(name,String(value)));
       card.style.zIndex = String(cards.length - offset);
       const current = offset === 0;
       card.dataset.active = String(current);
@@ -221,7 +223,7 @@ function mountProjectFolio() {
   };
   const pause = () => clearTimeout(timer);
   const resume = () => { pause(); timer = setTimeout(() => { show(active + 1); resume(); }, 1100); };
-  const down = e => { if (start || (e.pointerType === 'mouse' && e.button !== 0) || (e.type === 'mousedown' && e.button !== 0)) return; start = {x:e.clientX,y:e.clientY}; dragged = false; folio.classList.add('is-dragging'); if (e.pointerId !== undefined) folio.setPointerCapture(e.pointerId); };
+  const down = e => { if (start || (e.pointerType === 'mouse' && e.button !== 0)) return; start = {x:e.clientX,y:e.clientY}; dragged = false; folio.classList.add('is-dragging'); if (e.pointerId !== undefined && e.pointerType !== 'touch') folio.setPointerCapture(e.pointerId); };
   const move = e => { if (!start) return; const delta=e.clientY-start.y; if (Math.abs(delta)>8) { dragged=true; if (e.pointerType !== 'touch') folio.style.setProperty('--gesture-y', `${Math.max(-35,Math.min(35,delta))}px`); } };
   const up = e => { if (!start) return; const delta=e.clientY-start.y, horizontal=e.clientX-start.x; start=null; folio.classList.remove('is-dragging'); folio.style.setProperty('--gesture-y','0px'); if (e.pointerId !== undefined && folio.hasPointerCapture(e.pointerId)) folio.releasePointerCapture(e.pointerId); if (e.type !== 'pointercancel' && Math.abs(delta)>45 && Math.abs(delta)>Math.abs(horizontal)) show(active + (delta<0?1:-1)); resume(); };
     const keydown = event => { if (!['ArrowLeft','ArrowRight','ArrowUp','ArrowDown'].includes(event.key)) return; event.preventDefault(); show(active + (['ArrowRight','ArrowUp'].includes(event.key) ? 1 : -1)); resume(); };
@@ -231,12 +233,25 @@ function mountProjectFolio() {
     event.preventDefault(); folio.classList.add('is-revealing');
     setTimeout(() => location.assign(card.href), 260);
   };
+  // On Android, horizontal swipe changes cards; vertical gestures remain native page scrolling.
+  let touchOrigin = null;
+  const touchStart = e => { const touch=e.touches[0]; if(touch) touchOrigin={x:touch.clientX,y:touch.clientY}; };
+  const touchEnd = e => {
+    if(!touchOrigin) return;
+    const touch=e.changedTouches[0]; if(!touch){touchOrigin=null;return;}
+    const dx=touch.clientX-touchOrigin.x, dy=touch.clientY-touchOrigin.y;
+    touchOrigin=null;
+    if(Math.abs(dx)>48 && Math.abs(dx)>Math.abs(dy)*1.3){dragged=true;show(active+(dx<0?1:-1));resume();}
+  };
   show(0);
   resume();
     folio.addEventListener('pointerdown', down);
   folio.addEventListener('pointermove', move);
   folio.addEventListener('pointerup', up);
   folio.addEventListener('pointercancel', up);
+  folio.addEventListener('touchstart', touchStart, {passive:true});
+  folio.addEventListener('touchend', touchEnd, {passive:true});
+  folio.addEventListener('touchcancel', () => {touchOrigin=null;}, {passive:true});
   folio.addEventListener('dragstart', event => event.preventDefault());
   folio.addEventListener('keydown', keydown);
   folio.addEventListener('click', activate);
@@ -249,7 +264,7 @@ function mountProjectFolio() {
   folio.addEventListener('error', imageError, true);
   const resize = () => show(active);
   window.addEventListener('resize', resize);
-  return () => { pause(); window.removeEventListener('resize', resize); folio.removeEventListener('error', imageError, true); };
+  return () => { pause(); window.removeEventListener('resize', resize); folio.removeEventListener('error', imageError, true); folio.removeEventListener('touchstart',touchStart); folio.removeEventListener('touchend',touchEnd); };
 }
 function mountEditorialReveals() {
   const gsap = window.gsap;
@@ -257,10 +272,20 @@ function mountEditorialReveals() {
   if (!gsap || !ScrollTrigger) return () => {};
   gsap.registerPlugin(ScrollTrigger);
   const contexts = [];
+  const hero = document.querySelector('.hero-text');
+  if(hero){
+    const layers=hero.querySelectorAll(':scope > small,:scope > h1,:scope > strong,:scope > p,:scope > .actions,:scope > .hero-academic');
+    contexts.push(gsap.fromTo(layers,{autoAlpha:0,y:24},{autoAlpha:1,y:0,duration:.78,stagger:.065,ease:'power3.out',clearProps:'transform,opacity,visibility'}));
+  }
+  const process = document.querySelector('.process ol');
+  if(process){
+    const timeline=ScrollTrigger.create({trigger:process,start:'top 86%',end:'bottom 30%',onUpdate:self=>process.style.setProperty('--process-progress',self.progress.toFixed(3))});
+    contexts.push({kill:()=>timeline.kill()});
+  }
   document.querySelectorAll('.block').forEach(section => {
     const targets = section.querySelectorAll(':scope > .heading, :scope > .data-lab-intro, :scope > ol > li, :scope > .bio-chapter, :scope > .flow');
     if (!targets.length) return;
-    contexts.push(gsap.fromTo(targets,{autoAlpha:0,y:34},{autoAlpha:1,y:0,duration:.82,stagger:.08,ease:'power3.out',scrollTrigger:{trigger:section,start:'top 84%',once:true}}));
+    contexts.push(gsap.fromTo(targets,{autoAlpha:0,y:26},{autoAlpha:1,y:0,duration:.7,stagger:.075,ease:'power3.out',clearProps:'transform,opacity,visibility',scrollTrigger:{trigger:section,start:'top 84%',once:true}}));
   });
   return () => contexts.forEach(animation => { animation.scrollTrigger?.kill(); animation.kill(); });
 }
@@ -289,6 +314,12 @@ function mountDemoTheatre() {
       if (active && focus) tab.focus();
     });
     panels.forEach((panel, i) => panel.hidden = i !== demoIndex);
+    const tabstrip=theatre.querySelector('.demo-tabs');
+    const selected=tabs[demoIndex];
+    if(matchMedia('(max-width:800px)').matches && selected && tabstrip){
+      const tbox=selected.getBoundingClientRect(),box=tabstrip.getBoundingClientRect();
+      tabstrip.scrollTo({left:tabstrip.scrollLeft+tbox.left-box.left-(box.width-tbox.width)/2,behavior:'smooth'});
+    }
     theatre.querySelector('output').textContent = `${String(demoIndex + 1).padStart(2,'0')} / ${String(tabs.length).padStart(2,'0')}`;
   };
   const schedule = () => { stop(); if (visible && !document.hidden) timer = setTimeout(() => { show(demoIndex + 1); schedule(); }, 2400); };
@@ -336,7 +367,8 @@ try {
 const steps = [['type', 'existing', 'scope', 'audience'], ['budget', 'time'], ['name', 'email']];
 function inquiry() {
   const keys = steps[step];
-  return `<div class="flow"><aside>${['project', 'plan', 'contact', 'review'].map((k, i) => `<p class="${i === step ? 'current' : ''}">0${i + 1}　${t(k)}</p>`).join('')}</aside><form id="inquiry"><h2>${t(['project', 'plan', 'contact', 'review'][step])}</h2>${keys ? keys.map(k => `<label>${t(k)}${k === 'scope' ? `<textarea name="scope" required maxlength="2500">${esc(brief.scope)}</textarea>` : `<input name="${k}" type="${k === 'time' ? 'date' : k === 'email' ? 'email' : 'text'}" value="${esc(brief[k])}" maxlength="160" required>`}</label>`).join('') : `<dl>${steps.flat().map(k => `<dt>${t(k)}</dt><dd>${esc(brief[k])}</dd>`).join('')}</dl><p>${t('mailhint')}</p>`}<div class="actions">${step ? `<button type="button" id="back">${t('back')}</button>` : ''}<button class="solid">${t(keys ? 'next' : 'compose')} →</button></div></form></div>`;
+  const progress = `<div class="brief-progress" aria-hidden="true">${Array.from({length:4},(_,i)=>`<i class="${i<=step?'is-complete':''}"></i>`).join('')}</div>`;
+  return `<div class="flow"><aside>${['project', 'plan', 'contact', 'review'].map((k, i) => `<p class="${i === step ? 'current' : ''}">0${i + 1}　${t(k)}</p>`).join('')}</aside><form id="inquiry">${progress}<small class="brief-edition">CREATIVE BRIEF / 0${step+1} — 04</small><h2>${t(['project', 'plan', 'contact', 'review'][step])}</h2>${keys ? keys.map(k => `<label>${t(k)}${k === 'scope' ? `<textarea name="scope" required maxlength="2500">${esc(brief.scope)}</textarea>` : `<input name="${k}" type="${k === 'time' ? 'date' : k === 'email' ? 'email' : 'text'}" value="${esc(brief[k])}" maxlength="160" required>`}</label>`).join('') : `<dl>${steps.flat().map(k => `<dt>${t(k)}</dt><dd>${esc(brief[k])}</dd>`).join('')}</dl><p>${t('mailhint')}</p>`}${!keys ? `<p class="brief-privacy">${t('formPrivacy')}</p><label class="brief-honeypot" aria-hidden="true">Company website<input type="text" name="website" tabindex="-1" autocomplete="off"></label><p class="brief-result" id="inquiry-result" role="status" aria-live="polite"></p><a id="email-backup" href="#" hidden>${t('mailFallback')} ↗</a>` : ''}<div class="actions">${step ? `<button type="button" id="back">${t('back')}</button>` : ''}<button class="solid" type="submit">${t(keys ? 'next' : 'sendInquiry')} →</button></div></form></div>`;
 }
 let dispose;
 function render() {
@@ -433,7 +465,11 @@ function render() {
     });
     search();
   }
-  if ($('#inquiry')) {
+  mountInquiry();
+}
+function mountInquiry() {
+  if (!$('#inquiry')) return;
+  {
     const form = $('#inquiry');
     function stash() {
       Object.assign(brief, Object.fromEntries(new FormData(form)));
@@ -442,21 +478,49 @@ function render() {
       } catch {}
     }
     form.oninput = stash;
-    form.onsubmit = e => {
+    form.onsubmit = async e => {
       e.preventDefault();
       stash();
       if (step < 3) {
         step++;
-        render();
-        $('#inquiry h2').scrollIntoView({
-          block: 'nearest'
-        });
-      } else location.href = 'mailto:' + encodeURIComponent(email) + '?subject=' + encodeURIComponent(brief.type) + '&body=' + encodeURIComponent(steps.flat().map(k => t(k) + ': ' + brief[k]).join('\n'));
+        const flow=form.closest('.flow');
+        flow.outerHTML=inquiry();
+        mountInquiry();
+        $('#inquiry h2').scrollIntoView({block:'nearest'});
+        return;
+      }
+      const submit=form.querySelector('button[type=submit]');
+      const status=form.querySelector('#inquiry-result');
+      const backup=form.querySelector('#email-backup');
+      const recipient=String(email||'').trim().replace(/[^A-Za-z0-9._%+@-]/g,'');
+      const draft='mailto:'+recipient+'?subject='+encodeURIComponent(brief.type || 'Project request')+'&body='+encodeURIComponent(steps.flat().map(k=>t(k)+': '+(brief[k]||'')).join('\n'));
+      submit.disabled=true;
+      submit.textContent=t('sendingInquiry');
+      backup.hidden=true;
+      try {
+        const response=await fetch('/api/inquiry',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(brief)});
+        const result=await response.json().catch(()=>({}));
+        if(!response.ok || !result.ok) throw new Error(result.code || 'DELIVERY_UNAVAILABLE');
+        status.textContent=t('sentInquiry');
+        try {sessionStorage.removeItem('atelier.brief');} catch {}
+        brief={};step=0;
+        submit.hidden=true;
+      } catch {
+        status.textContent=t('failedInquiry');
+        backup.href=draft;
+        backup.hidden=false;
+      } finally {
+        submit.disabled=false;
+        if(!submit.hidden) submit.textContent=t('sendInquiry')+' →';
+      }
     };
     if ($('#back')) $('#back').onclick = () => {
       stash();
       step--;
-      render();
+      const flow=form.closest('.flow');
+      flow.outerHTML=inquiry();
+      mountInquiry();
+      $('#inquiry h2').scrollIntoView({block:'nearest'});
     };
   }
 }
