@@ -77,10 +77,6 @@ body{background:var(--bg);overflow-x:clip}#bar{display:none!important}#content{m
 :root[data-atmosphere="morning"]{--ambient-lens:rgba(232,220,201,.58);--ambient-glow:rgba(190,150,96,.12)}
 :root[data-atmosphere="dusk"]{--ambient-lens:rgba(208,200,186,.6);--ambient-glow:rgba(163,126,111,.15)}
 :root[data-atmosphere="night"]{--ambient-lens:rgba(190,198,197,.48);--ambient-glow:rgba(109,122,130,.14)}
-#content .hero{
- background:radial-gradient(ellipse 55% 70% at 79% 48%,var(--ambient-lens),transparent 80%),
- linear-gradient(155deg,#f8f8f6 25%,#f0f1ed 100%)
-}
 #content .hero:after{
  content:"";position:absolute;z-index:-1;pointer-events:none;inset:12% 0 4% 34%;
  background:radial-gradient(ellipse at 50% 48%,var(--ambient-glow),transparent 65%);
@@ -259,8 +255,8 @@ body{background:var(--bg);overflow-x:clip}#bar{display:none!important}#content{m
 #site-dock .dock-more{transition:max-height .32s var(--glass-ease),opacity .24s ease}
 /* Hero: one cinematic focal point, a luminous medium rather than an opaque panel. */
 #content .hero {
-  isolation:isolate; overflow:clip;
-  background:radial-gradient(ellipse 55% 70% at 79% 48%,rgba(218,223,220,.64),transparent 80%),
+  isolation:isolate;overflow-x:clip;overflow-y:visible;
+  background:radial-gradient(ellipse 55% 70% at 79% 48%,var(--ambient-lens),transparent 80%),
              linear-gradient(155deg,#f8f8f6 25%,#f0f1ed 100%);
 }
 #content .hero:before {
