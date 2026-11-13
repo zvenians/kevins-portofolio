@@ -78,8 +78,8 @@ describe('public portfolio visual source of truth', () => {
     expect(words).not.toContain('pinNavigation:');
     expect(scene).toContain('export function mountScene(canvas) {');
     expect(choreography).toContain('export function mountChoreography() {');
-    expect(scene).not.toMatch(/\\breduced\\b/);
-    expect(choreography).not.toMatch(/\\breduced\\b/);
+    expect(scene).not.toMatch(/\breduced\b/);
+    expect(choreography).not.toMatch(/\breduced\b/);
     expect(direction).toContain('44px collapsed, 196px expanded');
     for (const oldToken of ['--glass-ink','--glass-paper','--glass-warm','--glass-border','--silver','--steel']) {
       expect(visual).not.toContain(oldToken);
