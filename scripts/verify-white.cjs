@@ -91,6 +91,9 @@ const output=process.env.WHITE_OUTPUT||'artifacts/white-release';
    await context.close();
   }
   assert.deepEqual(report.errors,[]);
+  // The Linux CI runner is software-rendered. Guard severe regressions here;
+  // 60 FPS and Core Web Vitals still require physical-device measurements.
+  assert.ok(report.performance?.p95FrameMs<180,`render p95 regression: ${report.performance?.p95FrameMs}ms`);
   const response=await fetch(base,{headers:authHeaders});const html=await response.text();
   assert.ok(html.includes('<title>Kevin Simatupang — Creative Programmer</title>'));
   assert.equal((html.match(/property="og:image"/g)||[]).length,1);
