@@ -406,8 +406,8 @@ function render() {
   if(!section) $('.closing').insertAdjacentHTML('beforeend',inquiry());
   if(section==='nova' || section.startsWith('nova/')) $('#bar nav').innerHTML=`<a href="/demos">← ${t('demos')}</a>`;
   if (section === 'about') $('.bio').insertAdjacentHTML('beforeend', `<div class="bio-facts"><strong>${t('currentWork')}</strong><p>PT Wulandari Bangun Laksana Tbk · ${t('currentPeriod')}</p><strong>${t('education')}</strong><p>${t('practice')}</p><a href="/resume">CV / PDF ${icon('outward')}</a></div>`);
-  const disposeScene = mountScene($('.scene canvas'), false);
-  const disposeCamera = mountChoreography(false);
+  const disposeScene = mountScene($('.scene canvas'));
+  const disposeCamera = mountChoreography();
   const disposeAcademic = mountAcademic(language,email);
   const disposeFolio = mountProjectFolio();
   const disposeSkills = mountSkills();
