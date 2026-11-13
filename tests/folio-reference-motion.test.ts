@@ -6,9 +6,9 @@ import { JSDOM } from 'jsdom';
 
 const read = (path: string) => readFileSync(resolve(process.cwd(), path), 'utf8');
 
-describe('Cinematic v4.3 real project stack', () => {
+describe('Cinematic v4.4 liquid-glass project stack', () => {
   const source = read('vercel-site/public/atelier/index.js');
-  const css = read('vercel-site/public/atelier/v43.css');
+  const css = read('vercel-site/public/atelier/v44.css');
   const projects = JSON.parse(read('vercel-site/generated/fallback.json')).projects;
   const start = source.indexOf('function picks() {');
   const finish = source.indexOf('\nfunction brands() {', start);
@@ -33,14 +33,14 @@ describe('Cinematic v4.3 real project stack', () => {
     }
   });
 
-  it('uses the required 2.2 second cadence and 780ms horizontal drag motion', () => {
-    expect(source).toContain('setTimeout(() => { show(active + 1); resume(); }, 2200)');
+  it('centers the preview stage and advances the folio in 1.1 seconds', () => {
+    expect(source).toContain('setTimeout(() => { show(active + 1); resume(); }, 1100)');
     expect(source).toContain("folio.addEventListener('pointermove', move)");
     expect(source).toContain("folio.addEventListener('keydown', keydown)");
-    expect(css).toContain('transition:transform .78s');
-    expect(css).toContain('animation:folio-progress 2.2s');
-    expect(css).toContain('calc(-50% + var(--gesture-x))');
-    expect(css).toContain('translate3d(calc(-50% + var(--gesture-x)),var(--stack-y),0) scale(var(--stack-scale))');
+    expect(css).toContain('transition:transform .42s');
+    expect(css).toContain('animation-duration:1.1s');
+    expect(css).toContain('left:50%!important');
+    expect(css).toContain('translate3d(calc(-50% + var(--gesture-x,0px)),var(--stack-y,0px),0) scale(var(--stack-scale,1))');
   });
 
   it('stops autoplay and transitions for reduced motion', () => {
