@@ -1,4 +1,5 @@
 import { icon } from './icons.js';
+import { aboutPage } from './about.js';
 import { locales, names, translate } from './words.js';
 import { mountScene } from './scene.js';
 import { mountChoreography } from './choreography.js';
@@ -126,11 +127,11 @@ function projectRow(p, i) {
   return `<a class="project-row" href="/work/${encodeURIComponent(p.slug)}"><small>${String(i + 1).padStart(2, '0')}</small><span><strong>${esc(p.name)}</strong><small>${(p.technologies || []).slice(0, 3).map(esc).join(' / ')}</small></span><b aria-hidden="true">${icon('outward')}</b></a>`;
 }
 function picks() {
-  const slugs = ['atlas-logistics-command-center','digital-wedding-invitation','galilea-web-portal','galilea-digital-archive','majelis-galilea','naomi-rouli'];
+  const slugs = ['atlas-logistics-command-center','digital-wedding-invitation','galilea-web-portal','galilea-digital-archive','majelis-galilea','naomi-rouli','bunayya-school'];
   const selected = slugs.map(slug => projects.find(p => p.slug === slug)).filter(Boolean);
   const cover = p => p.slug === 'digital-wedding-invitation'
     ? '/project-shots/wedding-demo-live.png'
-    : `/project-shots/${encodeURIComponent(p.slug)}.webp`;
+    : p.slug === 'bunayya-school' ? '/project-shots/bunayya-school.png' : `/project-shots/${encodeURIComponent(p.slug)}.webp`;
   const cards = selected.map((p, i) => {
     const technologies=(p.technologies || []).slice(0,2).join(' · ');
     return `<a class="showpiece" style="--folio-index:${i}" href="/work/${encodeURIComponent(p.slug)}" aria-label="${esc(p.name)}" data-name="${esc(p.name)}" data-category="${esc(p.category || t('project'))}" data-tech="${esc(technologies)}" draggable="false"><div class="shot"><span class="shot-fallback">${esc(p.name)}</span><img src="${cover(p)}" alt="${esc(p.name)} project interface" width="1200" height="745" ${i?'loading="lazy"':'fetchpriority="high"'} decoding="async" draggable="false"></div><span class="folio-copy"><small>${esc(p.category || t('project'))}</small><b>${esc(p.name)}</b><span>${esc(p.summary || '')}</span><strong>${t('view')} ${icon('outward')}</strong></span></a>`;
@@ -217,7 +218,8 @@ function mountProjectFolio() {
     }
     active = (index + cards.length) % cards.length;
     cards.forEach((card, i) => {
-      const offset = (active - i + cards.length) % cards.length;
+      const distance = (active - i + cards.length) % cards.length;
+      const offset = Math.min(distance,5);
       card.style.setProperty('--stack-offset', offset);
       const values = {
         '--stack-y': `${positions[offset]}px`,
@@ -227,7 +229,7 @@ function mountProjectFolio() {
         '--stack-shadow-y': `${Math.max(14,32-offset*4)}px`,
         '--stack-shadow-alpha': Math.max(.08,.2-offset*.026)
       };
-      card.style.setProperty('--stack-opacity', offset === cards.length - 1 ? '0' : '1');
+      card.style.setProperty('--stack-opacity', distance >= 5 ? '0' : '1');
       Object.entries(values).forEach(([name,value]) => card.style.setProperty(name,String(value)));
       card.style.zIndex = String(cards.length - offset);
       const current = offset === 0;
@@ -306,6 +308,9 @@ function mountEditorialReveals() {
     const timeline=ScrollTrigger.create({trigger:process,start:'top 86%',end:'bottom 30%',onUpdate:self=>process.style.setProperty('--process-progress',self.progress.toFixed(3))});
     contexts.push({kill:()=>timeline.kill()});
   }
+  document.querySelectorAll('.about-practice > section').forEach(section => {
+    contexts.push(gsap.fromTo(section,{y:20},{y:0,duration:.7,ease:'power3.out',clearProps:'transform',scrollTrigger:{trigger:section,start:'top 90%',once:true}}));
+  });
   document.querySelectorAll('.block').forEach((section,index) => {
     const targets = section.querySelectorAll(':scope > .heading, :scope > .data-lab-intro, :scope > ol > li, :scope > .bio-chapter, :scope > .flow');
     if (!targets.length) return;
@@ -412,7 +417,7 @@ function render() {
       body = brands() + `<div id="library">${heading('legacy', '02')}<input id="search" type="search" aria-label="${t('search')}" placeholder="${t('search')}"><div id="results"></div></div>`;
       break;
     case 'about':
-      body = `<div class="bio"><p>${t('profile')}</p><small>${t('location')}</small><div class="actions"><a class="solid" href="/work">${t('explore')} ${icon('outward')}</a></div></div>`;
+      body = aboutPage(language, projects, t, esc);
       break;
     case 'capabilities':
       body = '<div id="capability-map"></div>';
@@ -436,14 +441,13 @@ function render() {
       body = section.startsWith('nova/') ? novaPage(language) : section.startsWith('work/') ? caseStudy(projects.find(p => p.slug === section.slice(5)), language, esc, t) : home();
   }
   $('#content').innerHTML = categories.includes(section) ? `<section class="block sub"><small>Kevin Simatupang / ${t('edition')}</small><h1>${t(section)}</h1>${body}</section>` : body;
-  if (!section || section === 'about') {
+  if (!section) {
     const notes = t('processNotes').split(' · ');
     $('#content').insertAdjacentHTML('beforeend', `<section class="block process">${heading('process', '05')}<ol>${t('phases').split(' · ').map((phase, i) => `<li><small>0${i + 1}</small><h3>${phase}</h3><p>${notes[i]}</p></li>`).join('')}</ol></section><section class="block closing"><small>${t('edition')} / Balikpapan</small><h2>${t('contact')}</h2><div class="actions"><a class="solid" href="/contact">${t('contact')}</a><a href="/about">${t('about')}</a></div></section>`);
   }
   if(!section) $('.closing').insertAdjacentHTML('beforebegin', `<section class="block bio-chapter">${heading('about','06')}<p>${t('profile')}</p><a class="more" href="/about">${t('about')}</a></section>`);
   if(!section) $('.closing').insertAdjacentHTML('beforeend',inquiry());
   if(section==='nova' || section.startsWith('nova/')) $('#bar nav').innerHTML=`<a href="/demos">← ${t('demos')}</a>`;
-  if (section === 'about') $('.bio').insertAdjacentHTML('beforeend', `<div class="bio-facts"><strong>${t('currentWork')}</strong><p>PT Wulandari Bangun Laksana Tbk · ${t('currentPeriod')}</p><strong>${t('education')}</strong><p>${t('practice')}</p><a href="/resume">CV / PDF ${icon('outward')}</a></div>`);
   const disposeScene = mountScene($('.scene canvas'));
   const disposeCamera = mountChoreography();
   const disposeAcademic = mountAcademic(language,email);
