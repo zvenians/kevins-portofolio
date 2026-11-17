@@ -24,7 +24,7 @@ const output=process.env.WHITE_OUTPUT||'artifacts/white-release';
     if(route==='/'){
       assert.equal(await page.locator('.visitor-greeting').count(),1);
       assert.equal(await page.locator('.data-lab-card').count(),6);
-      assert.equal(await page.locator('.project-folio .showpiece').count(),6);
+      assert.equal(await page.locator('.project-folio .showpiece').count(),7);
       assert.equal(await page.locator('.skill-chip').count()>20,true);
       const theatreGeometry=await page.evaluate(()=>{
        const tabs=document.querySelector('#studio .demo-tabs').getBoundingClientRect();

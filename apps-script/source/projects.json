@@ -896,4 +896,29 @@
       "Public repository and deployment"
     ]
   }
+  ,{
+    "id":"bunayya-school",
+    "slug":"bunayya-school",
+    "name":"Bunayya — Sekolah Islam Terpadu",
+    "title":"A clear introduction to school life.",
+    "summary":"A bilingual school website with separate school-unit pages, admissions information and downloadable brochures.",
+    "category":"Websites",
+    "disciplines":["Website Design","Responsive Development"],
+    "technologies":["HTML","CSS","JavaScript","Vercel"],
+    "status":"Real Project",
+    "visual":"portal",
+    "featured":true,
+    "order":24,
+    "visibility":"public",
+    "updatedAt":"2026-11-17",
+    "coverUrl":"/project-shots/bunayya-school.png",
+    "repositoryUrl":"https://github.com/zvenians/Bunayya",
+    "liveUrl":"https://bunayya-eight.vercel.app",
+    "challenge":"Help families navigate school-unit information and admissions materials on mobile and desktop.",
+    "approach":"Separate school-unit pages and organize bilingual information around admissions and school activities.",
+    "implementation":"Static HTML, CSS and JavaScript with structured content files, brochure downloads and browser tests.",
+    "outcome":"The public repository provides the school website, admissions calculator and downloadable brochure resources.",
+    "tradeoff":"The website is a static information service; it does not provide a student database or authenticated school administration.",
+    "evidence":["index.html","bunayya-i.html","bunayya-ii.html","tests/site.spec.mjs"]
+  }
 ]

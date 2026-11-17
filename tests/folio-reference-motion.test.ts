@@ -23,9 +23,9 @@ describe('Cinematic v4.4 liquid-glass project stack', () => {
     }) as string;
     const doc = new JSDOM(markup).window.document;
     const cards = [...doc.querySelectorAll<HTMLAnchorElement>('.folio-cycle a.showpiece')];
-    expect(cards).toHaveLength(6);
+    expect(cards).toHaveLength(7);
     expect(doc.querySelector('[data-folio-next], [data-folio-prev], [data-folio-motion]')).toBeNull();
-    expect(cards.map(card => card.style.getPropertyValue('--folio-index'))).toEqual(['0','1','2','3','4','5']);
+    expect(cards.map(card => card.style.getPropertyValue('--folio-index'))).toEqual(['0','1','2','3','4','5','6']);
     for (const card of cards) {
       const src = card.querySelector('img')?.getAttribute('src');
       expect(src).toMatch(/^\/project-shots\//);

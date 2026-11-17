@@ -21,7 +21,7 @@ const lines = {
   selectedStrengths: 'Selected strengths|Keahlian utama|Expertises choisies|Fortalezas destacadas',
   verifiable: 'Visible. Verifiable.|Terlihat. Teruji.|Visible. Vérifiable.|Visible. Verificable.',
   craftNote: 'Interface, systems, creative development and real project evidence.|Antarmuka, sistem, pengembangan kreatif, dan bukti proyek nyata.|Interfaces, systèmes, création et preuves de projets réels.|Interfaces, sistemas, desarrollo creativo y pruebas de proyectos reales.',
-  folioNote: 'Six selected projects in a moving editorial folio.|Enam proyek pilihan dalam folio editorial yang bergerak.|Six projets choisis dans un portfolio éditorial animé.|Seis proyectos seleccionados en un folio editorial animado.',
+  folioNote: 'Seven selected projects in a moving editorial folio.|Tujuh proyek pilihan dalam folio editorial yang bergerak.|Sept projets choisis dans un portfolio éditorial animé.|Siete proyectos seleccionados en un folio editorial animado.',
   previousProject: 'Previous project|Proyek sebelumnya|Projet précédent|Proyecto anterior',
   nextProject: 'Next project|Proyek berikutnya|Projet suivant|Proyecto siguiente',
   openNavigation: 'Open navigation|Buka navigasi|Ouvrir la navigation|Abrir navegación',

@@ -97,6 +97,7 @@ jobs:
           fi
           node scripts/verify-folio.cjs
           node scripts/verify-video-lock.cjs
+          node scripts/verify-about.cjs
           FOLIO_BASE_URL=http://localhost:3000 node scripts/verify-white.cjs
           FOLIO_BASE_URL=http://localhost:3000 node scripts/verify-mobile-hero.cjs
           FOLIO_BASE_URL=http://localhost:3000 node scripts/verify-data-lab.cjs
@@ -109,6 +110,7 @@ jobs:
             artifacts/folio-fidelity/
             artifacts/video-lock/
             artifacts/white-release/
+            artifacts/atelier/
             artifacts/mobile-hero/
             artifacts/data-lab-fidelity/
           if-no-files-found: warn
