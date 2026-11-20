@@ -55,12 +55,12 @@ describe('public portfolio visual source of truth', () => {
     expect(interaction).toContain('mountChoreography()');
   });
 
-  it('uses fast but accessible motion without accelerating the skill conveyor', () => {
-    expect(interaction).toContain('setTimeout(() => { show(active + 1); resume(); }, 1100)');
-    expect(interaction).toContain('setTimeout(() => { show(demoIndex + 1); schedule(); }, 2400)');
-    expect(visual).toContain('animation-duration:1.1s');
+  it('uses manual project and demo navigation without accelerating the skill conveyor', () => {
+    expect(interaction).toContain("folio.querySelector('[data-folio-next]').onclick");
+    expect(interaction).toContain("$('[data-demo-next]').onclick");
+    expect(visual).not.toContain('animation-duration:1.1s');
     expect(responsive).toContain('52s + var(--rail) * 7s');
-    expect(interaction).toMatch(/show\(0\);\r?\n  resume\(\);/);
+    expect(interaction).toContain('show(0);');
     const folio = interaction.slice(interaction.indexOf('function mountProjectFolio()'), interaction.indexOf('function mountDemoTheatre()'));
     expect(folio).not.toContain('IntersectionObserver');
     expect(folio).not.toContain('hovering');

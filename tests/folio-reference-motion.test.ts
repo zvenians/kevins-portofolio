@@ -13,7 +13,7 @@ describe('Cinematic v4.4 liquid-glass project stack', () => {
   const start = source.indexOf('function picks() {');
   const finish = source.indexOf('\nfunction brands() {', start);
 
-  it('renders six authentic project screenshots without manual arrow controls', () => {
+  it('renders seven authentic project screenshots with manual arrow controls', () => {
     const markup = runInNewContext(source.slice(start, finish) + '\npicks();', {
       projects,
       t: (key: string) => key,
@@ -24,7 +24,9 @@ describe('Cinematic v4.4 liquid-glass project stack', () => {
     const doc = new JSDOM(markup).window.document;
     const cards = [...doc.querySelectorAll<HTMLAnchorElement>('.folio-cycle a.showpiece')];
     expect(cards).toHaveLength(7);
-    expect(doc.querySelector('[data-folio-next], [data-folio-prev], [data-folio-motion]')).toBeNull();
+    expect(doc.querySelector('[data-folio-next]')).not.toBeNull();
+    expect(doc.querySelector('[data-folio-prev]')).not.toBeNull();
+    expect(doc.querySelector('output')?.textContent).toBe('01 / 07');
     expect(cards.map(card => card.style.getPropertyValue('--folio-index'))).toEqual(['0','1','2','3','4','5','6']);
     for (const card of cards) {
       const src = card.querySelector('img')?.getAttribute('src');
@@ -33,19 +35,20 @@ describe('Cinematic v4.4 liquid-glass project stack', () => {
     }
   });
 
-  it('centers the preview stage and advances the folio in 1.1 seconds', () => {
-    expect(source).toContain('setTimeout(() => { show(active + 1); resume(); }, 1100)');
+  it('centers the preview stage and advances on visitor input', () => {
+    expect(source).toContain("folio.querySelector('[data-folio-next]').onclick");
     expect(source).toContain("folio.addEventListener('pointermove', move)");
     expect(source).toContain("folio.addEventListener('keydown', keydown)");
     expect(css).toContain('transition:transform .61s');
-    expect(css).toContain('animation-duration:1.1s');
+    expect(css).not.toContain('animation-duration:1.1s');
     expect(css).toContain('left:50%!important');
     expect(css).toContain('perspective(1100px) translate3d(-50%,calc(var(--stack-y)');
   });
 
-  it('starts autoplay at mount without viewport/hover gates and retires the motion checkbox', () => {
+  it('starts on the first project without autoplay and retires the motion checkbox', () => {
     const folio = source.slice(source.indexOf('function mountProjectFolio()'), source.indexOf('function mountDemoTheatre()'));
-    expect(folio).toMatch(/show\(0\);\r?\n  resume\(\);/);
+    expect(folio).toContain('show(0);');
+    expect(folio).not.toContain('setTimeout(() => { show(active + 1)');
     expect(folio).not.toContain('IntersectionObserver');
     expect(folio).not.toContain('pointerenter');
     expect(folio).not.toContain('focusin');
