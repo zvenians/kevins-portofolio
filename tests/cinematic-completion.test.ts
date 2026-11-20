@@ -23,13 +23,14 @@ describe('2026 cinematic completion contract',()=>{
   expect(profile).not.toContain('Galilea');
   expect(profile!.split('|')).toHaveLength(4);
  });
- it('uses a single showcase interpolation path, offscreen autoplay and touch without scroll hijacking',()=>{
+ it('uses a single showcase interpolation path, manual controls and touch without scroll hijacking',()=>{
   const folio=js.slice(js.indexOf('function mountProjectFolio()'),js.indexOf('function mountEditorialReveals()'));
-  expect(folio).toMatch(/show\(0\);\r?\n  resume\(\);/);
+  expect(folio).toContain('show(0);');
+  expect(folio).toContain("[data-folio-next]");
   expect(folio).not.toContain('motion.animate(card, values');
   expect(folio).toContain("folio.addEventListener('touchstart', touchStart, {passive:true})");
   expect(folio).toContain("folio.addEventListener('touchend', touchEnd, {passive:true})");
-  expect(js).toContain('aria-live="off"');
+  expect(js).toContain('aria-live="polite"');
   expect(css).toContain('touch-action:pan-y');
  });
  it('makes technical visualizations represent demo categories rather than fabricated business KPIs',()=>{

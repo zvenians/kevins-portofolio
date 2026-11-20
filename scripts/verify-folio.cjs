@@ -19,10 +19,10 @@ const viewports=[[320,720],[360,800],[375,812],[390,844],[412,860],[430,880],[60
       const stage=page.locator('.project-folio');
       const offscreenStart=await stage.locator('output').innerText();
       await page.waitForTimeout(1330);
-      assert.notEqual(await stage.locator('output').innerText(),offscreenStart,`${width}: autoplay did not start before scrolling`);
+      assert.equal(await stage.locator('output').innerText(),offscreenStart,`${width}: project changed without visitor input`);
       await stage.scrollIntoViewIfNeeded();
       const cards=stage.locator('.showpiece');assert.equal(await cards.count(),7);
-      assert.equal(await stage.locator('[data-folio-next], [data-folio-prev], [data-folio-motion]').count(),0);
+      assert.equal(await stage.locator('[data-folio-next], [data-folio-prev]').count(),2);
       await cards.locator('img').evaluateAll(images=>Promise.all(images.map(image=>image.decode())));
       await stage.press('ArrowRight');
       await page.waitForTimeout(700);
@@ -38,17 +38,17 @@ const viewports=[[320,720],[360,800],[375,812],[390,844],[412,860],[430,880],[60
       assert.equal(geometry.visibleLayers,5,`${width}: expected five useful visible layers`);
       assert.equal(geometry.identity,geometry.activeName,`${width}: editorial identity is not synchronized`);
       console.log(`${width}x${height}`,JSON.stringify({card:{width:geometry.card.width,height:geometry.card.height},stageHeight:geometry.stageHeight,gap:geometry.status.y-geometry.card.bottom,visibleLayers:geometry.visibleLayers}));
-      if(width>=1440){assert.ok(geometry.card.width>=580&&geometry.card.width<=600,`${width}: desktop card width missed target`);assert.ok(geometry.card.height>=300&&geometry.card.height<=312,`${width}: desktop card height missed target`);assert.ok(geometry.stageHeight>=680&&geometry.stageHeight<=730,`${width}: stage height missed target`);}
-      if(width===768)assert.ok(geometry.card.width>=460&&geometry.card.width<500,'tablet card should scale fluidly');
+      if(width>=1440){assert.ok(geometry.card.width>=680&&geometry.card.width<=760,`${width}: desktop card width missed target`);assert.ok(geometry.card.height>=300&&geometry.card.height<=380,`${width}: desktop card height missed target`);assert.ok(geometry.stageHeight>=680&&geometry.stageHeight<=750,`${width}: stage height missed target`);}
+      if(width===768)assert.ok(geometry.card.width>=400&&geometry.card.width<=650,'tablet card should scale fluidly');
       await stage.screenshot({path:path.join(output,`${width}-showcase.png`)});if([390,1440].includes(width))await page.screenshot({path:path.join(output,`${width}-page.png`),fullPage:true});
-      const initial=await stage.locator('output').innerText();await stage.hover();await page.waitForTimeout(1250);const autoplay=await stage.locator('output').innerText();assert.notEqual(autoplay,initial,`${width}: autoplay stopped on hover`);
-      await stage.focus();const focused=await stage.locator('output').innerText();await page.waitForTimeout(1250);assert.notEqual(await stage.locator('output').innerText(),focused,`${width}: autoplay stopped on focus`);
+      const initial=await stage.locator('output').innerText();await stage.hover();await page.waitForTimeout(1250);const autoplay=await stage.locator('output').innerText();assert.equal(autoplay,initial,`${width}: project advanced without input on hover`);
+      await stage.focus();const focused=await stage.locator('output').innerText();await page.waitForTimeout(1250);assert.equal(await stage.locator('output').innerText(),focused,`${width}: project advanced without input on focus`);
       const beforeKeyboard=await stage.locator('output').innerText();await stage.press('ArrowRight');const keyboard=await stage.locator('output').innerText();assert.notEqual(keyboard,beforeKeyboard,`${width}: keyboard did not advance`);
       if(width===390){await page.waitForTimeout(850);const box=await stage.locator('.is-active').boundingBox();await page.mouse.move(box.x+box.width/2,box.y+box.height/2);await page.mouse.down();await page.mouse.move(box.x+box.width/2,box.y+box.height/2-80,{steps:12});await page.mouse.up();assert.notEqual(await stage.locator('output').innerText(),keyboard,'vertical drag did not advance');}
       if(width===1440){for(let i=0;i<7&&!((await stage.locator('output').innerText()).startsWith('07'));i++)await stage.press('ArrowRight');assert.ok((await stage.locator('output').innerText()).startsWith('07'),'could not reach Bunayya');await page.waitForTimeout(1150);assert.ok((await stage.locator('output').innerText()).startsWith('01'),'07→01 autoplay wrap snapped or stalled');}
       for(const card of await cards.all()){const href=await card.getAttribute('href');assert.equal((await page.request.get(base+href)).status(),200);}
       assert.equal(await page.locator('#motion').count(),0,'retired preferences checkbox remains');assert.deepEqual(errors,[]);
-      results.push({width,height,...geometry,autoplay:'pass',hoverContinuity:'pass',focusContinuity:'pass',drag:width===390?'pass':'sampled on mobile',keyboard:'pass',routes:'pass',oldStoredPreferenceIgnored:'pass'});await context.close();
+      results.push({width,height,...geometry,manual:'pass',hoverStability:'pass',focusStability:'pass',drag:width===390?'pass':'sampled on mobile',keyboard:'pass',routes:'pass',oldStoredPreferenceIgnored:'pass'});await context.close();
     }
     await fs.writeFile(path.join(output,'measurements.json'),JSON.stringify(results,null,2));console.log(JSON.stringify(results));
   }finally{await browser.close();}

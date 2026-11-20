@@ -19,7 +19,7 @@ describe('issue 28 cinematic editorial polish',()=>{
     expect(folio).toContain('status.offsetHeight-statusGap-cardHeight-geometryBuffer');
     expect(folio).toContain('const positions=[activeY');
     expect(folio).not.toContain("folio.clientHeight * [.50,.385,.285,.19,.105,.045]");
-    expect(folio).toContain('1100');
+    expect(folio).toContain('show(active + 1)');
   });
 
   it('keeps the active editorial identity genuine, compact and synchronized',()=>{

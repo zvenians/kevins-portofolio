@@ -134,10 +134,10 @@ function picks() {
     : p.slug === 'bunayya-school' ? '/project-shots/bunayya-school.png' : `/project-shots/${encodeURIComponent(p.slug)}.webp`;
   const cards = selected.map((p, i) => {
     const technologies=(p.technologies || []).slice(0,2).join(' · ');
-    return `<a class="showpiece" style="--folio-index:${i}" href="/work/${encodeURIComponent(p.slug)}" aria-label="${esc(p.name)}" data-name="${esc(p.name)}" data-category="${esc(p.category || t('project'))}" data-tech="${esc(technologies)}" draggable="false"><div class="shot"><span class="shot-fallback">${esc(p.name)}</span><img src="${cover(p)}" alt="${esc(p.name)} project interface" width="1200" height="745" ${i?'loading="lazy"':'fetchpriority="high"'} decoding="async" draggable="false"></div><span class="folio-copy"><small>${esc(p.category || t('project'))}</small><b>${esc(p.name)}</b><span>${esc(p.summary || '')}</span><strong>${t('view')} ${icon('outward')}</strong></span></a>`;
+    return `<a class="showpiece" style="--folio-index:${i}" href="/work/${encodeURIComponent(p.slug)}" aria-label="${esc(p.name)}" data-name="${esc(p.name)}" data-category="${esc(p.category || t('project'))}" data-tech="${esc(technologies)}" data-summary="${esc(p.summary || '')}" draggable="false"><div class="shot"><span class="shot-fallback">${esc(p.name)}</span><img src="${cover(p)}" alt="${esc(p.name)} project interface" width="1200" height="745" ${i?'loading="lazy"':'fetchpriority="high"'} decoding="async" draggable="false"></div><span class="folio-copy"><small>${esc(p.category || t('project'))}</small><b>${esc(p.name)}</b><span>${esc(p.summary || '')}</span><strong>${t('view')} ${icon('outward')}</strong></span></a>`;
   }).join('');
   const first=selected[0];
-  return `<div class="folio-shell"><div class="folio-tools"><p>${t('folioNote')}</p></div><div class="showcase project-folio" tabindex="0" aria-label="${t('work')}" aria-roledescription="carousel"><div class="folio-cycle">${cards}</div><div class="folio-status"><span class="folio-identity"><small>${esc(first?.category || t('project'))}</small><strong>${esc(first?.name || '')}</strong><span>${esc((first?.technologies || []).slice(0,2).join(' · '))}</span></span><span class="folio-meter"><output aria-live="off" aria-label="Project position">01 / 06</output><span class="folio-progress" aria-hidden="true"><i></i></span><small>AUTO / DRAG</small></span></div></div></div>`;
+  return `<div class="folio-shell"><div class="folio-tools"><p>${t('folioNote')}</p></div><div class="showcase project-folio" tabindex="0" aria-label="${t('work')}" aria-roledescription="carousel"><div class="folio-cycle">${cards}</div><div class="folio-status"><span class="folio-identity"><small>${esc(first?.category || t('project'))}</small><strong>${esc(first?.name || '')}</strong><span class="folio-description">${esc(first?.summary || '')}</span><span class="folio-technology">${esc((first?.technologies || []).slice(0,2).join(' · '))}</span><a class="folio-case-link" href="/work/${encodeURIComponent(first?.slug || '')}">${t('view')} ↗</a></span><span class="folio-meter"><output aria-live="polite" aria-label="Project position">01 / ${String(selected.length).padStart(2,"0")}</output><button type="button" data-folio-prev aria-label="Previous project">←</button><button type="button" data-folio-next aria-label="Next project">→</button></span></div></div></div>`;
 }
 const dataLabSlugs = ['operations-decision-workbench','research-data-preparation-studio','research-practice-toolkit','asset-field-companion','document-automation-studio','sera-commerce-operations-console'];
 function dataLab() {
@@ -151,7 +151,7 @@ function heading(id, num) {
   return `<div class="heading"><small>${num} / KS</small><h2>${t(id)}</h2></div>`;
 }
 function home() {
-  return `<section class="hero"><div class="scene"><canvas aria-hidden="true"></canvas><small>FIG. 01 &nbsp; / &nbsp; ${t('film')}</small></div><div class="hero-text"><small>CODE / CRAFT / MOTION</small><small class="visitor-greeting">${visitorGreeting()}</small><h1>Kevin<br><em>Simatupang.</em></h1><strong class="hero-role">${t('creativeProgrammer')}</strong><p>${t('hero')}</p><div class="actions"><a class="solid" href="#work">${t('explore')}</a><a href="/demos">${t('demos')}</a></div><a class="hero-academic" href="/academic-support">${t('heroAcademic')}</a></div></section><div class="axis"><small>KS / PORTFOLIO</small><small>${t('location')}</small></div><section class="block" id="work">${heading('work', '01')}${picks()}<a class="more" href="/work">${t('all')}</a></section><section class="block" id="studio">${heading('demos', '02')}${brands()}<a class="more" href="/demos">${t('legacy')}</a></section><section class="block data-lab" id="data-lab">${heading('dataLab', '03')}${dataLab()}</section><section id="skills" class="block">${heading('capabilities', '04')}${skillsSummary()}</section>`;
+  return `<section class="hero"><div class="scene"><canvas aria-hidden="true"></canvas><small>FIG. 01 &nbsp; / &nbsp; ${t('film')}</small></div><div class="hero-text"><small>CODE / CRAFT / MOTION</small><small class="visitor-greeting">${visitorGreeting()}</small><h1>Kevin<br><em>Simatupang.</em></h1><strong class="hero-role">${t('creativeProgrammer')}</strong><p>${t('hero')}</p><div class="actions"><a class="solid" href="#work">${t('explore')}</a><a class="solid hero-contact" href="/contact">${t('contact')}</a><a class="hero-demo" href="/demos">${t('demos')}</a></div><a class="hero-academic" href="/academic-support">${t('heroAcademic')}</a></div></section><div class="axis"><small>KS / PORTFOLIO</small><small>${t('location')}</small></div><section class="block" id="work">${heading('work', '01')}${picks()}<a class="more" href="/work">${t('all')}</a></section><section class="block" id="studio">${heading('demos', '02')}${brands()}<a class="more" href="/demos">${t('legacy')}</a></section><section class="block data-lab" id="data-lab">${heading('dataLab', '03')}${dataLab()}</section><section id="skills" class="block">${heading('capabilities', '04')}${skillsSummary()}</section>`;
 }
 function skillsSummary() {
   const groups = [
@@ -161,7 +161,7 @@ function skillsSummary() {
     ['skillDelivery', [['HTML5','html5'],['CSS3','css3'],['Git','git'],['Docker','docker'],['Linux','linux'],['GitHub Actions','githubactions'],['Figma','figma'],['Bash','bash']]]
   ];
   const chip = ([name,logo], category, duplicate = false) => `<li>${duplicate ? `<span class="skill-copy"><img loading="lazy" width="24" height="24" src="/edisi/logos/${logo}.svg" alt=""><span>${name}</span></span>` : `<button type="button" class="skill-chip" data-skill="${esc(name)}" data-category="${esc(t(category))}" aria-label="${esc(name)}: ${esc(t(category))}"><img loading="lazy" width="24" height="24" src="/edisi/logos/${logo}.svg" alt=""><span>${name}</span></button>`}</li>`;
-  return `<div class="skill-intro"><div><small>${t('selectedStrengths')}</small><h3><em>${t('craft')}</em><br>${t('verifiable')}</h3><p>${t('skillMotionNote')}</p></div><div class="skill-lattice" aria-hidden="true"></div></div><div class="skill-rails">${groups.map(([label,items],i)=>{const content=items.map(item=>chip(item,label)).join('');const copy=items.map(item=>chip(item,label,true)).join('');return `<div class="skill-rail" style="--rail:${i}"><strong>${t(label)}</strong><div class="skill-window"><div class="skill-track"><ul>${content}</ul><ul aria-hidden="true">${copy}</ul></div></div></div>`}).join('')}</div><div class="skill-popover" hidden role="dialog" aria-label="${t('skillDetails')}"><button type="button" class="skill-close" aria-label="${t('close')}">×</button><div class="skill-detail"></div></div><a class="more" href="/capabilities">${t('catalog')} ${icon('outward')}</a>`;
+  return `<div class="skill-intro"><div><small>${t('selectedStrengths')}</small><h3><em>${t('craft')}</em><br>${t('verifiable')}</h3><p>${t('skillMotionNote')}</p></div><div class="skill-lattice" aria-hidden="true"></div></div><ul class="skill-priorities">${t('skillPriorities').split(' · ').map((label,i)=>`<li><small>0${i+1}</small>${esc(label)}</li>`).join('')}</ul><div class="skill-rails">${groups.map(([label,items],i)=>{const content=items.map(item=>chip(item,label)).join('');const copy=items.map(item=>chip(item,label,true)).join('');return `<div class="skill-rail" style="--rail:${i}"><strong>${t(label)}</strong><div class="skill-window"><div class="skill-track"><ul>${content}</ul><ul aria-hidden="true">${copy}</ul></div></div></div>`}).join('')}</div><div class="skill-popover" hidden role="dialog" aria-label="${t('skillDetails')}"><button type="button" class="skill-close" aria-label="${t('close')}">×</button><div class="skill-detail"></div></div><a class="more" href="/capabilities">${t('catalog')} ${icon('outward')}</a>`;
 }
 function mountSkills() {
   const root = document.querySelector('#skills');
@@ -187,9 +187,8 @@ function mountProjectFolio() {
   const folio = document.querySelector('.showcase.project-folio');
   if (!folio) return () => {};
   const cards = [...folio.querySelectorAll('.showpiece')];
-  const progress = folio.querySelector('.folio-progress i');
   const identity = folio.querySelector('.folio-identity');
-  let active = 0, timer, start = null, dragged = false;
+  let active = 0, start = null, dragged = false;
   // Only CSS interpolates the stack transform; Motion does not also animate the variables.
   const show = index => {
     const next = (index + cards.length) % cards.length;
@@ -241,18 +240,15 @@ function mountProjectFolio() {
     const current=cards[active];
     identity.querySelector('small').textContent=current.dataset.category;
     identity.querySelector('strong').textContent=current.dataset.name;
-    identity.querySelector('span').textContent=current.dataset.tech;
+    identity.querySelector('.folio-description').textContent=current.dataset.summary;
+    identity.querySelector('.folio-technology').textContent=current.dataset.tech;
+    identity.querySelector('.folio-case-link').href=current.href;
     folio.querySelector('output').textContent = `${String(active + 1).padStart(2, '0')} / ${String(cards.length).padStart(2, '0')}`;
-    progress.classList.remove('is-running');
-    void progress.offsetWidth;
-    progress.classList.add('is-running');
   };
-  const pause = () => clearTimeout(timer);
-  const resume = () => { pause(); timer = setTimeout(() => { show(active + 1); resume(); }, 1100); };
-  const down = e => { if (start || (e.pointerType === 'mouse' && e.button !== 0)) return; start = {x:e.clientX,y:e.clientY}; dragged = false; folio.classList.add('is-dragging'); if (e.pointerId !== undefined && e.pointerType !== 'touch') folio.setPointerCapture(e.pointerId); };
+  const down = e => { if (e.target.closest('button,.folio-case-link') || start || (e.pointerType === 'mouse' && e.button !== 0)) return; start = {x:e.clientX,y:e.clientY}; dragged = false; folio.classList.add('is-dragging'); if (e.pointerId !== undefined && e.pointerType !== 'touch') folio.setPointerCapture(e.pointerId); };
   const move = e => { if (!start) return; const delta=e.clientY-start.y; if (Math.abs(delta)>8) { dragged=true; if (e.pointerType !== 'touch') folio.style.setProperty('--gesture-y', `${Math.max(-35,Math.min(35,delta))}px`); } };
-  const up = e => { if (!start) return; const delta=e.clientY-start.y, horizontal=e.clientX-start.x; start=null; folio.classList.remove('is-dragging'); folio.style.setProperty('--gesture-y','0px'); if (e.pointerId !== undefined && folio.hasPointerCapture(e.pointerId)) folio.releasePointerCapture(e.pointerId); if (e.type !== 'pointercancel' && Math.abs(delta)>45 && Math.abs(delta)>Math.abs(horizontal)) show(active + (delta<0?1:-1)); resume(); };
-    const keydown = event => { if (!['ArrowLeft','ArrowRight','ArrowUp','ArrowDown'].includes(event.key)) return; event.preventDefault(); show(active + (['ArrowRight','ArrowUp'].includes(event.key) ? 1 : -1)); resume(); };
+  const up = e => { if (!start) return; const delta=e.clientY-start.y, horizontal=e.clientX-start.x; start=null; folio.classList.remove('is-dragging'); folio.style.setProperty('--gesture-y','0px'); if (e.pointerId !== undefined && folio.hasPointerCapture(e.pointerId)) folio.releasePointerCapture(e.pointerId); if (e.type !== 'pointercancel' && Math.abs(delta)>45 && Math.abs(delta)>Math.abs(horizontal)) show(active + (delta<0?1:-1)); };
+    const keydown = event => { if (!['ArrowLeft','ArrowRight','ArrowUp','ArrowDown'].includes(event.key)) return; event.preventDefault(); show(active + (['ArrowRight','ArrowUp'].includes(event.key) ? 1 : -1)); };
   const activate = event => {
     const card = event.target.closest('.showpiece.is-active');
     if (!card || event.defaultPrevented || dragged || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
@@ -267,10 +263,11 @@ function mountProjectFolio() {
     const touch=e.changedTouches[0]; if(!touch){touchOrigin=null;return;}
     const dx=touch.clientX-touchOrigin.x, dy=touch.clientY-touchOrigin.y;
     touchOrigin=null;
-    if(Math.abs(dx)>48 && Math.abs(dx)>Math.abs(dy)*1.3){dragged=true;show(active+(dx<0?1:-1));resume();}
+    if(Math.abs(dx)>48 && Math.abs(dx)>Math.abs(dy)*1.3){dragged=true;show(active+(dx<0?1:-1));}
   };
   show(0);
-  resume();
+  folio.querySelector('[data-folio-prev]').onclick = () => show(active - 1);
+  folio.querySelector('[data-folio-next]').onclick = () => show(active + 1);
     folio.addEventListener('pointerdown', down);
   folio.addEventListener('pointermove', move);
   folio.addEventListener('pointerup', up);
@@ -290,7 +287,7 @@ function mountProjectFolio() {
   folio.addEventListener('error', imageError, true);
   const resize = () => show(active);
   window.addEventListener('resize', resize);
-  return () => { pause(); window.removeEventListener('resize', resize); folio.removeEventListener('error', imageError, true); folio.removeEventListener('touchstart',touchStart); folio.removeEventListener('touchend',touchEnd); };
+  return () => { window.removeEventListener('resize', resize); folio.removeEventListener('error', imageError, true); folio.removeEventListener('touchstart',touchStart); folio.removeEventListener('touchend',touchEnd); };
 }
 function mountEditorialReveals() {
   const gsap = window.gsap;
@@ -298,11 +295,6 @@ function mountEditorialReveals() {
   if (!gsap || !ScrollTrigger) return () => {};
   gsap.registerPlugin(ScrollTrigger);
   const contexts = [];
-  const hero = document.querySelector('.hero-text');
-  if(hero){
-    const layers=hero.querySelectorAll(':scope > small,:scope > h1,:scope > strong,:scope > p,:scope > .actions,:scope > .hero-academic');
-    contexts.push(gsap.fromTo(layers,{autoAlpha:0,y:24},{autoAlpha:1,y:0,duration:.78,stagger:.065,ease:'power3.out',clearProps:'transform,opacity,visibility'}));
-  }
   const process = document.querySelector('.process ol');
   if(process){
     const timeline=ScrollTrigger.create({trigger:process,start:'top 86%',end:'bottom 30%',onUpdate:self=>process.style.setProperty('--process-progress',self.progress.toFixed(3))});
@@ -331,8 +323,7 @@ function mountDemoTheatre() {
   });
   stage?.addEventListener('pointerleave', () => { stage.style.removeProperty('--demo-rotate-y'); stage.style.removeProperty('--demo-rotate-x'); });
 
-  let timer, touchStart = 0, pointerStart = null, pointerMoved = false, visible = false;
-  const stop = () => { clearTimeout(timer); timer = 0; };
+  let touchStart = 0, pointerStart = null, pointerMoved = false;
   const show = (index, focus = false) => {
     theatre.style.setProperty('--demo-direction', index < demoIndex ? '-1' : '1');
     demoIndex = (index + tabs.length) % tabs.length;
@@ -351,17 +342,16 @@ function mountDemoTheatre() {
     }
     theatre.querySelector('output').textContent = `${String(demoIndex + 1).padStart(2,'0')} / ${String(tabs.length).padStart(2,'0')}`;
   };
-  const schedule = () => { stop(); if (visible && !document.hidden) timer = setTimeout(() => { show(demoIndex + 1); schedule(); }, 2400); };
   tabs.forEach((tab, i) => {
-    tab.onclick = () => { show(i); schedule(); };
+    tab.onclick = () => show(i);
     tab.onkeydown = event => {
       const next = {ArrowLeft:demoIndex-1,ArrowUp:demoIndex-1,ArrowRight:demoIndex+1,ArrowDown:demoIndex+1,Home:0,End:tabs.length-1}[event.key];
       if (next === undefined) return;
-      event.preventDefault(); show(next, true); schedule();
+      event.preventDefault(); show(next, true);
     };
   });
-  $('[data-demo-prev]').onclick = () => { show(demoIndex - 1); schedule(); };
-  $('[data-demo-next]').onclick = () => { show(demoIndex + 1); schedule(); };
+  $('[data-demo-prev]').onclick = () => show(demoIndex - 1);
+  $('[data-demo-next]').onclick = () => show(demoIndex + 1);
   theatre.onpointerdown = event => {
     if (event.pointerType === 'mouse' && event.button === 0 && stage.querySelector('.demo-panel:not([hidden])')?.contains(event.target)) { pointerStart = event.clientX; pointerMoved = false; }
     else if (event.pointerType !== 'mouse') touchStart = event.clientX;
@@ -370,22 +360,17 @@ function mountDemoTheatre() {
     if (event.pointerType === 'mouse' && pointerStart !== null) {
       const distance = event.clientX - pointerStart; pointerStart = null; stage.classList.remove('is-dragging'); stage.style.removeProperty('--demo-drag');
       if (stage.hasPointerCapture(event.pointerId)) stage.releasePointerCapture(event.pointerId);
-      if (Math.abs(distance) > 45) { pointerMoved = true; show(demoIndex + (distance < 0 ? 1 : -1)); schedule(); }
+      if (Math.abs(distance) > 45) { pointerMoved = true; show(demoIndex + (distance < 0 ? 1 : -1)); }
       return;
     }
     if (!touchStart) return;
     const distance = event.clientX - touchStart; touchStart = 0;
-    if (Math.abs(distance) > 45) { show(demoIndex + (distance < 0 ? 1 : -1)); schedule(); }
+    if (Math.abs(distance) > 45) show(demoIndex + (distance < 0 ? 1 : -1));
   };
   theatre.addEventListener('pointermove', event => { if (pointerStart === null || event.pointerType !== 'mouse') return; const distance = event.clientX - pointerStart; if (Math.abs(distance) <= 6) return; if (!stage.hasPointerCapture(event.pointerId)) stage.setPointerCapture(event.pointerId); stage.classList.add('is-dragging'); stage.style.setProperty('--demo-drag', `${Math.max(-80, Math.min(80, distance))}px`); });
   theatre.addEventListener('pointercancel', () => { pointerStart = null; stage.classList.remove('is-dragging'); stage.style.removeProperty('--demo-drag'); });
   theatre.addEventListener('click', event => { if (pointerMoved) { event.preventDefault(); pointerMoved = false; } }, true);
-  const observer = new IntersectionObserver(entries => {
-    visible = entries.some(entry => entry.isIntersecting && entry.intersectionRatio > .18);
-    visible ? schedule() : stop();
-  }, {threshold:[0,.18,.5]});
-  observer.observe(theatre);
-  return () => { stop(); observer.disconnect(); };
+  return () => {};
 }
 let step = 0,
   brief = {};
@@ -407,7 +392,7 @@ function render() {
   
   $('#bar').innerHTML = `<a href="/" class="wordmark">ks<span>.</span></a><nav>${nav()}</nav><div><button data-settings>${language.toUpperCase()} ${icon('down')}</button><button data-menu>${t('menu')} ${icon('menu')}</button></div>`;
   const disposeDock = mountDock();
-  $('#foot').innerHTML = `<a class="wordmark" href="/">ks<span>.</span></a><small>© 2026 Kevin Oloan Simatupang · Balikpapan</small><button data-settings>${t('prefs')}</button>`;
+  $('#foot').innerHTML = `<div class="footer-brand"><a class="wordmark" href="/">ks<span>.</span></a><p>Kevin Oloan Simatupang<br>${t('creativeProgrammer')} · Balikpapan</p></div><nav aria-label="Footer"><a href="/work">${t('work')}</a><a href="/about">${t('about')}</a><a href="/contact">${t('contact')}</a><a href="/resume">${t('resumeTitle')}</a></nav><div class="footer-connect"><a href="https://github.com/zvenians" target="_blank" rel="noopener noreferrer">GitHub ↗</a><a href="mailto:simatupangkevin9@gmail.com">Email ↗</a><button data-settings>${t('prefs')}</button></div><small>© 2026 Kevin Oloan Simatupang · Balikpapan</small>`;
   let body;
   switch (section) {
     case 'work':
