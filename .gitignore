@@ -101,3 +101,6 @@ sa-key.json
 *sa-key*.json
 *.json.secret
 fix_imports.js
+
+# Next.js-generated local agent guidance (not an application dependency)
+/vercel-site/AGENTS.md
